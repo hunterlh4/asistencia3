@@ -6,6 +6,7 @@
   <title>
     <?php echo $data['title']; ?>
   </title>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/iconos.js" crossorigin="anonymus"></script>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/loginstyle.css" />
   <link rel="icon" type="png" href="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png">
 </head>
@@ -15,17 +16,18 @@
     <div class="signin-signup">
       <form role="form" class="sign-in-form" id="formulario" autocomplete="off">
           <img class="logo" src="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png" alt=""><br>
-          <h2 class="title">Sistema de Control de Asistencia</h2> <br><br>
+          <h2 class="title">Sistema de Control de Asistencia </h2> <br><br>
           <div class="input-field">
             <i class="fas fa-user"></i>
             <input type="text" id="username" name="username" placeholder="Usuario" />
           </div>
           <div class="input-field">
             <i class="fas fa-lock"></i>
+            
             <input type="password" id="password" name="password" placeholder="Contraseña" />
           </div>
           <div class="text-center">
-            <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign in</button>
+            <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Ingresar</button>
           </div>
       </form>
       <form action="login.php" method="POST" class="sign-up-form">
@@ -71,6 +73,7 @@
 
 <script>
   const base_url = '<?php echo BASE_URL; ?>';
+  
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/login.js"></script>

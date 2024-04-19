@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>
+    <?php echo $data['title']; ?>
+  </title>
+
+  
 <link rel="icon" type="png" href="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png">
 <!-- General CSS Files -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/app.min.css">
@@ -41,6 +52,8 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/components.css">
 <!-- Custom style CSS -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/custom.css">
+
+
 <style>
     .disabled {
         pointer-events: none;
@@ -65,3 +78,4 @@
 </style>
 
 
+</head>

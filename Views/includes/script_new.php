@@ -26,7 +26,7 @@
 <!-- JS Libraies DATATABLE -->
 <script src="<?php echo BASE_URL; ?>/assets/bundles/datatables/datatables.min.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?php echo BASE_URL; ?>/assets/js/page/datatables.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/js/datatables.js"></script>
 <!--<script src="//cdn.rawgit.com/ashl1/datatables-rowsgroup/v1.0.0/dataTables.rowsGroup.js"></script>-->
 <script src="https://cdn.datatables.net/rowgroup/1.2.0/js/dataTables.rowGroup.min.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/bundles/jquery-ui/jquery-ui.min.js"></script>
@@ -45,10 +45,12 @@
 
 
 <!-- Page Specific JS File -->
-<!--<script src="assets/js/page/datatables.js"></script>-->
+
 
 <!-- Mobiscroll -->
 <script src="<?php echo BASE_URL; ?>/assets/bundles/mobiscroll/js/mobiscroll.jquery.min.js"></script>
 
   <!-- Page Specific JS File -->
   <!--<script src="assets/js/page/forms-advanced-forms.js"></script>-->
+
+  <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>

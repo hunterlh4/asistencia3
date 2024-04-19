@@ -78,6 +78,9 @@ form.sign-in-form {
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
   position: relative;
+
+
+  
 }
 
 .input-field i {
@@ -95,7 +98,9 @@ form.sign-in-form {
   line-height: 1;
   font-weight: 600;
   font-size: 1.1rem;
-  color: #333;
+  color: #acacac;
+  
+  
 }
 
 .input-field input::placeholder {

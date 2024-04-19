@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>
-    <?php echo $data['title']; ?>
-  </title>
-
-  <?php include_once './Views/includes/header.php'; ?>
-</head>
-
+<?php include_once './Views/includes/header.php'; ?>
 <body>
   <div class="loader"></div>
   <div id="app">
@@ -18,9 +6,6 @@
       <?php
       include './views/includes/navbar.php';
       include './views/includes/sidebarnew.php';
-     
-      
-
       ?>
       <!-- Main Content -->
       <div class="main-content">
@@ -53,9 +38,7 @@
                             <a type="button" class="btn btn-primary btn-lg text-center" href="tab_search_new.php"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           }
                           ?>
-                          <!-- <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra visualizar el ingreso y salida que marcan los relojes, así como evaluar y generar los reportes.</p> -->
-                          <!-- <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="tab_search_new.php"><i class="far fa-hand-point-right"></i> INICIAR</a> -->
+                         
                         </div>
                       </div>
                     </div>
@@ -160,7 +143,7 @@
         <!--<section class="section">-->
 
         <!--</section>-->
-        <?php include './views/includes/sidebar-config.html'; ?>
+        <?php // include './views/includes/sidebar-config.html'; ?>
       </div>
       <?php include './views/includes/footer.php'; ?>
     </div>

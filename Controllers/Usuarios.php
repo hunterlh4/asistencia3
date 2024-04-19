@@ -5,19 +5,24 @@ class Usuarios extends Controller
     {
         parent::__construct();
         session_start();
-        if (empty($_SESSION['nombre_usuario'])) {
+        if (empty($_SESSION['nombre'])) {
             header('Location: '. BASE_URL . 'admin');
             exit;
         }
     }
     public function index()
     {
+        // $data = $this->model->getUsuarioId($_SESSION['id']);
         $data['title'] = 'usuarios';
-        $this->views->getView('admin/usuarios', "index", $data);
+        // $data1="";
+    
+        $data1 = $this->model->getUsuarios();
+
+        $this->views->getView('administracion', "users", $data,$data1);
     }
     public function listar()
     {
-        $data = $this->model->getUsuarios(1);
+        $data = $this->model->getUsuarios();
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['accion'] = '<div class="d-flex">
             <button class="btn btn-primary" type="button" onclick="editUser(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
@@ -27,6 +32,17 @@ class Usuarios extends Controller
         echo json_encode($data);
         die();
     }
+
+    public function listar2()
+    {
+        $data = $this->model->getUsuarios2();
+      
+        echo json_encode($data);
+        die();
+    }
+    
+
+
     public function registrar()
     {
         if (isset($_POST['nombre'])) {
