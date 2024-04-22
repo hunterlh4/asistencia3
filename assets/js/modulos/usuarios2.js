@@ -8,32 +8,119 @@ let mytable; // = document.querySelector("#table-1");
 let tblUsuario;
 var data9 ;
 
+
+
 document.addEventListener("DOMContentLoaded", function() {
+
+   
+    llenarTabla();
+
+    //levantar modal
+    nuevo.addEventListener("click", function() {
+        btnAccion.textContent = 'Registrar';
+        titleModal.textContent = "NUEVO USUARIO";
+        document.querySelector('#id').value = '';
+        document.querySelector('#username').value = '';
+            // document.querySelector('#password').value = res.password;
+        document.querySelector('#nombre').value = '';
+        document.querySelector('#apellido').value = '';
+        document.querySelector('#nivel').value = '';
+        document.querySelector('#Trabajador').value = '';
+        document.querySelector('#estado').value = '';
+        myModal.show();
+        
+    });
+    //submit usuarios
+    frm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        let data = new FormData(this);
+        const url = base_url + "usuarios/registrar";
+        const http = new XMLHttpRequest();
+        http.open("POST", url, true);
+        http.send(data);
+        http.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                const res = JSON.parse(this.responseText);
+                if (res.icono == "success") {
+                    myModal.hide();
+                    tblUsuario.ajax.reload();
+                }
+                Swal.fire("Aviso?", res.msg.toUpperCase(), res.icono);
+            }
+        }
+    });
+});
+
+function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "usuarios/listar2",
+            url: base_url + "usuarios/listar",
             dataSrc: "",
         },
         columns: [
-            { data: "id" },
-            { data: "nombre" },
-            { data: "apellido" },
+            // { data: "id" },
+            // { data: "nombre" },
+            // { data: "apellido" },
+
+            { data: "usuario_id" },
+            { data: "usuario_username" },
+            { data: "usuario_nombre" },
+            { data: "usuario_apellido" },
+            { data: "dni" },
+            { data: "usuario_nivel" },
+            { data: "usuario_estado" },
+            { data: "accion" },
            
         ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas copiar
+                }
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a CSV
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a Excel
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a PDF
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas imprimir
+                }
+            }
+        ]
         
         
        
     });
-    //levantar modal
-    nuevo.addEventListener("click", function() {
+}
 
-        myModal.show();
-    });
-    //submit usuarios
-    frm.addEventListener("submit", function(e) {
-    });
-});
+// Función para imprimir un mensaje en la consola
+// function imprimirMensaje() {
+//     tblUsuario.ajax.reload();
+//     console.log('¡Hola! Este es un mensaje que se imprime cada 5 segundos.');
+// }
 
+
+// // Configurar el intervalo para que llame a la función cada 5 segundos (5000 milisegundos)
+// setInterval(imprimirMensaje, 2000);
 
 
 
@@ -130,13 +217,12 @@ document.addEventListener("DOMContentLoaded", function() {
 // });
 
 
-
 function cerrar(){
     myModal.hide();
 }
 
 function actualizartabla(){
-     mytable = $('#table-1').DataTable();
+     mytable = $('#table-alex').DataTable();
     // var datosSeleccionados = tabla.rows('.selected').data();
     tabla.ajax.reload();
 }
@@ -155,7 +241,7 @@ function editUser(idUser) {
             document.querySelector('#nombre').value = res.nombre;
             document.querySelector('#apellido').value = res.apellido;
             document.querySelector('#nivel').value = res.nivel;
-            document.querySelector('#direccion').value = res.direccion_id;
+            document.querySelector('#Trabajador').value = res.trabajador_id;
             document.querySelector('#estado').value = res.estado;
             document.querySelector('#password').setAttribute('readonly', 'readonly');
             btnAccion.textContent = 'Actualizar';

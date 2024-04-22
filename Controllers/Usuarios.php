@@ -16,7 +16,7 @@ class Usuarios extends Controller
         $data['title'] = 'usuarios';
         // $data1="";
     
-        $data1 = $this->model->getUsuarios();
+        $data1 = $this->model->getTrabajadores();
 
         $this->views->getView('administracion', "users", $data,$data1);
     }
@@ -24,10 +24,20 @@ class Usuarios extends Controller
     {
         $data = $this->model->getUsuarios();
         for ($i = 0; $i < count($data); $i++) {
+        
+            $datonuevo = $data[$i]['usuario_estado'];
+            if($datonuevo==true){
+                $data[$i]['usuario_estado'] ="<div class='badge badge-info'>Activo</div>";  
+            }else{
+                $data[$i]['usuario_estado'] ="<div class='badge badge-danger'>Inactivo</div>";
+            }
             $data[$i]['accion'] = '<div class="d-flex">
-            <button class="btn btn-primary" type="button" onclick="editUser(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger" type="button" onclick="eliminarUser(' . $data[$i]['id'] . ')"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-success" type="button" onclick="editUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger" type="button" onclick="verUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
+            
         </div>';
+            // colocar eliminar si es necesario
+        
         }
         echo json_encode($data);
         die();

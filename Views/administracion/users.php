@@ -16,10 +16,12 @@
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h3 class="font-weight-bolder mb-0"><i class="fa fa-users"></i> Administrar Usuarios</h3>
-                                        <button class="btn btn-lg btn-success rounded-0 " data-toggle="modal"  data-target="#nuevoModal" id="">Crear Nuevo Usuario</button>
+                                      
+                                        <button class="btn btn-lg btn-success rounded-0 " data-toggle="modal"  data-target="#nuevoModal" id="nuevo_registro">Crear Nuevo Usuario</button>
                                         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Modal With Form</button> btnNuevoUsuario-->
 
                                     </div>
+                                    <!-- 
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-striped table-hover" style="width:100%;" id="table-1">
@@ -29,7 +31,7 @@
                                                         <th>usuario</th>
                                                         <th>nivel</th>
                                                         
-                                                        <th>direccion</th>
+                                                        <th>DNI</th>
                                                         
                                                         <th>estado</th>
                                                         <th>action</th>
@@ -42,18 +44,10 @@
                                                         echo '<tr>';
                                                         echo '<td>' . $fila['usuario_id'] . '</td>';
                                                         echo '<td>' . $fila['usuario_username'] . '</td>';
-                                                        $resultado = ($fila['usuario_nivel'] == 1) ? "Administrador" :
-                                                        (($fila['usuario_nivel'] == 2) ? "Jefe de Oficina" :
-                                                        (($fila['usuario_nivel'] == 3) ? "Vizualizador" :
-                                                        (($fila['usuario_nivel'] == 4) ? "Porteria" :
-                                                        (($fila['usuario_nivel'] == 5) ? "futuro" :
-                                                        "sin asignar"))));
-                                                        echo '<td>' . $resultado . '</td>';
-                                                      
-                                                      
-                                                        
-                                                        echo '<td>' . $fila['direccion_nombre'].' '.$fila['equipo_nombre'] . '</td>';
-                                                        $activo = ($fila['usuario_estado']==1)? "<div class='badge badge-success'>Activos</div>":"<div class='badge badge-danger'>Inactivos</div>";
+                                                        echo '<td>' . $fila['usuario_nivel'] . '</td>';
+
+                                                        echo '<td>' . $fila['dni']. '</td>';
+                                                        $activo = ($fila['usuario_estado']==true)? "<div class='badge badge-success'>Activos</div>":"<div class='badge badge-danger'>Inactivos</div>";
                                                         echo '<td>' . $activo .   '</td>';
                                                         echo '<td>' .
                                                         '<div class="d-flex">
@@ -71,14 +65,21 @@
                                            
                                         </div>
                                     </div>
+                                     -->
                                     <div class="card-body">
-                                        <div class="">
-                                            <table class=""  id="table-alex">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover"  style="width:100%;"  id="table-alex">
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center"># </th>
                                                         <th>usuario</th>
+                                                        <th>nombre</th>
+                                                        <th>apellido</th>
+                                                        <th>dni</th>
                                                         <th>nivel</th>
+                                                        <th>estado</th>
+                                                        <th>accion</th>
+                                                        
                                                        
                                                         
                                                     </tr>
@@ -180,7 +181,7 @@
                           <i class="fas fa-envelope"></i>
                         </div>
                       </div>
-                      <input type="text" class="form-control" placeholder="Direccion" name="direccion" id="direccion">
+                      <input type="text" class="form-control" placeholder="Trabajador" name="Trabajador" id="Trabajador">
                     </div>
                   </div>
                   <div class="form-group">
