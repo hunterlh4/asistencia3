@@ -17,7 +17,7 @@ class Usuarios extends Controller
         // $data1="";
     
         $data1 = $this->model->getTrabajadores();
-
+        $data1 = '';
         $this->views->getView('administracion', "users", $data,$data1);
     }
     public function listar()
@@ -48,6 +48,14 @@ class Usuarios extends Controller
         $data = $this->model->getUsuarios2();
       
         echo json_encode($data);
+        die();
+    }
+    
+    public function listartrabajadores()
+    {
+        $data1 = $this->model->getTrabajadores();
+      
+        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
         die();
     }
     

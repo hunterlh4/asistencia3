@@ -17,7 +17,12 @@
 <script src="<?php echo BASE_URL; ?>/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/bundles/select2/dist/js/select2.full.min.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/bundles/jquery-selectric/jquery.selectric.min.js"></script>
-
+<!--  -->
+<script src="<?php echo BASE_URL; ?>/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/bundles/cleave-js/dist/cleave.min.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/bundles/cleave-js/dist/addons/cleave-phone.us.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+<!--  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo BASE_URL; ?>/assets/plantilla/chosen.jquery.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/js/jquery.fancybox.js"></script>

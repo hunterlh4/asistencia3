@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/bundles/pretty-checkbox/pretty-checkbox.min.css">
 
+
 <!-- CSS  FullCalendar -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/bundles/fullcalendar/main.css">
 
@@ -75,6 +76,7 @@
         transition-duration: 0.5s;
         transition-timing-function: linear;
     }
+ 
 </style>
 
 

@@ -55,7 +55,7 @@ class UsuariosModel extends Query{
         return $this->selectAll($sql);
     }
     public function getTrabajadores(){
-        $sql ="select * from trabajadores";
+        $sql ="SELECT  id,apellido_nombre from trabajadores where estado = '1' ";
         return $this->selectAll($sql);
     }
 
