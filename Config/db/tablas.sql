@@ -13,7 +13,7 @@ CREATE TABLE equipo (
     id serial primary key,
     nombre varchar(100) not null,
     estrategia varchar(100) null,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
 );
@@ -22,7 +22,7 @@ create table cargo(
     id serial primary key,
     nombre varchar(100) not null,
     nivel int default 0,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
 );COMMENT ON COLUMN cargo.nivel IS '0 ,1 personal comun, 2 jefes, 3 jefe de jefes';
@@ -31,7 +31,7 @@ create table cargo(
 CREATE TABLE regimen (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL UNIQUE,
-  estado BOOLEAN NOT NULL DEFAULT TRUE,
+  estado varchar(10) NOT NULL DEFAULT 'Activo',
   create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   update_at TIMESTAMP null
 );
@@ -41,7 +41,7 @@ CREATE TABLE licencias (
     id serial PRIMARY KEY,
     nombre varchar(100) not null ,
     abreviatura varchar(5) not null UNIQUE,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
 );
@@ -51,7 +51,7 @@ CREATE TABLE direccion (
     id serial primary key,
     nombre varchar(100) null,
     equipo_id int not null,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (equipo_id) REFERENCES equipo(id) ON DELETE CASCADE
@@ -61,7 +61,7 @@ CREATE TABLE horario (
     id serial primary key,
     nombre varchar(100) null,
     comentario varchar(100) null,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
 );
@@ -73,7 +73,7 @@ CREATE TABLE horario_detalle (
     hora_entrada interval(6) null default '00:00:00',
     hora_salida interval(6) null default '00:00:00',
     total interval(6) null default '00:00:00',
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (horario_id) REFERENCES horario(id) ON DELETE CASCADE
@@ -100,7 +100,7 @@ CREATE TABLE trabajadores (
     sexo CHAR  null,
     fecha_nacimiento date null,
     estado_trabajo varchar(100) null,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (direccion_id) REFERENCES direccion(id) ON DELETE CASCADE,
@@ -117,7 +117,7 @@ CREATE TABLE usuarios (
     apellido VARCHAR(50) NULL,
     nivel INT NOT NULL,
     trabajador_id INT  NULL,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id) ON DELETE CASCADE
@@ -147,7 +147,7 @@ CREATE TABLE vacaciones (
     trabajador_id int not null,
     dias_vacaciones int null default 0,
     dias_usados int null default 0,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
 );
@@ -166,7 +166,7 @@ CREATE TABLE boletas (
     razon VARCHAR(150) NOT NULL,
     observaciones TEXT NULL,
     estado_tramite varchar(20) null,
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
@@ -181,11 +181,12 @@ create table asistencias(
     entrada interval(6)  null default '00:00:00',
     salida interval(6)  null default '00:00:00',
     tardanza interval(6)  null default '00:00:00',
-    estado BOOLEAN NOT NULL DEFAULT TRUE,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
-    FOREIGN KEY (licencias_id) REFERENCES licencias(id)
+    FOREIGN KEY (licencias_id) REFERENCES licencias(id),
+    UNIQUE (trabajador_id, fecha)
 );
 
 

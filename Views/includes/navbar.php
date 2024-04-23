@@ -18,7 +18,7 @@
             class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
               <div class="dropdown-title">Hola,
-              <?php echo $data['nombre'].' '.$data['apellido'];?>
+              <?php echo $_SESSION['nombre'].' '.$_SESSION['apellido'];?>
                 </div>
                
               <a href="<?php echo BASE_URL . 'admin/perfil'; ?>" class="dropdown-item has-icon"><i class="far fa-user"></i> Perfil</a> 
