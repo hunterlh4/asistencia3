@@ -51,7 +51,7 @@
                             echo ' 
                             <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra visualizar el ingreso y salida que marcan los relojes, así como evaluar y generar los reportes.</p>
                              <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                            <a type="button" class="btn btn-primary btn-lg text-center" href="tab_search_new.php"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Usuarios"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           }else{
                             // echo '<a type="button" class="btn btn-primary btn-lg text-center" href="tab_search_new.php"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           }
@@ -75,7 +75,7 @@
                           <div class="card-content">
                             <h5 class="font-15">Trabajo pendiente</h5>
                             <h2 class="mb-3 font-18">258</h2>
-                            <p class="mb-0"><span class="col-green">10%</span> Incremento</p>
+                            <!-- <p class="mb-0"><span class="col-green">10%</span> Incremento</p> -->
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">

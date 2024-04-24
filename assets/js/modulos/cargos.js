@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", function() {
         frm.reset();
         resetRequiredFields()
         btnAccion.textContent = 'Registrar';
-        titleModal.textContent = "Nuevo Regimen";
-        document.querySelector('#sueldo').value = 0.00;
+        titleModal.textContent = "Nuevo Cargo";
+
         document.querySelector('#radio-true').checked = true;
         document.querySelector('#id').value = '';
         document.querySelectorAll('#estado-grupo').forEach(element => {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
         let data = new FormData(this);
-        const url = base_url + "Regimen/registrar";
+        const url = base_url + "cargos/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(data);
@@ -66,13 +66,13 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "Regimen/listar",
+            url: base_url + "cargos/listar",
             dataSrc: "",
         },
         columns: [
             { data: "id" },
             { data: "nombre" },
-            { data: "sueldo" },
+            { data: "nivel" },
             { data: "estado" },
             { data: "accion" },
 
@@ -124,7 +124,7 @@ function actualizartabla(){
 
 
 function editUser(id) {
-    const url = base_url + "Regimen/edit/" + id;
+    const url = base_url + "cargos/edit/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();
@@ -137,8 +137,7 @@ function editUser(id) {
             document.querySelector('#id').value = res.id;
             document.querySelector('#nombre').value = res.nombre;
        
-            document.querySelector('#sueldo').value = res.sueldo;
-            
+            document.querySelector('#nivel').value = res.nivel;
             
             if(res.estado=='Activo'){
                 document.querySelector('#radio-true').checked = true;
@@ -153,7 +152,7 @@ function editUser(id) {
             });
             // document.querySelector('#password').setAttribute('readonly', 'readonly');
             btnAccion.textContent = 'Actualizar';
-            titleModal.textContent = "Modificar Regimen";
+            titleModal.textContent = "Modificar Cargo";
             myModal.show();
             
             //$('#nuevoModal').modal('show');

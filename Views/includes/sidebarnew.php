@@ -38,6 +38,7 @@
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Equipos">Equipos</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Horario">Horario</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Licencias">Licencias</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Cargos">Cargos</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Regimen">Regimen</a></li>
               </ul>
             </li>';

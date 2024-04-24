@@ -74,6 +74,18 @@ class Usuarios extends Controller
             $trabajador_id = $_POST['trabajadores'];
             $id = $_POST['id'];
             $hash = password_hash($password, PASSWORD_DEFAULT);
+
+
+            $datos_adicionales = array(
+                "usuario" => $usuario,
+                "password" => $password,
+                "nombre" => $nombre,
+                "apellido" => $apellido,
+                "nivel" => $nivel,
+                "trabajador_id" => $trabajador_id,
+                "estado" => $estado
+            );
+            $datos_adicionales_json = json_encode($datos_adicionales);
          
             // if((strlen($usuario) < 5 || strlen($usuario) > 20)){
             //     $respuesta = array('msg' => 'Usuario debe tener 5-20 caracteres', 'icono' => 'warning');
@@ -154,6 +166,18 @@ class Usuarios extends Controller
                                     
                                     if ($data > 0) {
                                         $respuesta = array('msg' => 'usuario registrado', 'icono' => 'success');
+
+                                         // log
+                                        // $datos_adicionales = array(
+                                        //     "usuario" => $usuario,
+                                        //     "password" => $password,
+                                        //     "nombre" => $nombre,
+                                        //     "apellido" => $apellido,
+                                        //     "nivel" => $nivel,
+                                        //     "trabajador_id" => $trabajador_id
+                                        // );
+                                        // $datos_adicionales_json = json_encode($datos_adicionales);
+                                        $this->model->registrarlog($_SESSION['id'],'Crear','Usuarios', $datos_adicionales_json);
                                     } else {
                                         $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
                                     }
@@ -198,6 +222,7 @@ class Usuarios extends Controller
                                         $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
                                         if ($data == 1) {
                                             $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+                                            $this->model->registrarlog($_SESSION['id'],'Modificar','Usuarios', $datos_adicionales_json);
                                         } else {
                                             $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
                                         }
@@ -207,6 +232,7 @@ class Usuarios extends Controller
                                     $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
                                     if ($data == 1) {
                                         $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+                                        $this->model->registrarlog($_SESSION['id'],'Modificar','Usuarios', $datos_adicionales_json);
                                     } else {
                                         $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
                                     }

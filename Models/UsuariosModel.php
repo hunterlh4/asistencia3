@@ -85,4 +85,10 @@ class UsuariosModel extends Query
         $array = array($usuario,$password,$nombre, $apellido, $nivel, $trabajador_id,$estado, $id);
         return $this->save($sql, $array);
     }
+
+    public function registrarlog($usuario,$accion,$tabla,$detalles){
+        $sql = "INSERT INTO log (usuario_id,tipo_accion,tabla_afectada,detalles) VALUES (?,?,?,?)";
+        $array = array($usuario,$accion,$tabla,$detalles);
+        return $this->save($sql, $array);
+    }
 }
