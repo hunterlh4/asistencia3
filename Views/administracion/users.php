@@ -65,7 +65,7 @@
           </button>
         </div>
 
-        <form form id="formUsuarios" class="needs-validation" novalidate="" method="POST">
+        <form form id="formUsuarios" class="needs-validation" novalidate="" method="POST" autocomplete="off">
         <div class="modal-body">
           <input type="hidden" id="id" name="id">
           <div class="form-group">
@@ -80,7 +80,7 @@
           </div>
           
           <div class="form-group">
-            <label>Nombre de Usuario</label>
+            <label>Usuario</label>
             <div class="input-group">
               <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fas fa-user"></i></div>
@@ -167,8 +167,9 @@
                 </div>
               </div>
             </div>
+            <!--  -->
 
-
+            <!--  -->
             <div class="modal-footer bg-white">
 
               <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>

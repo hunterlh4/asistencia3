@@ -1,25 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
- 
+<html lang="es">
+
+
+<!-- errors-404.html  21 Nov 2019 04:05:02 GMT -->
 <head>
-    <meta charset="UTF-8">
-    <title><?php echo TITLE . ' - Pagina no encontrada'; ?></title>
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title> <?php echo $data['title']; ?></title>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="assets/css/app.min.css">
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="assets/css/custom.css">
+  <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
 </head>
- 
-<body class="d-flex h-100 text-center text-white bg-dark">
- 
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
- 
-        <main class="px-3">
-            <h1>Not Found.</h1>
-            <p class="lead">La página que buscas no existe</p>
-            <p class="lead">
-                <a href="<?php echo BASE_URL; ?>" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-dark"><?php echo TITLE; ?></a>
-            </p>
-        </main>
-    </div>
- 
+
+<body>
+  <div class="loader"></div>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="page-error">
+          <div class="page-inner">
+            <h1>404</h1>
+            <div class="page-description">No se pudo encontrar la página que estaba buscando. </div>
+            <div class="page-search">
+              <!-- <form>
+                <div class="form-group floating-addon floating-addon-not-append">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-search"></i>
+                      </div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary btn-lg">
+                        Search
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form> -->
+              <div class="mt-3">
+                <a href="#" onclick="goBack()">Regresar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- General JS Scripts -->
+  <script src="assets/js/app.min.js"></script>
+  <!-- JS Libraies -->
+  <!-- Page Specific JS File -->
+  <!-- Template JS File -->
+  <script src="assets/js/scripts.js"></script>
+  <!-- Custom JS File -->
+  <script src="assets/js/custom.js"></script>
+  <script>
+function goBack() {
+  window.history.back();
+}
+</script>
 </body>
- 
+
+
+<!-- errors-404.html  21 Nov 2019 04:05:02 GMT -->
 </html>

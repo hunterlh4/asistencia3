@@ -19,9 +19,10 @@ var datos;
 
 document.addEventListener("DOMContentLoaded", function() {
 
-   
     llenarTabla();
     llenarselect();
+
+  
 
     //levantar modal
     nuevo.addEventListener("click", function() {
@@ -30,10 +31,8 @@ document.addEventListener("DOMContentLoaded", function() {
         btnAccion.textContent = 'Registrar';
         titleModal.textContent = "NUEVO USUARIO";
         document.getElementById("password").setAttribute("required", "true");
-        
         document.querySelector('#radio-true').checked = true;
         document.querySelector('#id').value = '';
-
         document.querySelectorAll('#estado-grupo').forEach(element => {
             element.style.display = 'none';
         });
@@ -59,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     cerrarModal(); // Oculta el modal y el fondo oscuro
                 }
                 Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
-               
             }
         }
     });
@@ -71,7 +69,7 @@ function llenarselect(){
     $.ajax({
         url: base_url + "usuarios/listartrabajadores",
         type: 'GET',
-       
+
         success: function(response) {
                 datos = JSON.parse(response);
                 let opcionInicial = document.createElement("option");
@@ -96,6 +94,36 @@ function llenarselect(){
     });
 }
 
+async function llenarselect2(){
+    try {
+        const response = await fetch(base_url + "usuarios/listartrabajadores");
+        if (!response.ok) {
+            throw new Error("Error en la solicitud");
+        }
+        const datos = await response.json();
+        // datos = JSON.parse(datos);
+        // console.log(datos);
+        // Código para llenar el select con los datos...
+        let opcionInicial = document.createElement("option");
+                opcionInicial.value = '0';
+                opcionInicial.text = 'Seleccione un empleado';
+                select1.appendChild(opcionInicial);
+
+
+                datos.forEach(opcion => {
+                // Crear un elemento de opción
+                let option = document.createElement("option");
+                // Establecer el valor y el texto de la opción
+                option.value = opcion.id;
+                option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+                // Agregar la opción al select
+                select1.appendChild(option);
+                });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
@@ -115,9 +143,10 @@ function llenarTabla(){
             { data: "usuario_nivel" },
             { data: "usuario_estado" },
             { data: "accion" },
-           
+
         ],
         dom: 'Bfrtip',
+        
         buttons: [
             {
                 extend: 'copy',
@@ -150,16 +179,13 @@ function llenarTabla(){
                 }
             }
         ]
-        
-        
-       
     });
 }
 
 
 
 function actualizartabla(){
-     mytable = $('#table-alex').DataTable();
+    mytable = $('#table-alex').DataTable();
     // var datosSeleccionados = tabla.rows('.selected').data();
     tabla.ajax.reload();
 }
@@ -178,7 +204,7 @@ function editUser(idUser) {
             const res = JSON.parse(this.responseText);
             document.querySelector('#id').value = res.id;
             document.querySelector('#username').value = res.username;
-            document.getElementById("password").setAttribute("required", "true");
+            document.getElementById("password").setAttribute("required", "false");
             document.querySelector('#password').value = '';//res.password;
             document.querySelector('#nombre').value = res.nombre;
             document.querySelector('#apellido').value = res.apellido;
@@ -191,8 +217,6 @@ function editUser(idUser) {
             document.querySelector('#selectTrabajadores').value = res.trabajador_id;
             }
             
-           
-
             if(res.estado=='Activo'){
                 document.querySelector('#radio-true').checked = true;
                 document.querySelector('#radio-false').checked = false;

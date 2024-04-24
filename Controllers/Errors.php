@@ -7,6 +7,7 @@ class Errors extends Controller
     }
     public function index()
     {
-        $this->views->getView('errors', "index");
+        $data['title'] = 'Error 404';
+        $this->views->getView('errors', "index",$data);
     }
 }
