@@ -74,63 +74,150 @@ class Usuarios extends Controller
             $trabajador_id = $_POST['trabajadores'];
             $id = $_POST['id'];
             $hash = password_hash($password, PASSWORD_DEFAULT);
-
-           
-            
-            if (empty($_POST['nivel']) ){//|| empty($_POST['password'])) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
-            } else {
-                if (empty($id)) {
-                    $result = $this->model->verificarUsuario($usuario);
-                    
-                    if (empty($result)) {
-
-                     
-                        $data = $this->model->registrar($usuario,$hash,$nombre, $apellido, $nivel, $trabajador_id);
+         
+            // if((strlen($usuario) < 5 || strlen($usuario) > 20)){
+            //     $respuesta = array('msg' => 'Usuario debe tener 5-20 caracteres', 'icono' => 'warning');
+            // }else{
+            //     if (empty($_POST['nivel']|| empty($_POST['usuario']) )){
+            //         $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+            //     } else {
+            //         if (empty($id)) {
+            //             $result = $this->model->verificarUsuario($usuario);
                         
-                        if ($data > 0) {
-                            $respuesta = array('msg' => 'usuario registrado', 'icono' => 'success');
-                        } else {
-                            $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
-                        }
-                    } else {
-                        $respuesta = array('msg' => 'Usuario ya existe', 'icono' => 'warning');
-                    }
-                } else {
-                    $result = $this->model->verificarUsuario($usuario);
-                    $clave = $this->model->getUsuario($id);
+            //             if (empty($result)) {
+            //                 $data = $this->model->registrar($usuario,$hash,$nombre, $apellido, $nivel, $trabajador_id);
+                            
+            //                 if ($data > 0) {
+            //                     $respuesta = array('msg' => 'usuario registrado', 'icono' => 'success');
+            //                 } else {
+            //                     $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+            //                 }
+            //             } else {
+            //                 $respuesta = array('msg' => 'Usuario ya existe', 'icono' => 'warning');
+            //             }
+            //         } else {
+            //             $result = $this->model->verificarUsuario($usuario);
+            //             $clave = $this->model->getUsuario($id);
+    
+            //             if($trabajador_id=='0'){
+            //                 $trabajador_id=null;
+            //             }
+            //             if($password==''){
+            //                 $hash= $clave['password'];
+            //             }
+            //             if ($result) {
+            //                 if ($result['id'] != $id) {
+            //                     $respuesta = array('msg' => 'El nombre de usuario ya está en uso', 'icono' => 'warning');
+            //                 } else {
+            //                     // El nombre de usuario es el mismo que el original, se permite la modificación
+            //                     $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
+            //                     if ($data == 1) {
+            //                         $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+            //                     } else {
+            //                         $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+            //                     }
+            //                 }
+            //             } else {
+            //                 // El usuario no existe, se permite la modificación
+            //                 $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
+            //                 if ($data == 1) {
+            //                     $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+            //                 } else {
+            //                     $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+           
+                    // VALIDAR SI ES REGISTRO
+                    if (empty($id)) {
+                        if (empty($nivel) || empty($usuario)|| empty($password)){
+                            $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+                        }else{
+                            $error_msg = '';
 
-                    if($trabajador_id=='0'){
-                        $trabajador_id=null;
-                    }
-                    if($password==''){
-                        $hash= $clave['password'];
-                    }
-                    
-
-                    if ($result) {
-                        if ($result['id'] != $id) {
-                            $respuesta = array('msg' => 'El nombre de usuario ya está en uso', 'icono' => 'warning');
-                        } else {
-                            // El nombre de usuario es el mismo que el original, se permite la modificación
-                            $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
-                            if ($data == 1) {
-                                $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                            } else {
-                                $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+                            if (strlen($usuario) < 5 || strlen($usuario) > 20) {
+                                $error_msg .= 'El usuario debe tener entre 5 y 20 caracteres. \n';
+                            }
+                            if (strlen($password) < 5 || strlen($password) > 20) {
+                                $error_msg .= 'La contraseña debe tener entre 5 y 20 caracteres. \n';
+                            }
+                            
+                           if (!empty($error_msg)) {
+                                $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
+                            }
+                            else{
+                                $result = $this->model->verificarUsuario($usuario);
+                                if (empty($result)) {
+                                    $data = $this->model->registrar($usuario,$hash,$nombre, $apellido, $nivel, $trabajador_id);
+                                    
+                                    if ($data > 0) {
+                                        $respuesta = array('msg' => 'usuario registrado', 'icono' => 'success');
+                                    } else {
+                                        $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+                                    }
+                                } else {
+                                    $respuesta = array('msg' => 'Usuario ya existe', 'icono' => 'warning');
+                                }
                             }
                         }
                     } else {
-                        // El usuario no existe, se permite la modificación
-                        $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
-                        if ($data == 1) {
-                            $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                        } else {
-                            $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+                        // VALIDAR SI ES EDICION
+                        
+
+                        if (empty($nivel) || empty($usuario)){
+                            $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+                        }else{
+                            $error_msg = '';
+
+                            if (strlen($usuario) < 5 || strlen($usuario) > 20) {
+                                $error_msg .= 'El usuario debe tener entre 5 y 20 caracteres. \n';
+                            }
+                            if (!empty($password)) {
+                                if (strlen($password) < 5 || strlen($password) > 20) {
+                                    $error_msg .= 'El password debe tener entre 5 y 20 caracteres. \n';
+                                }
+                            }
+                           if (!empty($error_msg)) {
+                                $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
+                            }else{
+                                $result = $this->model->verificarUsuario($usuario);
+                                $clave = $this->model->getUsuario($id);
+                                if($trabajador_id=='0'){
+                                    $trabajador_id=null;
+                                }
+                                if($password==''){
+                                    $hash= $clave['password'];
+                                }
+                                if ($result) {
+                                    if ($result['id'] != $id) {
+                                        $respuesta = array('msg' => 'El nombre de usuario ya está en uso', 'icono' => 'warning');
+                                    } else {
+                                        // El nombre de usuario es el mismo que el original, se permite la modificación
+                                        $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
+                                        if ($data == 1) {
+                                            $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+                                        } else {
+                                            $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+                                        }
+                                    }
+                                } else {
+                                    // El usuario no existe, se permite la modificación
+                                    $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
+                                    if ($data == 1) {
+                                        $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+                                    } else {
+                                        $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+                                    }
+                                }
+                            }
+                            
                         }
+
+                       
                     }
-                }
-            }
+                
             echo json_encode($respuesta);
         }
         die();

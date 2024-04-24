@@ -85,7 +85,8 @@
               <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fas fa-user"></i></div>
               </div>
-              <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" required>
+              <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" minlength="6"
+  maxlength="20" required>
             </div>
           </div>
 
@@ -97,7 +98,8 @@
                     <i class="fas fa-lock"></i>
                   </div>
                 </div>
-                <input type="password" class="form-control" placeholder="Password" name="password" id="password" >
+                <input type="password" class="form-control" placeholder="Password" name="password" id="password" autocomplete="new-password" minlength="6"
+  maxlength="20" >
               </div>
             </div>
             <div class="form-group">
@@ -108,7 +110,8 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre">
+                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
+  maxlength="50">
               </div>
             </div>
             <div class="form-group">
@@ -119,7 +122,8 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido">
+                <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido" minlength="6"
+  maxlength="50">
               </div>
             </div>
             <div class="form-group">

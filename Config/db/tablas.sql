@@ -29,11 +29,12 @@ create table cargo(
 
 --https://asistencia.diresatacna.gob.pe/tab_search_detallado.php
 CREATE TABLE regimen (
-  id SERIAL PRIMARY KEY,
-  nombre VARCHAR(50) NOT NULL UNIQUE,
-  estado varchar(10) NOT NULL DEFAULT 'Activo',
-  create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  update_at TIMESTAMP null
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    sueldo NUMERIC(6,2) null default '0.00'
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP null
 );
 
 -- en las asistencias abreviaturas https://asistencia.diresatacna.gob.pe/tab_search_new.php
@@ -92,7 +93,8 @@ CREATE TABLE trabajadores (
     horario_id int not null,
     cargo_id int not null,
     email text  null,
-    documento text null,
+    -- documento text null,
+    dias_particulares int null default 0,
     telefono text  null,
     fecha_inicio date null,
     fecha_expiracion date null,
@@ -189,7 +191,24 @@ create table asistencias(
     UNIQUE (trabajador_id, fecha)
 );
 
+create table historia_trabajadores(
+    id SERIAL PRIMARY KEY,
+    trabajador_id int  not null,
+    regimen_id int  not null,
+    direccion_id int  not null,
+    cargo_id int  not null,
+    documento text null,
+    sueldo NUMERIC(6,2) null default '0.00',
+    fecha_inicio date not null,
+    fecha_fin date not null,
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP null,
+    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
+    FOREIGN KEY (regimen_id) REFERENCES regimen(id),
+    FOREIGN KEY (direccion_id) REFERENCES direccion(id),
+    FOREIGN KEY (cargo_id) REFERENCES cargo(id)
 
+)
 
 
 -- https://asistencia.diresatacna.gob.pe/tab_rol_turnos.php
