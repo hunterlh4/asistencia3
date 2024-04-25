@@ -51,7 +51,7 @@ CREATE TABLE licencias (
 CREATE TABLE direccion (
     id serial primary key,
     nombre varchar(100) null,
-    equipo_id int not null,
+    equipo_id int null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -94,14 +94,16 @@ CREATE TABLE trabajadores (
     cargo_id int not null,
     email text  null,
     -- documento text null,
+    -- cantidad de dias particilares que lleva
     dias_particulares int null default 0,
     telefono text  null,
-    fecha_inicio date null,
-    fecha_expiracion date null,
+    -- fecha_inicio date null, se pasa a historial
+    -- fecha_expiracion date null,
     nro_tarjeta text  null,
     sexo CHAR  null,
     fecha_nacimiento date null,
-    estado_trabajo varchar(100) null,
+    -- presencial-remoto-vacaciones
+    modalidad_trabajo varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -182,7 +184,20 @@ create table asistencias(
     fecha date not null,
     entrada interval(6)  null default '00:00:00',
     salida interval(6)  null default '00:00:00',
+    total_reloj interval(6)  null default '00:00:00',
+    total interval(6)  null default '00:00:00',
     tardanza interval(6)  null default '00:00:00',
+    tardanza_cantidad int null default '0',
+    justificacion varchar(10) NULL,
+    comentario text null default null,
+    reloj_1 interval(6)  null default '00:00:00',
+    reloj_2 interval(6)  null default '00:00:00',
+    reloj_3 interval(6)  null default '00:00:00',
+    reloj_4 interval(6)  null default '00:00:00',
+    reloj_5 interval(6)  null default '00:00:00',
+    reloj_6 interval(6)  null default '00:00:00',
+    reloj_7 interval(6)  null default '00:00:00',
+    reloj_8 interval(6)  null default '00:00:00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -195,8 +210,8 @@ create table historia_trabajadores(
     id SERIAL PRIMARY KEY,
     trabajador_id int  not null,
     regimen_id int  not null,
-    direccion_id int  not null,
-    cargo_id int  not null,
+    direccion(varhcar) int  not null,
+    cargo varchar(100)  not null,
     documento text null,
     sueldo NUMERIC(6,2) null default '0.00',
     fecha_inicio date not null,
@@ -204,9 +219,9 @@ create table historia_trabajadores(
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
-    FOREIGN KEY (regimen_id) REFERENCES regimen(id),
-    FOREIGN KEY (direccion_id) REFERENCES direccion(id),
-    FOREIGN KEY (cargo_id) REFERENCES cargo(id)
+    -- FOREIGN KEY (regimen_id) REFERENCES regimen(id),
+    -- FOREIGN KEY (direccion_id) REFERENCES direccion(id),
+    -- FOREIGN KEY (cargo_id) REFERENCES cargo(id)
 
 )
 

@@ -63,10 +63,10 @@ class Cargos extends Controller
             } else {
                 $error_msg = '';
                 if (strlen($nombre) < 5 || strlen($nombre) > 20) {
-                    $error_msg .= 'El Cargo debe tener entre 5 y 20 caracteres. \n';
+                    $error_msg .= 'El Cargo debe tener entre 5 y 20 caracteres. <br>';
                 }
                 if ($nivel <= 0 || $nivel >= 10) {
-                    $error_msg .= 'El Nivel debe de entre 1 a 10. \n';
+                    $error_msg .= 'El Nivel debe de entre 1 a 10. <br>';
                 }
               
                 if (!empty($error_msg)) {

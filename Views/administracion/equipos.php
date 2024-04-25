@@ -85,7 +85,8 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="number"  step="1" class="form-control" placeholder="estrategia" name="estrategia" id="estrategia"  required>
+                <input type="Text"  class="form-control" placeholder="estrategia" name="estrategia" id="estrategia" minlength="1"
+  maxlength="50"  required>
                
               </div>
             </div>
@@ -127,7 +128,7 @@
   <?php include './views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/Equipo.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/Equipos.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

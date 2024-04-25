@@ -64,10 +64,10 @@ class Equipos extends Controller
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 20) {
-                    $error_msg .= 'El Equipo debe tener entre 5 y 20 caracteres. <br>';
+                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
+                    $error_msg .= 'El Equipo debe tener entre 5 y 50 caracteres. <br>';
                 }
-                if(empty($estrategia)){
+                if(!empty($estrategia)){
                     if (strlen($estrategia) <= 5 ) {
                         $error_msg .= 'El estrategia debe de ser mas grande.<br>';
                     }
@@ -101,6 +101,8 @@ class Equipos extends Controller
                             if ($result['id'] != $id) {
                                 $respuesta = array('msg' => 'Equipo en uso', 'icono' => 'warning');
                             } else {
+
+                                // COLOCAR AQUI VALIDADOR QUE AL MODIFICAR DE ACTIVO A INACTIVO CAMBIE A NULL
                                 // El nombre de usuario es el mismo que el original, se permite la modificación
                                 $data = $this->model->modificar($nombre,$estrategia, $estado, $id);
                                 if ($data == 1) {

@@ -196,11 +196,11 @@ class Usuarios extends Controller
                             $error_msg = '';
 
                             if (strlen($usuario) < 5 || strlen($usuario) > 20) {
-                                $error_msg .= 'El usuario debe tener entre 5 y 20 caracteres. \n';
+                                $error_msg .= 'El usuario debe tener entre 5 y 20 caracteres. <br>';
                             }
                             if (!empty($password)) {
                                 if (strlen($password) < 5 || strlen($password) > 20) {
-                                    $error_msg .= 'El password debe tener entre 5 y 20 caracteres. \n';
+                                    $error_msg .= 'El password debe tener entre 5 y 20 caracteres. <br>';
                                 }
                             }
                            if (!empty($error_msg)) {
