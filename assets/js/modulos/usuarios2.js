@@ -127,7 +127,7 @@ async function llenarselect2(){
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "usuarios/listar",
+            url: base_url + "Usuarios/listar",
             dataSrc: "",
         },
         columns: [
@@ -192,7 +192,7 @@ function actualizartabla(){
 
 
 function editUser(idUser) {
-    const url = base_url + "usuarios/edit/" + idUser;
+    const url = base_url + "Usuarios/edit/" + idUser;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();
@@ -249,7 +249,7 @@ function eliminarUser(idUser) {
         confirmButtonText: "Si, Eliminar!",
     }).then((result) => {
         if (result.isConfirmed) {
-            const url = base_url + "usuarios/delete/" + idUser;
+            const url = base_url + "Usuarios/delete/" + idUser;
             const http = new XMLHttpRequest();
             http.open("GET", url, true);
             http.send();

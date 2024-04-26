@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
-        <a href="<?php echo BASE_URL; ?>/views/home.php"> <img alt="image" src="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png" class="header-logo" /> <span
+        <a href="<?php echo BASE_URL; ?>"> <img alt="image" src="<?php echo BASE_URL; ?>assets/img/icono_diresa.png" class="header-logo" /> <span
             class="logo-name">DIRESA TACNA</span>
         </a>
       </div>
@@ -42,7 +42,7 @@
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Regimen">Regimen</a></li>
               </ul>
             </li>';
-            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuarios/index" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
+            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuarios" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
         }
         ?>
         <?php

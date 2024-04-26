@@ -4,8 +4,8 @@
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
       <?php
-      include './views/includes/navbar.php';
-      include './views/includes/sidebarnew.php';
+      include './Views/includes/navbar.php';
+      include './Views/includes/sidebarnew.php';
       ?>
       <!-- Main Content -->
       <div class="main-content">
@@ -49,7 +49,7 @@
         <?php //include 'includes/sidebar-config.html'; 
         ?>
       </div>
-      <?php include './views/includes/footer.php'; ?>
+      <?php include './Views/includes/footer.php'; ?>
     </div>
   </div>
 
@@ -190,7 +190,7 @@
   <!--MODAL - NUEVO USARIO-->
 
   <!-- MODAL FIN -->
-  <?php include './views/includes/script_new.php' ?>
+  <?php include './Views/includes/script_new.php' ?>
 
   </html>
   <script src="<?php echo BASE_URL; ?>/assets/js/modulos/usuarios2.js"></script>

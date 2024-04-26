@@ -31,7 +31,7 @@ create table cargo(
 CREATE TABLE regimen (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE,
-    sueldo NUMERIC(6,2) null default '0.00'
+    sueldo NUMERIC(6,2) null default '0.00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
@@ -209,8 +209,8 @@ create table asistencias(
 create table historia_trabajadores(
     id SERIAL PRIMARY KEY,
     trabajador_id int  not null,
-    regimen_id int  not null,
-    direccion(varhcar) int  not null,
+    regimen varchar(100)  not null,
+    direccion varchar(100)  not null,
     cargo varchar(100)  not null,
     documento text null,
     sueldo NUMERIC(6,2) null default '0.00',
@@ -218,7 +218,7 @@ create table historia_trabajadores(
     fecha_fin date not null,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
+    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id)
     -- FOREIGN KEY (regimen_id) REFERENCES regimen(id),
     -- FOREIGN KEY (direccion_id) REFERENCES direccion(id),
     -- FOREIGN KEY (cargo_id) REFERENCES cargo(id)

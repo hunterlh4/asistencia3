@@ -15,7 +15,7 @@ class Equipos extends Controller
 
         $data['title'] = 'Equipos';
         $data1 = '';
-        $this->views->getView('administracion', "equipos", $data, $data1);
+        $this->views->getView('Administracion', "Equipos", $data, $data1);
     }
     public function listar()
     {

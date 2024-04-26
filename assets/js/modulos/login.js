@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alertas("todo los campos son requeridos", "warning");
         } else {
             let data = new FormData(this);
-            const url = base_url + "admin/validar";
+            const url = base_url + "Admin/validar";
             const http = new XMLHttpRequest();
             http.open("POST", url, true);
             http.send(data);

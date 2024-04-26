@@ -177,7 +177,7 @@ INSERT INTO horario_detalle (horario_id, nombre, hora_entrada, hora_salida, tota
 
 
 
-INSERT INTO trabajadores (dni, apellido_nombre, direccion_id, regimen_id,horario_id,cargo_id, email, telefono, fecha_inicio, fecha_expiracion, nro_tarjeta, sexo, fecha_nacimiento,estado_trabajo)VALUES 
+INSERT INTO trabajadores (dni, apellido_nombre, direccion_id, regimen_id,horario_id,cargo_id, email, telefono, fecha_inicio, fecha_expiracion, nro_tarjeta, sexo, fecha_nacimiento,modalidad_trabajo)VALUES 
 ('502044','ANCCO APAZA DE ZEA CRISTINA',1,1,1,1,NULL,NULL,NULL,NULL,'5458544-11','M',NULL, NULL),
 ('445381','CALLALLA NIETO JOSE LUIS',1,1,1,1,NULL,NULL,NULL,NULL,'7223257-84','M',NULL, NULL),
 ('492845','CHANGLLIO ROAS JUAN JOSE EVARIS',1,1,1,1,NULL,NULL,NULL,NULL,'6683791-2','M',NULL, NULL),

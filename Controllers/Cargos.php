@@ -15,7 +15,8 @@ class Cargos extends Controller
 
         $data['title'] = 'Cargos';
         $data1 = '';
-        $this->views->getView('administracion', "cargos", $data, $data1);
+        
+        $this->views->getView('Administracion', "Cargos", $data, $data1);
     }
     public function listar()
     {

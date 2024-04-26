@@ -15,7 +15,7 @@ class Regimen extends Controller
 
         $data['title'] = 'Regimen';
         $data1 = '';
-        $this->views->getView('administracion', "Regimen", $data, $data1);
+        $this->views->getView('Administracion', "Regimen", $data, $data1);
     }
     public function listar()
     {

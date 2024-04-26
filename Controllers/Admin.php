@@ -81,7 +81,7 @@ class Admin extends Controller
         // $data['procesos'] = $this->model->getTotales(2);
         // $data['finalizados'] = $this->model->getTotales(3);
         // $data['productos'] = $this->model->getProductos();
-        $this->views->getView('administracion', "profile", $data,$data1);
+        $this->views->getView('Administracion', "Profile", $data,$data1);
         
     }
 
@@ -100,7 +100,7 @@ class Admin extends Controller
         // $data['procesos'] = $this->model->getTotales(2);
         // $data['finalizados'] = $this->model->getTotales(3);
         // $data['productos'] = $this->model->getProductos();
-        $this->views->getView('administracion', "mensajes", $data,$data1);
+        $this->views->getView('Administracion', "Mensajes", $data,$data1);
         
     }
     public function home()
@@ -109,7 +109,7 @@ class Admin extends Controller
             header('Location: '. BASE_URL . 'admin');
             exit;
         }
-        $data['title'] = 'administracion';
+        $data['title'] = 'Administracion';
         $data['id'] =  $_SESSION['id'];
         $data['nivel'] =  $_SESSION['nivel'];
         $data['nombre'] =  $_SESSION['nombre'];
@@ -120,7 +120,7 @@ class Admin extends Controller
         // $data['procesos'] = $this->model->getTotales(2);
         // $data['finalizados'] = $this->model->getTotales(3);
         // $data['productos'] = $this->model->getProductos();
-        $this->views->getView('administracion', "index", $data,$data1);
+        $this->views->getView('Administracion', "Index", $data,$data1);
     }
 
     public function actualizar(){

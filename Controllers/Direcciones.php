@@ -15,7 +15,7 @@ class Direcciones extends Controller
 
         $data['title'] = 'Direccion';
         $data1 = '';
-        $this->views->getView('administracion', "direcciones", $data, $data1);
+        $this->views->getView('Administracion', "Direcciones", $data, $data1);
     }
     public function listar()
     {
