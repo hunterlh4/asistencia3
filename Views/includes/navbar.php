@@ -21,10 +21,10 @@
               <?php echo $_SESSION['nombre'].' '.$_SESSION['apellido'];?>
                 </div>
                
-              <a href="<?php echo BASE_URL . 'Admin/perfil'; ?>" class="dropdown-item has-icon"><i class="far fa-user"></i> Perfil</a> 
-              <a href="<?php echo BASE_URL . 'Admin/mensajes'; ?>" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i> Actividades </a>
+              <a href="<?php echo BASE_URL . 'admin/perfil'; ?>" class="dropdown-item has-icon"><i class="far fa-user"></i> Perfil</a> 
+              <a href="<?php echo BASE_URL . 'admin/mensajes'; ?>" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i> Actividades </a>
               <div class="dropdown-divider"></div>
-              <a href="<?php echo BASE_URL . 'Admin/salir'; ?>" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
+              <a href="<?php echo BASE_URL . 'admin/salir'; ?>" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                 Salir
               </a>
             </div>

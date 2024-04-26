@@ -137,16 +137,45 @@ class Admin extends Controller
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
-    //  function conectado(){
-    //    $validar = $this->model->usuario_conectado($_SESSION['id']);
 
-    //    if(empty($validar)){
-    //      $this->model->modificar_conectado($validar);
-    //    }else{
-    //      $this->model->registrar_conectado($validar);
-    //    }
-    //    die();
+    // public function pruebaalerta()
+    // {
+    //     $validar = "vacio";
+    //     if (isset($_POST['username']) && isset($_POST['password'])) {
+    //         if (empty($_POST['username']) || empty($_POST['password'])) {
+    //             $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+    //         } else {
+    //             $data = $this->model->getUsuario($_POST['username']);
+    //             if (empty($data)) {
+    //                 $respuesta = array('msg' => ' no existe', 'icono' => 'warning');
+    //             } else {
+                    
+    //                     // $_SESSION['id'] = $data['id'];
+    //                     // $_SESSION['username'] = $data['username'];
+    //                     // $_SESSION['nombre'] = $data['nombre'];
+    //                     // $_SESSION['apellido']  = $data['apellido'];
+    //                     // $_SESSION['nivel']  = $data['nivel'];
+
+    //                     $respuesta = array('msg' => 'datos correcto2', 'icono' => 'success');
+                    
+    //             }
+    //         }
+    //     } else {
+    //         $respuesta = array('msg' => 'error desconocido', 'icono' => 'error');
+    //     }
+    //     echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+    //     die();
     // }
+     function conectado(){
+       $validar = $this->model->usuario_conectado($_SESSION['id']);
+
+       if(empty($validar)){
+         $this->model->modificar_conectado($validar);
+       }else{
+         $this->model->registrar_conectado($validar);
+       }
+       die();
+    }
    
 
   

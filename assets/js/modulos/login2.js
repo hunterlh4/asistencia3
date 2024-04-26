@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     const res = JSON.parse(this.responseText);
                     if (res.icono == 'success') {
                         setTimeout(() => {
-                            window.location = base_url + 'Admin/home';
+                            window.location = base_url + 'admin/home';
                         }, 2000);
                     }
                     alertas(res.msg, res.icono);
@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function() {
         //     http.send(data);
         //     http.onreadystatechange = function() {
         //         if (this.readyState == 4 && this.status == 200) {
-        //             console.log(this.responseText);
+        //             // console.log(this.responseText);
         //             const res = JSON.parse(this.responseText);
         //             if (res.icono == 'success') {
-        //                 console.log(res.id);
+        //                 // console.log(res.id);
         //             }
         //             alertas(res.msg, res.icono);
         //         }

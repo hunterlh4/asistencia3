@@ -76,7 +76,7 @@
   
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/modulos/login.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/modulos/login2.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/script.js"></script>
 </body>
 
