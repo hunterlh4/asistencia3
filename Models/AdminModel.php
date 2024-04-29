@@ -40,9 +40,8 @@ class AdminModel extends Query{
         $sql = "UPDATE usuarios_conectados SET update_at = NOW() WHERE usuario_id  = ?";
         $array = array($id);
         return $this->save($sql, $array);
-       
     }
 
 }
- 
+
 ?>

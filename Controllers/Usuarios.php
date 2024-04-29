@@ -18,7 +18,7 @@ class Usuarios extends Controller
     
         // $data1 = $this->model->getTrabajadores();
         $data1 = '';
-        $this->views->getView('Administracion', "users", $data,$data1);
+        $this->views->getView('Administracion', "Usuarios", $data,$data1);
     }
     public function listar()
     {

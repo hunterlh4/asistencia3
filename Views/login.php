@@ -32,7 +32,14 @@
       </form>
       <form action="login.php" method="POST" class="sign-up-form">
         <h2 class="title">Manual</h2>
-
+        <!--  -->
+        <div class="manual-container" style="overflow-y: auto; max-height: 700px;">
+        <!-- Contenido del manual aquí -->
+          <p>Texto del manual...</p>
+    
+        <!-- Agrega más contenido según sea necesario -->
+        </div>
+        <!--  -->
       </form>
     </div>
   </div>
