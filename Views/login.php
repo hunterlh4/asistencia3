@@ -9,6 +9,8 @@
   <script src="<?php echo BASE_URL; ?>/assets/js/modulos/iconos.js" crossorigin="anonymus"></script>
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/loginstyle.css" />
   <link rel="icon" type="png" href="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png">
+
+  
 </head>
 
 <div class="container">
@@ -31,12 +33,14 @@
           </div>
       </form>
       <form action="login.php" method="POST" class="sign-up-form">
-        <h2 class="title">Manual</h2>
+        <!--  -->
+        <a href=<?php echo BASE_URL."Uploads/Manual/Manual_Usuario.pdf" ?> target="_blank" class=""><h2 class="title">Manual de Usuario</h2></a>
+
         <!--  -->
         <div class="manual-container" style="overflow-y: auto; max-height: 700px;">
         <!-- Contenido del manual aquí -->
-          <p>Texto del manual...</p>
-    
+          <p> Ver 1.0</p>
+
         <!-- Agrega más contenido según sea necesario -->
         </div>
         <!--  -->
@@ -61,7 +65,7 @@
       <div class="content">
         <h3>Ingresa al sistema</h3>
         <p>
-          Ingresa tu correo afiliado donde te llegará un mensaje de sislega, dale click al enlace y listo!
+          <!-- Ingresa tu correo afiliado donde te llegará un mensaje de sislega, dale click al enlace y listo! -->
         </p>
         <button class="btn transparent" id="sign-in-btn">
           Ingresar
