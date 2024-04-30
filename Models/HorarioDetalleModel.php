@@ -8,14 +8,33 @@ class HorarioDetalleModel extends Query
     }
     public function getHorarioDetalles()
     {
-        $sql = "SELECT * from horario_detalle ORDER BY id ASC";
+        // $sql = "SELECT * from horario_detalle ORDER BY id ASC";
         // $sql = "SELECT * FROM horario_detalle WHERE horario_id = $id";
-
+        $sql = "SELECT 
+        id, 
+        nombre, 
+        TO_CHAR(hora_entrada, 'HH24:MI') AS nueva_entrada,
+        TO_CHAR(hora_salida, 'HH24:MI') AS nueva_salida,
+        TO_CHAR(total, 'HH24:MI') AS total,
+        estado
+    FROM                
+        horario_detalle ORDER BY id ASC";
         return $this->selectAll($sql);
     }
     public function getHorarioDetallesPorHorario($id)
     {
-        $sql = "SELECT * FROM horario_detalle WHERE horario_id = $id";
+        // $sql = "SELECT * FROM horario_detalle WHERE horario_id = $id";
+
+        $sql = "SELECT 
+        id, 
+        nombre, 
+        TO_CHAR(hora_entrada, 'HH24:MI') AS nueva_entrada,
+        TO_CHAR(hora_salida, 'HH24:MI') AS nueva_salida,
+        TO_CHAR(total, 'HH24:MI') AS total,
+        estado
+    FROM 
+        horario_detalle
+         WHERE horario_id = $id order by id asc";
 
         return $this->selectAll($sql);
     }
@@ -29,16 +48,16 @@ class HorarioDetalleModel extends Query
     //     $sql = "SELECT id,nombre FROM horario_detalle WHERE nombre = '$nombre' ";
     //     return $this->select($sql);
     // }
-    public function registrar($nombre, $horario_id,$hora_entrada,$hora_salida)
+    public function registrar($nombre, $horario_id,$hora_entrada,$hora_salida,$total)
     {
-        $sql = "INSERT INTO horario_detalle (nombre,horario_id,hora_entrada,hora_salida) VALUES (?,?,?,?)";
-        $array = array($nombre,$horario_id,$hora_entrada,$hora_salida);
+        $sql = "INSERT INTO horario_detalle (nombre,horario_id,hora_entrada,hora_salida,total) VALUES (?,?,?,?,?)";
+        $array = array($nombre,$horario_id,$hora_entrada,$hora_salida,$total);
         return $this->insertar($sql, $array);
     }
-    public function modificar($nombre, $horario_id,$hora_entrada,$hora_salida,$estado,$id)
+    public function modificar($nombre, $horario_id,$hora_entrada,$hora_salida,$total,$estado,$id)
     {
-        $sql = "UPDATE horario_detalle SET nombre=?,horario_id=?,hora_entrada=?,hora_salida=?,estado=? WHERE id = ?";
-        $array = array($nombre,$horario_id,$hora_entrada,$hora_salida,$estado, $id);
+        $sql = "UPDATE horario_detalle SET nombre=?,horario_id=?,hora_entrada=?,hora_salida=?,total=?,estado=? WHERE id = ?";
+        $array = array($nombre,$horario_id,$hora_entrada,$hora_salida,$total,$estado, $id);
         return $this->save($sql, $array);
     }
     // public function eliminar($id)

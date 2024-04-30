@@ -1,5 +1,5 @@
 <?php
-class HorarioDetalle extends Controller
+class Trabajador extends Controller
 {
     public function __construct()
     {
@@ -13,40 +13,68 @@ class HorarioDetalle extends Controller
     public function index()
     {
 
-        $data['title'] = 'Horario Detalle';
+        $data['title'] = 'Trabajador';
 
-        $this->views->getView('Administracion', "HorarioDetalle", $data);
+        $this->views->getView('Administracion', "Trabajador", $data);
     }
     public function listar()
     {
-        if (empty($_SESSION['id_temporal'])) {
-            $data = $this->model->getHorarioDetalles();
-           
-        } else {
-            $id =  $_SESSION['id_temporal'];
-            $data = $this->model->getHorarioDetallesPorHorario($id);
-        }
+        $data = $this->model->getTrabajadores();
+
         for ($i = 0; $i < count($data); $i++) {
-
-            $datonuevo = $data[$i]['estado'];
-
-
-            if ($datonuevo == 'Activo') {
+            $data_estado = $data[$i]['testado'];
+            $data_cargo = $data[$i]['cnombre'];
+            $data_regimen = $data[$i]['rnombre'];
+            if($data_cargo=='SIN ASIGNAR'){
+                $data[$i]['cnombre'] = '-';
+            }
+            if($data_regimen=='SIN ASIGNAR'){
+                $data[$i]['rnombre'] = '-';
+            }
+            if ($data_estado == 'Activo') {
                 $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";
             } else {
                 $data[$i]['estado'] = "<div class='badge badge-danger'>Inactivo</div>";
             }
-
             $data[$i]['accion'] = '<div class="d-flex">
-            <button class="btn btn-primary" type="button" onclick="Edit(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
-
+            <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['tid'] . ')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger" type="button" onclick="view(' . $data[$i]['tid'] . ')"><i class="fas fa-eye"></i></button>
             </div>';
-            // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
-            // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
-            // colocar eliminar si es necesario
         }
         echo json_encode($data);
         return $data;
+    }
+
+    public function listarDireccion()
+    {
+        $data1 = $this->model->getDireccion();
+      
+        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function listarCargo()
+    {
+        $data1 = $this->model->getCargo();
+      
+        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function listarHorario()
+    {
+        $data1 = $this->model->getHorario();
+      
+        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function listarRegimen()
+    {
+        $data1 = $this->model->getRegimen();
+      
+        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
+        die();
     }
 
     public function registrar()
@@ -149,8 +177,16 @@ class HorarioDetalle extends Controller
     public function edit($id)
     {
         if (is_numeric($id)) {
-            $data = $this->model->getHorarioDetalle($id);
+            $data = $this->model->getTrabajadores($id);
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    public function view($id)
+    {
+        if (is_numeric($id)) {
+            $_SESSION['id_temporal'] =  $id  ;
         }
         die();
     }

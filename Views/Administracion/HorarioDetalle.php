@@ -24,14 +24,16 @@
 
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-hover" style="width:100%;" id="table-alex">
+                      <table class="table table-striped table-hover align-center" style="width:100%;" id="table-alex">
                         <thead>
                           <tr>
                             <th class="text-center"># </th>
                             <th>nombre</th>
+                          
                             <th>Entrada</th>
                             <th>Salida</th>
-                            <th>Total</th>
+                            <th>Horas Trabajo </th>
+                          
                             <th>Estado</th>
                             <th>Accion</th>
                           </tr>
@@ -92,6 +94,9 @@
                 <input type="time"  class="form-control"  name="entrada" id="entrada" required>
               </div>
             </div>
+         
+          
+            
             <div class="form-group">
               <label>Salida</label>
               <div class="input-group">
@@ -103,7 +108,18 @@
                 <input type="time"  class="form-control"  name="salida" id="salida" required>
               </div>
             </div>
-            
+
+            <div class="form-group">
+              <label>Total de Horas</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-address-card"></i>
+                  </div>
+                </div>
+                <input type="time"  class="form-control"   name="total" id="total" readonly>
+              </div>
+            </div>
 
             <!--  -->
             <div class="form-group" id="estado-grupo">

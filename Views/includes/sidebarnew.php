@@ -33,7 +33,7 @@
             echo '<li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Administrables</span></a>
               <ul class="dropdown-menu">';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Trabajadores">Trabajadores</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Trabajador">Trabajadores</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Direcciones">Direcciones</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Equipos">Equipos</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Horario">Horario</a></li>';

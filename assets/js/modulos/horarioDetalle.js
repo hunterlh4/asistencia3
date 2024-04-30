@@ -5,6 +5,10 @@ const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 
+var inputEntrada = document.getElementById("entrada");
+var inputSalida = document.getElementById("salida");
+var inputTotal = document.getElementById("total");
+
 
 
 let mytable; // = document.querySelector("#table-1");
@@ -20,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     llenarTabla();
     
+   
+
+    // Agregar escuchadores de eventos a los campos de entrada y salida
+    inputEntrada.addEventListener("input", sumarHoras);
+    inputSalida.addEventListener("input", sumarHoras);
 
   
 
@@ -72,8 +81,9 @@ function llenarTabla(){
         columns: [
             { data: "id" },
             { data: "nombre" },
-            { data: "hora_entrada" },
-            { data: "hora_salida" },
+           
+            { data: "nueva_entrada" },
+            { data: "nueva_salida" },
             { data: "total" },
             { data: "estado" },
             { data: "accion" },
@@ -142,6 +152,7 @@ function Edit(id) {
             document.querySelector('#nombre').value = res.nombre;
             document.querySelector('#entrada').value = res.hora_entrada;
             document.querySelector('#salida').value = res.hora_salida;
+            document.querySelector('#total').value = res.total;
        
             // document.querySelector('#estrategia').value = res.estrategia;
             
@@ -187,3 +198,35 @@ function cerrarModal() {
 function goBack() {
     window.location.href = base_url + "Horario";
   }
+
+
+  function sumarHoras() {
+     // Obtener los valores de entrada y salida
+    
+     var entrada = inputEntrada.value;
+    var salida = inputSalida.value;
+
+    if (entrada && salida) {
+        // Convertir las horas y minutos de entrada y salida en minutos totales del día
+        var entradaMinutos = parseInt(entrada.split(":")[0]) * 60 + parseInt(entrada.split(":")[1]);
+        var salidaMinutos = parseInt(salida.split(":")[0]) * 60 + parseInt(salida.split(":")[1]);
+        
+        // Si la hora de salida es anterior a la hora de entrada, agregar 24 horas (1440 minutos) al total de minutos de salida
+        if (salidaMinutos < entradaMinutos) {
+            salidaMinutos += 1440; // 24 horas en minutos
+        }
+        
+        // Calcular la diferencia total de minutos entre la hora de salida ajustada y la hora de entrada
+        var diferenciaMinutos = salidaMinutos - entradaMinutos;
+
+        // Calcular las horas y minutos de la diferencia
+        var horasTrabajadas = Math.floor(diferenciaMinutos / 60);
+        var minutosTrabajados = diferenciaMinutos % 60;
+
+        // Retornar las horas trabajadas en formato HH:mm
+        inputTotal.value = horasTrabajadas.toString().padStart(2, '0') + ':' + minutosTrabajados.toString().padStart(2, '0');
+    } else {
+        // Si falta alguno de los valores, establecer el total como vacío
+        inputTotal.value = "";
+    }
+}

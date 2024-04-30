@@ -19,7 +19,10 @@ var datos;
 document.addEventListener("DOMContentLoaded", function() {
 
     llenarTabla();
-    llenarselectDirecciones();
+    llenarselectDireccion();
+    llenarselectRegimen();
+    llenarselectHorario();
+    llenarselectCargo();
 
   
 
@@ -28,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         frm.reset();
         resetRequiredFields()
         btnAccion.textContent = 'Registrar';
-        titleModal.textContent = "Nueva Trabajador";
+        titleModal.textContent = "Nuevo Trabajador";
 
         document.querySelector('#radio-true').checked = true;
         document.querySelector('#id').value = '';
@@ -44,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
         let data = new FormData(this);
-        const url = base_url + "Trabajadores/registrar";
+        const url = base_url + "Trabajador/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(data);
@@ -68,19 +71,19 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "Trabajadores/listar",
+            url: base_url + "Trabajador/listar",
             dataSrc: "",
         },
         columns: [
-            { data: "Trabajador_id" },
-            { data: "Trabajador_dni" },
-            { data: "trabajador_apellido_nombre" },
-            { data: "regimen_nombre" },
-            // { data: "horario_nombre" },
-            // { data: "cargo_nombre" },
-            
-            { data: "Trabajador_estado" },
-            { data: "accion" },
+            { data: "tid" },
+            { data: "tdni" },
+            { data: "tnombre" },
+            { data: "dnombre" },
+            { data: "cnombre" },
+            { data: "rnombre" },   
+                    
+            { data: "estado" },
+            { data: "accion" }
 
         ],
         dom: 'Bfrtip',
@@ -89,31 +92,31 @@ function llenarTabla(){
             {
                 extend: 'copy',
                 exportOptions: {
-                    columns: [0, 1, 2, 3] // Especifica las columnas que deseas copiar
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas copiar
                 }
             },
             {
                 extend: 'csv',
                 exportOptions: {
-                    columns: [0, 1, 2, 3] // Especifica las columnas que deseas exportar a CSV
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a CSV
                 }
             },
             {
                 extend: 'excel',
                 exportOptions: {
-                    columns: [0, 1, 2, 3] // Especifica las columnas que deseas exportar a Excel
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a Excel
                 }
             },
             {
                 extend: 'pdf',
                 exportOptions: {
-                    columns: [0, 1, 2, 3] // Especifica las columnas que deseas exportar a PDF
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a PDF
                 }
             },
             {
                 extend: 'print',
                 exportOptions: {
-                    columns: [0, 1, 2, 3] // Especifica las columnas que deseas imprimir
+                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas imprimir
                 }
             }
         ]
@@ -129,8 +132,8 @@ function actualizartabla(){
 }
 
 
-function editUser(id) {    
-    const url = base_url + "Trabajadores/edit/" + id;
+function edit(id) {    
+    const url = base_url + "Trabajador/edit/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();
@@ -140,30 +143,28 @@ function editUser(id) {
             resetRequiredFields();
             console.log(this.responseText);
             const res = JSON.parse(this.responseText);
-            document.querySelector('#id').value = res.id;
-            document.querySelector('#dni').value = res.apellido_nombre; 
-            document.querySelector('#nombre').value = res.nombre;            
-            document.querySelector('#selectDirecciones').value = res.direccion_id;
-            document.querySelector('#selectRegimen').value = res.regimen_id;
-            document.querySelector('#selectHorario').value = res.horario_id;
-            document.querySelector('#selectCargos').value = res.cargo_id;
-            document.querySelector('#email').value = res.email;
+            document.querySelector('#id').value = res.tid;
+            document.querySelector('#dni').value = res.tdni; 
             document.querySelector('#telefono').value = res.telefono;
             document.querySelector('#nro_tarjeta').value = res.nro_tarjeta;
+            document.querySelector('#nombre').value = res.nombre;      
+            document.querySelector('#email').value = res.email;    
+            document.querySelector('#nacimiento').value = res.fecha_nacimiento;    
+            document.querySelector('#direccion').value = res.direccion_id;
+            document.querySelector('#regimen').value = res.regimen_id;
+            document.querySelector('#cargo').value = res.cargo_id;
+            document.querySelector('#horario').value = res.horario_id;
+            document.querySelector('#modalidad').value = res.modalidad_trabajo;
+          
 
             if(res.sexo=='F'){
-                document.querySelector('#sexo-true').checked = true;
-                document.querySelector('#sexo-false').checked = false;
+                document.querySelector('#radio-mujer').checked = true;
+                document.querySelector('#radio-hombre').checked = false;
             }else{
-                document.querySelector('#sexo-false').checked = true;
-                document.querySelector('#sexo-true').checked = false;
+                document.querySelector('#radio-hombre').checked = true;
+                document.querySelector('#radio-mujer').checked = false;
             }
-            document.querySelector('#fechaNacimiento').value = res.fecha_nacimiento;
-            document.querySelector('#Modalidad_trabajo').value = res.modalidad_trabajo;
-            document.querySelector('#diasParticulares').value = res.dias_particulares;
-            
-            
-            
+     
             if(res.estado=='Activo'){
                 document.querySelector('#estado-true').checked = true;
                 document.querySelector('#estado-false').checked = false;
@@ -204,23 +205,31 @@ function cerrarModal() {
     myModal.hide();
 }
 
-function llenarselectDirecciones(){
+function llenarselectDireccion(){
     $.ajax({
-        url: base_url + "trabajadores/listarDirecciones",
+        url: base_url + "Trabajador/listarDireccion",
         type: 'GET',
 
         success: function(response) {
                 datos = JSON.parse(response);
                 
-                
                 datos.forEach(opcion => {
                 // Crear un elemento de opción
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
-                option.value = opcion.id;
-                option.text = opcion.nombre;
+                option.value = opcion.did;
+
+                if (opcion.destado === "Inactivo" || opcion.eestado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                  } else {
+                    // Restablecer el color de fondo si el valor no es "Inactivo"
+                    option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
+                  }
+
+                option.text = opcion.dnombre + ' '+opcion.enombre;
                 // Agregar la opción al select
-                selectTrabajadores.appendChild(option);
+                direccion.appendChild(option);
                 });
         },
         error: function(xhr, status, error) {
@@ -231,7 +240,7 @@ function llenarselectDirecciones(){
 
 function llenarselectRegimen(){
     $.ajax({
-        url: base_url + "trabajadores/listarRegimen",
+        url: base_url + "Trabajador/listarRegimen",
         type: 'GET',
 
         success: function(response) {
@@ -243,9 +252,18 @@ function llenarselectRegimen(){
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
                 option.value = opcion.id;
+
+                if (opcion.estado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                  } else {
+                    // Restablecer el color de fondo si el valor no es "Inactivo"
+                    option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
+                  }
+
                 option.text = opcion.nombre;
                 // Agregar la opción al select
-                selectTrabajadores.appendChild(option);
+                regimen.appendChild(option);
                 });
         },
         error: function(xhr, status, error) {
@@ -254,9 +272,9 @@ function llenarselectRegimen(){
     });
 }
 
-function llenarselecthorarios(){
+function llenarselectHorario(){
     $.ajax({
-        url: base_url + "trabajadores/listarHorarios",
+        url: base_url + "Trabajador/listarHorario",
         type: 'GET',
 
         success: function(response) {
@@ -268,9 +286,18 @@ function llenarselecthorarios(){
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
                 option.value = opcion.id;
+
+                if (opcion.estado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                  } else {
+                    // Restablecer el color de fondo si el valor no es "Inactivo"
+                    option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
+                  }
+
                 option.text = opcion.nombre;
                 // Agregar la opción al select
-                selectTrabajadores.appendChild(option);
+                horario.appendChild(option);
                 });
         },
         error: function(xhr, status, error) {
@@ -279,9 +306,9 @@ function llenarselecthorarios(){
     });
 }
 
-function llenarselectCargos(){
+function llenarselectCargo(){
     $.ajax({
-        url: base_url + "trabajadores/listarTrabajadores",
+        url: base_url + "Trabajador/listarCargo",
         type: 'GET',
 
         success: function(response) {
@@ -293,9 +320,18 @@ function llenarselectCargos(){
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
                 option.value = opcion.id;
+
+                if (opcion.estado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                  } else {
+                    // Restablecer el color de fondo si el valor no es "Inactivo"
+                    option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
+                  }
+
                 option.text = opcion.nombre;
                 // Agregar la opción al select
-                selectTrabajadores.appendChild(option);
+                cargo.appendChild(option);
                 });
         },
         error: function(xhr, status, error) {
@@ -305,22 +341,3 @@ function llenarselectCargos(){
 }
 
 
-SELECT 
-    t.id AS trabajador_id,
-    t.dni AS dni,
-    t.apellido_nombre AS trabajador,
-    d.nombre AS direccion,
-    r.nombre AS regimen,
-    h.nombre AS horario, 
-    c.nombre AS cargo
-FROM 
-    trabajadores t
-INNER JOIN 
-    direccion d ON t.direccion_id = d.id
-INNER JOIN 
-    regimen r ON t.regimen_id = r.id
-INNER JOIN 
-    horario h ON t.horario_id = h.id
-INNER JOIN 
-    cargo c ON t.cargo_id = c.id WHERE dni ='71205269';
-    
