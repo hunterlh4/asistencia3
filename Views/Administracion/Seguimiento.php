@@ -28,11 +28,14 @@
                         <thead>
                           <tr>
                             <th class="text-center"># </th>
-                            <th>DNI</th>
-                            <th>nombre</th>
+                            <th>regimen</th>
                             <th>Direccion</th>
-                            <th>Cargo </th>
-                            <th>Regimen </th>
+                            <th>Cargo</th>
+                            <th>Documento </th>
+                            <th>Sueldo </th>
+                            <th>Inicio </th>
+                            <th>Fin </th>
+                            
                             <!-- <th>Particular</th> -->
                             <th>Estado</th>
                             <th>Accion</th>
@@ -321,7 +324,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/trabajadores.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/seguimiento.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

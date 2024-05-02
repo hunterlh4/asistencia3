@@ -63,19 +63,20 @@ document.addEventListener("DOMContentLoaded", function () {
 function llenarTabla() {
   tblUsuario = $("#table-alex").DataTable({
     ajax: {
-      url: base_url + "Trabajador/listar",
+      url: base_url + "Seguimiento/listar",
       dataSrc: "",
     },
     columns: [
-      { data: "tid" },
-      { data: "tdni" },
-      { data: "tnombre" },
-      { data: "dnombre" },
-      { data: "cnombre" },
-      { data: "rnombre" },
-
-      { data: "estado" },
-      { data: "accion" },
+        { data: "id" },
+        { data: "regimen" },
+        { data: "direccion" },
+        { data: "cargo" },
+        { data: "documento" },
+        { data: "sueldo" },
+        { data: "fecha_inicio_2" },
+        { data: "fecha_fin_2" },
+        { data: "estado" },
+        { data: "accion" },
     ],
     dom: "Bfrtip",
 
@@ -83,31 +84,31 @@ function llenarTabla() {
       {
         extend: "copy",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas copiar
+          columns: [0, 1, 2, 3, 4, 5, 6,7,8], // Especifica las columnas que deseas copiar
         },
       },
       {
         extend: "csv",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a CSV
+          columns: [0, 1, 2, 3, 4, 5, 6,7,8], // Especifica las columnas que deseas exportar a CSV
         },
       },
       {
         extend: "excel",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a Excel
+          columns: [0, 1, 2, 3, 4, 5, 6,7,8], // Especifica las columnas que deseas exportar a Excel
         },
       },
       {
         extend: "pdf",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a PDF
+          columns: [0, 1, 2, 3, 4, 5, 6,7,8], // Especifica las columnas que deseas exportar a PDF
         },
       },
       {
         extend: "print",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas imprimir
+          columns: [0, 1, 2, 3, 4, 5, 6,7,8], // Especifica las columnas que deseas imprimir
         },
       },
     ],

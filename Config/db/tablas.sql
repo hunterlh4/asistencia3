@@ -87,11 +87,12 @@ CREATE TABLE horario_detalle (
 CREATE TABLE trabajadores (
     id serial primary key,
     dni varchar(10) not null UNIQUE,
+    dni_telefono varchar(10) not null UNIQUE,
     apellido_nombre varchar(100) not null,
-    direccion_id int not null,
-    regimen_id int not null,
-    horario_id int not null,
-    cargo_id int not null,
+    direccion_id int  null,
+    regimen_id int  null,
+    horario_id int  null,
+    cargo_id int  null,
     email text  null,
     -- documento text null,
     -- cantidad de dias particilares que lleva
@@ -101,7 +102,7 @@ CREATE TABLE trabajadores (
     -- fecha_expiracion date null,
     nro_tarjeta text  null,
     sexo CHAR  null,
-    fecha_nacimiento date null,
+    fecha_nacimiento date null default '00-00-0000',
     -- presencial-remoto-vacaciones
     modalidad_trabajo varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
@@ -206,7 +207,7 @@ create table asistencias(
     UNIQUE (trabajador_id, fecha)
 );
 
-create table historia_trabajadores(
+create table seguimiento_trabajadores(
     id SERIAL PRIMARY KEY,
     trabajador_id int  not null,
     regimen varchar(100)  not null,
@@ -216,6 +217,7 @@ create table historia_trabajadores(
     sueldo NUMERIC(6,2) null default '0.00',
     fecha_inicio date not null,
     fecha_fin date not null,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id)

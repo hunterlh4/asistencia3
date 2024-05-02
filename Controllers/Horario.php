@@ -50,7 +50,7 @@ class Horario extends Controller
         // $new_id = (int)$id;
         // $data['title'] = 'Horarios';
         // $data1 = '';
-        $_SESSION['id_temporal'] =  $id  ;
+        $_SESSION['id_horario'] =  $id  ;
         // header('Location: ' . BASE_URL . 'HorarioDetalle');
         exit(); 
      
@@ -127,10 +127,10 @@ class Horario extends Controller
                             // El usuario no existe, se permite la modificación
                             $data = $this->model->modificar($nombre,$comentario, $estado, $id);
                             if ($data == 1) {
-                                $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
+                                $respuesta = array('msg' => 'Horario modificado', 'icono' => 'success');
                                 $this->model->registrarlog($_SESSION['id'],'Modificar','Horario', $datos_log_json);
                             } else {
-                                $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
+                                $respuesta = array('msg' => 'Error al modificar el Horario', 'icono' => 'error');
                             }
                         }
                     }

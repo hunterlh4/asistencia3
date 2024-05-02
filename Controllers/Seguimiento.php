@@ -1,5 +1,5 @@
 <?php
-class HorarioDetalle extends Controller
+class Seguimiento extends Controller
 {
     public function __construct()
     {
@@ -13,24 +13,39 @@ class HorarioDetalle extends Controller
     public function index()
     {
 
-        $data['title'] = 'Horario Detalle';
+        $data['title'] = 'Seguimiento';
 
-        $this->views->getView('Administracion', "HorarioDetalle", $data);
+        $this->views->getView('Administracion', "Seguimiento", $data);
     }
     public function listar()
     {
-        if (empty($_SESSION['id_temporal'])) {
-            $data = $this->model->getHorarioDetalles();
-           
+        if (empty($_SESSION['id_seguimiento_trabajador'])) {
+            $data = $this->model->getSeguimientos();
+        
         } else {
-            $id =  $_SESSION['id_temporal'];
-            $data = $this->model->getHorarioDetallesPorHorario($id);
+            $id =  $_SESSION['id_seguimiento_trabajador'];
+            $data = $this->model->getSeguimientoPorTrabajador($id);
         }
         for ($i = 0; $i < count($data); $i++) {
 
+           
+            $inicio = $data[$i]['fecha_inicio'];
+            $fin = $data[$i]['fecha_fin'];
+
+            if(!empty($inicio)){
+                $inicio = date('d-m-Y', strtotime($inicio));
+                $data[$i]['fecha_inicio_2'] = $inicio;
+            }else{
+                $data[$i]['fecha_inicio_2'] = '';
+            }
+            if(!empty($fin)){
+                $fin = date('d-m-Y', strtotime($fin));
+                $data[$i]['fecha_fin_2'] = $fin;
+            }else{
+                $data[$i]['fecha_inicio_2'] = '';
+            }
+
             $datonuevo = $data[$i]['estado'];
-
-
             if ($datonuevo == 'Activo') {
                 $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";
             } else {
@@ -53,40 +68,66 @@ class HorarioDetalle extends Controller
     {
         if ((isset($_POST['nombre']))) {
 
-            $nombre = $_POST['nombre'];
-            $entrada = $_POST['entrada'];
-            $salida = $_POST['salida'];
+            $regimen = $_POST['regimen'];
+            $direccion = $_POST['direccion'];
+            $cargo = $_POST['cargo'];
+            $documento = $_POST['documento'];
+            $sueldo = $_POST['sueldo'];
+            $fecha_inicio = $_POST['fecha_inicio'];
+            $fecha_fin = $_POST['fecha_fin'];
             $estado = $_POST['estado'];
-            $total = $_POST['total'];
             $id = $_POST['id'];
 
-            if(empty($_SESSION['id_temporal'])){
-                $horario_id = 'vacio';
+            if(empty($_SESSION['id_seguimiento_trabajador'])){
+                $trabajador_id = 'vacio';
             }else{
-                $horario_id =  $_SESSION['id_temporal'];
+                $trabajador_id =  $_SESSION['id_seguimiento_trabajador'];
             }
-            
 
+            $inicio='';
+            $fin='';
+
+            if (empty($fecha_inicio)) {
+                $fecha_inicio = null;
+                // $inicio = 'vacio';
+            }else{
+                $fecha_inicio = date('d-m-Y', strtotime($_POST['fecha_inicio']));
+                
+            }
+
+            if (empty($fecha_fin)) {
+                $fecha_fin = null;
+                
+            }else{
+                $fecha_fin = date('d-m-Y', strtotime($_POST['fecha_fin']));
+                
+            }
+
+            
             $datos_log = array(
-                "nombre" => $nombre,
-                "horario_id" => $horario_id,
-                "entrada" => $entrada,
-                "salida" => $salida,
-                "total" => $total,
+                "id" => $id,
+                "trabajador_id" => $trabajador_id,
+                "regimen" => $regimen,
+                "direccion" => $direccion,
+                "cargo" => $cargo,
+                "documento" => $documento,
+                "sueldo" => $sueldo,
+                "fecha_inicio" => $fecha_inicio,
+                "fecha_fin" => $fecha_fin,
                 "estado" => $estado,
 
             );
             $datos_log_json = json_encode($datos_log);
 
-            if ((empty($nombre) || (empty($entrada) || (empty($salida)) ))) {
+            if (((empty($regimen)) || (empty($direccion)) || (empty($cargo)) || (empty($documento)) || (empty($sueldo)) || (empty($fecha_inicio)) || (empty($fecha_fin)) )) {
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
-                    $error_msg .= 'El Horario debe tener entre 5 y 50 caracteres. <br>';
+                if (strlen($sueldo) < 2 || strlen($sueldo) > 7) {
+                    $error_msg .= 'Ingrese un sueldo diferente. <br>';
                 }
-                if($horario_id=='vacio'){
-                    $error_msg .= 'Debe de Seleccionar Un Horario para Agregar un Detalle. <br>';
+                if($trabajador_id=='vacio'){
+                    $error_msg .= 'Debe de Seleccionar Un Trabajador para Agregar un Seguimiento. <br>';
                 }
 
                 if (!empty($error_msg)) {
@@ -100,7 +141,7 @@ class HorarioDetalle extends Controller
                     // REGISTRAR
                     if (empty($id)) {
 
-                        $data = $this->model->registrar($nombre, $horario_id, $entrada, $salida,$total);
+                        $data = $this->model->registrar($trabajador_id,$regimen,$direccion, $salida,$total);
 
                         if ($data > 0) {
                             $respuesta = array('msg' => 'Detalle registrado', 'icono' => 'success');
@@ -112,7 +153,7 @@ class HorarioDetalle extends Controller
                     } else {
                         // COLOCAR AQUI VALIDADOR QUE AL MODIFICAR DE ACTIVO A INACTIVO CAMBIE A NULL
                         // El nombre de usuario es el mismo que el original, se permite la modificación
-                        $data = $this->model->modificar($nombre, $horario_id, $entrada, $salida,$total, $estado, $id);
+                        $data = $this->model->modificar($nombre, $trabajador_id, $entrada, $salida,$total, $estado, $id);
                         if ($data == 1) {
                             $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
                             $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Horario Detalle', $datos_log_json);
@@ -149,7 +190,7 @@ class HorarioDetalle extends Controller
     public function edit($id)
     {
         if (is_numeric($id)) {
-            $data = $this->model->getHorarioDetalle($id);
+            $data = $this->model->getSeguimiento($id);
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         die();

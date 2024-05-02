@@ -197,7 +197,6 @@ function llenarselect(){
 
         success: function(response) {
                 datos = JSON.parse(response);
-              
                 // opcionInicial.value = '0';
                 // opcionInicial.text = 'Seleccione un empleado';
                 // select1.appendChild(opcionInicial);
@@ -206,6 +205,12 @@ function llenarselect(){
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
                 option.value = opcion.id;
+
+                if (opcion.estado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                }
+
                 option.text = opcion.nombre;
                 // Agregar la opción al select
                 select1.appendChild(option);

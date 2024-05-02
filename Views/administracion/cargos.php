@@ -64,7 +64,6 @@
         <div class="modal-body">
           <input type="hidden" id="id" name="id">
 
-       
             <div class="form-group">
               <label>Nombre</label>
               <div class="input-group">
@@ -73,8 +72,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
-  maxlength="50" required>
+                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="30" required>
               </div>
             </div>
             <div class="form-group">
@@ -86,7 +84,6 @@
                   </div>
                 </div>
                 <input type="number"  step="1" class="form-control" placeholder="nivel" name="nivel" id="nivel"  required>
-               
               </div>
             </div>
             

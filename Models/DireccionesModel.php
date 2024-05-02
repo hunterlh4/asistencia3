@@ -20,7 +20,7 @@ class DireccionesModel extends Query
     }
     public function getEquipos()
     {
-        $sql = "SELECT  id,nombre from equipo where estado = 'Activo' order by nombre asc ";
+        $sql = "SELECT  id,nombre,estado from equipo  order by nombre asc ";
         return $this->selectAll($sql);
     }
     public function getDireccion($id)

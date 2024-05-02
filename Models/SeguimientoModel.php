@@ -1,71 +1,28 @@
 <?php
-class TrabajadorModel extends Query
+class SeguimientoModel extends Query
 {
 
     public function __construct()
     {
         parent::__construct();
     }
-    public function getTrabajadores()
+    public function getSeguimientos()
     {
         // $sql = "SELECT * from horario_detalle ORDER BY id ASC";
         // $sql = "SELECT * FROM horario_detalle WHERE horario_id = $id";
 
-        $sql = "SELECT 
-                T.id as tid,
-                T.dni as tdni,
-                T.apellido_nombre AS tnombre, 
-                D.nombre AS dnombre, 
-                C.nombre AS cnombre, 
-                R.nombre AS rnombre, 
-                T.estado as testado
-              
-                FROM trabajadores AS T 
-                INNER JOIN direccion AS D ON T.direccion_id = D.id 
-                INNER JOIN cargo AS C ON T.cargo_id = C.id
-                INNER JOIN regimen AS R ON T.regimen_id = R.id
-                ORDER BY T.id asc ";
+        $sql = "SELECT * FROM seguimiento_trabajadores ORDER BY id asc ";
         // $sql = "SELECT T.id as tid,T.estado as testado from trabajadores as T ORDER BY id ASC";
         return $this->selectAll($sql);
     }
-    public function getTrabajador2($id)
+    public function getSeguimientoPorTrabajador($id)
     {
-        $sql = "SELECT 
-        T.id AS tid,
-        T.dni tdni,
-        T.apellido_nombre AS tnombre,
-        T.email AS temail,
-        T.telefono AS ttelefono,
-        T.nro_tarjeta AS ttarjeta,
-        T.sexo AS tsexo,
-        T.fecha_inicio AS tnacimiento,
-        T.modalidad_trabajo AS tmodalidad,
-        T.estado AS testado,
-        D.id AS did,
-        D.nombre AS dnombre,
-        E.id AS eid,
-        E.nombre AS enombre,
-        C.id AS cid,
-        C.nombre AS cnombre,
-        R.id AS rid ,
-        R.nombre AS rnombre,
-        R.sueldo AS rsueldo,
-        H.id AS hid, 
-        H.nombre AS hnombre
-        
-        FROM trabajadores AS T 
-        INNER JOIN direccion AS D ON T.direccion_id = D.id 
-        LEFT JOIN  equipo AS E ON D.equipo_id = E.id
-        INNER JOIN cargo AS C ON T.cargo_id = C.id
-        INNER JOIN regimen AS R ON T.regimen_id = R.id
-        INNER JOIN horario AS H ON T.horario_id = H.id 
-        WHERE T.id = $id
-        ORDER BY T.id ASC;";
+        $sql = "SELECT * FROM seguimiento_trabajadores WHERE trabajador_id = $id order by id ;";
 
-        return $this->select($sql);
+        return $this->selectAll($sql);
     }
-    public function getTrabajador($id){
-        $sql = "SELECT id,dni,apellido_nombre,direccion_id,regimen_id,horario_id,cargo_id,email,telefono,nro_tarjeta,sexo, fecha_nacimiento,modalidad_trabajo,estado FROM trabajadores WHERE id = $id";
+    public function getSeguimiento($id){
+        $sql = "SELECT * FROM seguimiento_trabajadores WHERE id = $id";
        
         return $this->select($sql);
     }
@@ -98,11 +55,11 @@ class TrabajadorModel extends Query
         $sql = "SELECT * FROM cargo";
         return $this->selectAll($sql);
     }
-    public function verificar($dni)
-    {
-        $sql = "SELECT id,dni FROM trabajadores WHERE dni = '$dni' ";
-        return $this->select($sql);
-    }
+    // public function verificar($dni)
+    // {
+    //     $sql = "SELECT id,dni FROM trabajadores WHERE dni = '$dni' ";
+    //     return $this->select($sql);
+    // }
     public function registrar($dni,$apellido_nombre,$direccion_id,$regimen_id,$horario_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo)
     {
         $sql = "INSERT INTO trabajadores (dni,apellido_nombre,direccion_id,regimen_id,horario_id,cargo_id,email,telefono,nro_tarjeta,sexo,fecha_nacimiento,modalidad_trabajo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
