@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function llenarselect(){
     $.ajax({
-        url: base_url + "usuarios/listartrabajadores",
+        url: base_url + "usuario/listartrabajadores",
         type: 'GET',
 
         success: function(response) {
@@ -96,7 +96,7 @@ function llenarselect(){
 
 async function llenarselect2(){
     try {
-        const response = await fetch(base_url + "usuarios/listartrabajadores");
+        const response = await fetch(base_url + "usuario/listartrabajadores");
         if (!response.ok) {
             throw new Error("Error en la solicitud");
         }
@@ -127,7 +127,7 @@ async function llenarselect2(){
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "Usuarios/listar",
+            url: base_url + "usuario/listar",
             dataSrc: "",
         },
         columns: [
@@ -192,7 +192,7 @@ function actualizartabla(){
 
 
 function editUser(idUser) {
-    const url = base_url + "Usuarios/edit/" + idUser;
+    const url = base_url + "usuario/edit/" + idUser;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();
@@ -249,7 +249,7 @@ function eliminarUser(idUser) {
         confirmButtonText: "Si, Eliminar!",
     }).then((result) => {
         if (result.isConfirmed) {
-            const url = base_url + "Usuarios/delete/" + idUser;
+            const url = base_url + "usuario/delete/" + idUser;
             const http = new XMLHttpRequest();
             http.open("GET", url, true);
             http.send();

@@ -15,7 +15,7 @@
               <div class="col-md-12">
                 <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
-                <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario Detalle</h3>
+                <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Trabajadores</h3>
                 <div class="ml-auto">
                   <button class="btn btn-lg btn-outline-primary rounded-0" type="button" onclick=goBack()>Volver</button>
                   <button class="btn btn-lg btn-outline-primary rounded-0" type="button" id="nuevo_registro">Nuevo</button>
@@ -321,7 +321,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/trabajadores.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/trabajador.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

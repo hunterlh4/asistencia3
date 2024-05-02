@@ -15,7 +15,7 @@
               <div class="col-md-12">
                 <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
-                <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario Detalle</h3>
+                <h3 class="font-weight-bolder" id='seguimiento'><i class="fa fa-briefcase"></i> Seguimiento</h3>
                 <div class="ml-auto">
                   <button class="btn btn-lg btn-outline-primary rounded-0" type="button" onclick=goBack()>Volver</button>
                   <button class="btn btn-lg btn-outline-primary rounded-0" type="button" id="nuevo_registro">Nuevo</button>
@@ -33,11 +33,11 @@
                             <th>Cargo</th>
                             <th>Documento </th>
                             <th>Sueldo </th>
-                            <th>Inicio </th>
-                            <th>Fin </th>
+                            <th style="width: 80px;">Inicio </th>
+                            <th style="width: 80px;">Fin </th>
                             
-                            <!-- <th>Particular</th> -->
-                            <th>Estado</th>
+                            
+                            <!-- <th>Estado</th> -->
                             <th>Accion</th>
                           </tr>
                         </thead>
@@ -69,151 +69,30 @@
           </button>
         </div>
 
-        <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
+        <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off"  enctype="multipart/form-data">
         <div class="modal-body">
           <input type="hidden" id="id" name="id">
           <!-- AQUI EMPIEZA -->
          
 
             <!-- aqui termina -->
-              <p><b>Datos Personales</b></p> 
-              <hr> 
+              <!-- <p><b>Datos Personales</b></p> 
+              <hr>  -->
+
           <div class="row">
-            <div class="col-md-4 col-sm-6">
-              <div class="form-group">
-                <label for="dni">DNI</label>  
-                <!-- <button type="button" onclick=consultar()>Consultar</button> -->
-                <!-- <input type="text" class="form-control" id="dni" name="dni" required> -->
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <i class="fas fa-address-card"></i>
-                      </div>
-                    </div>
-                  <input type="text" class="form-control" placeholder="DNI" name="dni" id="dni" minlength="8" maxlength="8" required>
-
-                 
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button" onclick=consultar()> <i class="fas fa-search"></i></button>
-                        </div>
-                  </div>
-              </div>
-            </div>
-            
-            <!--  -->
-            <div class="col-md-4 col-sm-6">
-              <div class="form-group">
-                <label>Telefono</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                    <i class="fas fa-phone"></i>
-                    </div>
-                  </div>  
-                  <input type="text" class="form-control" placeholder="Telefono" name="telefono" id="telefono" minlength="11" maxlength="11">
-                </div>
-              </div>
-            </div>
-            <!--  -->
-            <div class="col-md-4 col-sm-6">
-              <div class="form-group">
-                <label>Tarjeta</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-address-card"></i>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Tarjeta" name="tarjeta" id="tarjeta" minlength="10" maxlength="18">
-                </div>
-              </div>
-            </div>
-            
-
-          <!-- </div>
-
-          <div class="row"> -->
-            <div class="col-md-6 col-sm-6">
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
-                  <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-address-card"></i>
-                    </div>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="10" maxlength="50" required>
-                </div>
-
-                </div>
-              </div>
-
-              <!--  -->
-              <div class="col-md-6 col-sm-6">
-              <div class="form-group">
-              <label>Correo</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-address-card"></i>
-                    </div>
-                  </div>
-                  <input type="email" class="form-control" placeholder="Correo" name="email" id="email" minlength="5" maxlength="40">
-                </div>
-              </div>
-            </div>
-              
-            <!--  -->
           
-          <!-- </div>
-          <div class="row"> -->
+            
 
-            <div class="col-md-6 col-sm-6">
-              <div class="form-group">
-                <label>Cumpleaños</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <i class="fas fa-calendar"></i>
-                    </div>
-                  </div>
-                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="nacimiento" id="nacimiento">
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Sexo</label>
-                <div class="input-group">
-                  <div class="col-sm-9 d-flex align-items-center mt-1">
-                    <div class="custom-control custom-radio mr-3">
-                      <input type="radio" id="radio-hombre" value='H' name="sexo" class="custom-control-input" checked>
-                      <label class="custom-control-label" for="radio-hombre">Hombre</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                      <input type="radio" id="radio-mujer" value='M' name="sexo" class="custom-control-input">
-                      <label class="custom-control-label" for="radio-mujer">Mujer</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <p><b>Datos de Trabajo</b></p>
-          <hr>
-          <div class="row">
-            <div class="col-md-12">
+          <div class="col-md-12">
               <div class="form-group">
                 <label for="direccion">Direccion</label>
                   <div class="input-group">
-                    <div class="input-group-prepend">
+                    <!-- <div class="input-group-prepend">
                       <div class="input-group-text">
                         <i class="fas fa-address-card"></i>
                       </div>
-                    </div>
-                    <select class="form-control" id="direccion" name="direccion" required>
+                    </div> -->
+                    <select class="form-control" id="direccion" name="direccion" >
                     <option value="" selected>Selecciona una Direccion</option>
                     <!-- Opciones para la dirección -->
                   </select>
@@ -221,67 +100,94 @@
 
               </div>
             </div>
-          <!-- </div>
 
-          <div class="row"> -->
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-6 col-sm-6">
               <div class="form-group">
               <label>Regimen</label>
                 <div class="input-group">
                  
-                    <select class="form-control" id="regimen" name="regimen" required>
+                    <select class="form-control" id="regimen" name="regimen" >
                     <option value="" selected>Selecciona un Regimen</option>
                     <!-- Opciones para la dirección -->
                   </select>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-6 col-sm-6">
               <div class="form-group">
                 <label>Cargo</label>
                 <div class="input-group">
                  
-                    <select class="form-control" id="cargo" name="cargo" required>
+                    <select class="form-control" id="cargo" name="cargo" >
                     <option value="" selected>Selecciona un Cargo</option>
                     <!-- Opciones para la dirección -->
                   </select>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 col-sm-6">
-            <div class="form-group">
-                  <label>Modalidad de Trabajo</label>
-                  <div class="input-group">
-                   
-                    <select class="form-control" id="modalidad" name="modalidad" required>
-                    <option value="" selected>Selecciona una Modalidad</option>
-                    <option value="Trabajo Presencial">Trabajo Presencial</option>
-                    <option value="Trabajo Remoto" >Trabajo Remoto</option>
-                    <option value="Licencia con Goce de Haber" >Licencia con Goce de Haber</option>
-                    <option value="Vacaciones" >Vacaciones</option>
-                    <!-- Opciones para la dirección -->
-                  </select>
-                  </div>
-                </div>
-                
-              </div>
-          
-          <!-- </div>
-          <div class="row"> -->
 
-          <div class="col-md-6 col-sm-6">
-            <div class="form-group">
-                  <label>Horario</label>
-                  <div class="input-group">
-                   
-                    <select class="form-control" id="horario" name="horario" required>
-                    <option value="" selected>Selecciona un Horario</option>
-                    <!-- Opciones para la dirección -->
-                  </select>
-                  </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group">
+                <label>Inicio</label>
+                <div class="input-group">
+                  <!-- <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-calendar"></i>
+                    </div>
+                  </div> -->
+                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_inicio" id="fecha_inicio" >
                 </div>
-                
               </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+              <div class="form-group">
+                <label>Fin</label>
+                <div class="input-group">
+                  <!-- <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-calendar"></i>
+                    </div>
+                  </div> -->
+                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_fin" id="fecha_fin" >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+              <div class="form-group">
+                <label for="dni">Sueldo</label>  
+                <!-- <button type="button" onclick=consultar()>Consultar</button> -->
+                <!-- <input type="text" class="form-control" id="dni" name="dni" required> -->
+                  <div class="input-group">
+                    <!-- <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-address-card"></i>
+                      </div>
+                    </div> -->
+                  <input type="number" class="form-control" placeholder="Sueldo" name="sueldo" id="sueldo" maxlength="10" >
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-8 col-sm-6">
+              <div class="form-group">
+                <label>Documento</label>
+                <div class="input-group">
+                    <!-- <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-address-card"></i>
+                      </div>
+                    </div> -->
+                    <!-- <input type="file" class="form-control" name="documento" id="documento"> -->
+                    <!-- Opciones para la dirección -->
+                    <div class="custom-file">
+                      <input type="hidden" id="nombreArchivoActual" name="nombreArchivoActual">
+                      <input type="file" class="custom-file-input" id="archivo" name="archivo" accept=".pdf" >
+                      <label class="custom-file-label" id="nombreArchivo" for="archivo">Seleccione un Archivo</label>
+                    </div>
+                  </select>
+                </div>
+              </div>
+            </div>
            
               <div class="col-md-6">
               

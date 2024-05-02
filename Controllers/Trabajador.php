@@ -150,14 +150,7 @@ class Trabajador extends Controller
                         $error_msg .= 'El telefono debe tener 9 digitos.<br>';
                     }
                 }
-                // if (!empty($nacimiento)) {
-                //     // $nacimiento = null;
-                //     $error_msg .= $nacimiento .'El nacimiento debe tener 9 digitos.<br>';
-
-                //     // if (((strlen($telefono) < 9) || (strlen($telefono) > 12))) {
-                //     //     $error_msg .= 'El telefono debe tener 9 digitos.<br>';
-                //     // }
-                // }
+             
 
 
                 if (!empty($error_msg)) {
@@ -247,6 +240,7 @@ class Trabajador extends Controller
     {
         if (is_numeric($id)) {
             $_SESSION['id_seguimiento_trabajador'] = $id;
+           
         }
         die();
     }

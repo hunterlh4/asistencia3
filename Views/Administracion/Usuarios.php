@@ -193,7 +193,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/usuarios2.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/usuario.js"></script>
 
   <script>
     // $(document).ready(function(){

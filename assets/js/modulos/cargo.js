@@ -19,7 +19,7 @@ var datos;
 document.addEventListener("DOMContentLoaded", function() {
 
     llenarTabla();
-    llenarselect();
+    
 
   
 
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
         frm.reset();
         resetRequiredFields()
         btnAccion.textContent = 'Registrar';
-        titleModal.textContent = "Nueva Direccion";
+        titleModal.textContent = "Nuevo Cargo";
 
         document.querySelector('#radio-true').checked = true;
         document.querySelector('#id').value = '';
@@ -41,10 +41,8 @@ document.addEventListener("DOMContentLoaded", function() {
     //submit usuarios
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
-
-    
         let data = new FormData(this);
-        const url = base_url + "direcciones/registrar";
+        const url = base_url + "cargo/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(data);
@@ -68,15 +66,14 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "direcciones/listar",
+            url: base_url + "cargo/listar",
             dataSrc: "",
         },
         columns: [
-            { data: "direccion_id" },
-            { data: "direccion_equipo" },
-            // { data: "direccion_nombre" },
-            // { data: "equipo_nombre" },
-            { data: "direccion_estado" },
+            { data: "id" },
+            { data: "nombre" },
+            { data: "nivel" },
+            { data: "estado" },
             { data: "accion" },
 
         ],
@@ -126,8 +123,8 @@ function actualizartabla(){
 }
 
 
-function editUser(id) {    
-    const url = base_url + "direcciones/edit/" + id;
+function editUser(id) {
+    const url = base_url + "cargo/edit/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();
@@ -139,16 +136,8 @@ function editUser(id) {
             const res = JSON.parse(this.responseText);
             document.querySelector('#id').value = res.id;
             document.querySelector('#nombre').value = res.nombre;
-            
-            // document.querySelector('#equipo_id').value = res.equipo_id;
-
-            if(res.equipo_id===null){
-                // console.log('equipo_id nulo');
-                document.querySelector('#select1').value = 0;
-            }else{
-                document.querySelector('#select1').value = res.equipo_id;
-                }
-            
+       
+            document.querySelector('#nivel').value = res.nivel;
             
             if(res.estado=='Activo'){
                 document.querySelector('#radio-true').checked = true;
@@ -163,10 +152,8 @@ function editUser(id) {
             });
             // document.querySelector('#password').setAttribute('readonly', 'readonly');
             btnAccion.textContent = 'Actualizar';
-            titleModal.textContent = "Modificar direccion";
+            titleModal.textContent = "Modificar Cargo";
             myModal.show();
-            
-
             
             //$('#nuevoModal').modal('show');
         }
@@ -188,36 +175,4 @@ function abrirModal() {
 // Función para cerrar el modal
 function cerrarModal() {
     myModal.hide();
-}
-
-function llenarselect(){
-    $.ajax({
-        url: base_url + "Direcciones/listarEquipos",
-        type: 'GET',
-
-        success: function(response) {
-                datos = JSON.parse(response);
-                // opcionInicial.value = '0';
-                // opcionInicial.text = 'Seleccione un empleado';
-                // select1.appendChild(opcionInicial);
-                datos.forEach(opcion => {
-                // Crear un elemento de opción
-                let option = document.createElement("option");
-                // Establecer el valor y el texto de la opción
-                option.value = opcion.id;
-
-                if (opcion.estado === "Inactivo" ) {
-                    // Aplicar estilo al campo seleccionado
-                    option.style.color = "red"; // Cambiar a tu color deseado
-                }
-
-                option.text = opcion.nombre;
-                // Agregar la opción al select
-                select1.appendChild(option);
-                });
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
 }

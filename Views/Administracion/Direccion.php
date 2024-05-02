@@ -126,7 +126,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/direcciones.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/direccion.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

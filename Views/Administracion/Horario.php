@@ -16,7 +16,8 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
                     
-                    <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Equipo</h3>
+                    <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario</h3>
+                   
                     <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button>
                   </div>
 
@@ -27,7 +28,7 @@
                           <tr>
                             <th class="text-center"># </th>
                             <th>Nombre</th>
-                            <th>estrategia</th>
+                            <th>Comentario</th>
                             <th>Estado</th>
                             <th>accion</th>
                           </tr>
@@ -78,14 +79,14 @@
               </div>
             </div>
             <div class="form-group">
-              <label>estrategia</label>
+              <label>comentario</label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="Text"  class="form-control" placeholder="estrategia" name="estrategia" id="estrategia" minlength="1"
+                <input type="Text"  class="form-control" placeholder="comentario" name="comentario" id="comentario" minlength="1"
   maxlength="50"  required>
                
               </div>
@@ -128,7 +129,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/equipos.js"></script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/horario.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

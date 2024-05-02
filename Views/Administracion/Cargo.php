@@ -16,8 +16,7 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
                     
-                    <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario</h3>
-                   
+                    <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Cargos</h3>
                     <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button>
                   </div>
 
@@ -28,7 +27,7 @@
                           <tr>
                             <th class="text-center"># </th>
                             <th>Nombre</th>
-                            <th>Comentario</th>
+                            <th>Nivel</th>
                             <th>Estado</th>
                             <th>accion</th>
                           </tr>
@@ -65,7 +64,6 @@
         <div class="modal-body">
           <input type="hidden" id="id" name="id">
 
-       
             <div class="form-group">
               <label>Nombre</label>
               <div class="input-group">
@@ -74,21 +72,18 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
-  maxlength="50" required>
+                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="30" required>
               </div>
             </div>
             <div class="form-group">
-              <label>comentario</label>
+              <label>Nivel</label>
               <div class="input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text">
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="Text"  class="form-control" placeholder="comentario" name="comentario" id="comentario" minlength="1"
-  maxlength="50"  required>
-               
+                <input type="number"  step="1" class="form-control" placeholder="nivel" name="nivel" id="nivel"  required>
               </div>
             </div>
             
@@ -129,7 +124,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/horarios.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/cargo.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

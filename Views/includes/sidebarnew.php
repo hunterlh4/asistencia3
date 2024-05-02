@@ -33,16 +33,16 @@
             echo '<li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Administrables</span></a>
               <ul class="dropdown-menu">';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Trabajador">Trabajadores</a></li>';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Direcciones">Direcciones</a></li>';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Equipos">Equipos</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Trabajador">Trabajador</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Direccion">Direccion</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Equipo">Equipo</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Horario">Horario</a></li>';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Licencias">Licencias</a></li>';
-                echo '<li><a class="nav-link" href="'.BASE_URL.'Cargos">Cargos</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Licencia">Licencia</a></li>';
+                echo '<li><a class="nav-link" href="'.BASE_URL.'Cargo">Cargo</a></li>';
                 echo '<li><a class="nav-link" href="'.BASE_URL.'Regimen">Regimen</a></li>
               </ul>
             </li>';
-            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuarios" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
+            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
         }
         ?>
         <?php
@@ -101,8 +101,8 @@
         <?php
         //Solo un Administrador(1) puede administrar usuarios
         if($_SESSION['nivel'] == 1) {
-          echo ' <li class="menu-header">Usuarios</li>';
-            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuarios" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
+          echo ' <li class="menu-header">Usuario</li>';
+            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
         }
         ?>
 

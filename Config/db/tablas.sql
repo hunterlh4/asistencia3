@@ -38,7 +38,7 @@ CREATE TABLE regimen (
 );
 
 -- en las asistencias abreviaturas https://asistencia.diresatacna.gob.pe/tab_search_new.php
-CREATE TABLE licencias (
+CREATE TABLE licencia (
     id serial PRIMARY KEY,
     nombre varchar(100) not null ,
     abreviatura varchar(5) not null UNIQUE,
@@ -67,7 +67,7 @@ CREATE TABLE horario (
     update_at TIMESTAMP null
 );
 
-CREATE TABLE horario_detalle (
+CREATE TABLE horarioDetalle (
     id serial primary key,
     horario_id int not null,
     nombre varchar(100) null,
@@ -84,14 +84,14 @@ CREATE TABLE horario_detalle (
 -- el primero usa a la tabla trabajadores el segundo biotrabajadores
 -- https://asistencia.diresatacna.gob.pe/tab_search_detallado.php
 --https://asistencia.diresatacna.gob.pe/tab_search_new.php
-CREATE TABLE trabajadores (
+CREATE TABLE trabajador (
     id serial primary key,
-    dni varchar(10) not null UNIQUE,
-    dni_telefono varchar(10) not null UNIQUE,
+    dni varchar(10)  null UNIQUE,
+    telefono_id varchar(10)  null UNIQUE,
     apellido_nombre varchar(100) not null,
-    direccion_id int  null,
-    regimen_id int  null,
-    horario_id int  null,
+    direccion_id int null,
+    regimen_id int null,
+    horario_id int null,
     cargo_id int  null,
     email text  null,
     -- documento text null,
@@ -102,7 +102,7 @@ CREATE TABLE trabajadores (
     -- fecha_expiracion date null,
     nro_tarjeta text  null,
     sexo CHAR  null,
-    fecha_nacimiento date null default '00-00-0000',
+    fecha_nacimiento date null default null,
     -- presencial-remoto-vacaciones
     modalidad_trabajo varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
@@ -114,7 +114,7 @@ CREATE TABLE trabajadores (
     FOREIGN KEY (cargo_id) REFERENCES cargo(id) ON DELETE CASCADE
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
@@ -125,8 +125,8 @@ CREATE TABLE usuarios (
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id) ON DELETE CASCADE
-);COMMENT ON COLUMN usuarios.nivel IS '0 sin vistas, 1 administrador, 2 jefe de oficina, 3 vizualizador, 4 portero';
+    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id) ON DELETE CASCADE
+);COMMENT ON COLUMN usuario.nivel IS '0 sin vistas, 1 administrador, 2 jefe de oficina, 3 vizualizador, 4 portero';
 
 -- al hacer un update, insert, delete, generar reporte
 CREATE TABLE log (
@@ -136,29 +136,30 @@ CREATE TABLE log (
     tabla_afectada VARCHAR(20) not null,
     detalles TEXT,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)  ON DELETE CASCADE
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id)  ON DELETE CASCADE
 );
 
 -- al hacer login
-CREATE TABLE usuarios_conectados (
+CREATE TABLE usuario_conectado (
     id serial PRIMARY KEY,
     usuario_id int not null UNIQUE,
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN key (usuario_id) REFERENCES usuarios(id)
+    FOREIGN key (usuario_id) REFERENCES usuario(id)
 );
-CREATE TABLE vacaciones (
+CREATE TABLE vacacion (
     id serial PRIMARY KEY,
     trabajador_id int not null,
     dias_vacaciones int null default 0,
     dias_usados int null default 0,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP null
+    update_at TIMESTAMP null,
+    FOREIGN key (trabajador_id) REFERENCES trabajador(id)
 );
 
 -- https://asistencia.diresatacna.gob.pe/tab_auth_salida_new.php
-CREATE TABLE boletas (
+CREATE TABLE boleta (
     id SERIAL PRIMARY KEY,
     numero VARCHAR(20) NOT NULL,
     trabajador_id INT NOT NULL,
@@ -174,14 +175,14 @@ CREATE TABLE boletas (
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
-    FOREIGN KEY (aprobado_por) REFERENCES trabajadores(id)
+    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
+    FOREIGN KEY (aprobado_por) REFERENCES trabajador(id)
 );
 
-create table asistencias(
+create table asistencia(
     id SERIAL PRIMARY KEY,
     trabajador_id INT NOT NULL,
-    licencias_id int null default 1,
+    licencia_id int null default 1,
     fecha date not null,
     entrada interval(6)  null default '00:00:00',
     salida interval(6)  null default '00:00:00',
@@ -202,12 +203,12 @@ create table asistencias(
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id),
-    FOREIGN KEY (licencias_id) REFERENCES licencias(id),
+    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
+    FOREIGN KEY (licencia_id) REFERENCES licencia(id),
     UNIQUE (trabajador_id, fecha)
 );
 
-create table seguimiento_trabajadores(
+create table seguimientoTrabajador(
     id SERIAL PRIMARY KEY,
     trabajador_id int  not null,
     regimen varchar(100)  not null,
@@ -220,7 +221,7 @@ create table seguimiento_trabajadores(
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajadores(id)
+    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id)
     -- FOREIGN KEY (regimen_id) REFERENCES regimen(id),
     -- FOREIGN KEY (direccion_id) REFERENCES direccion(id),
     -- FOREIGN KEY (cargo_id) REFERENCES cargo(id)
@@ -238,7 +239,7 @@ SELECT * FROM licencias;
 -- SELECT * FROM modalidades;
 SELECT * FROM regimen;
 SELECT * FROM trabajadores;
-SELECT * FROM usuarios;
+SELECT * FROM usuario;
 
 
 
@@ -252,7 +253,7 @@ SELECT * FROM usuarios;
 area_trabajo    -> ?
 modadlidad      ->solo
 equipo_ejec     ->solo
-log          ->usuarios        ->direccion_eject
+log          ->usuario        ->direccion_eject
 trabajador   ->regimen
              ->direccion_eject -> equipo_eject
 

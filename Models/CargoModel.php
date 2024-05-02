@@ -1,5 +1,5 @@
 <?php
-class CargosModel extends Query
+class CargoModel extends Query
 {
 
     public function __construct()

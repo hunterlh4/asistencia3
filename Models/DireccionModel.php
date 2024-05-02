@@ -1,5 +1,5 @@
 <?php
-class DireccionesModel extends Query
+class DireccionModel extends Query
 {
 
     public function __construct()

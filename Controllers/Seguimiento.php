@@ -28,7 +28,11 @@ class Seguimiento extends Controller
         }
         for ($i = 0; $i < count($data); $i++) {
 
-           
+            // $datonuevo = $data[$i]['documento'];
+            $data[$i]['documento_descarga'] = '<a href="'.BASE_URL.'/Uploads/Contrato/'.$data[$i]['documento'].'"  class="btn btn-social-icon mr-1 btn-facebook"  download>
+            <i class="fab fa-facebook-f"></i>  </a>' ;
+            
+
             $inicio = $data[$i]['fecha_inicio'];
             $fin = $data[$i]['fecha_fin'];
 
@@ -53,7 +57,7 @@ class Seguimiento extends Controller
             }
 
             $data[$i]['accion'] = '<div class="d-flex">
-            <button class="btn btn-primary" type="button" onclick="Edit(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
 
             </div>';
             // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
@@ -66,26 +70,26 @@ class Seguimiento extends Controller
 
     public function registrar()
     {
-        if ((isset($_POST['nombre']))) {
+        if ((isset($_POST['direccion']))) {
 
             $regimen = $_POST['regimen'];
             $direccion = $_POST['direccion'];
             $cargo = $_POST['cargo'];
-            $documento = $_POST['documento'];
+            $documento = $_FILES['archivo']['name'];;
             $sueldo = $_POST['sueldo'];
             $fecha_inicio = $_POST['fecha_inicio'];
             $fecha_fin = $_POST['fecha_fin'];
             $estado = $_POST['estado'];
             $id = $_POST['id'];
-
+            $nombreArchivoActual = $_POST['nombreArchivoActual'];
+            
             if(empty($_SESSION['id_seguimiento_trabajador'])){
                 $trabajador_id = 'vacio';
             }else{
                 $trabajador_id =  $_SESSION['id_seguimiento_trabajador'];
             }
 
-            $inicio='';
-            $fin='';
+         
 
             if (empty($fecha_inicio)) {
                 $fecha_inicio = null;
@@ -102,8 +106,12 @@ class Seguimiento extends Controller
                 $fecha_fin = date('d-m-Y', strtotime($_POST['fecha_fin']));
                 
             }
-
+            date_default_timezone_set('America/Lima');
+            $fechaActual = date('Y-m-d_H-i-s');
+           
             
+
+
             $datos_log = array(
                 "id" => $id,
                 "trabajador_id" => $trabajador_id,
@@ -119,8 +127,8 @@ class Seguimiento extends Controller
             );
             $datos_log_json = json_encode($datos_log);
 
-            if (((empty($regimen)) || (empty($direccion)) || (empty($cargo)) || (empty($documento)) || (empty($sueldo)) || (empty($fecha_inicio)) || (empty($fecha_fin)) )) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+            if (((empty($regimen)) || (empty($direccion)) || (empty($cargo))  || (empty($sueldo)) || (empty($fecha_inicio)) || (empty($fecha_fin)) )) {
+                $respuesta = array('msg' => $fechaActual.'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
                 if (strlen($sueldo) < 2 || strlen($sueldo) > 7) {
@@ -133,33 +141,101 @@ class Seguimiento extends Controller
                 if (!empty($error_msg)) {
 
                     $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
-                } else {
+                }  else {
                     // VERIFICO LA EXISTENCIA
-                    
+                   
                     // AQUI VEO LA DIFERENCIA DE HORARIOS
-
+                  
                     // REGISTRAR
                     if (empty($id)) {
 
-                        $data = $this->model->registrar($trabajador_id,$regimen,$direccion, $salida,$total);
+                        if ($_FILES['archivo']['error'] === 0) {
+                            $nombreArchivo = $_FILES['archivo']['name'];
+                            $tipoArchivo = $_FILES['archivo']['type'];
+                            // Obtener la extensión del archivo
+                            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+                            if ($extension === 'pdf') {
+                                // Acceder a la información del archivo
+                                // $tamañoArchivo = $_FILES['archivo']['size'];
+                                $rutaTemporal = $_FILES['archivo']['tmp_name'];
+                        
+                                // Hacer algo con el archivo, como moverlo a una ubicación deseada
+                                $nombreArchivo = $fechaActual .'_'.$_SESSION['id'].'.'.$extension;
+                                move_uploaded_file($rutaTemporal, 'Uploads/Contrato/' . $nombreArchivo);
 
-                        if ($data > 0) {
-                            $respuesta = array('msg' => 'Detalle registrado', 'icono' => 'success');
-                            $this->model->registrarlog($_SESSION['id'], 'Crear', 'Horario Detalle', $datos_log_json);
-                        } else {
-                            $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+                                $data = $this->model->registrar($trabajador_id,$regimen,$direccion, $cargo,$nombreArchivo,$sueldo,$fecha_inicio,$fecha_fin);
+
+                                if ($data > 0) {
+                                    $respuesta = array('msg' => 'Seguimiento registrado', 'icono' => 'success');
+                                    $this->model->registrarlog($_SESSION['id'], 'Crear', 'Seguimiento', $datos_log_json);
+                                } else {
+                                    $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+                                }
+                            } else {
+                                
+                                $respuesta = array('msg' => 'El Archivo debe de ser un PDF', 'icono' => 'warning');
+                            }
+                        } else{
+                            $respuesta = array('msg' => 'Debe de Seleccionar un Archivo', 'icono' => 'error');
                         }
+
+                       
                         // MODIFICAR
                     } else {
+                        $result = $this->model->verificar($id);
+                        $nombreArchivo2 = $result['documento'];
+
+                        $borrar = "Uploads/Contrato/".$nombreArchivo2;
+                        // $respuesta = array('msg' => $nombreArchivo2, 'icono' => 'error');
+
+                        if (($_FILES['archivo']['error'] === 0)) {
+                            $nombreArchivo = $_FILES['archivo']['name'];
+                            $tipoArchivo = $_FILES['archivo']['type'];
+                            // Obtener la extensión del archivo
+                            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+                            if ($extension === 'pdf') {
+                                // Acceder a la información del archivo
+                                // $tamañoArchivo = $_FILES['archivo']['size'];
+                                $rutaTemporal = $_FILES['archivo']['tmp_name'];
+                                // $nombreArchivoConruta =$nombreArchivo.'.'.$tipoArchivo;
+                               
+                                $nombreArchivo = $fechaActual .'_'.$_SESSION['id'].'.'.$extension;
+                             
+                                    
+                                    if (file_exists($borrar)) {
+                                        unlink($borrar);
+                                       
+                                        move_uploaded_file($rutaTemporal, 'Uploads/Contrato/' . $nombreArchivo);
+                                        $data = $this->model->modificar($trabajador_id,$regimen,$direccion, $cargo,$nombreArchivo,$sueldo,$fecha_inicio,$fecha_fin, $estado, $id);
+                                        if ($data == 1) {
+                                            $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
+                                            $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
+                                        } else {
+                                            $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
+                                        }
+                                    }else{
+                                        $respuesta = array('msg' => 'hola2', 'icono' => 'error');
+                                    }
+                                  
+                                   
+                                
+
+                            }
+                        }else{
+                            $data = $this->model->modificarSinArchivo($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin, $estado, $id);
+
+                            if ($data == 1) {
+                                $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
+                                $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
+                            } else {
+                                $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
+                            }
+                           
+                        }
+
                         // COLOCAR AQUI VALIDADOR QUE AL MODIFICAR DE ACTIVO A INACTIVO CAMBIE A NULL
                         // El nombre de usuario es el mismo que el original, se permite la modificación
-                        $data = $this->model->modificar($nombre, $trabajador_id, $entrada, $salida,$total, $estado, $id);
-                        if ($data == 1) {
-                            $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
-                            $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Horario Detalle', $datos_log_json);
-                        } else {
-                            $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
-                        }
+                      
                     }
                 }
             }

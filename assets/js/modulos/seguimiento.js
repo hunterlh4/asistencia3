@@ -3,8 +3,7 @@ const frm = document.querySelector("#formulario");
 const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
-const telefono = document.getElementById("telefono");
-let numberCredit = document.getElementById("tarjeta");
+var archivo = document.querySelector("#nombreArchivoActual").value ;
 
 let mytable; // = document.querySelector("#table-1");
 let tblUsuario;
@@ -18,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   llenarTabla();
   llenarselectDireccion();
   llenarselectRegimen();
-  llenarselectHorario();
+  // llenarselectHorario();
   llenarselectCargo();
 
   //levantar modal
@@ -26,10 +25,12 @@ document.addEventListener("DOMContentLoaded", function () {
     frm.reset();
     resetRequiredFields();
     btnAccion.textContent = "Registrar";
-    titleModal.textContent = "Nuevo Trabajador";
+    titleModal.textContent = "Nuevo Seguimiento";
 
     document.querySelector("#radio-true").checked = true;
     document.querySelector("#id").value = "";
+    document.querySelector("#nombreArchivoActual").value = '';
+    document.querySelector("#nombreArchivo").innerHTML = 'Seleccione un Archivo';
     document.querySelectorAll("#estado-grupo").forEach((element) => {
       element.style.display = "none";
     });
@@ -40,8 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
   frm.addEventListener("submit", function (e) {
     e.preventDefault();
 
+  
     let data = new FormData(this);
-    const url = base_url + "Trabajador/registrar";
+    const url = base_url + "Seguimiento/registrar";
     const http = new XMLHttpRequest();
     http.open("POST", url, true);
     http.send(data);
@@ -71,11 +73,11 @@ function llenarTabla() {
         { data: "regimen" },
         { data: "direccion" },
         { data: "cargo" },
-        { data: "documento" },
+        { data: "documento_descarga" },
         { data: "sueldo" },
         { data: "fecha_inicio_2" },
         { data: "fecha_fin_2" },
-        { data: "estado" },
+        // { data: "estado" },
         { data: "accion" },
     ],
     dom: "Bfrtip",
@@ -122,7 +124,7 @@ function actualizartabla() {
 }
 
 function edit(id) {
-  const url = base_url + "Trabajador/edit/" + id;
+  const url = base_url + "Seguimiento/edit/" + id;
   const http = new XMLHttpRequest();
   http.open("GET", url, true);
   http.send();
@@ -133,25 +135,16 @@ function edit(id) {
       console.log(this.responseText);
       const res = JSON.parse(this.responseText);
       document.querySelector("#id").value = res.id;
-      document.querySelector("#dni").value = res.dni;
-      document.querySelector("#telefono").value = res.telefono;
-      document.querySelector("#tarjeta").value = res.nro_tarjeta;
-      document.querySelector("#nombre").value = res.apellido_nombre;
-      document.querySelector("#email").value = res.email;
-      document.querySelector("#nacimiento").value = res.fecha_nacimiento;
-      document.querySelector("#direccion").value = res.direccion_id;
-      document.querySelector("#regimen").value = res.regimen_id;
-      document.querySelector("#cargo").value = res.cargo_id;
-      document.querySelector("#horario").value = res.horario_id;
-      document.querySelector("#modalidad").value = res.modalidad_trabajo;
+      document.querySelector("#regimen").value = res.regimen;
+      document.querySelector("#direccion").value = res.direccion;
+      document.querySelector("#cargo").value = res.cargo;
+      document.querySelector("#nombreArchivo").innerHTML = res.documento;
+      document.querySelector("#nombreArchivoActual").value = res.documento;
+      
+      document.querySelector("#sueldo").value = res.sueldo;
+      document.querySelector("#fecha_inicio").value = res.fecha_inicio;
+      document.querySelector("#fecha_fin").value = res.fecha_fin;
 
-      if (res.sexo == "F") {
-        document.querySelector("#radio-mujer").checked = true;
-        document.querySelector("#radio-hombre").checked = false;
-      } else {
-        document.querySelector("#radio-hombre").checked = true;
-        document.querySelector("#radio-mujer").checked = false;
-      }
       if (res.estado == "Activo") {
         document.querySelector("#radio-true").checked = true;
         document.querySelector("#radio-false").checked = false;
@@ -164,7 +157,7 @@ function edit(id) {
       });
       // document.querySelector('#password').setAttribute('readonly', 'readonly');
       btnAccion.textContent = "Actualizar";
-      titleModal.textContent = "Modificar Trabajador";
+      titleModal.textContent = "Actualizar Seguimiento";
       myModal.show();
 
       //$('#nuevoModal').modal('show');
@@ -188,57 +181,73 @@ function cerrarModal() {
   myModal.hide();
 }
 
-telefono.addEventListener("input", (e) => {
-  let value = e.target.value.replace(/\D/g, ""); // Remueve todos los caracteres que no sean dígitos
-  let formattedValue = "";
+function goBack() {
+  window.location.href = base_url + "Trabajador";
+  // console.log('hola');
+}
 
-  // Formatea el número añadiendo un espacio después de cada grupo de tres dígitos
-  for (let i = 0; i < value.length; i++) {
-    if (i > 0 && i % 3 === 0) {
-      formattedValue += " ";
-    }
-    formattedValue += value[i];
+document.getElementById("archivo").addEventListener("change", function(event) {
+  // Obtener el nombre del nuevo archivo seleccionado por el usuario
+  var nuevoNombreArchivo = event.target.files[0].name;
+
+  // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
+  if (nombreArchivoActual !== nuevoNombreArchivo) {
+    document.getElementById("nombreArchivoActual").value = nuevoNombreArchivo;
+    document.getElementById("nombreArchivo").innerHTML = nuevoNombreArchivo;
   }
-
-  e.target.value = formattedValue;
 });
 
-function consultar() {
-    var dniNumber = document.getElementById("dni").value;
+// telefono.addEventListener("input", (e) => {
+//   let value = e.target.value.replace(/\D/g, ""); 
+//   let formattedValue = "";
 
 
-    if(dniNumber.length === 0){
-      Swal.fire("Aviso", 'campo vacio'.toUpperCase(), 'error');
-    }
-    if((dniNumber.length > 0) && (dniNumber.length < 8) ){
-      Swal.fire("Aviso", 'El DNI debe de tener 8 Digitos'.toUpperCase(), 'warning');
-    }
+//   for (let i = 0; i < value.length; i++) {
+//     if (i > 0 && i % 3 === 0) {
+//       formattedValue += " ";
+//     }
+//     formattedValue += value[i];
+//   }
+
+//   e.target.value = formattedValue;
+// });
+
+// function consultar() {
+//     var dniNumber = document.getElementById("dni").value;
+
+
+//     if(dniNumber.length === 0){
+//       Swal.fire("Aviso", 'campo vacio'.toUpperCase(), 'error');
+//     }
+//     if((dniNumber.length > 0) && (dniNumber.length < 8) ){
+//       Swal.fire("Aviso", 'El DNI debe de tener 8 Digitos'.toUpperCase(), 'warning');
+//     }
     
 
-    if(dniNumber.length === 8) {
-      const url = base_url + "Trabajador/obtenerDatosPorDNI/" + dniNumber;
-      const http = new XMLHttpRequest();
-      http.open("GET", url, true);
-      http.send();
-      http.onreadystatechange = function () {
-          if (this.readyState == 4 && this.status == 200) {
-              const res = JSON.parse(this.responseText);
-              console.log(this.responseText);
+//     if(dniNumber.length === 8) {
+//       const url = base_url + "Trabajador/obtenerDatosPorDNI/" + dniNumber;
+//       const http = new XMLHttpRequest();
+//       http.open("GET", url, true);
+//       http.send();
+//       http.onreadystatechange = function () {
+//           if (this.readyState == 4 && this.status == 200) {
+//               const res = JSON.parse(this.responseText);
+//               console.log(this.responseText);
 
-              if(res.apellidoPaterno === undefined || res.apellidoPaterno.length < 1){
-                Swal.fire("Aviso", 'no existe el numero de Dni'.toUpperCase(), 'error');
-              }else{
-                document.querySelector("#nombre").value =res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
-              }
-              res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
+//               if(res.apellidoPaterno === undefined || res.apellidoPaterno.length < 1){
+//                 Swal.fire("Aviso", 'no existe el numero de Dni'.toUpperCase(), 'error');
+//               }else{
+//                 document.querySelector("#nombre").value =res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
+//               }
+//               res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
 
-          } else {
-          console.log("Error al consultar y editar el DNI.");
-          }
-      };
-    }
+//           } else {
+//           console.log("Error al consultar y editar el DNI.");
+//           }
+//       };
+//     }
   
-}
+// }
 
 function verHistorial(id) {
   //  window.location.href =  base_url + 'HorarioDetalle?id=' + encodeURIComponent(id);
@@ -276,7 +285,7 @@ function llenarselectDireccion() {
         // Crear un elemento de opción
         let option = document.createElement("option");
         // Establecer el valor y el texto de la opción
-        option.value = opcion.did;
+        // option.value = opcion.did;
 
         if (opcion.destado === "Inactivo" || opcion.eestado === "Inactivo") {
           // Aplicar estilo al campo seleccionado
@@ -285,7 +294,15 @@ function llenarselectDireccion() {
           // Restablecer el color de fondo si el valor no es "Inactivo"
           option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
         }
-        option.text = opcion.dnombre + " " + opcion.enombre;
+        if(opcion.enombre==null){
+          option.text = opcion.dnombre;
+          option.value = opcion.dnombre;
+        }else{
+          
+          option.text = opcion.dnombre + " " + opcion.enombre;
+          option.value = opcion.dnombre + " " + opcion.enombre;
+         
+        }
         // Agregar la opción al select
         direccion.appendChild(option);
       });
@@ -308,7 +325,7 @@ function llenarselectRegimen() {
         // Crear un elemento de opción
         let option = document.createElement("option");
         // Establecer el valor y el texto de la opción
-        option.value = opcion.id;
+        option.value = opcion.nombre;
 
         if (opcion.estado === "Inactivo") {
           // Aplicar estilo al campo seleccionado
@@ -329,38 +346,38 @@ function llenarselectRegimen() {
   });
 }
 
-function llenarselectHorario() {
-  $.ajax({
-    url: base_url + "Trabajador/listarHorario",
-    type: "GET",
+// function llenarselectHorario() {
+//   $.ajax({
+//     url: base_url + "Trabajador/listarHorario",
+//     type: "GET",
 
-    success: function (response) {
-      datos = JSON.parse(response);
+//     success: function (response) {
+//       datos = JSON.parse(response);
 
-      datos.forEach((opcion) => {
-        // Crear un elemento de opción
-        let option = document.createElement("option");
-        // Establecer el valor y el texto de la opción
-        option.value = opcion.id;
+//       datos.forEach((opcion) => {
+//         // Crear un elemento de opción
+//         let option = document.createElement("option");
+//         // Establecer el valor y el texto de la opción
+//         option.value = opcion.id;
 
-        if (opcion.estado === "Inactivo") {
-          // Aplicar estilo al campo seleccionado
-          option.style.color = "red"; // Cambiar a tu color deseado
-        } else {
-          // Restablecer el color de fondo si el valor no es "Inactivo"
-          option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
-        }
+//         if (opcion.estado === "Inactivo") {
+//           // Aplicar estilo al campo seleccionado
+//           option.style.color = "red"; // Cambiar a tu color deseado
+//         } else {
+//           // Restablecer el color de fondo si el valor no es "Inactivo"
+//           option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
+//         }
 
-        option.text = opcion.nombre;
-        // Agregar la opción al select
-        horario.appendChild(option);
-      });
-    },
-    error: function (xhr, status, error) {
-      console.error(error);
-    },
-  });
-}
+//         option.text = opcion.nombre;
+//         // Agregar la opción al select
+//         horario.appendChild(option);
+//       });
+//     },
+//     error: function (xhr, status, error) {
+//       console.error(error);
+//     },
+//   });
+// }
 
 function llenarselectCargo() {
   $.ajax({
@@ -374,7 +391,7 @@ function llenarselectCargo() {
         // Crear un elemento de opción
         let option = document.createElement("option");
         // Establecer el valor y el texto de la opción
-        option.value = opcion.id;
+        option.value = opcion.nombre;
 
         if (opcion.estado === "Inactivo") {
           // Aplicar estilo al campo seleccionado

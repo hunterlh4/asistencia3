@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
         let data = new FormData(this);
-        const url = base_url + "equipos/registrar";
+        const url = base_url + "equipo/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(data);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "equipos/listar",
+            url: base_url + "equipo/listar",
             dataSrc: "",
         },
         columns: [
@@ -124,7 +124,7 @@ function actualizartabla(){
 
 
 function editUser(id) {
-    const url = base_url + "equipos/edit/" + id;
+    const url = base_url + "equipo/edit/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.send();

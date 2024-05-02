@@ -1,5 +1,5 @@
 <?php
-class Cargos extends Controller
+class Equipo extends Controller
 {
     public function __construct()
     {
@@ -13,17 +13,18 @@ class Cargos extends Controller
     public function index()
     {
 
-        $data['title'] = 'Cargos';
+        $data['title'] = 'Equipos';
         $data1 = '';
-        
-        $this->views->getView('Administracion', "Cargos", $data, $data1);
+        $this->views->getView('Administracion', "Equipo", $data, $data1);
     }
     public function listar()
     {
-        $data = $this->model->getCargos();
+        $data = $this->model->getEquipos();
         for ($i = 0; $i < count($data); $i++) {
 
             $datonuevo = $data[$i]['estado'];
+          
+           
             if ($datonuevo == 'Activo') {
                 $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";
             } else {
@@ -32,7 +33,7 @@ class Cargos extends Controller
 
             $data[$i]['accion'] = '<div class="d-flex">
             <button class="btn btn-primary" type="button" onclick="editUser(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
-           
+            
             </div>';
             // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
             // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
@@ -47,13 +48,13 @@ class Cargos extends Controller
         if ((isset($_POST['nombre']))){
 
             $nombre = $_POST['nombre'];
-            $nivel = $_POST['nivel'];
+            $estrategia = $_POST['estrategia'];
             $estado = $_POST['estado'];
             $id = $_POST['id'];
 
             $datos_log = array(
                 "nombre" => $nombre,
-                "nivel" => $nivel,
+                "estrategia" => $estrategia,
                 "estado" => $estado,
                
             );
@@ -63,14 +64,19 @@ class Cargos extends Controller
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 31) {
-                    $error_msg .= 'El Cargo debe tener entre 5 y 30 caracteres. <br>';
+                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
+                    $error_msg .= 'El Equipo debe tener entre 5 y 50 caracteres. <br>';
                 }
-                if ($nivel <= 0 || $nivel >= 10) {
-                    $error_msg .= 'El Nivel debe de entre 1 a 10. <br>';
+                if(!empty($estrategia)){
+                    if (strlen($estrategia) <= 5 ) {
+                        $error_msg .= 'El estrategia debe de ser mas grande.<br>';
+                    }
                 }
+
+                
               
                 if (!empty($error_msg)) {
+                    
                     $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
                 } else {
                     // VERIFICO LA EXISTENCIA
@@ -78,38 +84,40 @@ class Cargos extends Controller
                     // REGISTRAR
                     if (empty($id)) {
                         if (empty($result)) {
-                            $data = $this->model->registrar($nombre, $nivel);
+                            $data = $this->model->registrar($nombre,$estrategia);
 
                             if ($data > 0) {
-                                $respuesta = array('msg' => 'Cargo registrado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Crear','Cargos', $datos_log_json);
+                                $respuesta = array('msg' => 'Equipo registrado', 'icono' => 'success');
+                                $this->model->registrarlog($_SESSION['id'],'Crear','Equipo', $datos_log_json);
                             } else {
                                 $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
                             }
                         } else {
-                            $respuesta = array('msg' => 'Cargo en uso', 'icono' => 'warning');
+                            $respuesta = array('msg' => 'Equipo en uso', 'icono' => 'warning');
                         }
                         // MODIFICAR
                     } else {
                         if ($result) {
                             if ($result['id'] != $id) {
-                                $respuesta = array('msg' => 'Cargo en uso', 'icono' => 'warning');
+                                $respuesta = array('msg' => 'Equipo en uso', 'icono' => 'warning');
                             } else {
+
+                                // COLOCAR AQUI VALIDADOR QUE AL MODIFICAR DE ACTIVO A INACTIVO CAMBIE A NULL
                                 // El nombre de usuario es el mismo que el original, se permite la modificación
-                                $data = $this->model->modificar($nombre, $nivel, $estado, $id);
+                                $data = $this->model->modificar($nombre,$estrategia, $estado, $id);
                                 if ($data == 1) {
-                                    $respuesta = array('msg' => 'Cargo modificado', 'icono' => 'success');
-                                    $this->model->registrarlog($_SESSION['id'],'Modificar','Cargos', $datos_log_json);
+                                    $respuesta = array('msg' => 'Equipo modificado', 'icono' => 'success');
+                                    $this->model->registrarlog($_SESSION['id'],'Modificar','Equipo', $datos_log_json);
                                 } else {
                                     $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
                                 }
                             }
                         } else {
                             // El usuario no existe, se permite la modificación
-                            $data = $this->model->modificar($nombre, $nivel, $estado, $id);
+                            $data = $this->model->modificar($nombre,$estrategia, $estado, $id);
                             if ($data == 1) {
                                 $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Modificar','Cargos', $datos_log_json);
+                                $this->model->registrarlog($_SESSION['id'],'Modificar','Equipo', $datos_log_json);
                             } else {
                                 $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
                             }
@@ -143,7 +151,7 @@ class Cargos extends Controller
     public function edit($id)
     {
         if (is_numeric($id)) {
-            $data = $this->model->getCargo($id);
+            $data = $this->model->getEquipo($id);
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         die();

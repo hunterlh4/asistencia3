@@ -1,5 +1,5 @@
 <?php
-class Usuarios extends Controller
+class Usuario extends Controller
 {
     public function __construct()
     {
@@ -18,7 +18,7 @@ class Usuarios extends Controller
     
         // $data1 = $this->model->getTrabajadores();
         $data1 = '';
-        $this->views->getView('Administracion', "Usuarios", $data,$data1);
+        $this->views->getView('Administracion', "Usuario", $data,$data1);
     }
     public function listar()
     {

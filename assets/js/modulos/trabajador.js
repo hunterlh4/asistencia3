@@ -134,7 +134,7 @@ function edit(id) {
       document.querySelector("#id").value = res.id;
       document.querySelector("#dni").value = res.dni;
       document.querySelector("#telefono").value = res.telefono;
-      document.querySelector("#tarjeta").value = res.nro_tarjeta;
+      document.querySelector("#tarjeta").value = res.tarjeta;
       document.querySelector("#nombre").value = res.apellido_nombre;
       document.querySelector("#email").value = res.email;
       document.querySelector("#nacimiento").value = res.fecha_nacimiento;
@@ -276,7 +276,7 @@ function llenarselectDireccion() {
         let option = document.createElement("option");
         // Establecer el valor y el texto de la opción
         option.value = opcion.did;
-
+        
         if (opcion.destado === "Inactivo" || opcion.eestado === "Inactivo") {
           // Aplicar estilo al campo seleccionado
           option.style.color = "red"; // Cambiar a tu color deseado
@@ -284,7 +284,13 @@ function llenarselectDireccion() {
           // Restablecer el color de fondo si el valor no es "Inactivo"
           option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
         }
-        option.text = opcion.dnombre + " " + opcion.enombre;
+        if(opcion.enombre==null){
+          option.text = opcion.dnombre
+        }else{
+          option.text = opcion.dnombre + " " + opcion.enombre;
+         
+        }
+       
         // Agregar la opción al select
         direccion.appendChild(option);
       });

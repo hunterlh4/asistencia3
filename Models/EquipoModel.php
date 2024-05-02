@@ -1,5 +1,5 @@
 <?php
-class EquiposModel extends Query
+class EquipoModel extends Query
 {
 
     public function __construct()

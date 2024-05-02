@@ -25,7 +25,7 @@ class Admin extends Controller
             if (empty($_POST['username']) || empty($_POST['password'])) {
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
-                $data = $this->model->getUsuario(strtolower($_POST['username']));
+                $data = $this->model->getLogin(strtolower($_POST['username']));
                 if (empty($data)) {
                     $respuesta = array('msg' => ' no existe', 'icono' => 'warning');
                 } else {
@@ -36,6 +36,9 @@ class Admin extends Controller
                         $_SESSION['apellido']  = $data['apellido'];
                         $_SESSION['nivel']  = $data['nivel'];
                         $validar = $this->model->usuario_conectado($data['id']);
+
+                        $_SERVER['usuario_autenticado'] = 'true';
+                        
                         if(empty($validar)) {
                             $this->model->registrar_conectado($data['id']);
                         } else {
@@ -93,7 +96,7 @@ class Admin extends Controller
         // $data['procesos'] = $this->model->getTotales(2);
         // $data['finalizados'] = $this->model->getTotales(3);
         // $data['productos'] = $this->model->getProductos();
-        $this->views->getView('Administracion', "Mensajes", $data,$data1);
+        $this->views->getView('Administracion', "Mensaje", $data,$data1);
         
     }
     public function home()
