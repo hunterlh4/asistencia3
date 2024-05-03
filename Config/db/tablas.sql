@@ -104,6 +104,7 @@ CREATE TABLE trabajador (
     sexo CHAR  null,
     fecha_nacimiento date null default null,
     -- presencial-remoto-vacaciones
+    institucion varchar(100) null default 'DIRESA',
     modalidad_trabajo varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

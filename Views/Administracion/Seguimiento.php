@@ -92,7 +92,7 @@
                         <i class="fas fa-address-card"></i>
                       </div>
                     </div> -->
-                    <select class="form-control" id="direccion" name="direccion" >
+                    <select class="form-control" id="direccion" name="direccion" required>
                     <option value="" selected>Selecciona una Direccion</option>
                     <!-- Opciones para la dirección -->
                   </select>
@@ -106,7 +106,7 @@
               <label>Regimen</label>
                 <div class="input-group">
                  
-                    <select class="form-control" id="regimen" name="regimen" >
+                    <select class="form-control" id="regimen" name="regimen" required>
                     <option value="" selected>Selecciona un Regimen</option>
                     <!-- Opciones para la dirección -->
                   </select>
@@ -118,7 +118,7 @@
                 <label>Cargo</label>
                 <div class="input-group">
                  
-                    <select class="form-control" id="cargo" name="cargo" >
+                    <select class="form-control" id="cargo" name="cargo" required>
                     <option value="" selected>Selecciona un Cargo</option>
                     <!-- Opciones para la dirección -->
                   </select>
@@ -135,7 +135,7 @@
                       <i class="fas fa-calendar"></i>
                     </div>
                   </div> -->
-                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_inicio" id="fecha_inicio" >
+                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_inicio" id="fecha_inicio" required >
                 </div>
               </div>
             </div>
@@ -148,7 +148,7 @@
                       <i class="fas fa-calendar"></i>
                     </div>
                   </div> -->
-                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_fin" id="fecha_fin" >
+                  <input type="Date" class="form-control" placeholder="YYYY/MM/DD" name="fecha_fin" id="fecha_fin" required>
                 </div>
               </div>
             </div>
@@ -164,7 +164,7 @@
                         <i class="fas fa-address-card"></i>
                       </div>
                     </div> -->
-                  <input type="number" class="form-control" placeholder="Sueldo" name="sueldo" id="sueldo" maxlength="10" >
+                  <input type="number" class="form-control" placeholder="Sueldo" name="sueldo" id="sueldo" maxlength="10" required>
                   </div>
               </div>
             </div>

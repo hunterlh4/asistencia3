@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
         let data = new FormData(this);
-        const url = base_url + "usuarios/registrar";
+        const url = base_url + "usuario/registrar";
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(data);
@@ -82,8 +82,22 @@ function llenarselect(){
                 // Crear un elemento de opción
                 let option = document.createElement("option");
                 // Establecer el valor y el texto de la opción
+
+                if (opcion.estado === "Inactivo" ) {
+                    // Aplicar estilo al campo seleccionado
+                    option.style.color = "red"; // Cambiar a tu color deseado
+                }
+                
                 option.value = opcion.id;
-                option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+               
+                if(opcion.dni==null){
+                    option.text = opcion.apellido_nombre;
+                   
+                }else{
+                    
+                    option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+                }
+                
                 // Agregar la opción al select
                 select1.appendChild(option);
                 });
@@ -94,35 +108,35 @@ function llenarselect(){
     });
 }
 
-async function llenarselect2(){
-    try {
-        const response = await fetch(base_url + "usuario/listartrabajadores");
-        if (!response.ok) {
-            throw new Error("Error en la solicitud");
-        }
-        const datos = await response.json();
-        // datos = JSON.parse(datos);
-        // console.log(datos);
-        // Código para llenar el select con los datos...
-        let opcionInicial = document.createElement("option");
-                opcionInicial.value = '0';
-                opcionInicial.text = 'Seleccione un empleado';
-                select1.appendChild(opcionInicial);
+// async function llenarselect2(){
+//     try {
+//         const response = await fetch(base_url + "usuario/listartrabajadores");
+//         if (!response.ok) {
+//             throw new Error("Error en la solicitud");
+//         }
+//         const datos = await response.json();
+//         // datos = JSON.parse(datos);
+//         // console.log(datos);
+//         // Código para llenar el select con los datos...
+//         let opcionInicial = document.createElement("option");
+//                 opcionInicial.value = '0';
+//                 opcionInicial.text = 'Seleccione un empleado';
+//                 select1.appendChild(opcionInicial);
 
 
-                datos.forEach(opcion => {
-                // Crear un elemento de opción
-                let option = document.createElement("option");
-                // Establecer el valor y el texto de la opción
-                option.value = opcion.id;
-                option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
-                // Agregar la opción al select
-                select1.appendChild(option);
-                });
-    } catch (error) {
-        console.error(error);
-    }
-}
+//                 datos.forEach(opcion => {
+//                 // Crear un elemento de opción
+//                 let option = document.createElement("option");
+//                 // Establecer el valor y el texto de la opción
+//                 option.value = opcion.id;
+//                 option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+//                 // Agregar la opción al select
+//                 select1.appendChild(option);
+//                 });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({

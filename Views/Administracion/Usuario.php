@@ -1,4 +1,5 @@
 <?php include_once './Views/includes/header.php'; ?>
+
 <body>
   <div class="loader"></div>
   <div id="app">
@@ -15,12 +16,13 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
-                    
+
                     <h3 class="font-weight-bolder"><i class="fa fa-users"></i> Administrar Usuarios</h3>
                     <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Crear Nuevo Usuario</button>
                   </div>
 
                   <div class="card-body">
+
                     <div class="table-responsive">
                       <table class="table table-striped table-hover" style="width:100%;" id="table-alex">
                         <thead>
@@ -54,43 +56,46 @@
   </div>
 
   <!-- MODAL -->
-<div id="nuevoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div id="nuevoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
           <!-- <h5 class="modal-title" id="formModal">Usuario</h5> -->
           <h5 class="modal-title" id="titleModal"></h5>
+          <div class="form-group">
+
+          </div>
           <button type="button" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
         <form form id="formUsuarios" class="needs-validation" novalidate="" method="POST" autocomplete="off">
-        <div class="modal-body">
-          <input type="hidden" id="id" name="id">
-          <div class="form-group">
-            <label>Trabajador</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-toolbox"></i></div>
-              </div>
-              <select class="form-control" id='selectTrabajadores' name="trabajadores">
-              </select>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label>Usuario</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-user"></i></div>
-              </div>
-              <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" minlength="6"
-  maxlength="20" required>
-            </div>
-          </div>
+          <div class="modal-body">
+            <input type="hidden" id="id" name="id">
 
-          <div class="form-group">
+            <div class="form-group">
+              <label>Trabajador</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-toolbox"></i></div>
+                </div>
+                <select class="form-control" id='selectTrabajadores' name="trabajadores">
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Usuario</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-user"></i></div>
+                </div>
+                <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" minlength="6" maxlength="20" required>
+              </div>
+            </div>
+
+            <div class="form-group">
               <label>Password</label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -98,8 +103,7 @@
                     <i class="fas fa-lock"></i>
                   </div>
                 </div>
-                <input type="password" class="form-control" placeholder="Password" name="password" id="password" autocomplete="new-password" minlength="6"
-  maxlength="20" >
+                <input type="password" class="form-control" placeholder="Password" name="password" id="password" autocomplete="new-password" minlength="6" maxlength="20">
               </div>
             </div>
             <div class="form-group">
@@ -110,8 +114,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
-  maxlength="50">
+                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="50">
               </div>
             </div>
             <div class="form-group">
@@ -122,8 +125,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido" minlength="6"
-  maxlength="50">
+                <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido" minlength="6" maxlength="50">
               </div>
             </div>
             <div class="form-group">
@@ -147,6 +149,8 @@
 
               </div>
             </div>
+
+
 
             <!--  -->
             <div class="form-group" id="estado-grupo">
@@ -180,10 +184,10 @@
               <!-- <button class="btn btn-danger" type="button" onclick=cerrar() data-dismiss="modal" aria-label="Close">Cancelar</button> -->
               <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
             </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
   </div>
 
 
@@ -201,6 +205,8 @@
     // });
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
+
+
 </body>
 
 </html>

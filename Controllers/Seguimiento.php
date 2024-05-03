@@ -29,8 +29,8 @@ class Seguimiento extends Controller
         for ($i = 0; $i < count($data); $i++) {
 
             // $datonuevo = $data[$i]['documento'];
-            $data[$i]['documento_descarga'] = '<a href="'.BASE_URL.'/Uploads/Contrato/'.$data[$i]['documento'].'"  class="btn btn-social-icon mr-1 btn-facebook"  download>
-            <i class="fab fa-facebook-f"></i>  </a>' ;
+            $data[$i]['documento_descarga'] = '<a href="'.BASE_URL.'Uploads/Contrato/'.$data[$i]['documento'].'"  class="btn btn-success" title="'.$data[$i]['documento'].'"  Target="_blank">
+            <i class="fas fa-file-alt"></i>  </a>' ;
             
 
             $inicio = $data[$i]['fecha_inicio'];
@@ -112,23 +112,10 @@ class Seguimiento extends Controller
             
 
 
-            $datos_log = array(
-                "id" => $id,
-                "trabajador_id" => $trabajador_id,
-                "regimen" => $regimen,
-                "direccion" => $direccion,
-                "cargo" => $cargo,
-                "documento" => $documento,
-                "sueldo" => $sueldo,
-                "fecha_inicio" => $fecha_inicio,
-                "fecha_fin" => $fecha_fin,
-                "estado" => $estado,
-
-            );
-            $datos_log_json = json_encode($datos_log);
+          
 
             if (((empty($regimen)) || (empty($direccion)) || (empty($cargo))  || (empty($sueldo)) || (empty($fecha_inicio)) || (empty($fecha_fin)) )) {
-                $respuesta = array('msg' => $fechaActual.'todo los campos son requeridos', 'icono' => 'warning');
+                $respuesta = array('msg' =>'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
                 if (strlen($sueldo) < 2 || strlen($sueldo) > 7) {
@@ -165,6 +152,21 @@ class Seguimiento extends Controller
 
                                 $data = $this->model->registrar($trabajador_id,$regimen,$direccion, $cargo,$nombreArchivo,$sueldo,$fecha_inicio,$fecha_fin);
 
+                                $datos_log = array(
+                                    "id" => $id,
+                                    "trabajador_id" => $trabajador_id,
+                                    "regimen" => $regimen,
+                                    "direccion" => $direccion,
+                                    "cargo" => $cargo,
+                                    "documento" => $nombreArchivo,
+                                    "sueldo" => $sueldo,
+                                    "fecha_inicio" => $fecha_inicio,
+                                    "fecha_fin" => $fecha_fin,
+                                    "estado" => $estado,
+                    
+                                );
+                                $datos_log_json = json_encode($datos_log);
+
                                 if ($data > 0) {
                                     $respuesta = array('msg' => 'Seguimiento registrado', 'icono' => 'success');
                                     $this->model->registrarlog($_SESSION['id'], 'Crear', 'Seguimiento', $datos_log_json);
@@ -178,6 +180,20 @@ class Seguimiento extends Controller
                         } else{
                             $respuesta = array('msg' => 'Debe de Seleccionar un Archivo', 'icono' => 'error');
                         }
+                          $datos_log = array(
+                                "id" => $id,
+                                "trabajador_id" => $trabajador_id,
+                                "regimen" => $regimen,
+                                "direccion" => $direccion,
+                                "cargo" => $cargo,
+                                "documento" => $documento,
+                                "sueldo" => $sueldo,
+                                "fecha_inicio" => $fecha_inicio,
+                                "fecha_fin" => $fecha_fin,
+                                "estado" => $estado,
+
+                            );
+                            $datos_log_json = json_encode($datos_log);
 
                        
                         // MODIFICAR
@@ -206,27 +222,60 @@ class Seguimiento extends Controller
                                         unlink($borrar);
                                        
                                         move_uploaded_file($rutaTemporal, 'Uploads/Contrato/' . $nombreArchivo);
-                                        $data = $this->model->modificar($trabajador_id,$regimen,$direccion, $cargo,$nombreArchivo,$sueldo,$fecha_inicio,$fecha_fin, $estado, $id);
-                                        if ($data == 1) {
-                                            $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
-                                            $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
-                                        } else {
-                                            $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
-                                        }
+                                       
                                     }else{
-                                        $respuesta = array('msg' => 'hola2', 'icono' => 'error');
+                                        move_uploaded_file($rutaTemporal, 'Uploads/Contrato/' . $nombreArchivo);
                                     }
-                                  
-                                   
-                                
 
+                                    $data = $this->model->modificar($trabajador_id,$regimen,$direccion, $cargo,$nombreArchivo,$sueldo,$fecha_inicio,$fecha_fin, $estado, $id);
+
+
+                                    $datos_log = array(
+                                        "id" => $id,
+                                        "trabajador_id" => $trabajador_id,
+                                        "regimen" => $regimen,
+                                        "direccion" => $direccion,
+                                        "cargo" => $cargo,
+                                        "documento" => $nombreArchivo,
+                                        "sueldo" => $sueldo,
+                                        "fecha_inicio" => $fecha_inicio,
+                                        "fecha_fin" => $fecha_fin,
+                                        "estado" => $estado,
+            
+                                    );
+                                    $datos_log_json = json_encode($datos_log);
+                                    $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
+                                    if ($data == 1) {
+                                        $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
+                                       
+                                    } else {
+                                        $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
+                                    }
                             }
                         }else{
                             $data = $this->model->modificarSinArchivo($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin, $estado, $id);
 
+                            $datos_log = array(
+                                "id" => $id,
+                                "trabajador_id" => $trabajador_id,
+                                "regimen" => $regimen,
+                                "direccion" => $direccion,
+                                "cargo" => $cargo,
+                                "documento" => $nombreArchivoActual,
+                                "sueldo" => $sueldo,
+                                "fecha_inicio" => $fecha_inicio,
+                                "fecha_fin" => $fecha_fin,
+                                "estado" => $estado,
+    
+                            );
+                            $datos_log_json = json_encode($datos_log);
+                            
+                            $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
+                            
                             if ($data == 1) {
                                 $respuesta = array('msg' => 'Detalle modificado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Seguimiento', $datos_log_json);
+
+                               
                             } else {
                                 $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
                             }
@@ -235,6 +284,7 @@ class Seguimiento extends Controller
 
                         // COLOCAR AQUI VALIDADOR QUE AL MODIFICAR DE ACTIVO A INACTIVO CAMBIE A NULL
                         // El nombre de usuario es el mismo que el original, se permite la modificación
+                       
                       
                     }
                 }
@@ -271,4 +321,6 @@ class Seguimiento extends Controller
         }
         die();
     }
+
+   
 }

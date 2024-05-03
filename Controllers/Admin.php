@@ -37,7 +37,7 @@ class Admin extends Controller
                         $_SESSION['nivel']  = $data['nivel'];
                         $validar = $this->model->usuario_conectado($data['id']);
 
-                        $_SERVER['usuario_autenticado'] = 'true';
+                        // $_SERVER['usuario_autenticado'] = 'true';
                         
                         if(empty($validar)) {
                             $this->model->registrar_conectado($data['id']);

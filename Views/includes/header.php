@@ -8,7 +8,8 @@
     <?php echo $data['title']; ?>
   </title>
 
-  
+
+
 <link rel="icon" type="png" href="<?php echo BASE_URL; ?>assets/img/icono_diresa.png">
 <!-- General CSS Files -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/app.min.css">
@@ -22,8 +23,9 @@
 <!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css"> -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/jquery-selectric/selectric.css">
-<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
+
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/pretty-checkbox/pretty-checkbox.min.css">
 
 

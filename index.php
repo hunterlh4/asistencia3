@@ -1,6 +1,7 @@
 <?php
 require_once 'Config/Config.php';
 // $ruta = !empty($_GET['url']) ? $_GET['url'] : "home/index";
+
 $ruta = !empty($_GET['url']) ? $_GET['url'] : "home/index";
 $array = explode("/", $ruta);
 $controller = ucfirst($array[0]);
@@ -19,6 +20,9 @@ if (!empty($array[2])) {
         $parametro = trim($parametro, ",");
     }
 }
+
+
+
 require_once 'Config/App/Autoload.php';
 require_once 'Config/Helpers.php';
 $dirControllers = "Controllers/" . $controller . ".php";

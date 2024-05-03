@@ -13,7 +13,7 @@ class Usuario extends Controller
     public function index()
     {
         // $data = $this->model->getUsuarioId($_SESSION['id']);
-        $data['title'] = 'usuarios';
+        $data['title'] = 'usuario';
         // $data1="";
     
         // $data1 = $this->model->getTrabajadores();
@@ -177,7 +177,7 @@ class Usuario extends Controller
                                         //     "trabajador_id" => $trabajador_id
                                         // );
                                         // $datos_adicionales_json = json_encode($datos_adicionales);
-                                        $this->model->registrarlog($_SESSION['id'],'Crear','Usuarios', $datos_adicionales_json);
+                                        $this->model->registrarlog($_SESSION['id'],'Crear','Usuario', $datos_adicionales_json);
                                     } else {
                                         $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
                                     }
@@ -222,7 +222,7 @@ class Usuario extends Controller
                                         $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
                                         if ($data == 1) {
                                             $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                                            $this->model->registrarlog($_SESSION['id'],'Modificar','Usuarios', $datos_adicionales_json);
+                                            $this->model->registrarlog($_SESSION['id'],'Modificar','Usuario', $datos_adicionales_json);
                                         } else {
                                             $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
                                         }
@@ -232,7 +232,7 @@ class Usuario extends Controller
                                     $data = $this->model->modificar($usuario, $hash, $nombre, $apellido, $nivel, $trabajador_id, $estado, $id);
                                     if ($data == 1) {
                                         $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                                        $this->model->registrarlog($_SESSION['id'],'Modificar','Usuarios', $datos_adicionales_json);
+                                        $this->model->registrarlog($_SESSION['id'],'Modificar','Usuario', $datos_adicionales_json);
                                     } else {
                                         $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
                                     }

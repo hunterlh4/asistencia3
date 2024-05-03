@@ -1,7 +1,7 @@
 <!-- General JS Scripts -->
 <script src="<?php echo BASE_URL; ?>assets/js/app.min.js"></script>
 
-<script src="<?php echo BASE_URL; ?>assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+<!-- <script src="<?php echo BASE_URL; ?>assets/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script> -->
 <script src="<?php echo BASE_URL; ?>assets/bundles/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/bundles/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
@@ -14,7 +14,7 @@
 <!--<script src="https://cdn.datatables.net/plug-ins/1.10.15/sorting/datetime-moment.js"></script>-->
 
 
-<script src="<?php echo BASE_URL; ?>assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+<!-- <script src="<?php echo BASE_URL; ?>assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script> -->
 <script src="<?php echo BASE_URL; ?>assets/bundles/select2/dist/js/select2.full.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/bundles/jquery-selectric/jquery.selectric.min.js"></script>
 <!--  -->
@@ -56,6 +56,6 @@
 <script src="<?php echo BASE_URL; ?>assets/bundles/mobiscroll/js/mobiscroll.jquery.min.js"></script>
 
   <!-- Page Specific JS File -->
-  <!--<script src="assets/js/page/forms-advanced-forms.js"></script>-->
+<!-- <script src="<?php echo BASE_URL; ?>assets/js/forms-advanced-forms.js"></script> -->
 
   <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>

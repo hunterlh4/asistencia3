@@ -3,12 +3,20 @@ const frm = document.querySelector("#formulario");
 const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
-var archivo = document.querySelector("#nombreArchivoActual").value ;
+// NOMBRE DE MIS INPUTS
+const inputId = document.querySelector("#id");
+const inputRegimen = document.querySelector("#regimen");
+const inputHiddenFile = document.querySelector("#nombreArchivoActual") ;
+const labelFile = document.querySelector("#nombreArchivo");
+
 
 let mytable; // = document.querySelector("#table-1");
 let tblUsuario;
 var data9;
 var datos;
+
+//  INPUTS
+
 
 // Ajustar el tamaño del modal
 // Establece el ancho máximo del modal
@@ -26,11 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
     resetRequiredFields();
     btnAccion.textContent = "Registrar";
     titleModal.textContent = "Nuevo Seguimiento";
+    document.getElementById('archivo').setAttribute('required', 'required');
+ 
 
-    document.querySelector("#radio-true").checked = true;
-    document.querySelector("#id").value = "";
-    document.querySelector("#nombreArchivoActual").value = '';
-    document.querySelector("#nombreArchivo").innerHTML = 'Seleccione un Archivo';
+    inputId.value = "";
+    inputHiddenFile.value = '';
+    labelFile.innerHTML = 'Seleccione un Archivo';
+
     document.querySelectorAll("#estado-grupo").forEach((element) => {
       element.style.display = "none";
     });
@@ -132,19 +142,20 @@ function edit(id) {
     if (this.readyState == 4 && this.status == 200) {
       frm.reset();
       resetRequiredFields();
-      console.log(this.responseText);
+      // console.log(this.responseText);
       const res = JSON.parse(this.responseText);
-      document.querySelector("#id").value = res.id;
-      document.querySelector("#regimen").value = res.regimen;
+
+      inputId.value = res.id;
+      inputRegimen.value = res.regimen;
       document.querySelector("#direccion").value = res.direccion;
       document.querySelector("#cargo").value = res.cargo;
-      document.querySelector("#nombreArchivo").innerHTML = res.documento;
-      document.querySelector("#nombreArchivoActual").value = res.documento;
-      
+      labelFile.innerHTML = res.documento;
+      inputHiddenFile.value = res.documento;
+      document.getElementById('archivo').removeAttribute('required');
       document.querySelector("#sueldo").value = res.sueldo;
       document.querySelector("#fecha_inicio").value = res.fecha_inicio;
       document.querySelector("#fecha_fin").value = res.fecha_fin;
-
+      
       if (res.estado == "Activo") {
         document.querySelector("#radio-true").checked = true;
         document.querySelector("#radio-false").checked = false;
@@ -191,9 +202,9 @@ document.getElementById("archivo").addEventListener("change", function(event) {
   var nuevoNombreArchivo = event.target.files[0].name;
 
   // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
-  if (nombreArchivoActual !== nuevoNombreArchivo) {
-    document.getElementById("nombreArchivoActual").value = nuevoNombreArchivo;
-    document.getElementById("nombreArchivo").innerHTML = nuevoNombreArchivo;
+  if (inputHiddenFile !== nuevoNombreArchivo) {
+    inputHiddenFile.value = nuevoNombreArchivo;
+    labelFile.innerHTML = nuevoNombreArchivo;
   }
 });
 
