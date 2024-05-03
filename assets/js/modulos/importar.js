@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const res = JSON.parse(this.responseText);
                 if (res.icono == "success") {
                     
-                  
+                    
                     formulario.reset(); // Limpia el formulario
                     inputHiddenFile.value = null;
                     labelFile.innerHTML = 'Seleccione un Archivo';

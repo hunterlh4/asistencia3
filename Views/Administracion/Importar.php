@@ -34,8 +34,7 @@ include './Views/includes/sidebarnew.php';
                 <div class="m-2 text-center">
                     <span class="text-danger font-weight-bolder ">*Este proceso puede tardar unos segundos*</span>
                 </div>
-                <button type="submit" id="Importar" class="btn btn-success btn-block btn-lg"  >Cargar Datos
-                </button>
+                <button type="submit" id="Importar" class="btn btn-success btn-block btn-lg"  >Cargar Datos </button>
             </form>
         </div>
     </div>
