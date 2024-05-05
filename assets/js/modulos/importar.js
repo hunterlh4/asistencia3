@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     resetRequiredFields();
                    
                 }
+                // console.log(res.encabezado);
                 Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
             }
         }
@@ -62,7 +63,7 @@ archivo.addEventListener("change", function(event) {
     var extension = nuevoNombreArchivo.split('.').pop().toLowerCase();
   
     // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
-    if (extension === 'csv' || extension === 'xlsx') {
+    if (extension === 'csv' || extension === 'xls') {
         // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
         if (inputHiddenFile.value !== nuevoNombreArchivo) {
             inputHiddenFile.value = nuevoNombreArchivo;

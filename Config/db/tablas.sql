@@ -100,7 +100,7 @@ CREATE TABLE trabajador (
     telefono text  null,
     -- fecha_inicio date null, se pasa a historial
     -- fecha_expiracion date null,
-    nro_tarjeta text  null,
+    tarjeta text  null,
     sexo CHAR  null,
     fecha_nacimiento date null default null,
     -- presencial-remoto-vacaciones
@@ -236,10 +236,10 @@ create table seguimientoTrabajador(
 -- SELECT * FROM area_trabajo;
 SELECT * FROM equipo;
 SELECT * FROM direccion;
-SELECT * FROM licencias;
+SELECT * FROM licencia;
 -- SELECT * FROM modalidades;
 SELECT * FROM regimen;
-SELECT * FROM trabajadores;
+SELECT * FROM trabajador;
 SELECT * FROM usuario;
 
 

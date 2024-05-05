@@ -131,6 +131,7 @@ class Importar extends Controller
        
         $mensaje='';
         $icono='';
+        $tamaño='';
 
         if (isset($_FILES['archivo'])) {
             $archivo = $_FILES['archivo'];
@@ -140,60 +141,150 @@ class Importar extends Controller
                 // Obtiene la extensión del archivo
                 $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION);
                 $nombreArchivoExtension=  $_FILES['archivo']['tmp_name'];
-             
+                
                 // Verifica si la extensión es CSV o XLSX
-                if ($extension === 'csv' || $extension === 'xlsx') {
+                if ($extension === 'csv' || $extension === 'xls') {
                     // Procesa el archivo
-                    $archivo = fopen($nombreArchivoExtension, 'r');
+                    
                     $numerofilas='';
                     $tipoImportacion='';
+                    // aqui leo el archivo
+                    
+                    if($extension === 'csv') {
+                        $archivo = fopen($nombreArchivoExtension, 'r');
+                    }
+                    if($extension === 'xls') {
+                        // $excel = new COM('Excel.Application') or die('No se pudo iniciar Excel.');
+                        // $libro = $excel->Workbooks->Open($nombreArchivoExtension);
+                        // $hoja = $libro->Worksheets(1);
+                        // // $primer_fila = $hoja->Range("A1")->EntireRow->Value;
+                        // $rango = $hoja->Range("A1:Z1");
+                        // $valores_fila = $rango->Value;
+                        // $encabezados = array();
+                        // foreach ($valores_fila[1] as $valor) {
+                        //     $encabezados[] = $valor;
+                        // }
+                        // $posiciones = array();
+                        // $tamano_encabezados = count($encabezados); 
+                    }
+                  
+                    // $encabezados = explode(',', $primer_fila[0]); // lo guardo en un array
+                    
+                   
+
                     // Verifica si el archivo se abrió correctamente
-                    if ($archivo !== false) {
+                    if ($archivo !== false || $libro !== null) {
+
                         if($extension === 'csv'){
+
+                            $contenido_csv = file_get_contents($nombreArchivoExtension);
+                            // lo parseo
+                            $filas_csv = str_getcsv($contenido_csv, "\n"); // Obtener filas
+                            $primer_fila  = str_getcsv($filas_csv[0]); // Obtener encabezados
+                            $encabezados = array();
+                            foreach ($primer_fila as $valor) {
+                                $encabezados[] = $valor;
+                            }
+                            $posiciones = array();
                             // empleados
                             // reloj
                             // aqui diresa
-                            while (($encabezados = fgetcsv($archivo)) !== false) {
-                                if ($encabezados[0] === "DNI") {
-                                    // Este es el tipo de archivo de empleados
-                                    // Continúa con el procesamiento de los datos de empleados
-                                    // ...
-                                } else {
-                                    // Este es el tipo de archivo de asistencias
-                                    // Continúa con el procesamiento de los datos de asistencias
-                                    // ...
-                                }
+                            // $posiciones = array();
+                            // $encabezados = explode(',', $primer_fila[0]); // lo guardo en un array
+                            $tamano_encabezados = count($encabezados); // tamaño del encabezado
+                            if ($tamano_encabezados === 20) {
+                                // $tamaño='19';
+                                // $idUsuario = array_search("ID Usuario", $encabezados);
+                                // $nombre = array_search("Nombre", $encabezados);
+                                // $departamento = array_search("Departamento", $encabezados);
 
+                                $datos_buscados = array("ID Usuario", "Nombre", "Departamento");
+                                // $posiciones = array();
+
+                                foreach ($datos_buscados as $dato) {
+                                    $posicion = array_search($dato, $encabezados);
+                                    if ($posicion !== false) {
+                                        $posiciones[$dato] = $posicion;
+                                        // $tamaño = $tamaño .'-'. $posiciones[$dato];
+                                    }
+                                }
+                                $tamaño = "usuario-diresa";
+
+                            } elseif ($tamano_encabezados === 14) {
+                                // $tamaño='13';
+                                $datos_buscados = array("Fecha", "ID", "Nombre Usuario", "Departamento", "Entrada - Salida 1", "Entrada - Salida 2", "Entrada - Salida 3", "Entrada - Salida 4", "Entrada - Salida 5", "Entrada - Salida 6", "Entrada - Salida 7", "Entrada - Salida 8");
+                                // $posiciones = array();
+
+                                foreach ($datos_buscados as $dato) {
+                                    $posicion = array_search($dato, $encabezados);
+                                    if ($posicion !== false) {
+                                        $posiciones[$dato] = $posicion;
+                                        // $tamaño = $tamaño .'-'. $posiciones[$dato];
+                                    }
+                                }
+                                $tamaño = "asistencia-diresa";
+
+
+                            } else {
+                                // $tamaño='fuera de rango';
+                                $tamaño = "fallo";
                             }
 
-                        }
-                        else if($extension === 'xlsx'){
-                        }else{
+                            
+                            // $encabezado2_posicion = array_search('encabezado2', $encabezados);
+                            // $encabezado4_posicion = array_search('encabezado4', $encabezados);
+                            // $mensaje='El archivo se ha subido correctamente.'.'Se añadieron';
+                            // $icono='success';
+                            
 
+                        }
+                        else if($extension === 'xls'){
+
+                            $primer_fila  = fgetcsv($archivo); // Obtener encabezados
+                            $tamano_encabezados = count($encabezados);
+
+                            $encabezados = $primer_fila[0]; // lo guardo en un array
                             // los de samu
+                            $tamaño=="usuario-samu";
+                        }else{
+                            // 
+                            $mensaje='No se pudo abrir el archivo CSV.';
+                            $icono='error';
+                            
                         }
-                        // Lee cada línea del archivo CSV
+
                        
-                        while (($fila = fgetcsv($archivo)) !== false) {
-                        // Aquí puedes incluir el código para procesar el archivo CSV o XLSX
-                            // Procesa los datos de la fila
-                            // Aquí deberías implementar la lógica para extraer los datos relevantes de la fila
-                            // y registrarlos en tu base de datos
-                            // $id_usuario = $fila[0];
-                            // $nombre = $fila[1];
-                            // $departamento = $fila[2];
-                            // Continúa extrayendo otros campos según sea necesario y regístralos en la base de datos
-                            $numerofilas++;
-
+                        if($tamaño=="usuario-diresa"||$tamaño=="asistencia-diresa"||$tamaño=="usuario-samu"||$tamaño=="asistencia-samu"){
+                            $mensaje='Se registro '.$tamaño ;
+                            $icono='success';
+                        }else{
+                            $mensaje='EL formato Ingresado del Archivo es Incorrecto.'.$tamano_encabezados;
+                            $icono='warning';
                         }
-                        $mensaje='El archivo se ha subido correctamente.'.$nombreArchivoExtension.'Se añadieron'.$numerofilas;
-                        $icono='success';
+                       
 
+
+                        // Lee cada línea del archivo CSV
+                    
+                        // while (($fila = fgetcsv($archivo)) !== false) {
+                        // // Aquí puedes incluir el código para procesar el archivo CSV o XLSX
+                        //     // Procesa los datos de la fila
+                        //     // Aquí deberías implementar la lógica para extraer los datos relevantes de la fila
+                        //     // y registrarlos en tu base de datos
+                        //     // $id_usuario = $fila[0];
+                        //     // $nombre = $fila[1];
+                        //     // $departamento = $fila[2];
+                        //     // Continúa extrayendo otros campos según sea necesario y regístralos en la base de datos
+                        //     $numerofilas++;
+
+                        // }
+                        // $mensaje='El archivo se ha subido correctamente.'.$nombreArchivoExtension.'Se añadieron'.$numerofilas;
+                        // $icono='success';
                         // Cierra el archivo
                         fclose($archivo);
                     } else {
                         // Maneja el caso en que no se pudo abrir el archivo
-                        echo "Error: No se pudo abrir el archivo CSV.";
+                       
                         $mensaje='No se pudo abrir el archivo CSV.';
                         $icono='error';
                     }
@@ -214,7 +305,7 @@ class Importar extends Controller
             $icono='error';
         }
 
-        $respuesta = array('msg' => $mensaje, 'icono' => $icono);
+        $respuesta = array('msg' => $mensaje, 'icono' => $icono,'encabezado' =>$tamaño);
 
         echo json_encode($respuesta);
         die();

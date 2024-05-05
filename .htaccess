@@ -18,4 +18,3 @@ RewriteRule ^(Uploads/DNI|Uploads/Institucion|Uploads/Reportes)/.*$ BASE_URL/Vie
 # AuthUserFile /assets/Uploads/.htpasswd
 # Require valid-user
 
-

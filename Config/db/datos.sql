@@ -1186,10 +1186,10 @@ INSERT INTO usuario (username, password, nombre, apellido, nivel, trabajador_id)
 ('mari', '$2y$10$cA8nkmphOCGtKMbZHiIQEuq3cs8L2CXA6fydV/0SyuaOFvUs2uVIG', 'MARI CARMEN', 'PALZA S', 3, 31),
 ('adolfo', '$2y$10$R0Q2n2eNMnXof3/.LWIsDO4LpmK.RhgO7gTF2PLnC2xxVj0gY6qOu', 'ADOLFO', 'MAQUERA ALAVE', 3, 32),
 ('jlupe', '$2y$10$VYbCgtaFg5r6tRw2TKzu1u3ikgdA2S5/io84R8zNubCB41ID3QAca', 'Yudith', 'Jimenez Lupe', 2, 33),
-('alextm', '$2y$10$bqvWnqom58bJ.ARqJjH8vutc56wCqFVs/dqbBX/GsIltFtCHbXKx6', 'Alex Armando', 'Ticona Mamani', 1, 815),
-('alextm1', '$2y$10$5Ebp0O5H.49DHZFi5mVtd.bhvCEea7CUr1OA6pL58co6n6kpedMES', 'Alex Armando', 'Ticona Mamani', 2, 815),
-('alextm2', '$2y$10$vGv1lUKYDJM8nfkK0KPiAe32WZRDx6nkpvYE6fE2JIrxp4NEQiz1G', 'Alex Armando', 'Ticona Mamani', 3, 815),
-('alextm3', '$2y$10$2T/fcIsCgdjnn911mGzx2eJ1D.6Yo6d2p5mXWqMYODESUIOIjK7tG', 'Alex Armando', 'Ticona Mamani', 4, 815),
+('alextm', '$2y$10$bqvWnqom58bJ.ARqJjH8vutc56wCqFVs/dqbBX/GsIltFtCHbXKx6', 'Alex Armando', 'Ticona Mamani', 1, 812),
+('alextm1', '$2y$10$5Ebp0O5H.49DHZFi5mVtd.bhvCEea7CUr1OA6pL58co6n6kpedMES', 'Alex Armando', 'Ticona Mamani', 2, 812),
+('alextm2', '$2y$10$vGv1lUKYDJM8nfkK0KPiAe32WZRDx6nkpvYE6fE2JIrxp4NEQiz1G', 'Alex Armando', 'Ticona Mamani', 3, 812),
+('alextm3', '$2y$10$2T/fcIsCgdjnn911mGzx2eJ1D.6Yo6d2p5mXWqMYODESUIOIjK7tG', 'Alex Armando', 'Ticona Mamani', 4, 812),
 ('kathy', '$2y$10$cMjtrkif5PAkkaVMO7p9vOGhSrgBeYW96ZZbfoeeExkKPE0TyiK1i', 'KATHERINE OTILIA', 'DAVILA PARIA', 3, 32),
 ('rina', '$2a$06$6nVFOYGFdipx6nJhhqvkauCaSP3WZHEFPHjIxZ9UhYca5BvbT..0i', 'RINA LUZ', 'FERRERO VACCARI', 1, 32),
 ('abel', '$2y$10$na7/1bmiZNa4q8kUs1TUf.9ENT7WuMBUtyJ4FMaGsNP1LByBnHSM.', 'Abel', 'Maquera', 1, 33),
@@ -1207,11 +1207,11 @@ INSERT INTO usuario (username, password, nombre, apellido, nivel, trabajador_id)
 
 
 INSERT INTO boleta (numero, trabajador_id,aprobado_por, fecha_inicio, fecha_fin, hora_salida, hora_entrada, duracion, razon, observaciones, estado_tramite) VALUES
-('001', 1,815, '2024-04-01', '2024-04-01', '08:00:00', '12:00:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Aprobado'),
-('002', 2,815, '2024-04-02', '2024-04-02', '09:00:00', '13:00:00', '04:00:00', 'Reunión de equipo', 'Ninguna', 'Pendiente'),
-('003', 3,815, '2024-04-03', '2024-04-03', '07:00:00', '11:00:00', '04:00:00', 'Capacitación', 'Ninguna', 'Aprobado'),
-('004', 4,815, '2024-04-04', '2024-04-04', '08:30:00', '12:30:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Aprobado'),
-('005', 5,815, '2024-04-05', '2024-04-05', '08:00:00', '12:00:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Rechazado');
+('001', 1,812, '2024-04-01', '2024-04-01', '08:00:00', '12:00:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Aprobado'),
+('002', 2,812, '2024-04-02', '2024-04-02', '09:00:00', '13:00:00', '04:00:00', 'Reunión de equipo', 'Ninguna', 'Pendiente'),
+('003', 3,812, '2024-04-03', '2024-04-03', '07:00:00', '11:00:00', '04:00:00', 'Capacitación', 'Ninguna', 'Aprobado'),
+('004', 4,812, '2024-04-04', '2024-04-04', '08:30:00', '12:30:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Aprobado'),
+('005', 5,812, '2024-04-05', '2024-04-05', '08:00:00', '12:00:00', '04:00:00', 'Trabajo regular', 'Ninguna', 'Rechazado');
 
 
 

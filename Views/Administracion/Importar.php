@@ -26,7 +26,7 @@ include './Views/includes/sidebarnew.php';
                 <div class="col-md-12">
                     <div class="custom-file">
                         <input type="hidden" id="nombreArchivoActual" name="nombreArchivoActual">
-                        <input type="file" class="custom-file-input" id="archivo" name="archivo" accept=".csv,.xlxs" required>
+                        <input type="file" class="custom-file-input" id="archivo" name="archivo" accept=".csv,.xls" required>
                         <label class="custom-file-label" id="nombreArchivo" for="archivo">Seleccione un Archivo</label>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ include './Views/includes/sidebarnew.php';
     <?php include './Views/includes/script_new.php' ?>
 
     </html>
-    <script src="<?php echo BASE_URL; ?>/assets/js/modulos/importar.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/modulos/importar.js"></script>
 
     <script>
         const base_url = '<?php echo BASE_URL; ?>';
