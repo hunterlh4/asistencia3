@@ -19,6 +19,7 @@ class Direccion extends Controller
     }
     public function listar()
     {
+       
         $data = $this->model->getDirecciones();
         for ($i = 0; $i < count($data); $i++) {
 

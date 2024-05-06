@@ -1,27 +1,27 @@
-USUARIOS;;;;;;;;;;;;;;;;;;;;;;
-ID Usuario;Nombre;Departamento;Correo;Teléfono;Fecha Inicio;Fecha Vencimiento;Nivel Admin.;Modo Autenticación;Número de Template;Grupo de Acceso1;Grupo de Acceso2;Grupo de Acceso3;Grupo de Acceso4;Número Tarjeta;Bypass;Title;Mobile;Gender;Date of Birth;20;ID Usuario;
-422286;ACERO VILLEGAS ONDINA HERMENEGI;DIRESA/NOMBRADO;;;1/01/2010 00:00;1/09/2030 01:00;Usuario Normal;Dispositivo Predeterminado;3;Acceso Total;;;;5478472-99;Y;Guest;;Female;8/09/2023;;Nombre;
-;;;;;;;;;;;;;;;;;;;;;Departamento;
-ASISTENCIA;;;;;;;;;;;;;;;;;;;;;;
-Fecha;ID;Nombre Usuario;Departamento;Entrada - Salida 1;Entrada - Salida 2;Entrada - Salida 3;Entrada - Salida 4;Entrada - Salida 5;Entrada - Salida 6;Entrada - Salida 7;Entrada - Salida 8;Descanso;Tiempo Trabajado;;;;;;;14;Fecha;
-26/04/2024;1;VILLANUEVA ALAVE ANA MARIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;;;;;;;;ID;
-;;;;;;;;;;;;;;;;;;;;;Departamento;
-;;;;;;;;;;samus;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-Fecha;ID;Nombre Usuario;Departamento;Entrada - Salida 1;Entrada - Salida 2;Entrada - Salida 3;Entrada - Salida 4;Entrada - Salida 5;Entrada - Salida 6;Entrada - Salida 7;Entrada - Salida 8;Descanso;Tiempo Trabajado;dddd;;;;;;;;
-1/04/2024;1;VILLANUEVA ALAVE ANA MARIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;#N/D;;;;;;;;
-1/04/2024;2;QUISPE CALLACONDO PATRICIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;#N/D;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-Dpto.;Nombre;No.;Fecha/Hora;Locación ID;ID Número;VerificaCod;No.tarjeta;;;;;;;;;;;;;;;
-SAMU2023;SANTOS CUTIPA MIRIAN DAY;1;09-abr-24 7:21:53 AM;1;;FP;;;;;;;;;;;;;;;;
-SAMU2023;SANTOS CUTIPA MIRIAN DAY;1;09-abr-24 7:21:59 AM;1;;FP;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;
-AC No.;Nombre;Dpto.;Fecha;Hora;;;;;;;;;;;;;;;;;;
-002505126;ARTEAGA ROJA;SAMU2023;01-abr-24;;;;;;;;;;;;;;;;;;;
-002505126;ARTEAGA ROJA;SAMU2023;02-abr-24;;;;;;;;;;;;;;;;;;;
-002505126;ARTEAGA ROJA;SAMU2023;03-abr-24;;;;;;;;;;;;;;;;;;;
+USUARIOS;;;;;;;;;;;;;;;;;;;;;
+ID Usuario;Nombre;Departamento;Correo;Teléfono;Fecha Inicio;Fecha Vencimiento;Nivel Admin.;Modo Autenticación;Número de Template;Grupo de Acceso1;Grupo de Acceso2;Grupo de Acceso3;Grupo de Acceso4;Número Tarjeta;Bypass;Title;Mobile;Gender;Date of Birth;20;ID Usuario
+422286;ACERO VILLEGAS ONDINA HERMENEGI;DIRESA/NOMBRADO;;;1/01/2010 00:00;1/09/2030 01:00;Usuario Normal;Dispositivo Predeterminado;3;Acceso Total;;;;5478472-99;Y;Guest;;Female;8/09/2023;;Nombre
+;;;;;;;;;;;;;;;;;;;;;Departamento
+ASISTENCIA;;;;;;;;;;;;;;;;;;;;;
+Fecha;ID;Nombre Usuario;Departamento;Entrada - Salida 1;Entrada - Salida 2;Entrada - Salida 3;Entrada - Salida 4;Entrada - Salida 5;Entrada - Salida 6;Entrada - Salida 7;Entrada - Salida 8;Descanso;Tiempo Trabajado;;;;;;;14;Fecha
+26/04/2024;1;VILLANUEVA ALAVE ANA MARIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;;;;;;;;ID
+;;;;;;;;;;;;;;;;;;;;;Departamento
+;;;;;;;;;;samus;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+Fecha;ID;Nombre Usuario;Departamento;Entrada - Salida 1;Entrada - Salida 2;Entrada - Salida 3;Entrada - Salida 4;Entrada - Salida 5;Entrada - Salida 6;Entrada - Salida 7;Entrada - Salida 8;Descanso;Tiempo Trabajado;dddd;;;;;;;
+1/04/2024;1;VILLANUEVA ALAVE ANA MARIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;#N/D;;;;;;;
+1/04/2024;2;QUISPE CALLACONDO PATRICIA;DIRESA/PASIVOS /CESADOS DIRESA;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;00:00;#N/D;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+Dpto.;Nombre;No.;Fecha/Hora;Locación ID;ID Número;VerificaCod;No.tarjeta;;;;;;;;;;;;;;
+SAMU2023;SANTOS CUTIPA MIRIAN DAY;1;9/04/2024 07:21;1;;FP;;;;;;;;;;;;;;;
+SAMU2023;SANTOS CUTIPA MIRIAN DAY;1;9/04/2024 07:21;1;;FP;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+AC No.;Nombre;Dpto.;Fecha;Hora;;;;;;;;;;;;;;;;;
+2505126;ARTEAGA ROJA;SAMU2023;1-Abr-24;;;;;;;;;;;;;;;;;;
+2505126;ARTEAGA ROJA;SAMU2023;2-Abr-24;;;;;;;;;;;;;;;;;;
+2505126;ARTEAGA ROJA;SAMU2023;3-Abr-24;;;;;;;;;;;;;;;;;;

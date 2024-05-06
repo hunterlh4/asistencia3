@@ -8,6 +8,11 @@ const labelFile = document.querySelector("#nombreArchivo");
 const archivo = document.getElementById("archivo");
 
 const botonImportar = document.getElementById("Importar");
+
+const loadingMessage = document.getElementById("loadingMessage");
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
     botonImportar.disabled=true;
     
@@ -29,6 +34,10 @@ document.addEventListener("DOMContentLoaded", function() {
     //submit usuarios
     formulario.addEventListener("submit", function(e) {
         e.preventDefault();
+
+        loadingMessage.style.display = "block";
+
+
         let data = new FormData(this);
         const url = base_url + "importar/importar";
         const http = new XMLHttpRequest();
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const res = JSON.parse(this.responseText);
                 if (res.icono == "success") {
                     
-                    
+                    loadingMessage.style.display = "none";
                     formulario.reset(); // Limpia el formulario
                     inputHiddenFile.value = null;
                     labelFile.innerHTML = 'Seleccione un Archivo';
@@ -63,19 +72,24 @@ archivo.addEventListener("change", function(event) {
     var extension = nuevoNombreArchivo.split('.').pop().toLowerCase();
   
     // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
-    if (extension === 'csv' || extension === 'xls') {
+    if (extension === 'csv' || extension === 'xls'|| extension === 'xlsx') {
         // Actualizar el valor del campo oculto si el nombre del archivo ha cambiado
         if (inputHiddenFile.value !== nuevoNombreArchivo) {
             inputHiddenFile.value = nuevoNombreArchivo;
             labelFile.innerHTML = nuevoNombreArchivo;
             // Habilitar el botón de importar
             botonImportar.disabled = false;
+         
+            // botonImportar.classList.replace("btn-success", "btn-danger");
+            botonImportar.classList.replace("btn-secondary", "btn-success");
         }
     } else {
         // Si el archivo no es CSV o XLSX, deshabilitar el botón de importar
         botonImportar.disabled = true;
         inputHiddenFile.value = null;
         labelFile.innerHTML = 'Seleccione un Archivo';
+        botonImportar.classList.replace("btn-success", "btn-secondary");
+      
         // Opcional: mostrar un mensaje de error al usuario
         // alert("Por favor, seleccione un archivo CSV o XLSX.");
     }
