@@ -16,7 +16,7 @@ class Horario extends Controller
         
         $data['title'] = 'Horarios';
         $data1 = '';
-        $this->views->getView('Administracion', "Horarios", $data, $data1);
+        $this->views->getView('Administracion', "Horario", $data, $data1);
     }
     public function listar()
     {

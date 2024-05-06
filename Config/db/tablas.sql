@@ -229,6 +229,34 @@ create table seguimientoTrabajador(
 
 )
 
+create table pruebaasistencia(
+    id SERIAL PRIMARY KEY,
+    trabajador_id INT NOT NULL,
+    licencia VARCHAR(10) null default 1,
+    fecha date not null,
+    entrada INTERVAL(4)  null default '00:00',
+    salida INTERVAL(4)  null default '00:00',
+    total_reloj INTERVAL(4)  null default '00:00',
+    total INTERVAL(4)  null default '00:00',
+    tardanza INTERVAL(4)  null default '00:00',
+    tardanza_cantidad int null default '0',
+    justificacion varchar(10) NULL,
+    comentario text null default null,
+    reloj_1 INTERVAL(4)  null default '00:00',
+    reloj_2 INTERVAL(4)  null default '00:00',
+    reloj_3 INTERVAL(4)  null default '00:00',
+    reloj_4 INTERVAL(4)  null default '00:00',
+    reloj_5 INTERVAL(4)  null default '00:00',
+    reloj_6 INTERVAL(4)  null default '00:00',
+    reloj_7 INTERVAL(4)  null default '00:00',
+    reloj_8 INTERVAL(4)  null default '00:00',
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP null,
+    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
+    UNIQUE (trabajador_id, fecha)
+);
+
 
 -- https://asistencia.diresatacna.gob.pe/tab_rol_turnos.php
 

@@ -19,11 +19,11 @@ class HorarioDetalle extends Controller
     }
     public function listar()
     {
-        if (empty($_SESSION['id_temporal'])) {
+        if (empty($_SESSION['id_horario'])) {
             $data = $this->model->getHorarioDetalles();
            
         } else {
-            $id =  $_SESSION['id_temporal'];
+            $id =  $_SESSION['id_horario'];
             $data = $this->model->getHorarioDetallesPorHorario($id);
         }
         for ($i = 0; $i < count($data); $i++) {

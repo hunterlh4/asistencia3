@@ -30,13 +30,13 @@ include './Views/includes/sidebarnew.php';
                         <label class="custom-file-label" id="nombreArchivo" for="archivo">Seleccione un Archivo</label>
                     </div>
                 </div>
-                <div class="col-md-12 m-2 text-center"  id="loadingMessage"  style="display: none;" >
+                <div class="col-md-12 mb-2 mt-2 text-center"  id="loadingMessage"  style="display: none;" >
                 <span class="text-danger font-weight-bolder ">*Este proceso puede tardar unos segundos*</span>
                 </div>
 
               
 
-                <div class="col-md-12 m-2 text-center">
+                <div class="col-md-12 mb-2 mt-2 text-center">
                 <button type="submit" id="Importar" class="btn btn-secondary btn-block btn-lg"  >Cargar Datos </button>
                 </div>
                
