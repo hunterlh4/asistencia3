@@ -4,7 +4,7 @@ const HOST = "localhost";
 const USER = "postgres";
 const PASS = "123456";
 const DB = "postgres";
-const CHARSET = "charset=utf8";
+const CHARSET = "utf8";
 const TITLE = "asistencia";
 
 // const BASE_URL = "https://declaracion.diresatacna.gob.pe/";

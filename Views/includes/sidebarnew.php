@@ -57,6 +57,10 @@
               </ul>
             </li>';
         }
+        if($_SESSION['nivel'] == 1) {
+          // echo '  <li class="menu-header">Excel</li>';
+            echo '<li class="dropdown"> <a href="' .BASE_URL . 'Importar" class="nav-link"><i data-feather="upload"></i><span>Importar</span></a> </li> ';
+        }
         ?>
         <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
         <?php 
@@ -85,7 +89,9 @@
         if($_SESSION['nivel'] == 1 OR $_SESSION['nivel'] == 2) {
             echo '<li class="menu-header">Otros</li>';
             echo '<li class="dropdown"> <a href="tab_rol_turnos.php" class="nav-link"><i data-feather="bookmark"></i><span>Rol de Turnos</span></a> </li>';
+            
         }
+       
         ?>
         
         <?php
@@ -104,6 +110,7 @@
           echo ' <li class="menu-header">Usuario</li>';
             echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
         }
+       
         ?>
 
         

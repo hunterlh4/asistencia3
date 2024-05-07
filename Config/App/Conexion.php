@@ -3,7 +3,7 @@ class Conexion{
     private $conect;
     public function __construct()
     {
-        $pdo = "pgsql:host=".HOST.";port=".PUERTO.";dbname=".DB."";
+        $pdo = "pgsql:host=".HOST.";port=".PUERTO.";dbname=".DB.";options='--client_encoding=UTF8'";
         $pdo1 = "pgsql:host=".HOST.";dbname=".DB.";".CHARSET;
         try {
             $this->conect = new PDO($pdo, USER, PASS);

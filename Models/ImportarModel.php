@@ -19,7 +19,7 @@ class ImportarModel extends Query
     public function gethorarioDetalle($horario_id)
     {
         $sql = "SELECT * from horarioDetalle where horario_id='$horario_id'";
-        return $this->selectAll($sql);
+        return $this->select($sql);
     }
    
     public function getTrabajador($telefono_id)
@@ -48,10 +48,11 @@ class ImportarModel extends Query
         $array = array($trabajador_id,$licencia,$fecha,$entrada,$salida,$total_reloj,$total,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8);
         return $this->insertar($sql, $array);
     }
-    public function registrarAsistenciaPrueba($trabajador_id,$licencia,$fecha,$entrada,$salida,$total_reloj,$total,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8)
+   
+    public function registrarAsistenciaPrueba($trabajador_id,$licencia,$fecha,$entrada,$salida,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8)
     {
-        $sql = "INSERT INTO pruebaasistencia (trabajador_id,licencia,fecha,entrada,salida,total_reloj,total,tardanza,tardanza_cantidad,justificacion,reloj_1,reloj_2,reloj_3,reloj_4,reloj_5,reloj_6,reloj_7,reloj_8) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        $array = array($trabajador_id,$licencia,$fecha,$entrada,$salida,$total_reloj,$total,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8);
+        $sql = "INSERT INTO pruebaasistencia (trabajador_id,licencia,fecha,entrada,salida,tardanza,tardanza_cantidad,justificacion,reloj_1,reloj_2,reloj_3,reloj_4,reloj_5,reloj_6,reloj_7,reloj_8) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $array = array($trabajador_id,$licencia,$fecha,$entrada,$salida,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8);
         return $this->insertar($sql, $array);
     }
     public function modificarAsistencia($trabajador_id,$licencia,$fecha,$entrada,$salida,$total_reloj,$total,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8,$id)

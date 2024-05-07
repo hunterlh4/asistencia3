@@ -60,10 +60,10 @@ class HorarioDetalle extends Controller
             $total = $_POST['total'];
             $id = $_POST['id'];
 
-            if(empty($_SESSION['id_temporal'])){
+            if(empty($_SESSION['id_horario'])){
                 $horario_id = 'vacio';
             }else{
-                $horario_id =  $_SESSION['id_temporal'];
+                $horario_id =  $_SESSION['id_horario'];
             }
             
 

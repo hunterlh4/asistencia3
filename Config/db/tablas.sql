@@ -8,6 +8,7 @@ SET TIME ZONE 'America/Lima';
 --     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 --     update_at TIMESTAMP null
 -- );
+update pg_database set encoding = pg_char_to_encoding('utf8') where datname = 'postgres'
 
 CREATE TABLE equipo (
     id serial primary key,
