@@ -27,115 +27,6 @@ class Importar extends Controller
         $data1 = '';
         $this->views->getView('Administracion', "Importar", $data, $data1);
     }
-    public function listar()
-    {
-        // $data = $this->model->getRegimenes();
-        // for ($i = 0; $i < count($data); $i++) {
-
-        //     $datonuevo = $data[$i]['estado'];
-          
-        //     $data[$i]['sueldo']= "S/".$data[$i]['sueldo']."</div> ";
-        //     if ($datonuevo == 'Activo') {
-        //         $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";
-        //     } else {
-        //         $data[$i]['estado'] = "<div class='badge badge-danger'>Inactivo</div>";
-        //     }
-
-        //     $data[$i]['accion'] = '<div class="d-flex">
-        //     <button class="btn btn-primary" type="button" onclick="editUser(' . $data[$i]['id'] . ')"><i class="fas fa-edit"></i></button>
-           
-        //     </div>';
-        //     // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
-        //     // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
-        //     // colocar eliminar si es necesario
-        // }
-        // echo json_encode($data);
-        // die();
-    }
-
-    public function registrar()
-    {
-        if ((isset($_POST['nombre']))){
-
-            $nombre = $_POST['nombre'];
-            $sueldo = $_POST['sueldo'];
-            $estado = $_POST['estado'];
-            $id = $_POST['id'];
-
-            $datos_log = array(
-                "nombre" => $nombre,
-                "sueldo" => $sueldo,
-                "estado" => $estado,
-               
-            );
-            $datos_log_json = json_encode($datos_log);
-
-            if (empty($nombre)) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
-            } else {
-                $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 20) {
-                    $error_msg .= 'El Regimen debe tener entre 5 y 20 caracteres. <br>';
-                }
-                
-                if ($sueldo <= 50) {
-                    $error_msg .= 'El sueldo debe de ser mayor.<br>';
-                }
-              
-                if (!empty($error_msg)) {
-                    
-                    $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
-                } else {
-                    // VERIFICO LA EXISTENCIA
-                    $result = $this->model->verificar($nombre);
-                    // REGISTRAR
-                    if (empty($id)) {
-                        if (empty($result)) {
-                            $data = $this->model->registrar($nombre,$sueldo);
-
-                            if ($data > 0) {
-                                $respuesta = array('msg' => 'Regimen registrado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Crear','Regimen', $datos_log_json);
-                            } else {
-                                $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
-                            }
-                        } else {
-                            $respuesta = array('msg' => 'Regimen en uso', 'icono' => 'warning');
-                        }
-                        // MODIFICAR
-                    } else {
-                        if ($result) {
-                            if ($result['id'] != $id) {
-                                $respuesta = array('msg' => 'Regimen en uso', 'icono' => 'warning');
-                            } else {
-                                // El nombre de usuario es el mismo que el original, se permite la modificación
-                                $data = $this->model->modificar($nombre,$sueldo, $estado, $id);
-                                if ($data == 1) {
-                                    $respuesta = array('msg' => 'Regimen modificado', 'icono' => 'success');
-                                    $this->model->registrarlog($_SESSION['id'],'Modificar','Regimen', $datos_log_json);
-                                } else {
-                                    $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
-                                }
-                            }
-                        } else {
-                            // El usuario no existe, se permite la modificación
-                            $data = $this->model->modificar($nombre,$sueldo, $estado, $id);
-                            if ($data == 1) {
-                                $respuesta = array('msg' => 'Usuario modificado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Modificar','Regimen', $datos_log_json);
-                            } else {
-                                $respuesta = array('msg' => 'Error al modificar el usuario', 'icono' => 'error');
-                            }
-                        }
-                    }
-                }
-            }
-            
-            echo json_encode($respuesta);
-        }
-     
-        die();
-    }
     
     public function importarAntiguo(){
        
@@ -1038,11 +929,15 @@ class Importar extends Controller
         $cantidad_bug=0;
         $cantidad_registros=0;  
         $fechaFormateada=null;
-        $tardanza=0;
+        
+        
         $justificacion ='';
         $aviso='';
         $id=NULL;
         $hora_marcada=null;
+        $tardanza_cantidad=0;
+        $cantidad_departamento_mal=0;
+        $cantidad_departamento_bien=0;
     
         if (isset($_FILES['archivo'])) {
             $archivo = $_FILES['archivo'];
@@ -1108,6 +1003,7 @@ class Importar extends Controller
                                         $valores_separados[3]=='DIRESA/PASIVOS /CESADOS DIRESA'||
                                         $valores_separados[3]=='DIRESA/PASIVOS /CESADOS PRACTICANTES'){
                                         $cantidad_ignorados++;
+                                        
                                     }else if( 
                                         $valores_separados[3]=='DIRESA/276'||
                                         $valores_separados[3]=='DIRESA/CONTRALORIA'||
@@ -1118,14 +1014,14 @@ class Importar extends Controller
                                         $valores_separados[3]=='DIRESA/DESTACADOS'||
                                         $valores_separados[3]=='DIRESA/NOMBRADO'||
                                         // $valores_separados[3]=='DIRESA/NOMBRADO'||
-                                        
+                                       
                                         $valores_separados[3]=='DIRESA/PRACTICANTES'||
                                         $valores_separados[3]=='DIRESA/PROGRAMA_CANCER_DESA'||
                                         $valores_separados[3]=='DIRESA/PROYECTOS'||
                                         $valores_separados[3]=='DIRESA/REPUEST JUD'||
                                         $valores_separados[3]=='RED SALUD')
                                         {
-                                       
+                                        $cantidad_departamento_bien++;
                                         // CALCULO PARA LA ASISTENCIA
                                         $fechaString = $valores_separados[0];
                                         $Telefono_id_trabajador = $valores_separados[1];
@@ -1147,47 +1043,68 @@ class Importar extends Controller
                                         $reloj_8 = $valores_separados[11];
 
                                         
-                                        $entrada = null;
-                                        $salida = null;
+                                        $entrada = '00:00';
+                                        $salida = '00:00';
                                         $licencia = 'prueba';
+                                        
                                          // RECORRO LAS MARCADAS PARA OBTENER ENTRADA Y SALIDA
                                         for ($i = 4; $i <= 11; $i++) {
                                             // Verifica si la marcación es diferente de "00:00"
                                             if ($valores_separados[$i] !== '00:00') {
                                                 // Si aún no se ha establecido la hora de entrada, asigna la marcación actual como la hora de entrada
-                                                if ($entrada === null) {
+                                                if ($entrada === '00:00') {
                                                     $entrada = $valores_separados[$i];
                                                 }
                                                 // Asigna cada marcación diferente de "00:00" como la hora de salida hasta que no haya más
-                                                $salida = $valores_separados[$i];
+                                                // $salida = $valores_separados[$i];
+                                                // if ($salida ==$entrada){
+                                                //     $salida ='00:00';
+                                                // }
+                                                if ($valores_separados[$i] !== $entrada) {
+                                                    $salida = $valores_separados[$i];
+                                                }
                                             }
                                         }
+                                        $hora_marcada = new DateTime($entrada);
+                                        $salida_marcada = new DateTime($salida);
                                         //  VALIDAR SI EXISTE TRABAJADOR, EN CASO NO, SE IGNORA ASISTENCIA
                                         $result =$this->model->getTrabajador($Telefono_id_trabajador);
                                         if(empty($result)){
                                             $cantidad_ignorados++;
                                             $aviso = $aviso.$valores_separados[1];
                                             $bandera = 'no existe trabajador';
+                                            // BIEN;
                                         }else{
-                                            $id =$result['id'];
+                                            $trabajador_id =$result['id'];
                                             $horario_id=$result['horario_id'];
                                             $result =$this->model->gethorarioDetalle($horario_id);
                                             // VALIDARSI TIENE UN HORARIO
                                             if(empty($result)){
                                                 $cantidad_ignorados++;
                                                 $bandera = 'no existe horario';
+                                                // BIEN
                                             }else{
                                                 // $entrada_horario= $result['hora_entrada'];
                                                 // $salida_horario = $result['hora_salida'];
+
+                                                // VALIDAR SI HAY UN HORARIO PROGRAMADO
+                                                // $result =$this->model->getProgramacion($fecha_0,$trabajador_id);
+                                                // if(empty($result)){HORARIO PROGRAMADO}else{ HORARIO NORMAL}
+                                                // $entrada_PROGRAM = new DateTime($result['hora_entrada']); programada
+                                                // $salida_horario = new DateTime($result['hora_salida']); programada
+                                                //EN CASO TENGA SE MARCARA ESE HORARIO COMO LA ENTRADA Y LA SALIDA NUEVA 
                                                 $entrada_horario = new DateTime($result['hora_entrada']);
                                                 $salida_horario = new DateTime($result['hora_salida']);
                                                 $total = new DateTime($result['total']);
-
+                                                
+                                                $total_reloj='00:00';
                                                 $entrada_horario_string = $entrada_horario->format('H:i');
                                                 $salida_horario_string = $salida_horario->format('H:i');
                                                 $total_string = $total->format('H:i');
                                                 // $salida_horario
-                                           
+                                                $entrada_marcada_segundos = $hora_marcada->getTimestamp();
+                                                $entrada_horario_Segundos = $entrada_horario->getTimestamp();
+                                                $salida_marcada_segundos = $salida_marcada->getTimestamp();
                                                 // primer validador +5
                                                 $normal  = clone $entrada_horario;
                                                 // $horaSalidaModificada = clone $salida_horario;
@@ -1215,15 +1132,20 @@ class Importar extends Controller
     
                                                 $tardanza3b= clone $tardanza2a;
                                                 $tardanza3b->modify('+14 minutes');
+                                                $tardanza_cantidad = 0;
 
-                                                if($entrada ==NULL){
+                                                $tardanza='00:00';
+                                                if($entrada =='00:00'){
                                                     $licencia='SR';
                                                     $entrada='00:00';
+                                                    // $tardanza='00:00';
+                                                    // $tardanza='00:00';
+                                                  
                                                 }else{
                                                     
                                                     // $hora_entrada = strtotime($entrada);
                                                     // $hora_marcada = date('H:i', $hora_entrada);
-                                                    $hora_marcada = new DateTime($entrada);
+                                                    
                                                    
                                                     // $hora_entrada_formato = date('H:i', $normal);
                                                         // entre 7:46
@@ -1233,38 +1155,50 @@ class Importar extends Controller
                                                     if ($hora_marcada <= $entrada_horario) {
                                                         $tardanza_cantidad = 0; // marque 7:46 pero temprano es 7:35
                                                         $licencia = 'NMS';
-                                                    } elseif ($hora_marcada >= $tardanza1a && $hora_marcada <= $tardanza1b) {
-                                                        $tardanza_cantidad = 1; // marque 7:46 pero pide de  07:36 a 07:45
-                                                        // $tardanza = $entrada_horario - $hora_marcada;
-                                                        $licencia = 'NMS';
-                                                    } elseif ($hora_marcada >= $tardanza2a && $hora_marcada <= $tardanza2b) {
-                                                        $tardanza_cantidad = 2; // marque 7:46 pero pide de 07:46 a 07:55
-                                                        $licencia = 'NMS';
-                                                    } elseif ($hora_marcada >= $tardanza3a && $hora_marcada <= $tardanza3b) {
-                                                        $tardanza_cantidad = 3; // marque 7:46 pero pide de 07:56 a 08:00
-                                                        $licencia = 'NMS';
-                                                    } elseif ($hora_marcada > $tardanza3b) {
-                                                        $tardanza_cantidad = 0;
-                                                        $licencia = '+30';
-                                                    }else{
-                                                        $licencia ='NMS';
+                                                    } else{
+                                                        
+                                                       
+
+                                                        if ($hora_marcada >= $tardanza1a && $hora_marcada <= $tardanza1b) {
+                                                            $tardanza_cantidad = 1; // marque 7:46 pero pide de  07:36 a 07:45
+                                                            // $tardanza = $entrada_horario - $hora_marcada;
+                                                            
+                                                            $licencia = 'NMS';
+                                                        } elseif ($hora_marcada >= $tardanza2a && $hora_marcada <= $tardanza2b) {
+                                                            $tardanza_cantidad = 2; // marque 7:46 pero pide de 07:46 a 07:55
+                                                            
+                                                            $licencia = 'NMS';
+                                                        } elseif ($hora_marcada >= $tardanza3a && $hora_marcada <= $tardanza3b) {
+                                                            $tardanza_cantidad = 3; // marque 7:46 pero pide de 07:56 a 08:00
+                                                           
+                                                            $licencia = 'NMS';
+                                                        } elseif ($hora_marcada > $tardanza3b) {
+                                                          
+                                                            $tardanza_cantidad = 0;
+                                                            $licencia = '+30';
+                                                        
+                                                        }else{
+                                                            // $tardanza_cantidad = 0;
+                                                            // $licencia ='NMS';
+                                                        }
+
+                                                       
+                                                        // $diferenciaSegundos = $entrada_horario_Segundos - $entradaSegundos;
+                                                        // $horas = floor($diferenciaSegundos / 3600);
+                                                        // $minutos = floor(($diferenciaSegundos % 3600) / 60);
+                                                        // $diferenciaFormateada = sprintf('%02d:%02d', $horas, $minutos);
+                                                        // $diferenciaString = (string) $diferenciaFormateada;
+                                                        // $tardanza = $diferenciaString;
+
                                                     }
+                                                    
                     
-                                                    if($entrada !=null && $salida == null){
-                                                        $salida ='00:00';
+                                                    if($entrada !='00:00' && $salida == '00:00' && $licencia !=='+30'){
+                                                        // $salida ='00:00';
                                                         $licencia='NMS';
                                                     }else{
 
-                                                        $salida_marcada = new DateTime($salida);
-
-                                                        // $hora_salida = strtotime($salida);
-                                                        // $hora_salida_formato = date('H:i', $hora_salida);
-        
-                                                        // $diferencia_segundos = $salida_marcada - $hora_marcada;
-                                                        // $horas = floor($diferencia_segundos / 3600);
-                                                        // $minutos = floor(($diferencia_segundos - ($horas * 3600)) / 60);
-                                                        // $diferencia_formato = sprintf('%02d:%02d', $horas, $minutos);
-        
+    
                                                         if ($salida_marcada < $salida_horario && $licencia !=='+30') {
                                                             $licencia = 'NMS';
                                                         }else{
@@ -1276,54 +1210,74 @@ class Importar extends Controller
                                                         }
                                                         
                                                     }
-                                                    $result=$this->model->getAsistencia($Telefono_id_trabajador,$fecha_0);
-                                                    $marcada = $hora_marcada->format('H:i');
-                                                    $salida = $salida_marcada->format('H:i');
-                                                    if(empty($result)){
-                                                        // REGISTRO ASISTENCIA
-                                                        $cantidad_registrado++;
-                                                       
-                                                        $this->model->registrarAsistenciaPrueba($id,$licencia,$fecha_0,$marcada,$salida,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8);
-                                                    }else{
-                                                        // ACTUALIZO ASISTENCIA
-                                                        $cantidad_actualizado++;
+                                                    // $totalMinutos = ($tardanza->h * 60) + $tardanza->i;
+                                                    // $horas = floor($totalMinutos / 60);
+                                                    // $minutos = $totalMinutos % 60;
+
+                                                  
+                                                    // $tardanza = sprintf('%02d:%02d', $horas, $minutos);
+                                                    if(($entrada_marcada_segundos > $entrada_horario_Segundos) && $entrada !='00:00'){
+                                                        $diferenciaSegundos = $entrada_marcada_segundos - $entrada_horario_Segundos; 
+                                                        $diferenciaFormateada = gmdate("H:i", $diferenciaSegundos);
+                                                        $tardanza =$diferenciaFormateada;
+                                                        // $tardanza = '00:01';
                                                     }
-
+                                                    if($entrada !='00:00' && $salida !='00:00'){
+                                                        $diferenciaSegundos =  $salida_marcada_segundos - $entrada_marcada_segundos; 
+                                                        $diferenciaFormateada = gmdate("H:i", $diferenciaSegundos);
+                                                        $total_reloj =$diferenciaFormateada;
+                                                    }
+                                                    
+                                                 
                                                 }
-
-                                               
+                                                $result=$this->model->getAsistencia($Telefono_id_trabajador,$fecha_0);
+                                                $marcada = $hora_marcada->format('H:i');
+                                                $salida = $salida_marcada->format('H:i');
+                                                // $tardanzaString = $tardanza;
+                                                if(empty($result)){
+                                                    // REGISTRO ASISTENCIA
+                                                    $cantidad_registrado++;
+                                                    // $cantidad_actualizado++;
+                                                    $this->model->registrarAsistencia($trabajador_id,$licencia,$fecha_0,$marcada,$salida,$tardanza,$tardanza_cantidad,$total_reloj,$total_string,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8);
+                                                }else{
+                                                    $asistencia_id=$result['aid'];
+                                                    // ACTUALIZO ASISTENCIA
+                                                    $cantidad_actualizado++;
+                                                    $this->model->modificarAsistencia($trabajador_id,$licencia,$fecha_0,$marcada,$salida,$tardanza,$tardanza_cantidad,$total_reloj,$total_string,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8,$asistencia_id);
+                                                }
+                                                $mensaje = 
+                                                // '<br>Diferencia: '. $diferencia.
+                                                '<br>Llegada: '.$hora_marcada->format('H:i').
+                                                '<br>temprano: '.$normal->format('H:i').
+                                                '<br>Tarde 1a: '.$tardanza1a->format('H:i') .
+                                                '<br>Tarde 1b: '.$tardanza1b->format('H:i') .
+                                                '<br>Tarde 2a: '.$tardanza2a->format('H:i') .
+                                                '<br>Tarde 2b: '.$tardanza2b->format('H:i') .
+                                                '<br>Tarde 3a: '.$tardanza3a->format('H:i') .
+                                                '<br>Tarde 3b: '.$tardanza3b->format('H:i') .
+                                                '<br>cantidad Tarde: '.$tardanza_cantidad.
+                                                '<br>Horario Entrada: '.$entrada_horario_string .
+                                                '<br>Horario Salida: '.$salida_horario_string .
+                                                '<br>Horario total: '.$total_string .
+                                                '<br>Entrada: '.$entrada .
+                                                '<br>Salida: '.$salida .
+                                                '<br>nombre: '.$nombre .
+                                                '<br>fecha: '.$fecha_0.
+                                                '<br>id:'. $id.
+                                                '<br>r1:'. $reloj_1.
+                                                '<br>r2:'. $reloj_2.
+                                                '<br>r3:'. $reloj_3.
+                                                '<br>r4:'. $reloj_4.
+                                                '<br>r5:'. $reloj_5.
+                                                '<br>r6:'. $reloj_6.
+                                                '<br>r7:'. $reloj_7.
+                                                '<br>r8:'. $reloj_8.
+                                                '<br>Licencia:'.$licencia;
+                                                
+                                                // $hora_marcada = $hora_marcada->format('H:i');
+                                              
                                             }
                                         }   
-                                       
-                                        // $mensaje = 
-                                        // // '<br>Diferencia: '. $diferencia.
-                                        // '<br>Llegada: '.$hora_marcada->format('H:i').
-                                        // '<br>temprano: '.$normal->format('H:i').
-                                        // '<br>Tarde 1a: '.$tardanza1a->format('H:i') .
-                                        // '<br>Tarde 1b: '.$tardanza1b->format('H:i') .
-                                        // '<br>Tarde 2a: '.$tardanza2a->format('H:i') .
-                                        // '<br>Tarde 2b: '.$tardanza2b->format('H:i') .
-                                        // '<br>Tarde 3a: '.$tardanza3a->format('H:i') .
-                                        // '<br>Tarde 3b: '.$tardanza3b->format('H:i') .
-                                        // '<br>cantidad Tarde: '.$tardanza_cantidad.
-                                        // '<br>Horario Entrada: '.$entrada_horario_string .
-                                        // '<br>Horario Salida: '.$salida_horario_string .
-                                        // '<br>Horario total: '.$total_string .
-                                        // '<br>Entrada: '.$entrada .
-                                        // '<br>Salida: '.$salida .
-                                        // '<br>nombre: '.$nombre .
-                                        // '<br>fecha: '.$fecha_0.
-                                        // '<br>id:'. $id.
-                                        // '<br>r1:'. $reloj_1.
-                                        // '<br>r2:'. $reloj_2.
-                                        // '<br>r3:'. $reloj_3.
-                                        // '<br>r4:'. $reloj_4.
-                                        // '<br>r5:'. $reloj_5.
-                                        // '<br>r6:'. $reloj_6.
-                                        // '<br>r7:'. $reloj_7.
-                                        // '<br>r8:'. $reloj_8.
-                                        // '<br>Licencia:'.$licencia;
-
                                     }
                                     else{
                                         $cantidad_bug++; 
@@ -1339,6 +1293,7 @@ class Importar extends Controller
                         
                         // $tamaño=var_dump($datos_columnas);
                         // $mensaje = "Hola desde PHP!";
+                        // $mensaje = $mensaje .'Cantidad Mal'.$cantidad_departamento_mal.'BIEN'.$cantidad_departamento_bien;
                         $cantidad_registros = $cantidad_registrado +$cantidad_actualizado+ $cantidad_ignorados + $cantidad_bug;
                         $mensaje='El archivo es CSV. <br> Tiene:'.$cantidad_registros.$mensaje;//var_dump($dato) ;
                         $icono='success';
@@ -1633,12 +1588,8 @@ class Importar extends Controller
                         // $valores_separados[11] Entrada - Salida 8
                         
                     }
-                }
-                    // $mensaje='El archivo es XLSX.'.$columnasTotales;
-                    // $icono='success';
-                    // $tamaño=$fila_contada.'-'.$columna_contada . '-';
-
-                    // $mensaje = "Hola desde PHP!";
+                    }
+                   
                     $muestra = $licencia.'|'.$fechaFormateada.'|'.$entrada.'|'.$salida.'|'.$total_reloj.'|'.$total.'|'.$tardanza.'|'.$tardanza_cantidad.'|'.$justificacion.'|'.$comentario.'|'.$reloj_1.'|'.$reloj_2.'|'.$reloj_3.'|'.$reloj_4.'|'.$reloj_5.'|'.$reloj_6.'|'.$reloj_7.'|'.$reloj_8;
                     $cantidad_registros = $cantidad_registrado +$cantidad_actualizado+ $cantidad_ignorados + $cantidad_bug;
                     $mensaje='El archivo es XLSX.' .$muestra;//var_dump($dato) ;
@@ -1652,184 +1603,7 @@ class Importar extends Controller
                     break;
                 }
 
-                // if ($extension === 'csv' || $extension === 'xls'|| $extension === 'xlsx') {
-
-                    
-                    
-                //     $spreadsheet = IOFactory::load($nombreArchivoExtension);
-                  
-                //       $hoja = $spreadsheet->getActiveSheet();
-                //     // $encabezados = $hoja->rangeToArray('A1:' . $hoja->getHighestColumn() . '1', null, true, true, true);
-                //     // $datosPrimeraFila = reset($encabezados);
-                //     $tamano_encabezados = ''; 
-                //     $posiciones = [];
-                        
-                //     // Verifica si el archivo se abrió correctamente
-                //     if ($spreadsheet !==null) {
-
-                //         if($extension === 'csv'){
-                //             $reader = new Csv();
-                //             $reader->setDelimiter(',');
-                //             $reader->setEnclosure('"');
-                //             $reader->setSheetIndex(0);
-                //             $reader->setInputEncoding('utf8_encode');
-
-                //             $spreadsheet = $reader->load($nombreArchivoExtension);
-                //             $sheetData = $spreadsheet->getActiveSheet()->toArray();
-
-
-
-                //             // $encabezadosArray = explode(',', $encabezados);
-                //             // $encabezadosArrayOutput = print_r($encabezadosArray, true);
-
-                //             // // $datosSeparados = [];
-                //             // // foreach ($encabezadosArray as $indice => $valor) {
-                //             // //     $datosSeparados[$indice + 1] = $valor;
-                //             // //     $tamaño .= $valor ;
-                //             // // }
-                //             // $datosPrimeraFila = [];
-                //             // foreach ($hoja->getRowIterator(1, 1) as $fila) {
-                //             //     foreach ($fila->getCellIterator() as $celda) {
-                //             //         $datosPrimeraFila[] = $celda->getValue();
-                //             //         $tamaño.='-'.$celda->getValue();
-                //             //     }
-                //             // }
-                //             // $tamaño = $encabezados;
-
-                            
-                //             $data_aux = [];
-                //             foreach ($sheetData as $row) {
-                //                 $row_aux = [];
-                //                 foreach ($row as $cell) {
-                //                     if ($cell !== null) {
-                //                         $row_aux[] = mb_convert_encoding(strtoupper($this->remove_accents($cell)), "UTF-8");
-                //                     } else {
-                //                         $row_aux[] = null; // Otra acción si el valor es null
-                //                     }
-                //                 }
-                //                 $data_aux[] = $row_aux;
-                //             }
-                //                 $tamaño=print_r($data_aux);
-                               
-                           
-
-
-                //             // $tamano_encabezados = count($datosSeparados);
-                          
-
-                //             $ultimaFila = $hoja->getHighestRow();
-                //             $ultimaColumna = $hoja->getHighestColumn();
-                //             $tipo_archivo = "usuario-diresa";
-        
-                //             // if ($tamano_encabezados === 20) {
-                //             //     // $tamaño='19';
-                //             //     // $idUsuario = array_search("ID Usuario", $encabezados);
-                //             //     // $nombre = array_search("Nombre", $encabezados);
-                //             //     // $departamento = array_search("Departamento", $encabezados);
-
-                //             //     $datos_buscados = array("ID Usuario", "Nombre", "Departamento");
-                //             //     // $posiciones = array();
-
-                //             //     $tipo_archivo = "usuario-diresa";
-                //             //     foreach ($datos_buscados as $dato) {
-                //             //         $posicion = array_search($dato, $encabezadosArray);
-                //             //         if ($posicion !== false) {
-                //             //             // Si se encuentra el encabezado, almacenar su posición
-                //             //             $posiciones[$dato] = $posicion;
-                //             //         }
-                //             //     }
-                //             //     for ($fila = 2; $fila <= $ultimaFila; $fila++) {
-                //             //         // Obtener el valor de la celda en la columna A (primera columna)
-                //             //         $valorCelda = $hoja->getCell('A' . $fila)->getValue();
-                                    
-                //             //         // Separar los datos por comas y almacenarlos en un array
-                //             //         $datosFila = explode(',', $valorCelda);
-                                    
-                //             //         // Almacenar la fila en $datosCSV
-                //             //         $datosCSV[] = $datosFila;
-                //             //         foreach ($datosCSV as $fila) {
-                                       
-                //             //             foreach ($fila as $dato) {
-                                          
-                //             //                  $tamaño =$tamaño+ $dato;
-
-                                            
-                                            
-                //             //             }
-                //             //         }
-                //             //     }
-                //             // }else{
-                //             //     $tipo_archivo = "fallo";
-                //             // }
-
-                //         }
-                //         else if($extension === 'xls' || $extension === 'xlsx'){
-                //             // $tamano_encabezados = count($datosPrimeraFila); 
-
-                //             // $primer_fila  = fgetcsv($archivo); // Obtener encabezados
-                //             // $tamano_encabezados = count($encabezados);
-
-                //             // $encabezados = $primer_fila[0]; // lo guardo en un array
-                //             // los de samu
-
-                //         }else{
-                //             // 
-                //             $mensaje='No se pudo abrir el archivo CSV.';
-                //             $icono='error';
-                //             $tamaño="sin tamaño";
-                            
-                //         }
-
-                       
-                //         if($tipo_archivo=="usuario-diresa"||$tipo_archivo=="asistencia-diresa"||$tipo_archivo=="usuario-samu"||$tipo_archivo=="asistencia-samu"){
-                //             // 
-                //             // 
-                //             // 
-                //             // 
-                //             $mensaje='Se registro '.$tamano_encabezados ;
-                //             $icono='success';
-                //             // $tamaño = $tamano_encabezados;
-
-                           
-                //         }else{
-                //             $mensaje='EL formato Ingresado del Archivo es Incorrecto.';
-                //             $icono='warning';
-                //             // $tamaño =  'y su extension es '. $tamano_encabezados;
-                //         }
-                       
-
-
-                //         // Lee cada línea del archivo CSV
-                    
-                //         // while (($fila = fgetcsv($archivo)) !== false) {
-                //         // // Aquí puedes incluir el código para procesar el archivo CSV o XLSX
-                //         //     // Procesa los datos de la fila
-                //         //     // Aquí deberías implementar la lógica para extraer los datos relevantes de la fila
-                //         //     // y registrarlos en tu base de datos
-                //         //     // $id_usuario = $fila[0];
-                //         //     // $nombre = $fila[1];
-                //         //     // $departamento = $fila[2];
-                //         //     // Continúa extrayendo otros campos según sea necesario y regístralos en la base de datos
-                //         //     $numerofilas++;
-
-                //         // }
-                //         // $mensaje='El archivo se ha subido correctamente.'.$nombreArchivoExtension.'Se añadieron'.$numerofilas;
-                //         // $icono='success';
-                //         // Cierra el archivo
-                       
-                //     } else {
-                //         // Maneja el caso en que no se pudo abrir el archivo
-                       
-                //         $mensaje='No se pudo abrir el archivo CSV.';
-                //         $icono='error';
-                //     }
-
-
-                    
-                // } else {
-                //     $mensaje='El archivo debe ser CSV o XLSX.';
-                //     $icono='warning';
-                // }
+              
             } else {
                 $mensaje='Error al subir el archivo.';
                 $icono='error';
