@@ -30,7 +30,7 @@ class EquipoModel extends Query
     }
     public function modificar($nombre,$estrategia,$estado,$id)
     {
-        $sql = "UPDATE Equipo SET nombre=?,estrategia=?,estado=? WHERE id = ?";
+        $sql = "UPDATE Equipo SET nombre=?,estrategia=?,estado=?  ,update_at = NOW() WHERE id = ?";
         $array = array($nombre,$estrategia,$estado, $id);
         return $this->save($sql, $array);
     }

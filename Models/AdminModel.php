@@ -22,7 +22,7 @@ class AdminModel extends Query{
     }
     public function usuario_actualizar($id,$pass1)
     {
-        $sql = "UPDATE usuario SET password = ? WHERE id  = ?";
+        $sql = "UPDATE usuario SET password = ? ,update_at = NOW()  WHERE id  = ?";
         $array = array(password_hash($pass1, PASSWORD_BCRYPT),$id); 
         return $this->save($sql, $array);
     }

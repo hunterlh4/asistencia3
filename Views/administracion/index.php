@@ -65,22 +65,24 @@
 
               </div>
             </div>
+            <!-- CALCULO DE ASISTENCIA -->
             <div class="row">
               <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                   <div class="card-statistic-4">
                     <div class="align-items-center justify-content-between">
                       <div class="row ">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3 center">
                           <div class="card-content">
-                            <h5 class="font-15">Trabajo pendiente</h5>
-                            <h2 class="mb-3 font-18">258</h2>
+                            <h5 class="font-15">Puntuales</h5>
+                            <h2 class="mb-3 font-18">231</h2>
                             <!-- <p class="mb-0"><span class="col-green">10%</span> Incremento</p> -->
+                            <!-- <a type="button" class="btn btn-primary text-center mt-3" href=""><i class="fa fa-stopwatch"></i> Visualizar</a> -->
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="<?php echo BASE_URL; ?>/assets/img/banner/1.png" alt="">
+                            <img src="<?php echo BASE_URL; ?>assets/img/banner/1.png" alt="">
                           </div>
                         </div>
                       </div>
@@ -95,14 +97,14 @@
                       <div class="row ">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                           <div class="card-content">
-                            <h5 class="font-15">Tardanzas del día</h5>
-                            <h2 class="mb-2 font-18" id="num_tardanzas"> 0 </h2>
-                            <!-- <a type="button" class="btn btn-primary text-center mt-3" href="tab_tardanzas.php"><i class="fa fa-stopwatch"></i> Visualizar</a> -->
+                            <h5 class="font-15">Tardanzas</h5>
+                            <h2 class="mb-2 font-18 center" id="num_tardanzas"> 70 </h2>
+                            <!-- <a type="button" class="btn btn-primary text-center mt-3" href=""><i class="fa fa-stopwatch"></i> Visualizar</a> -->
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="<?php echo BASE_URL; ?>/assets/img/banner/3.png" alt="tardanzas">
+                            <img src="<?php echo BASE_URL; ?>assets/img/banner/3.png" alt="tardanzas">
                           </div>
                         </div>
                       </div>
@@ -117,15 +119,15 @@
                       <div class="row ">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                           <div class="card-content">
-                            <h5 class="font-15">Horas Trabajadas</h5>
-                            <h2 class="mb-3 font-18">100,000</h2>
+                            <h5 class="font-15">Sin Registro</h5>
+                            <h2 class="mb-3 font-18 center">85</h2>
                             <!-- <p class="mb-0"><span class="col-green">128,589</span> -->
                             <!-- 128,589</p> -->
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="<?php echo BASE_URL; ?>/assets/img/banner/2.png" alt="">
+                            <img src="<?php echo BASE_URL; ?>assets/img/banner/2.png" alt="">
                           </div>
                         </div>
                       </div>
@@ -140,14 +142,14 @@
                       <div class="row ">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                           <div class="card-content">
-                            <h5 class="font-15">Dias de Vacaciones</h5>
-                            <h2 class="mb-3 font-18">48,697</h2>
+                            <h5 class="font-15">Total</h5>
+                            <h2 class="mb-3 font-18 center">386</h2>
                             <!-- <p class="mb-0"><span class="col-green">42%</span> Incremento</p> -->
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="<?php echo BASE_URL; ?>/assets/img/banner/4.png" alt="">
+                            <img src="<?php echo BASE_URL; ?>assets/img/banner/4.png" alt="">
                           </div>
                         </div>
                       </div>
@@ -156,6 +158,95 @@
                 </div>
               </div>
             </div>
+
+            <!-- GRAFICOS -->
+            <div class="row">
+              <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="d-flex justify-content-between align-items-center">
+                              <div style="width: 100%; text-align: center;">
+                                  <h5 class="font-15">Puntuales</h5>
+                              </div>
+                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                              </div>
+                          </div>
+                          <div class="col-12 mt-3">
+                          <div class="banner-img d-flex justify-content-center">
+                                  <img src="<?php echo BASE_URL; ?>assets/img/banner/1.png" alt="">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="d-flex justify-content-between align-items-center">
+                              <div style="width: 100%; text-align: center;">
+                                  <h5 class="font-15">Tardanzas</h5>
+                              </div>
+                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                              </div>
+                          </div>
+                          <div class="col-12 mt-3">
+                          <div class="banner-img d-flex justify-content-center">
+                                <img src="<?php echo BASE_URL; ?>assets/img/banner/3.png" alt="tardanzas">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="d-flex justify-content-between align-items-center">
+                              <div style="width: 100%; text-align: center;">
+                                  <h5 class="font-15">Sin Registro</h5>
+                              </div>
+                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                              </div>
+                          </div>
+                          <div class="col-12 mt-3">
+                          <div class="banner-img d-flex justify-content-center">
+                          <img src="<?php echo BASE_URL; ?>assets/img/banner/2.png" alt="">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="d-flex justify-content-between align-items-center">
+                              <div style="width: 100%; text-align: center;">
+                                  <h5 class="font-15">Total</h5>
+                              </div>
+                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                              </div>
+                          </div>
+                          <div class="col-12 mt-3">
+                          <div class="banner-img d-flex justify-content-center">
+                          <img src="<?php echo BASE_URL; ?>assets/img/banner/4.png" alt="">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+             </div>
           </div>
         </section>
         <!--<section class="section">-->
@@ -168,11 +259,14 @@
   </div>
 
   <?php include './Views/includes/script_new.php' ?>
-  <script>
-    // $(document).ready(function(){
-    //   $(".collapse-btn").click();
-    // });
-  </script>
+  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/home.js"></script>
+
 </body>
 
 </html>
+
+
+<style>
+
+
+</style>

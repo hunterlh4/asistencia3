@@ -63,7 +63,7 @@ class Trabajador extends Controller
         die();
     }
 
-    public function listarHorario()
+    public function listarHorarioDetalle()
     {
         $data1 = $this->model->getHorario();
 
@@ -121,7 +121,7 @@ class Trabajador extends Controller
                 "regimen_id" => $regimen_id,
                 "cargo_id" => $cargo_id,
                 "modalidad" => $modalidad,
-                "horario_id" => $horario_id,
+                "horarioDetalle_id" => $horario_id,
                 "id" => $id,
                 "estado" => $estado,
 

@@ -30,7 +30,7 @@ class HorarioModel extends Query
     }
     public function modificar($nombre,$comentario,$estado,$id)
     {
-        $sql = "UPDATE Horario SET nombre=?,comentario=?,estado=? WHERE id = ?";
+        $sql = "UPDATE Horario SET nombre=?,comentario=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$comentario,$estado, $id);
         return $this->save($sql, $array);
     }

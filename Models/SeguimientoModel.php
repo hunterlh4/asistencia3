@@ -68,13 +68,13 @@ class SeguimientoModel extends Query
     }
     public function modificar($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
     {
-        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,documento=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? WHERE id = ?";
+        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,documento=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
         return $this->save($sql, $array);
     }
     public function modificarSinArchivo($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
     {
-        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? WHERE id = ?";
+        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
         return $this->save($sql, $array);
     }

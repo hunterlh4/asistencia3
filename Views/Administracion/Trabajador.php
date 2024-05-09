@@ -252,8 +252,8 @@
                    
                     <select class="form-control" id="modalidad" name="modalidad" required>
                     <option value="" selected>Selecciona una Modalidad</option>
-                    <option value="Trabajo Presencial">Trabajo Presencial</option>
-                    <option value="Trabajo Remoto" >Trabajo Remoto</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Remoto" >Remoto</option>
                     <option value="Licencia con Goce de Haber" >Licencia con Goce de Haber</option>
                     <option value="Vacaciones" >Vacaciones</option>
                     <!-- Opciones para la dirección -->

@@ -8,7 +8,12 @@ SET TIME ZONE 'America/Lima';
 --     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 --     update_at TIMESTAMP null
 -- );
-update pg_database set encoding = pg_char_to_encoding('utf8') where datname = 'postgres'
+CREATE DATABASE postgres1
+  WITH ENCODING='UTF8'
+  LC_COLLATE='en_US.utf8'
+  LC_CTYPE='en_US.utf8'
+  TEMPLATE=template0;
+-- update pg_database set encoding = pg_char_to_encoding('utf8') where datname = 'postgres'
 
 CREATE TABLE equipo (
     id serial primary key,
@@ -75,6 +80,9 @@ CREATE TABLE horarioDetalle (
     hora_entrada interval(6) null default '00:00:00',
     hora_salida interval(6) null default '00:00:00',
     total interval(6) null default '00:00:00',
+    hora_entrada2 interval(6) null default '00:00:00',
+    hora_salida2 interval(6) null default '00:00:00',
+    total2 interval(6) null default '00:00:00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -92,7 +100,7 @@ CREATE TABLE trabajador (
     apellido_nombre varchar(100) not null,
     direccion_id int null,
     regimen_id int null,
-    horario_id int null,
+    horarioDetalle_id int null default 1,
     cargo_id int  null,
     email text  null,
     -- documento text null,
@@ -106,13 +114,13 @@ CREATE TABLE trabajador (
     fecha_nacimiento date null default null,
     -- presencial-remoto-vacaciones
     institucion varchar(100) null default 'DIRESA',
-    modalidad_trabajo varchar(100) null,
+    modalidad_trabajo varchar(100) null default 'Presencial',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (direccion_id) REFERENCES direccion(id) ON DELETE CASCADE,
     FOREIGN KEY (regimen_id) REFERENCES regimen(id) ON DELETE CASCADE,
-    FOREIGN KEY (horario_id) REFERENCES horario(id) ON DELETE CASCADE,
+    FOREIGN KEY (horarioDetalle_id) REFERENCES horarioDetalle(id) ON DELETE CASCADE,
     FOREIGN KEY (cargo_id) REFERENCES cargo(id) ON DELETE CASCADE
 );
 
@@ -184,7 +192,7 @@ CREATE TABLE boleta (
 create table asistencia(
     id SERIAL PRIMARY KEY,
     trabajador_id INT NOT NULL,
-    licencia_id int null default 1,
+    licencia varchar(50) null ,
     fecha date not null,
     entrada interval(6)  null default '00:00:00',
     salida interval(6)  null default '00:00:00',
@@ -206,9 +214,10 @@ create table asistencia(
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
-    FOREIGN KEY (licencia_id) REFERENCES licencia(id),
     UNIQUE (trabajador_id, fecha)
 );
+-- en caso sea mas de 1 horario por fecha
+-- ALTER TABLE asistencia DROP CONSTRAINT asistencia_trabajador_id_fecha_key;
 
 create table seguimientoTrabajador(
     id SERIAL PRIMARY KEY,
@@ -227,36 +236,50 @@ create table seguimientoTrabajador(
     -- FOREIGN KEY (regimen_id) REFERENCES regimen(id),
     -- FOREIGN KEY (direccion_id) REFERENCES direccion(id),
     -- FOREIGN KEY (cargo_id) REFERENCES cargo(id)
-
 )
 
-create table pruebaasistencia(
+create table programacion(
     id SERIAL PRIMARY KEY,
-    trabajador_id INT NOT NULL,
-    licencia VARCHAR(10) null default 1,
+    programador_id int not null,
+    trabajador_id int  not null,
     fecha date not null,
-    entrada INTERVAL(4)  null default '00:00',
-    salida INTERVAL(4)  null default '00:00',
-    total_reloj INTERVAL(4)  null default '00:00',
-    total INTERVAL(4)  null default '00:00',
-    tardanza INTERVAL(4)  null default '00:00',
-    tardanza_cantidad int null default '0',
-    justificacion varchar(10) NULL,
-    comentario text null default null,
-    reloj_1 INTERVAL(4)  null default '00:00',
-    reloj_2 INTERVAL(4)  null default '00:00',
-    reloj_3 INTERVAL(4)  null default '00:00',
-    reloj_4 INTERVAL(4)  null default '00:00',
-    reloj_5 INTERVAL(4)  null default '00:00',
-    reloj_6 INTERVAL(4)  null default '00:00',
-    reloj_7 INTERVAL(4)  null default '00:00',
-    reloj_8 INTERVAL(4)  null default '00:00',
+    entrada interval(6)  null default '00:00:00',
+    salida interval(6)  null default '00:00:00',
+    total interval(6)  null default '00:00:00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
-    UNIQUE (trabajador_id, fecha)
-);
+    FOREIGN KEY(programador_id) REFERENCES trabajador(id),
+    FOREIGN KEY(trabajador_id) REFERENCES trabajador(id)
+)
+
+-- create table pruebaasistencia(
+--     id SERIAL PRIMARY KEY,
+--     trabajador_id INT NOT NULL,
+--     licencia VARCHAR(10) null default 1,
+--     fecha date not null,
+--     entrada INTERVAL(4)  null default '00:00',
+--     salida INTERVAL(4)  null default '00:00',
+--     total_reloj INTERVAL(4)  null default '00:00',
+--     total INTERVAL(4)  null default '00:00',
+--     tardanza INTERVAL(4)  null default '00:00',
+--     tardanza_cantidad int null default '0',
+--     justificacion varchar(10) NULL,
+--     comentario text null default null,
+--     reloj_1 INTERVAL(4)  null default '00:00',
+--     reloj_2 INTERVAL(4)  null default '00:00',
+--     reloj_3 INTERVAL(4)  null default '00:00',
+--     reloj_4 INTERVAL(4)  null default '00:00',
+--     reloj_5 INTERVAL(4)  null default '00:00',
+--     reloj_6 INTERVAL(4)  null default '00:00',
+--     reloj_7 INTERVAL(4)  null default '00:00',
+--     reloj_8 INTERVAL(4)  null default '00:00',
+--     estado varchar(10) NOT NULL DEFAULT 'Activo',
+--     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--     update_at TIMESTAMP null,
+--     FOREIGN KEY (trabajador_id) REFERENCES trabajador(id),
+--     UNIQUE (trabajador_id, fecha)
+-- );
 
 
 -- https://asistencia.diresatacna.gob.pe/tab_rol_turnos.php

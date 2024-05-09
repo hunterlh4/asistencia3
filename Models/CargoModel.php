@@ -30,7 +30,7 @@ class CargoModel extends Query
     }
     public function modificar($nombre,$nivel,$estado,$id)
     {
-        $sql = "UPDATE cargo SET nombre=?,nivel=?,estado=? WHERE id = ?";
+        $sql = "UPDATE cargo SET nombre=?,nivel=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$nivel,$estado, $id);
         return $this->save($sql, $array);
     }

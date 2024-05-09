@@ -81,7 +81,7 @@ class UsuarioModel extends Query
 
     public function modificar($usuario,$password,$nombre, $apellido, $nivel, $trabajador_id,$estado,$id)
     {
-        $sql = "UPDATE usuario SET username=?,password=?,nombre=?, apellido=?,nivel=?,trabajador_id=?,estado=? WHERE id = ?";
+        $sql = "UPDATE usuario SET username=?,password=?,nombre=?, apellido=?,nivel=?,trabajador_id=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($usuario,$password,$nombre, $apellido, $nivel, $trabajador_id,$estado, $id);
         return $this->save($sql, $array);
     }

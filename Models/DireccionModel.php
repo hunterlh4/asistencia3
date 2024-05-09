@@ -42,7 +42,7 @@ class DireccionModel extends Query
     }
     public function modificar($nombre,$equipo_id,$estado,$id)
     {
-        $sql = "UPDATE Direccion SET nombre=?,equipo_id=?,estado=? WHERE id = ?";
+        $sql = "UPDATE Direccion SET nombre=?,equipo_id=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$equipo_id,$estado, $id);
         return $this->save($sql, $array);
     }

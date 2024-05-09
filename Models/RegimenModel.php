@@ -30,7 +30,7 @@ class RegimenModel extends Query
     }
     public function modificar($nombre,$sueldo,$estado,$id)
     {
-        $sql = "UPDATE regimen SET nombre=?,sueldo=?,estado=? WHERE id = ?";
+        $sql = "UPDATE regimen SET nombre=?,sueldo=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$sueldo,$estado, $id);
         return $this->save($sql, $array);
     }

@@ -141,9 +141,9 @@ function edit(id) {
       document.querySelector("#direccion").value = res.direccion_id;
       document.querySelector("#regimen").value = res.regimen_id;
       document.querySelector("#cargo").value = res.cargo_id;
-      document.querySelector("#horario").value = res.horario_id;
+      document.querySelector("#horario").value = res.horariodetalle_id;
       document.querySelector("#modalidad").value = res.modalidad_trabajo;
-
+      console.log( res.horariodetalle_id);
       if (res.sexo == "F") {
         document.querySelector("#radio-mujer").checked = true;
         document.querySelector("#radio-hombre").checked = false;
@@ -336,7 +336,7 @@ function llenarselectRegimen() {
 
 function llenarselectHorario() {
   $.ajax({
-    url: base_url + "Trabajador/listarHorario",
+    url: base_url + "Trabajador/listarHorarioDetalle",
     type: "GET",
 
     success: function (response) {
@@ -346,7 +346,8 @@ function llenarselectHorario() {
         // Crear un elemento de opción
         let option = document.createElement("option");
         // Establecer el valor y el texto de la opción
-        option.value = opcion.id;
+
+        option.value = opcion.hdid;
 
         if (opcion.estado === "Inactivo") {
           // Aplicar estilo al campo seleccionado
@@ -355,8 +356,8 @@ function llenarselectHorario() {
           // Restablecer el color de fondo si el valor no es "Inactivo"
           option.style.backgroundColor = ""; // Restablecer el color a su valor por defecto
         }
-
-        option.text = opcion.nombre;
+        
+        option.text = opcion.hnombre +'  ('+opcion.hora_entrada_sin_segundos +' - '+opcion.hora_salida_sin_segundos +')';
         // Agregar la opción al select
         horario.appendChild(option);
       });

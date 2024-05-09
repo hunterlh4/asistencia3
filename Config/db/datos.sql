@@ -158,24 +158,34 @@ INSERT INTO direccion (nombre, equipo_id) VALUES
 ('Oficina Ejecutiva de Gestión y Desarrollo de Recursos Humanos', 29);
 
 INSERT INTO horario (nombre, comentario) VALUES 
-('Horario General', 'Solo contiene 1 turno mañana.'),
-('Horario Practicante Pre-Profesional', 'Turno único'),
-('Horario Practicante Profesional', 'Turno único'),
-('Horario SAMU - Conductores', NULL),
-('Horario OPCED - SAMU', 'Contiene 4 turnos detallados el detalle.'),
-('Horario Servicios Generales', 'Atribuye al personal de limpieza y seguridad'),
-('HORARIO DE SEGURIDAD', 'Se atribuye a los Tecnicos/as de Seguridad.');
+('Administrativo', 'Se atribuye al Personal Administrativo'),
+('Servicios Generales', 'Se atribuye a '),
+('Vigilancia', 'Se atribuye al Personal de Vigilancia'),
+('SAMU', 'Se atribuye a '),
+('DEEPI', 'Se atribuye a '),
+('Laboratorio Mol', 'Se atribuye a '),
+('Laboratorio Fron', 'Se atribuye a .'),
+('PRE-PROF', 'Se atribuye a los Practicantes Pre-Profesionales.');
 
 INSERT INTO horarioDetalle (horario_id, nombre, hora_entrada, hora_salida, total) VALUES 
-(1, 'Mañana', '08:00:00', '15:30:00', '07:30:00'),
-(2, 'Tarde', '09:00:00', '15:30:00', '06:30:00'),
-(3, 'Noche', '10:00:00', '15:30:00', '05:30:00'),
-(4, 'Mañana', '11:00:00', '15:30:00', '04:30:00'),
-(5, 'Tarde', '12:00:00', '15:30:00', '03:30:00'),
-(6, 'Mañana', '13:00:00', '15:30:00', '02:30:00'),
-(7, 'Tarde', '14:00:00', '15:30:00', '01:30:00');
+(1, 'ADM', '07:30:00', '15:30:00', '08:00:00'),
+(2, 'SG', '06:30:00', '14:30:00', '08:00:00'),
+(3, 'primero', '06:30:00', '15:30:00', '09:00:00'),
+(3, 'segundo', '06:30:00', '14:30:00', '08:00:00'),
+(3, 'tercero', '14:30:00', '06:30:00', '16:00:00'),
+(4, '6M', '07:30:00', '13:30:00', '06:00:00'),
+(4, '6T', '13:30:00', '19:30:00', '06:00:00'),
+(4, '12M', '07:30:00', '19:30:00', '12:00:00'),
+(4, '12N', '19:30:00', '07:30:00', '12:30:00'),
+(5, 'primero', '07:30:00', '22:30:00', '14:00:00'),
+(5, 'segundo', '07:30:00', '17:30:00', '10:00:00'),
+(5, 'tercero', '07:30:00', '24:30:00', '17:00:00'),
+(6, 'LM1', '09:00:00', '15:00:00', '06:00:00'),
+(6, 'LM2', '08:00:00', '14:00:00', '06:00:00'),
+(7, 'LF', '07:30:00', '22:30:00', '15:00:00'),
+(8, 'PREP', '07:30:00', '13:30:00', '06:30:00');
 
-INSERT INTO trabajador (telefono_id, apellido_nombre, direccion_id, regimen_id,horario_id,cargo_id, email, telefono, tarjeta, sexo, fecha_nacimiento,modalidad_trabajo)VALUES 
+INSERT INTO trabajador (telefono_id, apellido_nombre, direccion_id, regimen_id,horarioDetalle_id,cargo_id, email, telefono, tarjeta, sexo, fecha_nacimiento,modalidad_trabajo)VALUES 
 ('502044','ANCCO APAZA DE ZEA CRISTINA',1,1,1,1,NULL,NULL,'5458544-11','M',NULL, NULL),
 ('445381','CALLALLA NIETO JOSE LUIS',1,1,1,1,NULL,NULL,'7223257-84','M',NULL, NULL),
 ('492845','CHANGLLIO ROAS JUAN JOSE EVARIS',1,1,1,1,NULL,NULL,'6683791-2','M',NULL, NULL),
