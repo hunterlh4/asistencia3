@@ -36,8 +36,10 @@
 <!-- <script src="https://cdn.datatables.net/rowgroup/1.2.0/js/dataTables.rowGroup.min.js"></script> -->
 <script src="<?php echo BASE_URL; ?>assets/bundles/jquery-ui/jquery-ui.min.js"></script>
 
-<script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/main.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/locales-all.js"></script>
+<!-- <script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/main.js"></script> -->
+<script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/fullcalendar.min.js"></script>
+<!-- <script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/locales-all.js"></script> -->
+
 
 
 <!-- Page Specific JS File -->
