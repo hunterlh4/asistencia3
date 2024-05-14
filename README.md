@@ -2,18 +2,14 @@
  crear un modulo donde se registre una programacion en el que reemplazara al horario de entrada y salida fija
 
  primero validar si existe uno, en caso no exista no pasa nada , en caso exista, el horario y salida fija cambiaran a lo sque hay en la programacion y  se registrara como siempre
-  
- tendra los campos de
- id
- trabajador_id
- fecha
- entrada
- salida
- create
- update
 
  usar : http://localhost/plantilla-ui/forms-advanced-form.html tags para programarle un horario
 
+# en configuracion
+- colocar el tiempo de tardanza maximo, 5 minutos modificable 
+- vacaciones por detalle trabajador
+- reportes
+- el importar de samu
 
 
 # horarios

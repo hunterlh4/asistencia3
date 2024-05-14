@@ -15,31 +15,34 @@ class AsistenciaModel extends Query
     public function getAsistenciaPorFecha($id,$anio,$mes)
     {
         $sql = "SELECT
-                    id,
-                    trabajador_id,
-                    TO_CHAR(entrada ::interval, 'HH24:MI') AS entrada,
-                    TO_CHAR(salida ::interval, 'HH24:MI') AS salida,
-                    TO_CHAR(total_reloj ::interval, 'HH24:MI') AS total_reloj,
-                    TO_CHAR(tardanza ::interval, 'HH24:MI') AS tardanza,
-                    tardanza_cantidad,
-                    TO_CHAR(reloj_1 ::interval, 'HH24:MI') AS reloj_1,
-                    TO_CHAR(reloj_2 ::interval, 'HH24:MI') AS reloj_2,
-                    TO_CHAR(reloj_3 ::interval, 'HH24:MI') AS reloj_3,
-                    TO_CHAR(reloj_4 ::interval, 'HH24:MI') AS reloj_4,
-                    TO_CHAR(reloj_5 ::interval, 'HH24:MI') AS reloj_5,
-                    TO_CHAR(reloj_6 ::interval, 'HH24:MI') AS reloj_6,
-                    TO_CHAR(reloj_7 ::interval, 'HH24:MI') AS reloj_7,
-                    TO_CHAR(reloj_8 ::interval, 'HH24:MI') AS reloj_8,
-                    licencia, 
-                    EXTRACT(YEAR FROM fecha) AS anio,
-                    EXTRACT(MONTH FROM fecha) AS mes,
-                    EXTRACT(DAY FROM fecha) AS dia,
-                    EXTRACT(HOUR FROM entrada) AS hora_entrada,
-                    EXTRACT(MINUTE FROM entrada) AS minuto_entrada,
-                    EXTRACT(HOUR FROM salida) AS hora_salida,
-                    EXTRACT(MINUTE FROM salida) AS minuto_salida
-
-        FROM asistencia 
+                a.trabajador_id AS tid,
+    	        a.id AS aid,
+                fecha,
+                TO_CHAR(hd.total ::interval, 'HH24:MI') AS total_horario,
+                TO_CHAR(entrada ::interval, 'HH24:MI') AS entrada,
+                TO_CHAR(salida ::interval, 'HH24:MI') AS salida,
+                TO_CHAR(total_reloj ::interval, 'HH24:MI') AS total_reloj,
+                TO_CHAR(tardanza ::interval, 'HH24:MI') AS tardanza,
+                tardanza_cantidad,
+                TO_CHAR(reloj_1 ::interval, 'HH24:MI') AS reloj_1,
+                TO_CHAR(reloj_2 ::interval, 'HH24:MI') AS reloj_2,
+                TO_CHAR(reloj_3 ::interval, 'HH24:MI') AS reloj_3,
+                TO_CHAR(reloj_4 ::interval, 'HH24:MI') AS reloj_4,
+                TO_CHAR(reloj_5 ::interval, 'HH24:MI') AS reloj_5,
+                TO_CHAR(reloj_6 ::interval, 'HH24:MI') AS reloj_6,
+                TO_CHAR(reloj_7 ::interval, 'HH24:MI') AS reloj_7,
+                TO_CHAR(reloj_8 ::interval, 'HH24:MI') AS reloj_8,
+                licencia, 
+                EXTRACT(YEAR FROM fecha) AS anio,
+                EXTRACT(MONTH FROM fecha) AS mes,
+                EXTRACT(DAY FROM fecha) AS dia,
+                EXTRACT(HOUR FROM entrada) AS hora_entrada,
+                EXTRACT(MINUTE FROM entrada) AS minuto_entrada,
+                EXTRACT(HOUR FROM salida) AS hora_salida,
+                EXTRACT(MINUTE FROM salida) AS minuto_salida
+        FROM asistencia AS a 
+        INNER JOIN trabajador AS t ON t.id = a.trabajador_id 
+        inner JOIN horariodetalle AS hd ON t.horariodetalle_id = hd.id 
         WHERE trabajador_id = $id
         AND EXTRACT(YEAR FROM fecha) = $anio";
 
