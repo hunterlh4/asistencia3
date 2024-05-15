@@ -8,7 +8,17 @@ class BoletaModel extends Query
     }
     public function getBoletas()
     {
-        $sql = "SELECT id, numero,trabajador_id,aprobado_por,fecha_inicio,fecha_fin,hora_salida,hora_entrada,duracion,razon,observaciones,estado_tramite,estado from Boleta ORDER BY id ASC";
+        $sql = "SELECT b.id AS bid, numero,
+                trabajador_id AS solicitanteid,
+                t.apellido_nombre AS solitantenombre,
+                aprobado_por AS aprobadorid, 
+                t2.apellido_nombre AS aprobadornombre,
+                fecha_inicio,fecha_fin,hora_salida,hora_entrada,duracion,razon,observaciones,estado_tramite,
+                b.estado AS bestado 
+                from boleta AS b 
+                INNER JOIN trabajador AS t ON  t.id =b.trabajador_id 
+                left JOIN trabajador AS t2 ON t2.id = b.aprobado_por
+                ORDER BY b.id ASC";
 
         return $this->selectAll($sql);
     }
@@ -29,7 +39,7 @@ class BoletaModel extends Query
         estado_tramite, 
         estado 
     FROM 
-        Boleta 
+        boleta 
     WHERE 
         estado = 'Activo' 
         AND estado_tramite = 'Aprobado' 
@@ -57,7 +67,7 @@ class BoletaModel extends Query
         estado_tramite, 
         estado 
     FROM 
-        Boleta 
+        boleta 
     WHERE 
         estado = 'Activo' 
         AND estado_tramite = 'Aprobado' 
@@ -71,7 +81,7 @@ class BoletaModel extends Query
     
     public function getBoleta($id)
     {
-        $sql = "SELECT * FROM Boleta WHERE id = $id";
+        $sql = "SELECT * FROM boleta WHERE id = $id";
         return $this->select($sql);
     }
     // public function verificar($nombre)
@@ -79,21 +89,23 @@ class BoletaModel extends Query
     //     $sql = "SELECT id,nombre FROM Boleta WHERE nombre = '$nombre' ";
     //     return $this->select($sql);
     // }
-    public function registrar($nombre, $nivel)
+    
+                   
+    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$estado_tramite)
     {
-        $sql = "INSERT INTO Boleta (nombre,nivel) VALUES (?,?)";
-        $array = array($nombre,$nivel);
+        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,hora_salida,hora_entrada,razon,estado_tramite) VALUES (?,?,?,?,?,?,?,?)";
+        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$estado_tramite);
         return $this->insertar($sql, $array);
     }
-    public function modificar($nombre,$nivel,$estado,$id)
+    public function modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$id)
     {
-        $sql = "UPDATE Boleta SET nombre=?,nivel=?,estado=? ,update_at = NOW()  WHERE id = ?";
-        $array = array($nombre,$nivel,$estado, $id);
+        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,hora_salida=?,hora_entrada=?,razon =?,update_at = NOW()  WHERE id = ?";
+        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon, $id);
         return $this->save($sql, $array);
     }
     public function eliminar($id)
     {
-        $sql = "UPDATE Boleta SET estado = ? WHERE id = ?";
+        $sql = "UPDATE boleta SET estado = ? WHERE id = ?";
         $array = array(0, $id);
         return $this->save($sql, $array);
     }

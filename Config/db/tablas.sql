@@ -171,7 +171,7 @@ CREATE TABLE vacacion (
 -- https://asistencia.diresatacna.gob.pe/tab_auth_salida_new.php
 CREATE TABLE boleta (
     id SERIAL PRIMARY KEY,
-    numero VARCHAR(20) NOT NULL,
+    numero int AUTO_INCREMENT NOT NULL,
     trabajador_id INT NOT NULL,
     aprobado_por INT NULL,
     fecha_inicio DATE NOT NULL,

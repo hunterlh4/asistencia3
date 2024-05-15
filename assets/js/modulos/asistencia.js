@@ -6,6 +6,7 @@ const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 const select1 = document.getElementById("trabajador");
 var events =[];
 
+var boleta =[];
 var today = new Date();
 year = today.getFullYear();
 month = today.getMonth();
@@ -71,7 +72,7 @@ eventClick: function (calEvent, jsEvent, view) {
     let fechaformateada = new Date(fechaString)
     let año = fechaformateada.getFullYear();
     let mes = (fechaformateada.getMonth() + 1).toString().padStart(2, '0');
-    let dia = fechaformateada.getDate().toString().padStart(2, '0');
+    let dia = (fechaformateada.getDate()).toString().padStart(2, '0');
     fechaFormateada = año + "-" + mes + "-" + dia;
         if(licencia !=='SR'){
         // frm.reset();
@@ -161,6 +162,20 @@ viewRender: function(view, element) {
   $(".fc-agendaDay-button").text("Día");
   $(".fc-listMonth-button").text("Lista");
   $(".fc-today-button").text("Ahora");
+
+  $(".fc-listMonth-button").click(function() {
+    // Cambiar el texto del botón a "Lista"
+    $(this).text("Lista");
+    // Llamar a la función hola()
+    modificarCalendario();
+});
+
+$(".fc-month-button").click(function() {
+    // Cambiar el texto del botón a "Mes"
+    $(this).text("Mes");
+    // Llamar a la función hola()
+    modificarCalendario();
+});
 
 
   // var monthName = moment(view.start).format("MMMM");
@@ -263,7 +278,14 @@ document.addEventListener("DOMContentLoaded", function() {
         var currentDate = $('#myEvent').fullCalendar('getDate');
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
+        buscarBoleta(selectedValue);
+        // console.log('boleta llego')
+        // console.log(boleta);
         verAsistencia(currentMonth,currentYear, selectedValue);
+
+       
+        // console.log('asistencia')
+       
         // verAsistencia();
     });
 
@@ -296,6 +318,28 @@ document.addEventListener("DOMContentLoaded", function() {
 //     }
 // }
 
+function buscarBoleta(id){
+    
+    var parametros = {
+                        
+        "trabajador_id": id 
+    };
+    const url = base_url + "Boleta/buscarPorFechaSola";
+    $.ajax({
+        data:  parametros, //datos que se envian a traves de ajax
+        url:   url, //archivo que recibe la peticion
+        type:  'POST', //método de envio
+        success:  function (response) {
+            const res = JSON.parse(response);
+            boleta = res;
+            // console.log(boleta);
+            // console.log('boleta')
+                   
+        },
+        
+    });
+}
+
 function verAsistencia(mes,anio,id) {
     // Aquí puedes realizar cualquier acción que desees con la fecha del calendario y el valor seleccionado
     // console.log('Fecha del calendario:', anio +'-'+mes);
@@ -309,7 +353,7 @@ function verAsistencia(mes,anio,id) {
 
 
     const url = base_url + "asistencia/listaCalendarioAsistenciaTrabajador/";
-    var boleta=[];
+   
         $.ajax({
             data:  parametros, //datos que se envian a traves de ajax
             url:   url, //archivo que recibe la peticion
@@ -321,43 +365,31 @@ function verAsistencia(mes,anio,id) {
                     // console.log(response);
                     events = [];
                     const res = JSON.parse(response);
-                   
-                    var parametros = {
-                        
-                        "trabajador_id": res[0].tid 
-                    };
-                    const url = base_url + "Boleta/buscarPorFechaSola";
-                    $.ajax({
-                        data:  parametros, //datos que se envian a traves de ajax
-                        url:   url, //archivo que recibe la peticion
-                        type:  'POST', //método de envio
-                        success:  function (responseboleta) {
-                            const resb = JSON.parse(responseboleta);
-                            boleta = resb;
-                            
-                            // console.log(boleta);
-                            
-                        }
-                    });
+              
                     res.forEach((evento) => {
-                        console.log(boleta);
+                        var boletacalendar ='';
+                        // console.log(boleta);
                         for (let i = 0; i < boleta.length; i++) {
                             const boletaFecha = boleta[i].fecha_inicio;
-                            
-                            if (boletaFecha === evento.fecha) {
+                           
+                             if (boletaFecha == evento.fecha) {
                                 
-                                console.log(boletaFecha +'|-'+evento.fecha);
-                              
-                            } 
-                            console.log(boletaFecha +'|'+evento.fecha);
+                                // console.log(boletaFecha +'|-'+evento.fecha);
+                                
+                              boletacalendar='-Boleta';
+                             } 
+                             evento.licencia = evento.licencia + boletacalendar;
+                            // console.log(boletaFecha +'|'+evento.fecha);
                         }
-
+                        
+                        
 
                         events.push({
                             id: evento.aid,
                             title: evento.licencia,
                             start: new Date(evento.anio, evento.mes-1, evento.dia,evento.hora_entrada,evento.minuto_entrada),
                             end: new Date(evento.anio, evento.mes-1, evento.dia,evento.hora_salida,evento.minuto_salida),
+                       
                             trabajador_id: evento.tid,
                             backgroundColor: "transparent",
                             entrada: evento.entrada,
@@ -398,16 +430,23 @@ function verAsistencia(mes,anio,id) {
    
 }
 
+
+
+
 function modificarCalendario(){
+    
     const timeElements = document.querySelectorAll('.fc-time');
     timeElements.forEach((element) => {
         // Obtén el texto del elemento
         // console.log(element);
         let timeText = element.innerText.trim();
         const titleElement = element.parentElement.querySelector('.fc-title');
+        const contenido = titleElement.innerText.trim();
+    
+        
         // Divide el texto en horas y minutos
         if (timeText.includes('12a')) {
-            if (titleElement && titleElement.innerText.trim() === 'SR') {
+            if (titleElement && contenido === 'SR') {
                 timeText = ''; // Si es "12a" y fc-title contiene "SR", convierte el texto en una cadena vacía
             }
         } else if (timeText.includes('12p')) {
@@ -429,8 +468,38 @@ function modificarCalendario(){
             }
         }
         // Asigna el nuevo texto al elemento
-        element.innerText = timeText;
+        element.innerText = timeText;  
     });
+    
+
+    $(".fc-list-item").each(function() {
+        // Encuentra el hijo .fc-list-item-title a
+        const titleElement = $(this).find('.fc-list-item-title a');
+        // Verifica si el texto del enlace es "SR"
+        if (titleElement.length && titleElement.text().trim() === 'SR') {
+            // Encuentra el elemento .fc-list-item-time y establece su texto como una cadena vacía
+            const timeElement = $(this).find('.fc-list-item-time');
+            timeElement.text('');
+        }
+        let texto = titleElement.text().trim();
+        if (texto.endsWith('-Boleta')) {
+            // Reemplaza "-Boleta" por el nuevo contenido deseado
+            titleElement.html('<span style="color: red; font-weight: bold;">' + texto.replace('-Boleta', ' ') + '</span>');
+            
+            // Asigna el nuevo contenido al elemento
+            // titleElement.html(texto);
+        }
+    });
+
+    $(".fc-title").each(function() {
+        // Verifica si el texto del título termina con "-Boleta"
+        let texto = $(this).text().trim();
+        if (texto.endsWith('-Boleta')) {
+            // Reemplaza "-Boleta" por el nuevo contenido deseado
+            $(this).html('<span style="color: red; font-weight: bold;">' + texto.replace('-Boleta', ' ') + '</span>');
+        }
+    });
+    
 }
 
 
@@ -475,8 +544,17 @@ function llenarselect(){
 function llenarBoleta(fecha,trabajador_id){
     // fecha ='2024-05-01';
     // trabajador_id = 812;
+
+    let fechaformateada = new Date(fecha);
+    fechaformateada.setDate(fechaformateada.getDate() +2); // Sumar 1 día
+
+    let año = fechaformateada.getFullYear();
+    let mes = (fechaformateada.getMonth() + 1).toString().padStart(2, '0');
+    let dia = fechaformateada.getDate().toString().padStart(2, '0');
+    let fechaFormateada = año + "-" + mes + "-" + dia;
+    console.log(fechaFormateada);
     var parametros = {
-        "fecha": fecha,
+        "fecha": fechaFormateada,
         "trabajador_id": trabajador_id
     };
     $.ajax({
@@ -591,6 +669,5 @@ function llenarBoleta(fecha,trabajador_id){
         }
     });
 }
-
 
 
