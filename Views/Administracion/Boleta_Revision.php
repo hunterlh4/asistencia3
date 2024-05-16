@@ -18,7 +18,7 @@
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
 
                     <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Boletas</h3>
-                    <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button>
+                    
                   </div>
 
                   <div class="card-body">
@@ -70,7 +70,7 @@
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
             <div class="row">
-              <div class="col-md-6 col-sm-6">
+              <div class="col-md-12 col-sm-12">
                 <div class="form-group">
                   <label for="solicitante">Solicitante</label>
                   <select class="form-control" id="solicitante" name="solicitante" required>
@@ -80,15 +80,7 @@
                   </select>
                 </div>
                 </div>
-                <div class="col-md-6 col-sm-6">
-                <div class="form-group">
-                  <label for="aprobador">Aprobador</label>
-                  <select class="form-control" id="aprobador" name="aprobador" required>
-                  <option value="">Seleccione un aprobador</option>
-                    <!-- Opciones del select -->
-                  </select>
-                </div>
-                </div>
+              
                 <div class="col-md-3 col-sm-6">
                 <div class="form-group">
                   <label for="fecha_inicio">Fecha de Inicio</label>
@@ -142,15 +134,19 @@
                   <input type="text" class="form-control" id="otra_razon" name="otra_razon">
                 </div>
                 </div>
-                <div id="resultado" class="col-md-12 col-sm-12">
-
+                <div  class="col-md-12 col-sm-12">
+                <div class="form-group">
+                <label for="observacion">Observaciones</label>
+                <input type="text" class="form-control" id="observacion" name="observacion" >
+                </div>
                 </div>
              
                
 
                 <!--  -->
                 <div class="modal-footer bg-white col-md-12 col-sm-12">
-                  <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
+                  <button class="btn btn-success" value="aprobar" onclick="revisar('aprobar')">Aprobar</button>
+                  <button class="btn btn-info"  value="rechazar" onclick="revisar('rechazar')">rechazar</button>
                   <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
         </form>
@@ -166,7 +162,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta_revision.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

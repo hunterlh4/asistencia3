@@ -28,7 +28,7 @@
                           <tr>
                             <th># </th>
                             <th>Numero</th>
-                            <th>Solicitante</th>
+                            <th>Enviada a</th>
                             <th>Fecha</th>
                             <!-- <th>Fin</th> -->
                             <th>Entrada</th>
@@ -166,7 +166,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta_trabajador.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

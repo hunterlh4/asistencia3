@@ -106,13 +106,13 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "Boleta/listar",
+            url: base_url + "Boleta/listarMisBoletas",
             dataSrc: "",
         },
         columns: [
-            { data: "bid" },
+            { data: "boleta_id" },
             { data: "numero" },
-            { data: "solitantenombre" },
+            { data: "nombre_aprobador" },
             { data: "fecha_nueva" },
             // { data: "fecha_fin" },
             { data: "hora_entrada" },

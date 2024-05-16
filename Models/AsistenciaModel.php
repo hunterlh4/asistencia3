@@ -54,6 +54,14 @@ class AsistenciaModel extends Query
         $sql = "SELECT id,nombre FROM asistencia WHERE nombre = '$nombre' ";
         return $this->select($sql);
     }
+
+    public function getusuario($id){
+        $sql = "SELECT trabajador_id,t.apellido_nombre
+                FROM usuario as u
+                inner join trabajador as t on t.id=u.trabajador_id 
+                WHERE u.id = $id";
+        return $this->select($sql);
+    }
     public function registrar($nombre, $nivel)
     {
         $sql = "INSERT INTO asistencia (nombre,nivel) VALUES (?,?)";

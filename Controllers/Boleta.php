@@ -34,6 +34,7 @@ class Boleta extends Controller
 
             $fecha_inicio = $data[$i]['fecha_inicio'];
             $fecha_fin = $data[$i]['fecha_fin'];
+            $estado_tramite = $data[$i]['estado_tramite'];
 
             $fecha_inicio = date('d-m-Y', strtotime($fecha_inicio));
             $fecha_fin = date('d-m-Y', strtotime($fecha_fin));
@@ -51,11 +52,22 @@ class Boleta extends Controller
             // } else {
             //     $data[$i]['estado'] = "<div class='badge badge-danger'>Inactivo</div>";
             // }
-
             $data[$i]['accion'] = '<div class="d-flex">
-            <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['bid'] . ')"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-info" type="button" onclick="view(' . $data[$i]['bid'] . ')"><i class="fas fa-eye"></i></button>
+                </div>';
+            if($estado_tramite=='-'){
+                $data[$i]['accion'] = '<div class="d-flex">
+                <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['bid'] . ')"><i class="fas fa-edit"></i></button>
+                </div>';
+            }
+            if($estado_tramite=='Aprobado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-success">Aprobado</span>';
+            }
+            if($estado_tramite=='Rechazado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-danger">Rechazado</span>';
+            }
+
            
-            </div>';
             // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
             // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
             // colocar eliminar si es necesario
@@ -97,7 +109,7 @@ class Boleta extends Controller
                 $datos_log_json = json_encode($datos_log);
                 
                 if (empty($id)) {
-                    $estado_tramite = 'sin_enviar';
+                    $estado_tramite = '-';
                     // $data = $solicitante.'|'. $aprobador.'|'.$fecha_inicio.'|'.$fecha_fin.'|'.$salida.'|'.$entrada.'|'.$razon.'|'.$estado_tramite;
                     $data = $this->model->registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$estado_tramite);
                     if ($data > 0) {
@@ -109,10 +121,11 @@ class Boleta extends Controller
                     // $respuesta = array('msg' => 'modificar', 'icono' => 'success');
                 }else{
                     $result = $this->model->verificar($id);
-                    if($result['estado_tramite']='sin_enviar'){
+                    if($result['estado_tramite']=='-'){
+                       
                         $data = $this->model->modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$id);
                         if ($data > 0) {
-                            $respuesta = array('msg' => 'Boleta Actualizar', 'icono' => 'success');
+                            $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
                             // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
                         } else {
                             $respuesta = array('msg' => 'error al Actualizar', 'icono' => 'error');
@@ -191,6 +204,164 @@ class Boleta extends Controller
         }
     
         // Detiene la ejecución del script
+        die();
+    }
+
+    public function MisBoletas(){
+        $data['title'] = 'Mis Boletas';
+        $data1 = '';
+        
+        $this->views->getView('Administracion', "Boleta_Trabajador", $data, $data1);
+    }
+
+
+    public function listarMisBoletas(){
+        $id= $_SESSION['id'];
+        $data = $this->model->getusuario($id);
+        $id = $data['trabajador_id'];
+        $data = $this->model->getMisBoletas($id);
+        for ($i = 0; $i < count($data); $i++) {
+            $numero = $data[$i]['numero'];
+            if($data[$i]['numero']==null){
+                $numero = '0';
+            }
+            $numero_formateado = str_pad($numero, 7, '0', STR_PAD_LEFT);
+            $data[$i]['numero'] = $numero_formateado;
+
+
+            $fecha_inicio = $data[$i]['fecha_inicio'];
+            $fecha_fin = $data[$i]['fecha_fin'];
+            $estado_tramite = $data[$i]['estado_tramite'];
+
+            $fecha_inicio = date('d-m-Y', strtotime($fecha_inicio));
+            $fecha_fin = date('d-m-Y', strtotime($fecha_fin));
+
+            if($fecha_inicio == $fecha_fin){
+                $data[$i]['fecha_nueva']= $fecha_inicio;
+            }else{
+                $data[$i]['fecha_nueva'] = $fecha_inicio .'<br>'.$fecha_fin;
+            }
+            
+
+            // $datonuevo = $data[$i]['bestado'];
+            // if ($datonuevo == 'Activo') {
+            //     $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";
+            // } else {
+            //     $data[$i]['estado'] = "<div class='badge badge-danger'>Inactivo</div>";
+            // }
+            $data[$i]['accion'] = '<div class="d-flex">
+                <button class="btn btn-info" type="button" onclick="view(' . $data[$i]['boleta_id'] . ')"><i class="fas fa-eye"></i></button>
+                </div>';
+            if($estado_tramite=='-'){
+                $data[$i]['accion'] = '<div class="d-flex">
+                <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['boleta_id'] . ')"><i class="fas fa-edit"></i></button>
+                </div>';
+            }
+            
+            if($estado_tramite=='Aprobado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-success">Aprobado</span>';
+            }
+            if($estado_tramite=='Rechazado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-danger">Rechazado</span>';
+            }
+
+           
+            // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
+            // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
+            // colocar eliminar si es necesario
+        }
+        echo json_encode($data);
+        die();
+    }
+
+    public function RevisarBoletas(){
+        $data['title'] = 'Revisar Boletas';
+        $data1 = '';
+        
+        $this->views->getView('Administracion', "boleta_revision", $data, $data1);
+    }
+
+    public function listarRevisionBoletas(){
+        $id= $_SESSION['id'];
+        $data = $this->model->getusuario($id);
+        $id = $data['trabajador_id'];
+        $data = $this->model->getMisRevisiones($id);
+        for ($i = 0; $i < count($data); $i++) {
+            $numero = $data[$i]['numero'];
+            if($data[$i]['numero']==null){
+                $numero = '0';
+            }
+            $numero_formateado = str_pad($numero, 7, '0', STR_PAD_LEFT);
+            $data[$i]['numero'] = $numero_formateado;
+
+
+            $fecha_inicio = $data[$i]['fecha_inicio'];
+            $fecha_fin = $data[$i]['fecha_fin'];
+            $estado_tramite = $data[$i]['estado_tramite'];
+
+            $fecha_inicio = date('d-m-Y', strtotime($fecha_inicio));
+            $fecha_fin = date('d-m-Y', strtotime($fecha_fin));
+
+            if($fecha_inicio == $fecha_fin){
+                $data[$i]['fecha_nueva']= $fecha_inicio;
+            }else{
+                $data[$i]['fecha_nueva'] = $fecha_inicio .'<br>'.$fecha_fin;
+            }
+            
+
+            $data[$i]['accion'] = '<div class="d-flex">
+                <button class="btn btn-info" type="button" onclick="view(' . $data[$i]['boleta_id'] . ')"><i class="fas fa-eye"></i></button>
+                </div>';
+            
+            if($estado_tramite=='Aprobado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-success">Aprobado</span>';
+            }
+            if($estado_tramite=='Rechazado'){
+                $data[$i]['estado_tramite']='<span class="badge badge-danger">Rechazado</span>';
+            }
+
+           
+        
+        }
+       
+        echo json_encode($data);
+        die();
+    }
+
+    public function revisar(){
+        
+        if (isset($_POST['id'])||isset($_POST['accion'])||isset($_POST['observacion']) ) {
+            $id = $_POST['id'];
+            $accion = $_POST['accion'];
+            $observacion = $_POST['observacion'];
+
+            if($accion=='aprobar'){
+                $accion ='Aprobado';
+            }else{
+                $accion='Rechazado';
+            }
+            
+
+           
+                $data = $this->model->Revisar($id,$accion,$observacion);
+                if($data >0){
+                    if($accion=='Aprobado'){
+                        $respuesta = array('msg' => 'Se ha Aprobado con exito', 'icono' => 'success');
+                    }else{
+                        $respuesta = array('msg' => 'Se ha Rechazado con exito', 'icono' => 'success');
+                    }
+                }else{
+                    $respuesta = array('msg' => 'Se ha Producido un error', 'icono' => 'success');
+                }
+            
+             
+          
+           
+        }else{
+            $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+        }
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        
         die();
     }
 }

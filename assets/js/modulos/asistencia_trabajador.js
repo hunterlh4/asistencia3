@@ -269,16 +269,13 @@ $('.fc-today-button').on('click', function() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    llenarselect();
-
-    $('#trabajador').on('change', function() {
-        // Obtiene el valor seleccionado del select
-        var selectedValue = $(this).val();
-        // Muestra el valor en la consola
+  
         var currentDate = $('#myEvent').fullCalendar('getDate');
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
-        buscarBoleta(selectedValue,currentMonth,currentYear);
+        console.log(miVariable+'hola');
+        var trabaajdor= miVariable.value
+        buscarBoleta(trabaajdor,currentMonth,currentYear);
         // console.log('boleta llego')
         // console.log(boleta);
         // verAsistencia(currentMonth,currentYear, selectedValue);
@@ -287,7 +284,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // console.log('asistencia')
        
         // verAsistencia();
-    });
 
 });
 
@@ -510,45 +506,6 @@ function modificarCalendario(){
     });
     
 }
-
-
-
-function llenarselect(){
-    $.ajax({
-        url: base_url + "usuario/listartrabajadores",
-        type: 'GET',
-
-        success: function(response) {
-                datos = JSON.parse(response);
-                datos.forEach(opcion => {
-                // Crear un elemento de opción
-                let option = document.createElement("option");
-                // Establecer el valor y el texto de la opción
-
-                if (opcion.estado === "Inactivo" ) {
-                    // Aplicar estilo al campo seleccionado
-                    option.style.color = "red"; // Cambiar a tu color deseado
-                }
-                option.value = opcion.id;
-                if(opcion.dni==null){
-                    option.text = opcion.apellido_nombre;
-                }else{
-                    
-                    option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
-                }
-                // Agregar la opción al select
-                select1.appendChild(option);
-                });
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
-
-
-
 
 function llenarBoleta(fecha,trabajador_id){
     // fecha ='2024-05-01';

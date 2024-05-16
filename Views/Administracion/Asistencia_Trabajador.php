@@ -18,14 +18,12 @@
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
 
                     <h3 class="font-weight-bolder col-md-3"><i class="fa fa-briefcase"></i> Busqueda</h3>
+                    
                     <!-- <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button> -->
 
 
                     <!-- <label>Select2</label> -->
-                    <select class="form-control select2 col-md-9" id="trabajador" required>
-                      <option value="" selected>Selecciona un trabajador</option>
-
-                    </select>
+                  
 
                   </div>
 
@@ -153,154 +151,7 @@
                     <div id="informe">
                       <!-- Aquí se insertará el resultado generado dinámicamente -->
                     </div>
-                    <!-- <div class="row">
-                      <hr>
-                      <div class="col-12">
-                        <div class="form-group">
-                          <label for="numero">Boleta N° <span>000012</span></label>
-
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="aprobado_por">Aprobado por:</label>
-                          <input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" required>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="fecha_inicio">Desde:</label>
-                          <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" required>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="fecha_fin">Hasta:</label>
-                          <input type="date" class="form-control" name="fecha_fin" id="fecha_fin" required>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="hora_salida">Salida:</label>
-                          <input type="time" class="form-control" name="hora_salida" id="hora_salida" required>
-                        </div>
-                      </div>
-
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="hora_entrada">Entrada:</label>
-                          <input type="time" class="form-control" name="hora_entrada" id="hora_entrada" required>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="duracion">Duración:</label>
-                          <input type="time" class="form-control" name="duracion" id="duracion" required>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="razon">Razón:</label>
-                          <select class="form-control" name="razon" id="razon">
-                            <option value="invalidez">invalidez</option>
-                            <option value="2">Razón 2</option>
-                            <option value="3">Razón 3</option>
-                            <option value="4">Razón 4</option>
-                            <option value="5">Razón 5</option>
-                            <option value="6">Otro</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group" id="otra_razon" style="display: none;">
-                          <label for="otra_razon_texto">Otra razón:</label>
-                          <input type="text" class="form-control" name="otra_razon_texto" id="otra_razon_texto">
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-group">
-                          <label for="observaciones">Observaciones:</label>
-                          <textarea class="form-control" name="observaciones" id="observaciones" rows="3"></textarea>
-                        </div>
-                      </div>
-                    </div> -->
-
-
-                    <!-- <div class="form-group">
-              <label>licencia:</label>
-              <span name="licencia" id="licencia"></span>
-            </div>
-            <div class="form-group">
-              <label>entrada:</label>
-              <span name="entrada" id="entrada"></span>
-
-            </div>
-            <div class="form-group">
-              <label>salida</label>
-              <span name="salida" id="salida"></span>
-
-            </div>
-            <div class="form-group">
-              <label>total_reloj</label>
-              <span name="total_reloj" id="total_reloj"></span>
-
-            </div>
-            <div class="form-group">
-              <label>tardanza</label>
-              <span name="tardanza" id="tardanza"></span>
  
-            </div>
-            <div class="form-group">
-              <label>tardanza_cantidad</label>
-              <span name="tardanza_cantidad" id="tardanza_cantidad"></span>
-              
-            </div>
-            <div class="form-group">
-              <label>reloj_1</label>
-              <span name="reloj_1" id="reloj_1"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_2</label>
-              <span name="reloj_2" id="reloj_2"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_3</label>
-              <span name="reloj_3" id="reloj_3"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_4</label>
-              <span name="reloj_4" id="reloj_4"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_5</label>
-              <span name="reloj_5" id="reloj_5"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_6</label>
-              <span name="reloj_6" id="reloj_6"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_7</label>
-              <span name="reloj_8" id="reloj_7"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_8</label>
-              <span name="reloj_8" id="reloj_8"></span>
-            </div>
-
-             -->
-
-
-
-                    <!--  -->
-
-                    <!--  -->
-
-                    <!--  -->
-                    <!-- <div class="modal-footer bg-white">
-              <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
-              <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
-            </div> -->
         </form>
       </div>
     </div>
@@ -315,11 +166,14 @@
 
   </html>
 
-  <script src="<?php echo BASE_URL; ?>assets/js/modulos/Asistencia.js"></script>
+  
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
-  </script>
+ 
+    var miVariable = <?php echo $data1['id']; ?>;
+</script>
+<script src="<?php echo BASE_URL; ?>assets/js/modulos/asistencia_trabajador.js"></script>
 </body>
 
 <style>

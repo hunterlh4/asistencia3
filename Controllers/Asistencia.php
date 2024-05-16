@@ -102,4 +102,16 @@ class Asistencia extends Controller
         // Detiene la ejecución del script
         die();
     }
+
+    public function ver()
+    {
+        $id= $_SESSION['id'];
+        $data1 = $this->model->getusuario($id);
+        $id = $data1['trabajador_id'];
+        $data1['id']=$id;
+        $data['title'] = 'Hoja de Asistencia';
+        // $data1 = '';
+        
+        $this->views->getView('Administracion', "Asistencia_Trabajador", $data, $data1);
+    }
 }

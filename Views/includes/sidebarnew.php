@@ -52,7 +52,7 @@
         // echo '  <li class="menu-header">Excel</li>';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Importar" class="nav-link"><i data-feather="upload"></i><span>Importar</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="file-text"></i><span>Hoja de Asistencia</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia/Ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a> </li> ';
       }
       ?>
       <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
@@ -68,9 +68,9 @@
       }
         if ($_SESSION['nivel'] == 1) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Buzon de Boletas</span></a> </li> ';           
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';           
       }
-      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
+      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
       echo '</ul>
       </li> ';
       ?>
