@@ -1,9 +1,31 @@
 const nuevo = document.querySelector("#nuevo_registro");
-const frm = document.querySelector("#formUsuarios");
+const frm = document.querySelector("#formulario");
 const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 const select1 = document.getElementById("trabajador");
+
+
+// FORMULARIO
+const id = document.querySelector('#id').value;
+const licencia = document.querySelector('#licencia') ;
+const trabajador = document.querySelector('#trabajador_id');
+const entrada = document.querySelector('#entrada');
+const salida = document.querySelector('#salida'); 
+const total_reloj = document.querySelector('#total_reloj');
+const total_horario= document.querySelector('#total_horario');
+const tardanza = document.querySelector('#tardanza');
+const tardanza_cantidad= document.querySelector('#tardanza_cantidad');
+const justificacion = document.querySelector('#justificacion');
+const reloj_1 = document.querySelector('#reloj_1');
+const reloj_2 = document.querySelector('#reloj_2');
+const reloj_3 = document.querySelector('#reloj_3');
+const reloj_4 = document.querySelector('#reloj_4');
+const reloj_5 = document.querySelector('#reloj_5');
+const reloj_6 = document.querySelector('#reloj_6');
+const reloj_7 = document.querySelector('#reloj_7');
+const reloj_8 = document.querySelector('#reloj_8');
+// 
 var events =[];
 
 var boleta =[];
@@ -24,7 +46,7 @@ var dayNameMap = {
     'Friday': 'Viernes',
     'Saturday': 'Sábado'
   };
-
+// calendario click, buttons y renderizado de datos
   var calendar = $("#myEvent").fullCalendar({
     height: "auto",
     defaultView: "month",
@@ -44,10 +66,7 @@ events: events,
 
 eventClick: function (calEvent, jsEvent, view) {
    
-    // console.log('cambio de pagina');
-    // let id = $("#id").val(calEvent.id);
-    // Obtener el valor del campo titulo
-    // let licencia = $("#titulo").val(calEvent.title);
+
     
     let id = calEvent.id;
     let fechaString  = calEvent.fecha;
@@ -61,6 +80,7 @@ eventClick: function (calEvent, jsEvent, view) {
     let total_horario = calEvent.total_horario;
     let tardanza= calEvent.tardanza;
     let tardanza_cantidad = calEvent.tardanza_cantidad;
+    var justificacion = calEvent.justificacion;
     let reloj_1  = calEvent.reloj_1;
     let reloj_2 = calEvent.reloj_2;
     let reloj_3 = calEvent.reloj_3;
@@ -101,6 +121,7 @@ eventClick: function (calEvent, jsEvent, view) {
         document.querySelector('#total_horario').innerHTML = total_horario;
         document.querySelector('#tardanza').innerHTML = tardanza;
         document.querySelector('#tardanza_cantidad').innerHTML = tardanza_cantidad;
+        document.querySelector('#justificacion').value = justificacion;
         document.querySelector('#reloj_1').innerHTML = reloj_1;
         document.querySelector('#reloj_2').innerHTML = reloj_2;
         document.querySelector('#reloj_3').innerHTML = reloj_3;
@@ -109,7 +130,26 @@ eventClick: function (calEvent, jsEvent, view) {
         document.querySelector('#reloj_6').innerHTML = reloj_6;
         document.querySelector('#reloj_7').innerHTML = reloj_7;
         document.querySelector('#reloj_8').innerHTML = reloj_8;
-        // console.log(fechaFormateada +'|'+trabajador);
+
+        id.value = calEvent.id;
+        licencia.innerHTML = calEvent.title;
+        trabajador.value = calEvent.trabajador_id;
+        entrada.innerHTML = calEvent.entrada;
+        salida.innerHTML = calEvent.salida;
+        total_reloj.innerHTML = calEvent.total_reloj;
+        total_horario.innerHTML = calEvent.total_horario;
+        tardanza.innerHTML= calEvent.tardanza;
+        tardanza_cantidad.innerHTML = calEvent.tardanza_cantidad;
+        justificacion.value = calEvent.justificacion;
+        reloj_1.innerHTML  = calEvent.reloj_1;
+        reloj_2.innerHTML = calEvent.reloj_2;
+        reloj_3.innerHTML = calEvent.reloj_3;
+        reloj_4.innerHTML = calEvent.reloj_4;
+        reloj_5.innerHTML = calEvent.reloj_5;
+        reloj_6.innerHTML = calEvent.reloj_6;
+        reloj_7.innerHTML = calEvent.reloj_7;
+        reloj_8.innerHTML = calEvent.reloj_8;
+       
         llenarBoleta(fechaFormateada,trabajador);
 
 
@@ -127,8 +167,7 @@ viewRender: function(view, element) {
   var mesActual = view.intervalStart.month();
   var añoActual = view.intervalStart.year();
   var nombremes = monthNames[mesActual];
-  // element.find('.fc-time').after('<br>');
-  // console.log('Mes actual:', mesActual);
+
  
 
   // $(".fc-center").text("<h5>" + nombreMes + ' - ' + añoActual + "</h5>");
@@ -187,7 +226,7 @@ customButtons: {
       text: 'Anterior',
       click: function() {
           // $('#myEvent').fullCalendar('prev');
-          console.log("Se hizo clic en el botón Anterior");
+        //   console.log("Se hizo clic en el botón Anterior");
           // var prevDate = $('#myEvent').fullCalendar('getDate').subtract(1, 'months');
           // asistencias(prevDate.month() + 1, prevDate.year());
                
@@ -197,7 +236,7 @@ customButtons: {
       text: 'Siguiente',
       click: function() {
           // $('#myEvent').fullCalendar('next');
-          console.log("Se hizo clic en el botón Siguiente");
+        //   console.log("Se hizo clic en el botón Siguiente");
           // var nextDate = $('#myEvent').fullCalendar('getDate').add(1, 'months');
           // asistencias(nextDate.month() + 1, nextDate.year());
       }
@@ -206,7 +245,7 @@ customButtons: {
       text: 'Hoy',
       click: function() {
           // $('#myEvent').fullCalendar('today');
-          console.log("Se hizo clic en el botón Hoy");
+        //   console.log("Se hizo clic en el botón Hoy");
           // var todayDate = new Date();
           // asistencias(todayDate.getMonth() + 1, todayDate.getFullYear());
                
@@ -218,15 +257,12 @@ customButtons: {
 });
 
 
-
-
+//   function asistencias(moth,year){
+//     var trabajadores_id = 1; //$('#trabajadores_id').val()
   
-  function asistencias(moth,year){
-    var trabajadores_id = 1; //$('#trabajadores_id').val()
+//     // console.log(moth,year,trabajadores_id);
   
-    // console.log(moth,year,trabajadores_id);
-  
-  }
+//   }
 
   var currentDate = $('#myEvent').fullCalendar('getDate');
 $(document).ready(function() {
@@ -238,7 +274,7 @@ $(document).ready(function() {
         var newMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var newYear = currentDate.year();
         // Realiza alguna acción con el nuevo mes y año
-        asistencias(newMonth, newYear);
+        // asistencias(newMonth, newYear);
         modificarCalendario();
 });
 
@@ -250,7 +286,7 @@ $('.fc-next-button').on('click', function() {
     var newMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
     var newYear = currentDate.year();
     // Realiza alguna acción con el nuevo mes y año
-    asistencias(newMonth, newYear);
+    // asistencias(newMonth, newYear);
     modificarCalendario();
 });
 
@@ -262,7 +298,7 @@ $('.fc-today-button').on('click', function() {
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
         // Realiza alguna acción con el mes y año actual
-        asistencias(currentMonth, currentYear);
+        // asistencias(currentMonth, currentYear);
         modificarCalendario();
 });
 });
@@ -273,47 +309,60 @@ document.addEventListener("DOMContentLoaded", function() {
         var currentDate = $('#myEvent').fullCalendar('getDate');
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
-        console.log(miVariable+'hola');
-        var trabaajdor= miVariable.value
-        buscarBoleta(trabaajdor,currentMonth,currentYear);
-        // console.log('boleta llego')
-        // console.log(boleta);
-        // verAsistencia(currentMonth,currentYear, selectedValue);
-
-       
-        // console.log('asistencia')
-       
-        // verAsistencia();
-
+   
+        var trabajador = miVariable;
+        // console.log(miVariable);
+        buscarBoleta(trabajador,currentMonth,currentYear);
 });
 
-// function verAsistencia() {
-//     // Aquí puedes realizar cualquier acción que desees con la fecha del calendario y el valor seleccionado
-//     // console.log('Fecha del calendario:', anio +'-'+mes);
-//     // console.log('Valor seleccionado del combo:', valorSeleccionado);
-//     // Llama a tu función deseada con estos valores como parámetros
-//     id = 812;
-//     anio = '2024';
-//     mes = '5';
-
-//     const url = base_url + `asistencia/listaCalendarioAsistenciaTrabajador/812/${anio}/${mes}`;
-//     const http = new XMLHttpRequest();
-//     http.open("GET", url, true);
-//     http.send();
-
-//     http.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             // frm.reset();
-//             // resetRequiredFields();
-//             console.log(this.responseText);
-//             const res = JSON.parse(this.responseText);
+// actualizar justificacion
+function guardar(){
+        frm.addEventListener("submit", function(e) {
+            e.preventDefault();
            
-//         }else{
-//             console.log('no llego');
-//         }
-//     }
-// }
+            const formData = new FormData(frm);
+            const url = base_url + "Asistencia/registrar";
+          
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                processData: false, 
+                contentType: false,
+                beforeSend: function() {
+                    // Se ejecuta antes de enviar la solicitud
+                    console.log('Enviando solicitud...');
+                },
+                success: function(response) {
+                    // Se ejecuta cuando se recibe una respuesta exitosa
+                    // console.log(response);
+                    const res = JSON.parse(response);
+                    if (res.icono == "success") {
+                        
+                        // calendar.ajax.reload();
 
+                     
+                        $('#myEvent').fullCalendar('refetchEvents');
+                        // modificarCalendario();
+                        modificarCalendario();
+                        frm.reset();
+                        cerrarModal(); 
+                    }
+                    Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+                  
+                },
+                error: function(xhr, status, error) {
+                    // Se ejecuta si hay algún error en la solicitud
+                    console.error('Error en la solicitud:', error);
+                }
+            });
+    
+           
+        });
+    
+}
+
+// llenar calendario con boleta
 function buscarBoleta(id,currentMonth,currentYear){
     
     var parametros = {
@@ -337,7 +386,7 @@ function buscarBoleta(id,currentMonth,currentYear){
         
     });
 }
-
+//  llenar calendario
 function verAsistencia(mes,anio,id,boleta) {
     // Aquí puedes realizar cualquier acción que desees con la fecha del calendario y el valor seleccionado
     // console.log('Fecha del calendario:', anio +'-'+mes);
@@ -399,6 +448,7 @@ function verAsistencia(mes,anio,id,boleta) {
                             total_horario: evento.total_horario,
                             tardanza: evento.tardanza,
                             tardanza_cantidad : evento.tardanza_cantidad,
+                            justificacion : evento.justificacion,
                             reloj_1 : evento.reloj_1,
                             reloj_2 : evento.reloj_2,
                             reloj_3 : evento.reloj_3,
@@ -431,10 +481,7 @@ function verAsistencia(mes,anio,id,boleta) {
     
    
 }
-
-
-
-
+// modificar datos del calendario
 function modificarCalendario(){
     
     const timeElements = document.querySelectorAll('.fc-time');
@@ -506,7 +553,7 @@ function modificarCalendario(){
     });
     
 }
-
+//  llenar con la boleta al calendario
 function llenarBoleta(fecha,trabajador_id){
     // fecha ='2024-05-01';
     // trabajador_id = 812;
@@ -534,100 +581,101 @@ function llenarBoleta(fecha,trabajador_id){
                 // datos = JSON.parse(response);
                 const res = JSON.parse(response);
                 const datos = res[0];
-               console.log(datos);
-
-               $('#resultado').empty();
-               var html = '<div class="row text-center">' +
-               '<hr>' +
-                '<div class="col-12">' +
-                    '<div class="form-group">' +
-                        '<h4 for="numero">Boleta N° <span>' + datos.numero + '</span></h4>' +
-                    '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="row">' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                    '<label for="aprobado_por">Aprobado por:</label>' +
-                        '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="fecha_inicio">Desde:</label>' +
-                        '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' + datos.fecha_inicio + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="fecha_fin">Hasta:</label>' +
-                        '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' + datos.fecha_fin + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="hora_salida">Salida:</label>' +
-                        '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' + datos.hora_salida + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="hora_entrada">Entrada:</label>' +
-                        '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' + datos.hora_entrada + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="duracion">Duración:</label>' +
-                        '<input type="time" class="form-control" name="duracion" id="duracion" value="' + datos.duracion + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="razon">Razón:</label>' +
-                        '<select class="form-control" name="razon" id="razon" disabled>';
-                        // Agregar opciones de razón
-                      
-                          
-                        if(datos.razon=='Comision de Servicio'|| datos.razon=='Compensacion Horas'|| datos.razon=='Motivos Particulares'||datos.razon=='Enfermedad'||datos.razon=='ESSALUD'){
-                            html += '<option value="' + datos.razon + '">' + datos.razon + '</option>';
-                            html += '</select>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
-                        '<div class="form-group" id="otra_razon" >' +
-                        '<label for="otra_razon_texto">Otra razón:</label>' +
-                        '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
+                // console.log(datos);
+                var html; 
+                $('#resultado').empty();
+                if(!datos  === 'undefined'){
+                    html = '<div class="row text-center">' +
+                    '<hr>' +
+                    '<div class="col-12">' +
                         '<div class="form-group">' +
-                        '<label for="observaciones">Observaciones:</label>' +
-                        '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '<h4 for="numero">Boleta N° <span>' + datos.numero + '</span></h4>' +
                         '</div>' +
-                        '</div>' +
-                        '</div>';
-                        }else{
-                            html += '<option value="">' + 'Otra' + '</option>';
-                            html += '</select>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
-                        '<div class="form-group" id="otra_razon" >' +
-                        '<label for="otra_razon_texto">Otra razón:</label>' +
-                        '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-4">' +
                         '<div class="form-group">' +
-                        '<label for="observaciones">Observaciones:</label>' +
-                        '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                        '<label for="aprobado_por">Aprobado por:</label>' +
+                            '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
                         '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="fecha_inicio">Desde:</label>' +
+                            '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' + datos.fecha_inicio + '" disabled>' +
                         '</div>' +
-                        '</div>';
-                        }
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="fecha_fin">Hasta:</label>' +
+                            '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' + datos.fecha_fin + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="hora_salida">Salida:</label>' +
+                            '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' + datos.hora_salida + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="hora_entrada">Entrada:</label>' +
+                            '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' + datos.hora_entrada + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="duracion">Duración:</label>' +
+                            '<input type="time" class="form-control" name="duracion" id="duracion" value="' + datos.duracion + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="razon">Razón:</label>' +
+                            '<select class="form-control" name="razon" id="razon" disabled>';
+                            // Agregar opciones de razón
                         
-                        $('#resultado').html(html);
+                            
+                            if(datos.razon=='Comision de Servicio'|| datos.razon=='Compensacion Horas'|| datos.razon=='Motivos Particulares'||datos.razon=='Enfermedad'||datos.razon=='ESSALUD'){
+                                html += '<option value="' + datos.razon + '">' + datos.razon + '</option>';
+                                html += '</select>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group" id="otra_razon" >' +
+                            '<label for="otra_razon_texto">Otra razón:</label>' +
+                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group">' +
+                            '<label for="observaciones">Observaciones:</label>' +
+                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                            }else{
+                                html += '<option value="">' + 'Otra' + '</option>';
+                                html += '</select>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group" id="otra_razon" >' +
+                            '<label for="otra_razon_texto">Otra razón:</label>' +
+                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group">' +
+                            '<label for="observaciones">Observaciones:</label>' +
+                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                            }
+                }
+                $('#resultado').html(html);
             
         },
         error: function(xhr, status, error) {
@@ -637,3 +685,11 @@ function llenarBoleta(fecha,trabajador_id){
 }
 
 
+function abrirModal() {
+    myModal.show();
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    myModal.hide();
+}

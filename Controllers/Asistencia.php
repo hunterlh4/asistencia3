@@ -45,7 +45,21 @@ class Asistencia extends Controller
     public function registrar()
     {
         
-     
+        if (isset($_POST['id'])||isset($_POST['justificacion']) ) {
+            $id = $_POST['id'];
+            $justificacion = $_POST['justificacion'];
+
+            
+                $data = $this->model->modificarJustificacion($justificacion,$id);
+                if($data >0){
+                    $respuesta = array('msg' => 'Se ha Actualizado su Justificacion', 'icono' => 'success');
+                }else{
+                    $respuesta = array('msg' => 'Se ha Producido un error', 'icono' => 'warning');
+                }
+        }else{
+            $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+        }
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
     //eliminar user

@@ -66,9 +66,9 @@
       if ($_SESSION['nivel'] == 1) {
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Ver Boletas</span></a> </li> ';
       }
-        if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';           
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';
       }
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
       echo '</ul>
@@ -89,6 +89,18 @@
       }
       ?>
 
+      <?php
+      if ($_SESSION['nivel'] == 1) {
+        // echo '  <li class="menu-header">Excel</li>';
+        echo '<li class="dropdown">';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Configuracion/" class="nav-link"><i data-feather="settings"></i><span>Configuracion</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Log/" class="nav-link"><i data-feather="archive"></i><span>Log</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Soporte/" class="nav-link"><i data-feather="info"></i><span>Soporte</span></a> 
+               
+                  </li> ';
+      }
+      ?>
+
 
       <?php
       //Portero y jefe de area (4) no tiene acceso al buscador
@@ -102,58 +114,6 @@
               </ul>
             </li>';
       } ?>
-      <?php
-      // 3
-      // if($_SESSION['nivel'] == 100) {
-      //     echo '<li class="dropdown"> <a href="tab_hoja_asis_new.php" class="nav-link"><i data-feather="list"></i><span>Hojas de Asistencia</span></a></li>';
-      // }
-      ?>
-      <?php
-      //Solo el admin(1) puede alimentar el sistema 
-      // if($_SESSION['nivel'] == 100) {
-      //     echo '<li class="dropdown"> <a href="tab_import_new.php" class="nav-link"><i data-feather="upload"></i><span>Importar CSV</span></a></li>';
-      // }
-      ?>
-
-      <?php
-      //Solo el admin(1-3) puede alimentar el sistema 
-      // if($_SESSION['nivel'] == 100) {
-      //     echo '<li class="dropdown"> <a href="tab_boleta_auth.php" class="nav-link"><i data-feather="file-text"></i><span>Boletas de Autorización</span></a></li>';
-      // }
-      ?>
-
-
-      <?php
-      //Solo un Administrador(1) puede administrar roles de turnos
-      // if($_SESSION['nivel'] == 1 OR $_SESSION['nivel'] == 2) {
-      //     echo '<li class="menu-header">Otros</li>';
-      //     echo '<li class="dropdown"> <a href="tab_rol_turnos.php" class="nav-link"><i data-feather="bookmark"></i><span>Rol de Turnos</span></a> </li>';
-
-      // }
-
-      ?>
-
-      <?php
-      //Solo el admin(1) y jefes de oficinas puede visualizar las tardanzas 
-      // if($_SESSION['nivel'] <= 2) {
-      //     echo '<li class="dropdown"> <a href="tab_tardanzas.php" class="nav-link"><i data-feather="watch"></i><span>Tardanzas</span></a></li>';
-      // }
-      ?>
-
-
-
-      <!-- <li class="dropdown"> <a href="<?php echo BASE_URL . 'admin/profile'; ?>" class="nav-link"><i data-feather="user-check"></i><span>Mi Perfil</span></a> </li> -->
-      <?php
-      //Solo un Administrador(1) puede administrar usuarios
-      // if($_SESSION['nivel'] == 1) {
-      //   echo ' <li class="menu-header">Usuario</li>';
-      //     echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
-      // }
-
-      ?>
-
-
-      <!-- <li class="dropdown"> <a href="<?php echo BASE_URL . 'admin/profile'; ?>" class="nav-link"><i data-feather="user-check"></i><span>Mi Perfil</span></a> </li> -->
 
     </ul>
   </aside>

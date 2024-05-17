@@ -28,7 +28,8 @@
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
 
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/pretty-checkbox/pretty-checkbox.min.css">
-
+<!-- icon -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/bundles/bootstrap-social/bootstrap-social.css">
 
 <!-- CSS  FullCalendar -->
 

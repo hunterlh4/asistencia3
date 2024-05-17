@@ -200,7 +200,7 @@ create table asistencia(
     total interval(6)  null default '00:00:00',
     tardanza interval(6)  null default '00:00:00',
     tardanza_cantidad int null default '0',
-    justificacion varchar(10) NULL,
+    justificacion varchar(20) NULL,
     comentario text null default null,
     reloj_1 interval(6)  null default '00:00:00',
     reloj_2 interval(6)  null default '00:00:00',

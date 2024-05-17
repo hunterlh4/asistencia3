@@ -33,6 +33,7 @@ class AsistenciaModel extends Query
                 TO_CHAR(reloj_7 ::interval, 'HH24:MI') AS reloj_7,
                 TO_CHAR(reloj_8 ::interval, 'HH24:MI') AS reloj_8,
                 licencia, 
+                justificacion,
                 EXTRACT(YEAR FROM fecha) AS anio,
                 EXTRACT(MONTH FROM fecha) AS mes,
                 EXTRACT(DAY FROM fecha) AS dia,
@@ -72,6 +73,13 @@ class AsistenciaModel extends Query
     {
         $sql = "UPDATE asistencia SET nombre=?,nivel=?,estado=? ,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$nivel,$estado, $id);
+        return $this->save($sql, $array);
+    }
+
+    public function modificarJustificacion($justificacion,$id)
+    {
+        $sql = "UPDATE asistencia SET justificacion=? ,update_at = NOW()  WHERE id = ?";
+        $array = array($justificacion, $id);
         return $this->save($sql, $array);
     }
     public function eliminar($id)

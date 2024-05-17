@@ -148,9 +148,17 @@
                     <div id="resultado">
                       <!-- Aquí se insertará el resultado generado dinámicamente -->
                     </div>
-                    <div id="informe">
+                    <div  class="col-md-12 col-sm-6">
                       <!-- Aquí se insertará el resultado generado dinámicamente -->
+                      <div class="form-group">
+                        <label for="justificacion">Numero Informe</label>
+                        <input type="text" class="form-control" id="justificacion" name="justificacion">
+                      </div>
                     </div>
+                    <div class="modal-footer bg-white col-md-12 col-sm-12">
+                  <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button>
+                  <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
+                </div>
  
         </form>
       </div>
@@ -172,6 +180,7 @@
     const base_url = '<?php echo BASE_URL; ?>';
  
     var miVariable = <?php echo $data1['id']; ?>;
+
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/asistencia_trabajador.js"></script>
 </body>

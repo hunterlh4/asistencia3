@@ -150,9 +150,17 @@
                     <div id="resultado">
                       <!-- Aquí se insertará el resultado generado dinámicamente -->
                     </div>
-                    <div id="informe">
+                    <div id="informe" class="col-md-12 col-sm-6">
                       <!-- Aquí se insertará el resultado generado dinámicamente -->
+                      <div class="form-group">
+                        <label for="informe">Numero Informe</label>
+                        <input type="text" class="form-control" id="informe" name="informe">
+                      </div>
                     </div>
+                    <div class="modal-footer bg-white col-md-12 col-sm-12">
+                  <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button>
+                  <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
+                </div>
                     <!-- <div class="row">
                       <hr>
                       <div class="col-12">
@@ -224,83 +232,6 @@
                         </div>
                       </div>
                     </div> -->
-
-
-                    <!-- <div class="form-group">
-              <label>licencia:</label>
-              <span name="licencia" id="licencia"></span>
-            </div>
-            <div class="form-group">
-              <label>entrada:</label>
-              <span name="entrada" id="entrada"></span>
-
-            </div>
-            <div class="form-group">
-              <label>salida</label>
-              <span name="salida" id="salida"></span>
-
-            </div>
-            <div class="form-group">
-              <label>total_reloj</label>
-              <span name="total_reloj" id="total_reloj"></span>
-
-            </div>
-            <div class="form-group">
-              <label>tardanza</label>
-              <span name="tardanza" id="tardanza"></span>
- 
-            </div>
-            <div class="form-group">
-              <label>tardanza_cantidad</label>
-              <span name="tardanza_cantidad" id="tardanza_cantidad"></span>
-              
-            </div>
-            <div class="form-group">
-              <label>reloj_1</label>
-              <span name="reloj_1" id="reloj_1"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_2</label>
-              <span name="reloj_2" id="reloj_2"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_3</label>
-              <span name="reloj_3" id="reloj_3"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_4</label>
-              <span name="reloj_4" id="reloj_4"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_5</label>
-              <span name="reloj_5" id="reloj_5"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_6</label>
-              <span name="reloj_6" id="reloj_6"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_7</label>
-              <span name="reloj_8" id="reloj_7"></span>
-            </div>
-            <div class="form-group">
-              <label>reloj_8</label>
-              <span name="reloj_8" id="reloj_8"></span>
-            </div>
-
-             -->
-
-
-
-                    <!--  -->
-
-                    <!--  -->
-
-                    <!--  -->
-                    <!-- <div class="modal-footer bg-white">
-              <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
-              <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
-            </div> -->
         </form>
       </div>
     </div>

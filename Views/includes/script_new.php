@@ -40,8 +40,6 @@
 <script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/fullcalendar.min.js"></script>
 <!-- <script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/locales-all.js"></script> -->
 
-
-
 <!-- Page Specific JS File -->
 <!--<script src="assets/js/page/index.js"></script>-->
 <!-- Template JS File -->

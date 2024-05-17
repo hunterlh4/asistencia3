@@ -279,44 +279,13 @@ document.addEventListener("DOMContentLoaded", function() {
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
         buscarBoleta(selectedValue,currentMonth,currentYear);
-        // console.log('boleta llego')
-        // console.log(boleta);
-        // verAsistencia(currentMonth,currentYear, selectedValue);
-
-       
-        // console.log('asistencia')
-       
-        // verAsistencia();
+ 
     });
 
 });
 
-// function verAsistencia() {
-//     // Aquí puedes realizar cualquier acción que desees con la fecha del calendario y el valor seleccionado
-//     // console.log('Fecha del calendario:', anio +'-'+mes);
-//     // console.log('Valor seleccionado del combo:', valorSeleccionado);
-//     // Llama a tu función deseada con estos valores como parámetros
-//     id = 812;
-//     anio = '2024';
-//     mes = '5';
 
-//     const url = base_url + `asistencia/listaCalendarioAsistenciaTrabajador/812/${anio}/${mes}`;
-//     const http = new XMLHttpRequest();
-//     http.open("GET", url, true);
-//     http.send();
 
-//     http.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//             // frm.reset();
-//             // resetRequiredFields();
-//             console.log(this.responseText);
-//             const res = JSON.parse(this.responseText);
-           
-//         }else{
-//             console.log('no llego');
-//         }
-//     }
-// }
 
 function buscarBoleta(id,currentMonth,currentYear){
     
@@ -577,100 +546,102 @@ function llenarBoleta(fecha,trabajador_id){
                 // datos = JSON.parse(response);
                 const res = JSON.parse(response);
                 const datos = res[0];
-               console.log(datos);
-
-               $('#resultado').empty();
-               var html = '<div class="row text-center">' +
-               '<hr>' +
-                '<div class="col-12">' +
-                    '<div class="form-group">' +
-                        '<h4 for="numero">Boleta N° <span>' + datos.numero + '</span></h4>' +
-                    '</div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="row">' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                    '<label for="aprobado_por">Aprobado por:</label>' +
-                        '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="fecha_inicio">Desde:</label>' +
-                        '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' + datos.fecha_inicio + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="fecha_fin">Hasta:</label>' +
-                        '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' + datos.fecha_fin + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="hora_salida">Salida:</label>' +
-                        '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' + datos.hora_salida + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="hora_entrada">Entrada:</label>' +
-                        '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' + datos.hora_entrada + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="duracion">Duración:</label>' +
-                        '<input type="time" class="form-control" name="duracion" id="duracion" value="' + datos.duracion + '" disabled>' +
-                    '</div>' +
-                '</div>' +
-                '<div class="col-4">' +
-                    '<div class="form-group">' +
-                        '<label for="razon">Razón:</label>' +
-                        '<select class="form-control" name="razon" id="razon" disabled>';
-                        // Agregar opciones de razón
-                      
-                          
-                        if(datos.razon=='Comision de Servicio'|| datos.razon=='Compensacion Horas'|| datos.razon=='Motivos Particulares'||datos.razon=='Enfermedad'||datos.razon=='ESSALUD'){
-                            html += '<option value="' + datos.razon + '">' + datos.razon + '</option>';
-                            html += '</select>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
-                        '<div class="form-group" id="otra_razon" >' +
-                        '<label for="otra_razon_texto">Otra razón:</label>' +
-                        '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
+                console.log(res);
+                var html;
+                $('#resultado').empty();
+                if(!datos  === 'undefined'){
+                    
+                    html = '<div class="row text-center">' +
+                    '<hr>' +
+                    '<div class="col-12">' +
                         '<div class="form-group">' +
-                        '<label for="observaciones">Observaciones:</label>' +
-                        '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '<h4 for="numero">Boleta N° <span>' + datos.numero + '</span></h4>' +
                         '</div>' +
-                        '</div>' +
-                        '</div>';
-                        }else{
-                            html += '<option value="">' + 'Otra' + '</option>';
-                            html += '</select>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
-                        '<div class="form-group" id="otra_razon" >' +
-                        '<label for="otra_razon_texto">Otra razón:</label>' +
-                        '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-4">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-4">' +
                         '<div class="form-group">' +
-                        '<label for="observaciones">Observaciones:</label>' +
-                        '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                        '<label for="aprobado_por">Aprobado por:</label>' +
+                            '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
                         '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="fecha_inicio">Desde:</label>' +
+                            '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' + datos.fecha_inicio + '" disabled>' +
                         '</div>' +
-                        '</div>';
-                        }
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="fecha_fin">Hasta:</label>' +
+                            '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' + datos.fecha_fin + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="hora_salida">Salida:</label>' +
+                            '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' + datos.hora_salida + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="hora_entrada">Entrada:</label>' +
+                            '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' + datos.hora_entrada + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="duracion">Duración:</label>' +
+                            '<input type="time" class="form-control" name="duracion" id="duracion" value="' + datos.duracion + '" disabled>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                        '<div class="form-group">' +
+                            '<label for="razon">Razón:</label>' +
+                            '<select class="form-control" name="razon" id="razon" disabled>';
+                            // Agregar opciones de razón
                         
-                        $('#resultado').html(html);
+                            
+                            if(datos.razon=='Comision de Servicio'|| datos.razon=='Compensacion Horas'|| datos.razon=='Motivos Particulares'||datos.razon=='Enfermedad'||datos.razon=='ESSALUD'){
+                                html += '<option value="' + datos.razon + '">' + datos.razon + '</option>';
+                                html += '</select>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group" id="otra_razon" >' +
+                            '<label for="otra_razon_texto">Otra razón:</label>' +
+                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group">' +
+                            '<label for="observaciones">Observaciones:</label>' +
+                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                            }else{
+                                html += '<option value="">' + 'Otra' + '</option>';
+                                html += '</select>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group" id="otra_razon" >' +
+                            '<label for="otra_razon_texto">Otra razón:</label>' +
+                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-4">' +
+                            '<div class="form-group">' +
+                            '<label for="observaciones">Observaciones:</label>' +
+                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                            }
+                }
+                $('#resultado').html(html);
             
         },
         error: function(xhr, status, error) {
@@ -680,3 +651,11 @@ function llenarBoleta(fecha,trabajador_id){
 }
 
 
+function abrirModal() {
+    myModal.show();
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    myModal.hide();
+}
