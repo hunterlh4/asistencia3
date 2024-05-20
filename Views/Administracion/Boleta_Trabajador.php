@@ -70,17 +70,8 @@
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
             <div class="row">
-              <div class="col-md-6 col-sm-6">
-                <div class="form-group">
-                  <label for="solicitante">Solicitante</label>
-                  <select class="form-control" id="solicitante" name="solicitante" required>
-                  <option value="">Seleccione un Solicitante</option>
-                    
-                    <!-- Opciones del select -->
-                  </select>
-                </div>
-                </div>
-                <div class="col-md-6 col-sm-6">
+             
+                <div class="col-md-12 col-sm-12">
                 <div class="form-group">
                   <label for="aprobador">Aprobador</label>
                   <select class="form-control" id="aprobador" name="aprobador" required>

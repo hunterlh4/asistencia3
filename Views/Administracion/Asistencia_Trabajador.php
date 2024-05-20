@@ -146,13 +146,14 @@
                     <div>
                     </div>
                     <div id="resultado">
-                      <!-- Aquí se insertará el resultado generado dinámicamente -->
+                  
                     </div>
                     <div  class="col-md-12 col-sm-6">
-                      <!-- Aquí se insertará el resultado generado dinámicamente -->
+                     
                       <div class="form-group">
                         <label for="justificacion">Numero Informe</label>
-                        <input type="text" class="form-control" id="justificacion" name="justificacion">
+                        <input type="text" class="form-control" id="prueba" name="prueba" required>
+                        <input type="text" class="form-control" id="justificacion" name="justificacion" required>
                       </div>
                     </div>
                     <div class="modal-footer bg-white col-md-12 col-sm-12">

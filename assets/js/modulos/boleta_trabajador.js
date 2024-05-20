@@ -8,7 +8,7 @@ const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 // INPUTS
 
 const idElement = document.querySelector('#id');
-const solicitanteElement = document.querySelector('#solicitante');
+
 const aprobadorElement = document.querySelector('#aprobador');
 const fechaInicioElement = document.querySelector('#fecha_inicio');
 const fechaFinElement = document.querySelector('#fecha_fin');
@@ -30,7 +30,7 @@ var datos;
 document.addEventListener("DOMContentLoaded", function() {
 
     llenarTabla();
-    llenarSelectSolicitante();
+    // llenarSelectSolicitante();
     llenarSelectAprobador();
 
   
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
         let data = new FormData(this);
-        const url = base_url + "Boleta/registrar";
+        const url = base_url + "Boleta/registrarme";
 
         $.ajax({
             url: url,
@@ -83,22 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // const http = new XMLHttpRequest();
-        // http.open("POST", url, true);
-        // http.send(data);
-        // http.onreadystatechange = function() {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         console.log(this.responseText);
-        //         const res = JSON.parse(this.responseText);
-        //         if (res.icono == "success") {
-                    
-        //             tblUsuario.ajax.reload();
-        //             frm.reset(); // Limpia el formulario
-        //             cerrarModal(); // Oculta el modal y el fondo oscuro
-        //         }
-        //         Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
-        //     }
-        // }
+ 
     });
 });
 
@@ -110,7 +95,7 @@ function llenarTabla(){
             dataSrc: "",
         },
         columns: [
-            { data: "boleta_id" },
+            { data: "posicion" },
             { data: "numero" },
             { data: "nombre_aprobador" },
             { data: "fecha_nueva" },
@@ -173,7 +158,7 @@ function edit(id) {
                 const res = JSON.parse(response); 
                
                 idElement.value = res.id;
-                solicitanteElement.value = res.trabajador_id;
+                // solicitanteElement.value = res.trabajador_id;
                 aprobadorElement.value = res.aprobado_por;
                 fechaInicioElement.value = res.fecha_inicio;
                 fechaFinElement.value = res.fecha_fin;
@@ -191,9 +176,26 @@ function edit(id) {
                     // Limpia el campo Otra_razon
                     $('#otra_razon').val('');
                 }
-                
+
                 btnAccion.textContent = 'Actualizar';
                 titleModal.textContent = "Actualizar Boleta";
+
+
+                if (!aprobadorElement.value) {
+                    if(aprobadorElement.value==''){
+                        removeDefaultOption();
+                    }
+               
+                    var opcion = document.createElement('option');
+                    opcion.value = ''; // Cambia 'default_value' al valor predeterminado que desees
+                    opcion.text = "Seleccione un Aprobador";
+                    opcion.id = 'defaultOption';
+                    aprobadorElement.appendChild(opcion);
+                    aprobadorElement.value = '';
+                    
+                   
+                
+                }
                 myModal.show();
         },
         error: function(xhr, status, error) {
@@ -221,12 +223,14 @@ function view(id) {
                 const res = JSON.parse(response); 
 
                 idElement.value = res.id;;
-                solicitanteElement.value = res.trabajador_id;
+                // solicitanteElement.value = res.trabajador_id;
                 aprobadorElement.value = res.aprobado_por;
                 fechaInicioElement.value = res.fecha_inicio;
                 fechaFinElement.value = res.fecha_fin;
                 horaSalidaElement.value =res.hora_salida;
                 horaEntradaElement.value = res.hora_entrada;
+
+                
 
                 cambiarEstadoInputs(0);
 
@@ -253,6 +257,25 @@ function view(id) {
                 '</div>';
                
                 $('#resultado').html(html);
+
+
+                if (!aprobadorElement.value) {
+                    $.ajax({
+                        url: base_url + "Trabajador/edit/" + res.aprobado_por,
+                        type: 'GET',
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var opcion = document.createElement('option');
+                        opcion.value = res.id; // Cambia 'default_value' al valor predeterminado que desees
+                        opcion.text = res.apellido_nombre;
+                        aprobadorElement.appendChild(opcion);
+                        aprobadorElement.value = opcion.value;
+                    
+                    }
+                });
+                
+                    
+                }
                 myModal.show();
         },
         error: function(xhr, status, error) {
@@ -309,34 +332,25 @@ function llenarSelectSolicitante(){
 function llenarSelectAprobador(){
    
     $.ajax({
-        url: base_url + "usuario/listartrabajadores",
+        url: base_url + "Boleta/MilistarTrabajadoresPorCargoNivel",
         type: 'GET',
 
         success: function(response) {
-                datos = JSON.parse(response); 
-                datos.forEach(opcion => {
-                // Crear un elemento de opción
-                let option = document.createElement("option");
-                // Establecer el valor y el texto de la opción
-
-                if (opcion.estado === "Inactivo" ) {
-                    // Aplicar estilo al campo seleccionado
-                    option.style.color = "red"; // Cambiar a tu color deseado
+            datos = JSON.parse(response); 
+            // Limpiar el select aprobadorElement
+            aprobadorElement.innerHTML = '';
+            datos.map(function(item) {
+                var option = document.createElement('option');
+                if (item.trabajador_estado === "Inactivo" ) {
+                    option.style.color = "red";
                 }
-                
-                option.value = opcion.id;
-               
-                if(opcion.dni==null){
-                    option.text = opcion.apellido_nombre;
-                   
+                option.value = item.trabajador_id;
+                if(item.trabajador_dni==null){
+                    option.text = item.trabajador_nombre;
                 }else{
-                    
-                    option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+                    option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
                 }
-                
-                // Agregar la opción al select
-                aprobador.appendChild(option);
-                
+                aprobadorElement.appendChild(option);
                 });
         },
         error: function(xhr, status, error) {
@@ -367,7 +381,7 @@ function cambiarEstadoInputs(accion){
 
     $('#resultado').empty();
     idElement.disabled = false;
-    solicitanteElement.disabled = false;
+
     aprobadorElement.disabled = false;
     fechaInicioElement.disabled = false;
     fechaFinElement.disabled = false;
@@ -378,7 +392,7 @@ function cambiarEstadoInputs(accion){
     btnAccion.hidden = false;
     if(accion==0){
         idElement.disabled = true;
-        solicitanteElement.disabled = true;
+       
         aprobadorElement.disabled = true;
         fechaInicioElement.disabled = true;
         fechaFinElement.disabled = true;
@@ -390,6 +404,12 @@ function cambiarEstadoInputs(accion){
         btnAccion.hidden = true;
     }
     // 
-    
-    
 }
+
+function removeDefaultOption() {
+    const defaultOption = document.getElementById('defaultOption');
+    if (defaultOption) {
+        defaultOption.remove();
+    }
+}
+

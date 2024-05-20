@@ -110,7 +110,7 @@ function llenarTabla(){
             dataSrc: "",
         },
         columns: [
-            { data: "bid" },
+            { data: "posicion" },
             { data: "numero" },
             { data: "solitantenombre" },
             { data: "fecha_nueva" },
@@ -179,7 +179,7 @@ function edit(id) {
                 fechaFinElement.value = res.fecha_fin;
                 horaSalidaElement.value =res.hora_salida;
                 horaEntradaElement.value = res.hora_entrada;
-
+                
                 if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
                     // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
                     $('#razon').val('Otra');
@@ -191,6 +191,25 @@ function edit(id) {
                     // Limpia el campo Otra_razon
                     $('#otra_razon').val('');
                 }
+               
+               
+                if (!aprobadorElement.value) {
+                        if(aprobadorElement.value==''){
+                            removeDefaultOption();
+                        }
+                   
+                        var opcion = document.createElement('option');
+                        opcion.value = ''; // Cambia 'default_value' al valor predeterminado que desees
+                        opcion.text = "Seleccione un Aprobador";
+                        opcion.id = '';
+                        aprobadorElement.appendChild(opcion);
+                        aprobadorElement.value = '';
+                        
+                       
+                    
+                    }
+              
+                
                 
                 btnAccion.textContent = 'Actualizar';
                 titleModal.textContent = "Actualizar Boleta";
@@ -253,6 +272,22 @@ function view(id) {
                 '</div>';
                
                 $('#resultado').html(html);
+
+                if (!aprobadorElement.value) {
+                    $.ajax({
+                        url: base_url + "Trabajador/edit/" + res.aprobado_por,
+                        type: 'GET',
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var opcion = document.createElement('option');
+                        opcion.value = res.id; // Cambia 'default_value' al valor predeterminado que desees
+                        opcion.text = res.apellido_nombre;
+                        aprobadorElement.appendChild(opcion);
+                        aprobadorElement.value = opcion.value;
+                    
+                    }
+                });
+                }
                 myModal.show();
         },
         error: function(xhr, status, error) {
@@ -309,33 +344,26 @@ function llenarSelectSolicitante(){
 function llenarSelectAprobador(){
    
     $.ajax({
-        url: base_url + "usuario/listartrabajadores",
-        type: 'GET',
+        url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
+        type: 'POST',
 
         success: function(response) {
-                datos = JSON.parse(response); 
-                datos.forEach(opcion => {
-                // Crear un elemento de opción
-                let option = document.createElement("option");
-                // Establecer el valor y el texto de la opción
-
-                if (opcion.estado === "Inactivo" ) {
-                    // Aplicar estilo al campo seleccionado
-                    option.style.color = "red"; // Cambiar a tu color deseado
+            datos = JSON.parse(response); 
+            console.log(response);
+            // Limpiar el select aprobadorElement
+            aprobadorElement.innerHTML = '';
+            datos.map(function(item) {
+                var option = document.createElement('option');
+                if (item.trabajador_estado === "Inactivo" ) {
+                    option.style.color = "red";
                 }
-                
-                option.value = opcion.id;
-               
-                if(opcion.dni==null){
-                    option.text = opcion.apellido_nombre;
-                   
+                option.value = item.trabajador_id;
+                if(item.trabajador_dni==null){
+                    option.text = item.trabajador_nombre;
                 }else{
-                    
-                    option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+                    option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
                 }
-                
-                // Agregar la opción al select
-                aprobador.appendChild(option);
+                aprobadorElement.appendChild(option);
                 
                 });
         },
@@ -392,4 +420,45 @@ function cambiarEstadoInputs(accion){
     // 
     
     
+}
+
+solicitanteElement.addEventListener('change', function() {
+    var selectedValue = solicitanteElement.value;
+    if(selectedValue==''){
+        selectedValue = 0;
+    }
+    $.ajax({
+        url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
+        type: 'POST',
+        data: { id: selectedValue }, // Puedes enviar datos adicionales si es necesario
+        success: function(response) {
+            datos = JSON.parse(response); 
+            // Limpiar el select aprobadorElement
+            aprobadorElement.innerHTML = '';
+            datos.map(function(item) {
+                var option = document.createElement('option');
+                if (item.trabajador_estado === "Inactivo" ) {
+                    option.style.color = "red";
+                }
+                option.value = item.trabajador_id;
+                if(item.trabajador_dni==null){
+                    option.text = item.trabajador_nombre;
+                }else{
+                    option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
+                }
+                aprobadorElement.appendChild(option);
+            });
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
+
+function removeDefaultOption() {
+    const defaultOption = document.getElementById('defaultOption');
+    if (defaultOption) {
+        defaultOption.remove();
+    }
 }

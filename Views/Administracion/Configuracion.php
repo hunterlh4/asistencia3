@@ -23,6 +23,7 @@
 
                                     <div class="card-body">
                                         <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
+                                        <input type="hidden" name="id" id="id">
                                             <div class="form-group">
                                                 <label>API KEY</label>
                                                 <div class="input-group">
@@ -31,8 +32,30 @@
                                                             <i class="fas fa-address-card"></i>
                                                         </div>
                                                     </div>
-                                                    <input type="text" class="form-control" placeholder="Ingrese el API KEY" name="api" id="api" minlength="10" maxlength="60" required>
+                                                    <input type="text" class="form-control" placeholder="Ingrese el API KEY" name="api_1" id="api_1" minlength="10" maxlength="60" required>
                                                 </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>API KEY 2</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <i class="fas fa-address-card"></i>
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control" placeholder="Ingrese el API KEY" name="api_2" id="api_2" minlength="10" maxlength="60" >
+                                                </div>
+
+
+                                                
+                                            </div>
+
+                                            
+                                            <div class="form-group">
+                                            <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button>
+
+                                                
                                             </div>
                                         </form>
                                     </div>

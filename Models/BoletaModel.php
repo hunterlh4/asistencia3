@@ -66,6 +66,7 @@ class BoletaModel extends Query
     public function getMisRevisiones($id)
     {
         $sql = "SELECT 
+        b.id ,
         t1.id AS trabajador_id,
         t1.apellido_nombre AS nombre_trabajador,
         t2.id AS aprobado_por,
@@ -88,7 +89,12 @@ class BoletaModel extends Query
         inner JOIN
             cargo AS c ON c.id = t1.cargo_id
         WHERE aprobado_por = $id
-        ORDER BY b.id asc";
+        order by
+        CASE 
+        WHEN b.estado_tramite = 'Pendiente' THEN 1
+        ELSE 2
+        END,
+        b.id desc";
         return $this->selectAll($sql);
     }
 
@@ -107,16 +113,16 @@ class BoletaModel extends Query
         observaciones, 
         estado_tramite, 
         estado 
-    FROM 
-        boleta 
-    WHERE 
-        estado = 'Activo' 
-        AND estado_tramite = 'Aprobado' 
-        AND trabajador_id = '$trabajador_id'
-        AND '$fecha' BETWEEN fecha_inicio AND fecha_fin 
-    ORDER BY 
-        id ASC;";
-        return $this->selectAll($sql);
+        FROM 
+            boleta 
+        WHERE 
+            estado = 'Activo' 
+            AND estado_tramite = 'Aprobado' 
+            AND trabajador_id = '$trabajador_id'
+            AND '$fecha' BETWEEN fecha_inicio AND fecha_fin 
+        ORDER BY 
+            id ASC;";
+            return $this->selectAll($sql);
     }
 
 
@@ -135,15 +141,90 @@ class BoletaModel extends Query
         observaciones, 
         estado_tramite, 
         estado 
-    FROM 
-        boleta 
-    WHERE 
-        estado = 'Activo' 
-        AND estado_tramite = 'Aprobado' 
-        AND trabajador_id = '$trabajador_id' 
-    ORDER BY 
-        id ASC;";
+        FROM 
+            boleta 
+        WHERE 
+            estado = 'Activo' 
+            AND estado_tramite = 'Aprobado' 
+            AND trabajador_id = '$trabajador_id' 
+        ORDER BY 
+            id ASC;";
+            return $this->selectAll($sql);
+    }
+
+    public function getAllTrabajadorCargo(){
+        $sql = "SELECT 
+        t.id AS trabajador_id,
+        t.apellido_nombre AS trabajador_nombre, 
+        c.nombre AS cargo_nombre,
+        t.dni AS trabajador_dni, 
+        c.nivel AS cargo_nivel,
+        t.estado AS trabajador_estado
+        FROM 
+            trabajador AS t  
+        INNER JOIN 
+            cargo AS c ON c.id = t.cargo_id 
+        ORDER BY
+        t.id ASC ;";
         return $this->selectAll($sql);
+    }
+
+    public function getTrabajadorCargo($cargo,$nivel){
+        $sql = "SELECT 
+        t.id AS trabajador_id,
+        t.apellido_nombre AS trabajador_nombre, 
+        c.nombre AS cargo_nombre,
+        t.dni AS trabajador_dni, 
+        c.nivel AS cargo_nivel,
+        t.estado AS trabajador_estado
+        FROM 
+            trabajador AS t  
+        INNER JOIN 
+            cargo AS c ON c.id = t.cargo_id 
+        WHERE 
+            c.nombre != '$cargo' 
+            AND c.nivel > $nivel
+        ORDER BY
+        t.id ASC ;" ;
+        return $this->selectAll($sql);
+    }
+
+    public function getTrabajadorCargo2($nivel){
+        $sql = "SELECT 
+        t.id AS trabajador_id,
+        t.apellido_nombre AS trabajador_nombre, 
+        c.nombre AS cargo_nombre,
+        t.dni AS trabajador_dni, 
+        c.nivel AS cargo_nivel,
+        t.estado AS trabajador_estado
+        FROM 
+            trabajador AS t  
+        INNER JOIN 
+            cargo AS c ON c.id = t.cargo_id 
+        WHERE 
+            c.nivel > $nivel
+        ORDER BY
+        t.id ASC ;" ;
+        return $this->selectAll($sql);
+    }
+
+    public function getTrabajador($id){
+        $sql = "SELECT 
+        t.id AS trabajador_id,
+        t.apellido_nombre AS trabajador_nombre, 
+        t.dni AS trabajador_dni, 
+        c.nombre AS cargo_nombre,
+        c.nivel AS cargo_nivel,
+        t.estado AS trabajador_estado
+        FROM 
+            trabajador AS t  
+        INNER JOIN 
+            cargo AS c ON c.id = t.cargo_id 
+        where 
+            t.id = $id
+        ORDER BY
+        t.id ASC ;";
+        return $this->select($sql);
     }
 
 

@@ -105,7 +105,7 @@ function llenarTabla(){
             dataSrc: "",
         },
         columns: [
-            { data: "boleta_id" },
+            { data: "posicion" },
             { data: "numero" },
             { data: "nombre_trabajador" },
             { data: "fecha_nueva" },

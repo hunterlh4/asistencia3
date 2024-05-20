@@ -6,38 +6,32 @@ class ConfiguracionModel extends Query
     {
         parent::__construct();
     }
-    public function getCargos()
+    public function getConfiguraciones()
     {
-        $sql = "SELECT id,nombre,nivel,estado from cargo ORDER BY id ASC";
+        $sql = "SELECT * from Configuracion ORDER BY id ASC";
 
         return $this->selectAll($sql);
     }
-    public function getCargo($id)
+    public function getConfiguracion($id)
     {
-        $sql = "SELECT * FROM cargo WHERE id = $id";
+        $sql = "SELECT * FROM Configuracion WHERE id = $id";
         return $this->select($sql);
     }
-    public function verificar($nombre)
+    public function verificar($api_1,$api_2)
     {
-        $sql = "SELECT id,nombre FROM cargo WHERE nombre = '$nombre' ";
+        $sql = "SELECT id,nombre FROM Configuracion WHERE api_1 = '$api_1' or api_2 = '$api_2' ";
         return $this->select($sql);
     }
-    public function registrar($nombre, $nivel)
+    public function registrar($api_1, $api_2)
     {
-        $sql = "INSERT INTO cargo (nombre,nivel) VALUES (?,?)";
-        $array = array($nombre,$nivel);
+        $sql = "INSERT INTO Configuracion (api_1,api_2) VALUES (?,?)";
+        $array = array($api_1,$api_2);
         return $this->insertar($sql, $array);
     }
-    public function modificar($nombre,$nivel,$estado,$id)
+    public function modificar($api_1,$api_2,$id)
     {
-        $sql = "UPDATE cargo SET nombre=?,nivel=?,estado=? ,update_at = NOW()  WHERE id = ?";
-        $array = array($nombre,$nivel,$estado, $id);
-        return $this->save($sql, $array);
-    }
-    public function eliminar($id)
-    {
-        $sql = "UPDATE cargo SET estado = ? WHERE id = ?";
-        $array = array(0, $id);
+        $sql = "UPDATE Configuracion SET api_1=?,api_2=? ,update_at = NOW()  WHERE id = ?";
+        $array = array($api_1,$api_2, $id);
         return $this->save($sql, $array);
     }
 
