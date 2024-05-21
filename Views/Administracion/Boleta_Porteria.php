@@ -28,10 +28,9 @@
                           <tr>
                             <th># </th>
                             <th>Numero</th>
-                            <th>Enviada a</th>
+                            <th>Solicitante</th>
                             <th>Fecha</th>
                             <!-- <th>Fin</th> -->
-                            
                             <th>Salida</th>
                             <th>Entrada</th>
                             <th>tramite</th>
@@ -71,8 +70,17 @@
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
             <div class="row">
-             
-                <div class="col-md-12 col-sm-12">
+              <div class="col-md-6 col-sm-6">
+                <div class="form-group">
+                  <label for="solicitante">Solicitante</label>
+                  <select class="form-control" id="solicitante" name="solicitante" required>
+                  <option value="">Seleccione un Solicitante</option>
+                    
+                    <!-- Opciones del select -->
+                  </select>
+                </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
                 <div class="form-group">
                   <label for="aprobador">Aprobador</label>
                   <select class="form-control" id="aprobador" name="aprobador" required>
@@ -158,7 +166,7 @@
   <?php include './Views/includes/script_new.php' ?>
 
   </html>
-  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta_trabajador.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta_porteria.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

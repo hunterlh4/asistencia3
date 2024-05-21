@@ -14,7 +14,7 @@
       // 4 portero
       // 100 mio
       //Solo el admin(1) y jefes de oficinas puede visualizar las tardanzas 
-      if ($_SESSION['nivel'] == 3 || $_SESSION['nivel'] == 100) {
+      if ($_SESSION['nivel'] == 5 || $_SESSION['nivel'] == 100) {
         echo '<li class="dropdown"> 
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Mis Asistencias</span></a>
                   <ul class="dropdown-menu">
@@ -46,17 +46,23 @@
       }
       ?>
 
-      <li class="menu-header">Asistencia</li>
+      <!-- <li class="menu-header">Asistencia</li> -->
       <?php
+      echo '<li class="dropdown">
+        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
+      <ul class="dropdown-menu">';
       if ($_SESSION['nivel'] == 1) {
         // echo '  <li class="menu-header">Excel</li>';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Importar" class="nav-link"><i data-feather="upload"></i><span>Importar</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="file-text"></i><span>Hoja de Asistencia</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a> </li> ';
       }
-      ?>
+      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a> </li> ';
+      echo '</ul>
+      </li> ';
+     ?>
       <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
       <!-- <li class="menu-header">Boletas</li> -->
+      
       <?php
 
       // echo '  <li class="menu-header">Excel</li>';
@@ -66,9 +72,13 @@
       if ($_SESSION['nivel'] == 1) {
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Ver Boletas</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';
+      }
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4) {
+        // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Porteria" class="nav-link"><i data-feather="file-text"></i><span>Porteria</span></a> </li> ';
       }
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
       echo '</ul>

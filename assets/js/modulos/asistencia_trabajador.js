@@ -121,11 +121,12 @@ eventClick: function (calEvent, jsEvent, view) {
         document.querySelector('#total_horario').innerHTML = total_horario;
         document.querySelector('#tardanza').innerHTML = tardanza;
         document.querySelector('#tardanza_cantidad').innerHTML = tardanza_cantidad;
-
-        var pruebaInput = document.querySelector('#prueba');
-        pruebaInput.value = "Texto para el input de prueba";
-        var pruebaInput2 = document.querySelector('#prueba');
-        console.log(pruebaInput2.value);
+       
+     
+        // var pruebaInput = document.querySelector('#justificacion');
+        // pruebaInput.innerHTML = "Texto para el input de prueba";
+        // var pruebaInput2 = document.querySelector('#justificacion');
+        // console.log(pruebaInput2.value);
         document.querySelector('#reloj_1').innerHTML = reloj_1;
         document.querySelector('#reloj_2').innerHTML = reloj_2;
         document.querySelector('#reloj_3').innerHTML = reloj_3;
@@ -135,12 +136,13 @@ eventClick: function (calEvent, jsEvent, view) {
         document.querySelector('#reloj_7').innerHTML = reloj_7;
         document.querySelector('#reloj_8').innerHTML = reloj_8;
         // console.log(justificacion);
-
+            
         frm.reset();
         llenarBoleta(fechaFormateada,trabajador);
         const textoModificado = licencia.replace(/-Boleta/g, ' ');
         document.querySelector('#licencia').innerHTML = textoModificado;
 
+        document.querySelector('#justificacion').value = justificacion;
         myModal.show();
        
     }
@@ -304,52 +306,52 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // actualizar justificacion
-function guardar(){
-        frm.addEventListener("submit", function(e) {
-            e.preventDefault();
+// function guardar(){
+//         frm.addEventListener("submit", function(e) {
+//             e.preventDefault();
            
-            const formData = new FormData(frm);
-            const url = base_url + "Asistencia/registrar";
+//             const formData = new FormData(frm);
+//             const url = base_url + "Asistencia/registrar";
           
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: formData,
-                processData: false, 
-                contentType: false,
-                beforeSend: function() {
-                    // Se ejecuta antes de enviar la solicitud
-                    // console.log('Enviando solicitud...');
-                },
-                success: function(response) {
-                    // Se ejecuta cuando se recibe una respuesta exitosa
-                    // console.log(response);
+//             $.ajax({
+//                 url: url,
+//                 method: 'POST',
+//                 data: formData,
+//                 processData: false, 
+//                 contentType: false,
+//                 beforeSend: function() {
+//                     // Se ejecuta antes de enviar la solicitud
+//                     // console.log('Enviando solicitud...');
+//                 },
+//                 success: function(response) {
+//                     // Se ejecuta cuando se recibe una respuesta exitosa
+//                     // console.log(response);
                     
-                    const res = JSON.parse(response);
-                    if (res.icono == "success") {
+//                     const res = JSON.parse(response);
+//                     if (res.icono == "success") {
                         
-                        // calendar.ajax.reload();
+//                         // calendar.ajax.reload();
 
                      
-                        $('#myEvent').fullCalendar('refetchEvents');
-                        // modificarCalendario();
-                        modificarCalendario();
-                        frm.reset();
-                        cerrarModal(); 
-                    }
-                    Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+//                         $('#myEvent').fullCalendar('refetchEvents');
+//                         // modificarCalendario();
+//                         modificarCalendario();
+//                         frm.reset();
+//                         cerrarModal(); 
+//                     }
+//                     Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
                   
-                },
-                error: function(xhr, status, error) {
-                    // Se ejecuta si hay algún error en la solicitud
-                    console.error('Error en la solicitud:', error);
-                }
-            });
+//                 },
+//                 error: function(xhr, status, error) {
+//                     // Se ejecuta si hay algún error en la solicitud
+//                     console.error('Error en la solicitud:', error);
+//                 }
+//             });
     
            
-        });
+//         });
     
-}
+// }
 
 // llenar calendario con boleta
 function buscarBoleta(id,currentMonth,currentYear){
@@ -386,7 +388,7 @@ function verAsistencia(mes,anio,id,boleta) {
         "id": id
     };
 
-
+  
     const url = base_url + "asistencia/listaCalendarioAsistenciaTrabajador/";
    
         $.ajax({
@@ -666,20 +668,18 @@ function llenarBoleta(fecha,trabajador_id){
                                     '</div>' +
                                     '</div>' +
                                     '</div>';
-                                    }
-                           
-                }
-               
-            });
-            $('#resultado').html(html);
+                                }
+                            }
+                        });
+                        $('#resultado').html(html);
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
             
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
-
 
 function abrirModal() {
     myModal.show();

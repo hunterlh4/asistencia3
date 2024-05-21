@@ -13,12 +13,18 @@ class BoletaModel extends Query
                 t.apellido_nombre AS solitantenombre,
                 aprobado_por AS aprobadorid, 
                 t2.apellido_nombre AS aprobadornombre,
-                fecha_inicio,fecha_fin,hora_salida,hora_entrada,duracion,razon,observaciones,estado_tramite,
+                fecha_inicio,fecha_fin,hora_salida,hora_entrada,duracion,razon,razon_especifica,observaciones,estado_tramite,
                 b.estado AS bestado 
                 from boleta AS b 
                 INNER JOIN trabajador AS t ON  t.id =b.trabajador_id 
                 left JOIN trabajador AS t2 ON t2.id = b.aprobado_por
-                ORDER BY b.id ASC";
+                order by
+                CASE 
+                WHEN b.estado_tramite = 'Pendiente' THEN 1
+                ELSE 2
+                END,
+                b.id desc";
+                
 
         return $this->selectAll($sql);
     }
@@ -39,6 +45,7 @@ class BoletaModel extends Query
         b.hora_salida AS hora_salida,
         b.hora_entrada AS hora_entrada,
         b.razon AS razon,
+        b.razon_especifica as razon_especifica,
         b.observaciones AS observaciones,
         b.estado_tramite AS estado_tramite
         FROM 
@@ -78,6 +85,7 @@ class BoletaModel extends Query
         b.hora_salida AS hora_salida,
         b.hora_entrada AS hora_entrada,
         b.razon AS razon,
+        b.razon_especifica as razon_especifica,
         b.observaciones AS observaciones,
         b.estado_tramite AS estado_tramite
         FROM 
@@ -92,9 +100,46 @@ class BoletaModel extends Query
         order by
         CASE 
         WHEN b.estado_tramite = 'Pendiente' THEN 1
-        ELSE 2
+        WHEN b.estado_tramite = 'Aprobado' THEN 2
+        ELSE 3
         END,
         b.id desc";
+        return $this->selectAll($sql);
+    }
+
+    public function getBoletasPorteria(){
+        $sql = "SELECT 
+        b.id as bid,
+        t1.id AS trabajador_id,
+        t1.apellido_nombre AS nombre_trabajador,
+        t2.id AS aprobado_por,
+        t2.apellido_nombre AS nombre_aprobador,
+        b.id AS boleta_id,
+        b.numero AS numero,
+        b.fecha_inicio AS fecha_inicio,
+        b.fecha_fin AS fecha_fin,
+        b.hora_salida AS hora_salida,
+        b.hora_entrada AS hora_entrada,
+        b.razon AS razon,
+        b.razon_especifica as razon_especifica,
+        b.observaciones AS observaciones,
+        b.estado_tramite AS estado_tramite
+        FROM 
+            boleta AS b
+        LEFT JOIN 
+            trabajador AS t1 ON b.trabajador_id = t1.id
+        LEFT JOIN 
+            trabajador AS t2 ON b.aprobado_por = t2.id
+        inner JOIN
+            cargo AS c ON c.id = t1.cargo_id
+        WHERE b.estado_tramite = 'Aprobado'
+        order by
+        
+        b.fecha_inicio DESC,
+        hora_salida IS NULL desc, 
+		hora_entrada IS NULL desc, 
+		hora_salida desc, 
+		hora_entrada desc;";
         return $this->selectAll($sql);
     }
 
@@ -109,7 +154,8 @@ class BoletaModel extends Query
         hora_salida, 
         hora_entrada, 
         duracion, 
-        razon, 
+        razon,
+        razon_especifica,
         observaciones, 
         estado_tramite, 
         estado 
@@ -138,6 +184,7 @@ class BoletaModel extends Query
         hora_entrada, 
         duracion, 
         razon, 
+        razon_especifica
         observaciones, 
         estado_tramite, 
         estado 
@@ -241,16 +288,35 @@ class BoletaModel extends Query
     }
     
                    
-    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$estado_tramite)
+    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite)
     {
-        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,hora_salida,hora_entrada,razon,estado_tramite) VALUES (?,?,?,?,?,?,?,?)";
-        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$estado_tramite);
+        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite) VALUES (?,?,?,?,?,?,?)";
+        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite);
         return $this->insertar($sql, $array);
     }
-    public function modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon,$id)
+    public function modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$id)
     {
-        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,hora_salida=?,hora_entrada=?,razon =?, update_at=NOW()  WHERE id = ?";
-        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$salida,$entrada,$razon, $id);
+        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
+        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica, $id);
+        return $this->save($sql, $array);
+    }
+    public function modificarSalida($salida,$id)
+    {
+        $sql = "UPDATE boleta SET hora_salida = ?, update_at=NOW()  WHERE id = ?";
+        $array = array($salida, $id);
+        return $this->save($sql, $array);
+    }
+
+    public function modificarEntrada($entrada,$id)
+    {
+        $sql = "UPDATE boleta SET hora_entrada = ?, update_at=NOW()  WHERE id = ?";
+        $array = array($entrada, $id);
+        return $this->save($sql, $array);
+    }
+    public function modificarHora($salida,$entrada,$id)
+    {
+        $sql = "UPDATE boleta SET hora_salida = ?,hora_entrada = ?, update_at=NOW()  WHERE id = ?";
+        $array = array($salida,$entrada, $id);
         return $this->save($sql, $array);
     }
     public function Revisar($id,$accion,$observacion)

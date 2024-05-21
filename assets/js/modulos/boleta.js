@@ -115,8 +115,8 @@ function llenarTabla(){
             { data: "solitantenombre" },
             { data: "fecha_nueva" },
             // { data: "fecha_fin" },
-            { data: "hora_entrada" },
             { data: "hora_salida" },
+            { data: "hora_entrada" },
             { data: "estado_tramite" },
             // { data: "estado" },
             { data: "accion" }
@@ -179,18 +179,21 @@ function edit(id) {
                 fechaFinElement.value = res.fecha_fin;
                 horaSalidaElement.value =res.hora_salida;
                 horaEntradaElement.value = res.hora_entrada;
-                
-                if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
-                    // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
-                    $('#razon').val('Otra');
-                    // Llena el campo Otra_razon con el valor de res.razon
-                    $('#otra_razon').val(res.razon);
-                } else {
-                    // Si res.razon es una de las opciones disponibles, selecciona esa opción
-                    $('#razon').val(res.razon);
-                    // Limpia el campo Otra_razon
-                    $('#otra_razon').val('');
-                }
+                razonElement.value = res.razon;
+                otra_razonElement.value = res.razon_especifica;
+
+              
+                // if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
+                //     // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
+                //     $('#razon').val('Otra');
+                //     // Llena el campo Otra_razon con el valor de res.razon
+                //     $('#otra_razon').val(res.razon);
+                // } else {
+                //     // Si res.razon es una de las opciones disponibles, selecciona esa opción
+                //     $('#razon').val(res.razon);
+                //     // Limpia el campo Otra_razon
+                //     $('#otra_razon').val('');
+                // }
                
                
                 if (!aprobadorElement.value) {
@@ -248,18 +251,22 @@ function view(id) {
                 horaEntradaElement.value = res.hora_entrada;
 
                 cambiarEstadoInputs(0);
+                razonElement.value = res.razon;
+                otra_razonElement.value = res.razon_especifica;
 
-                if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
-                    // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
-                    $('#razon').val('Otra');
-                    // Llena el campo Otra_razon con el valor de res.razon
-                    $('#otra_razon').val(res.razon);
-                } else {
-                    // Si res.razon es una de las opciones disponibles, selecciona esa opción
-                    $('#razon').val(res.razon);
-                    // Limpia el campo Otra_razon
-                    $('#otra_razon').val('');
-                }
+                console.log(res.razon,res.razon_especifica);
+
+                // if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
+                //     // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
+                //     $('#razon').val('Otra');
+                //     // Llena el campo Otra_razon con el valor de res.razon
+                //     $('#otra_razon').val(res.razon);
+                // } else {
+                //     // Si res.razon es una de las opciones disponibles, selecciona esa opción
+                //     $('#razon').val(res.razon);
+                //     // Limpia el campo Otra_razon
+                //     $('#otra_razon').val('');
+                // }
                
                 
                 btnAccion.textContent = 'Actualizar';
@@ -399,8 +406,8 @@ function cambiarEstadoInputs(accion){
     aprobadorElement.disabled = false;
     fechaInicioElement.disabled = false;
     fechaFinElement.disabled = false;
-    horaSalidaElement.disabled = false;
-    horaEntradaElement.disabled = false;
+    horaSalidaElement.disabled = true;
+    horaEntradaElement.disabled = true;
     razonElement.disabled=false;
     otra_razonElement.disabled=false;
     btnAccion.hidden = false;
@@ -410,8 +417,8 @@ function cambiarEstadoInputs(accion){
         aprobadorElement.disabled = true;
         fechaInicioElement.disabled = true;
         fechaFinElement.disabled = true;
-        horaSalidaElement.disabled = true;
-        horaEntradaElement.disabled = true;
+        // horaSalidaElement.disabled = true;
+        // horaEntradaElement.disabled = true;
         razonElement.disabled=true;
         otra_razonElement.disabled=true;
 

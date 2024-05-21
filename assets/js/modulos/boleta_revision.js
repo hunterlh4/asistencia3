@@ -110,8 +110,8 @@ function llenarTabla(){
             { data: "nombre_trabajador" },
             { data: "fecha_nueva" },
             // { data: "fecha_fin" },
-            { data: "hora_entrada" },
             { data: "hora_salida" },
+            { data: "hora_entrada" },
             { data: "estado_tramite" },
             // { data: "estado" },
             { data: "accion" }
@@ -174,20 +174,11 @@ function view(id) {
                 horaSalidaElement.value =res.hora_salida;
                 horaEntradaElement.value = res.hora_entrada;
                 observacionElement.value = res.observaciones;
+                razonElement.value = res.razon;
+                otra_razonElement.value = res.razon_especifica;
 
 
-
-                if (res.razon && !['Comsion de Servicio', 'Compensacion Horas', 'Motivos Particulares', 'Enfermedad', 'ESSALUD'].includes(res.razon)) {
-                    // Si res.razon es diferente a las opciones disponibles, selecciona la opción "Otra"
-                    $('#razon').val('Otra');
-                    // Llena el campo Otra_razon con el valor de res.razon
-                    $('#otra_razon').val(res.razon);
-                } else {
-                    // Si res.razon es una de las opciones disponibles, selecciona esa opción
-                    $('#razon').val(res.razon);
-                    // Limpia el campo Otra_razon
-                    $('#otra_razon').val('');
-                }
+              
                
                 
                cambiarEstadoInputs();

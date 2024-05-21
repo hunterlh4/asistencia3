@@ -152,12 +152,11 @@
                      
                       <div class="form-group">
                         <label for="justificacion">Numero Informe</label>
-                        <input type="text" class="form-control" id="prueba" name="prueba" required>
-                        <input type="text" class="form-control" id="justificacion" name="justificacion" required>
+                        <input type="text" class="form-control" placeholder="justificacion" name="justificacion" id="justificacion" minlength="5" maxlength="30" readonly>
                       </div>
                     </div>
                     <div class="modal-footer bg-white col-md-12 col-sm-12">
-                  <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button>
+                  <!-- <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button> -->
                   <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
                 </div>
  

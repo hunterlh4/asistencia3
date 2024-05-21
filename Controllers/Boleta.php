@@ -18,6 +18,15 @@ class Boleta extends Controller
 
         $this->views->getView('Administracion', "Boleta", $data, $data1);
     }
+
+    public function Porteria()
+    {
+
+        $data['title'] = 'Porteria';
+        $data1 = '';
+
+        $this->views->getView('Administracion', "Boleta_Porteria", $data, $data1);
+    }
     public function listar()
     {
         $data = $this->model->getBoletas();
@@ -26,9 +35,9 @@ class Boleta extends Controller
             if ($data[$i]['numero'] == null) {
                 $numero = '0';
             }
-            $data[$i]['posicion'] = $i+1;
+            $data[$i]['posicion'] = $i + 1;
 
-            $numero_formateado = str_pad($numero, 7, '0', STR_PAD_LEFT);
+            $numero_formateado = str_pad($numero, 9, '0', STR_PAD_LEFT);
             $data[$i]['numero'] = $numero_formateado;
 
 
@@ -62,7 +71,7 @@ class Boleta extends Controller
             if ($estado_tramite == 'Pendiente') {
                 $data[$i]['estado_tramite'] = '<span class="badge badge-warning">Pendiente</span>';
             }
-            
+
 
 
             // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
@@ -75,20 +84,21 @@ class Boleta extends Controller
 
     public function registrar()
     {
-        if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['hora_salida']) && isset($_POST['hora_entrada']) && isset($_POST['razon'])) {
+        // if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['hora_salida']) && isset($_POST['hora_entrada']) && isset($_POST['razon'])&& isset($_POST['otra_razon'])) {
+
+        if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin'])  && isset($_POST['razon']) && isset($_POST['otra_razon'])) {
             $id = $_POST['id'];
             $solicitante = $_POST['solicitante'];
             $aprobador = $_POST['aprobador'];
             $fecha_inicio = $_POST['fecha_inicio'];
             $fecha_fin = $_POST['fecha_fin'];
-            $salida = $_POST['hora_salida'];
-            $entrada = $_POST['hora_entrada'];
+            // $salida = $_POST['hora_salida'];
+            // $entrada = $_POST['hora_entrada'];
             $razon = $_POST['razon'];
+            $razon_especifica = $_POST['otra_razon'];
 
-            if ($razon == 'Otra') {
-                $razon = $_POST['otra_razon'];
-            }
-            if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($salida) || empty($entrada) || empty($razon)) {
+            if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($razon) || empty($razon_especifica)) {
+                // if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($salida) || empty($entrada) || empty($razon) || empty($razon_especifica)) {
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
 
@@ -98,17 +108,19 @@ class Boleta extends Controller
                     "aprobador" => $aprobador,
                     "fecha_inicio" => $fecha_inicio,
                     "fecha_fin" => $fecha_fin,
-                    "salida" => $salida,
-                    "entrada" => $entrada,
+                    // "salida" => $salida,
+                    // "entrada" => $entrada,
                     "razon" => $razon,
+                    "razon_especifica" => $razon_especifica,
+
 
                 );
                 $datos_log_json = json_encode($datos_log);
 
                 if (empty($id)) {
                     $estado_tramite = 'Pendiente';
-                    // $data = $solicitante.'|'. $aprobador.'|'.$fecha_inicio.'|'.$fecha_fin.'|'.$salida.'|'.$entrada.'|'.$razon.'|'.$estado_tramite;
-                    $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon, $estado_tramite);
+                    // $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon,$razon_especifica, $estado_tramite);
+                    $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite);
                     if ($data > 0) {
                         $respuesta = array('msg' => 'Boleta registrada', 'icono' => 'success');
                         // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
@@ -120,7 +132,7 @@ class Boleta extends Controller
                     $result = $this->model->verificar($id);
                     if ($result['estado_tramite'] == 'Pendiente') {
 
-                        $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon, $id);
+                        $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
                         if ($data > 0) {
                             $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
                             // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
@@ -138,33 +150,32 @@ class Boleta extends Controller
             echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-
-            echo json_encode(array('error' => 'Se requieren los parámetros faltan'));
+            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
         die();
     }
 
     public function registrarme()
     {
-        if (isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['hora_salida']) && isset($_POST['hora_entrada']) && isset($_POST['razon'])) {
+        if (isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin'])  && isset($_POST['razon']) && isset($_POST['otra_razon'])) {
             $id = $_SESSION['id'];
             $data = $this->model->getusuario($id);
             $solicitante = $data['trabajador_id'];
-           
-            
+
+
             $id = $_POST['id'];
-            
+
             $aprobador = $_POST['aprobador'];
             $fecha_inicio = $_POST['fecha_inicio'];
             $fecha_fin = $_POST['fecha_fin'];
-            $salida = $_POST['hora_salida'];
-            $entrada = $_POST['hora_entrada'];
+            // $salida = $_POST['hora_salida'];
+            // $entrada = $_POST['hora_entrada'];
             $razon = $_POST['razon'];
+            $razon_especifica = $_POST['otra_razon'];
 
-            if ($razon == 'Otra') {
-                $razon = $_POST['otra_razon'];
-            }
-            if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($salida) || empty($entrada) || empty($razon)) {
+
+            if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) ||  empty($razon) || empty($razon_especifica)) {
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
 
@@ -174,17 +185,19 @@ class Boleta extends Controller
                     "aprobador" => $aprobador,
                     "fecha_inicio" => $fecha_inicio,
                     "fecha_fin" => $fecha_fin,
-                    "salida" => $salida,
-                    "entrada" => $entrada,
+                    // "salida" => $salida,
+                    // "entrada" => $entrada,
                     "razon" => $razon,
+                    "razon_especifica" => $razon_especifica,
 
                 );
                 $datos_log_json = json_encode($datos_log);
 
                 if (empty($id)) {
                     $estado_tramite = 'Pendiente';
-                    // $data = $solicitante.'|'. $aprobador.'|'.$fecha_inicio.'|'.$fecha_fin.'|'.$salida.'|'.$entrada.'|'.$razon.'|'.$estado_tramite;
-                    $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon, $estado_tramite);
+
+                    // $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon,$razon_especifica, $estado_tramite);
+                    $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite);
                     if ($data > 0) {
                         $respuesta = array('msg' => 'Boleta registrada', 'icono' => 'success');
                         // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
@@ -196,7 +209,7 @@ class Boleta extends Controller
                     $result = $this->model->verificar($id);
                     if ($result['estado_tramite'] == 'Pendiente') {
 
-                        $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon, $id);
+                        $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
                         if ($data > 0) {
                             $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
                             // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
@@ -215,7 +228,70 @@ class Boleta extends Controller
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
 
-            echo json_encode(array('error' => 'Se requieren los parámetros faltan'));
+            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    public function registrarHora()
+    {
+        // if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['hora_salida']) && isset($_POST['hora_entrada']) && isset($_POST['razon'])&& isset($_POST['otra_razon'])) {
+
+        if ((isset($_POST['hora_salida']) || isset($_POST['hora_entrada'])) && isset($_POST['id'])) {
+            $id = $_POST['id'];
+
+            $salida = $_POST['hora_salida'];
+            $entrada = $_POST['hora_entrada'];
+
+
+
+            if (empty($salida) && empty($entrada)) {
+                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+            } else {
+
+                $datos_log = array(
+                    "id" => $id,
+                    "salida" => $salida,
+                    "entrada" => $entrada,
+                );
+                $datos_log_json = json_encode($datos_log);
+
+
+                $result = $this->model->verificar($id);
+                if ($result['estado_tramite'] == 'Aprobado') {
+                    if (empty($salida)) {
+                        $data = $this->model->modificarEntrada($entrada, $id);
+                    }
+                    if (empty($entrada)) {
+                        $data = $this->model->modificarSalida($salida, $id);
+                    }
+                    if (!empty($entrada) && !empty($salida)) {
+                        $data = $this->model->modificarHora($salida, $entrada, $id);
+                    }
+
+
+                    if ($data > 0) {
+                        $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
+                        // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
+                    } else {
+                        $respuesta = array('msg' => 'error al Actualizar', 'icono' => 'error');
+                    }
+                } else {
+                    $respuesta = array('msg' => 'La Solicitud Solo es Para Boletas Aprobadas, Espere su Respuesta', 'icono' => 'error');
+                }
+                // $data = $this->model->modificar($nombre, $nivel);
+
+                // $respuesta = array('msg' => 'Actualizar', 'icono' => 'success');
+
+            }
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        } else {
+            // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
+            $salida = $_POST['hora_salida'];
+            $entrada = $_POST['hora_entrada'];
+            $respuesta = array('msg' => 'error datos vacios'.$salida.'-'.$entrada, 'icono' => 'error');
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
         die();
     }
@@ -247,7 +323,8 @@ class Boleta extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            echo json_encode(array('error' => 'Se requieren los parámetros "id", "anio" y "mes"'));
+            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
 
         // Detiene la ejecución del script
@@ -267,7 +344,8 @@ class Boleta extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            echo json_encode(array('error' => 'Se requieren los parámetros "trabajador_id"'));
+            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
 
         // Detiene la ejecución del script
@@ -294,10 +372,10 @@ class Boleta extends Controller
             if ($data[$i]['numero'] == null) {
                 $numero = '0';
             }
-            $numero_formateado = str_pad($numero, 7, '0', STR_PAD_LEFT);
+            $numero_formateado = str_pad($numero, 9, '0', STR_PAD_LEFT);
             $data[$i]['numero'] = $numero_formateado;
 
-            $data[$i]['posicion'] = $i+1;
+            $data[$i]['posicion'] = $i + 1;
             $fecha_inicio = $data[$i]['fecha_inicio'];
             $fecha_fin = $data[$i]['fecha_fin'];
             $estado_tramite = $data[$i]['estado_tramite'];
@@ -360,14 +438,14 @@ class Boleta extends Controller
         $data = $this->model->getusuario($id);
         $id = $data['trabajador_id'];
         $data = $this->model->getMisRevisiones($id);
-        
+
         for ($i = 0; $i < count($data); $i++) {
             $numero = $data[$i]['numero'];
             if ($data[$i]['numero'] == null) {
                 $numero = '0';
             }
-            $data[$i]['posicion'] = $i+1;
-            $numero_formateado = str_pad($numero, 7, '0', STR_PAD_LEFT);
+            $data[$i]['posicion'] = $i + 1;
+            $numero_formateado = str_pad($numero, 9, '0', STR_PAD_LEFT);
             $data[$i]['numero'] = $numero_formateado;
 
 
@@ -398,12 +476,62 @@ class Boleta extends Controller
             if ($estado_tramite == 'Pendiente') {
                 $data[$i]['estado_tramite'] = '<span class="badge badge-warning">Pendiente</span>';
             }
-            
         }
 
         echo json_encode($data);
         die();
     }
+
+    public function listarPorteria()
+    {
+        $data = $this->model->getBoletasPorteria();
+        for ($i = 0; $i < count($data); $i++) {
+            $numero = $data[$i]['numero'];
+            if ($data[$i]['numero'] == null) {
+                $numero = '0';
+            }
+            $data[$i]['posicion'] = $i + 1;
+
+            $numero_formateado = str_pad($numero, 9, '0', STR_PAD_LEFT);
+            $data[$i]['numero'] = $numero_formateado;
+
+
+            $fecha_inicio = $data[$i]['fecha_inicio'];
+            $fecha_fin = $data[$i]['fecha_fin'];
+            $estado_tramite = $data[$i]['estado_tramite'];
+
+            $fecha_inicio = date('d-m-Y', strtotime($fecha_inicio));
+            $fecha_fin = date('d-m-Y', strtotime($fecha_fin));
+
+            if ($fecha_inicio == $fecha_fin) {
+                $data[$i]['fecha_nueva'] = $fecha_inicio;
+            } else {
+                $data[$i]['fecha_nueva'] = $fecha_inicio . '<br>' . $fecha_fin;
+            }
+
+
+            $data[$i]['accion'] = '<div class="d-flex">
+                <button class="btn btn-primary" type="button" onclick="edit(' . $data[$i]['bid'] . ')"><i class="fas fa-edit"></i></button>
+                </div>';
+
+            if ($estado_tramite == 'Aprobado') {
+                $data[$i]['estado_tramite'] = '<span class="badge badge-success">Aprobado</span>';
+            }
+
+
+
+
+            // <button class="btn btn-danger" type="button" onclick="ViewUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
+            // <button class="btn btn-danger" type="button" onclick="DeleteUser(' . $data[$i]['usuario_id'] . ')"><i class="fas fa-eye"></i></button>
+            // colocar eliminar si es necesario
+        }
+        echo json_encode($data);
+        die();
+    }
+
+
+
+
 
     public function revisar()
     {

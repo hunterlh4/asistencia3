@@ -31,8 +31,9 @@
                             <th>Solicitante</th>
                             <th>Fecha</th>
                             <!-- <th>Fin</th> -->
-                            <th>Entrada</th>
+                            
                             <th>Salida</th>
+                            <th>Entrada</th>
                             <th>tramite</th>
                             <!-- <th>estado</th> -->
                             <th>accion</th>

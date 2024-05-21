@@ -8,7 +8,7 @@ const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 // INPUTS
 
 const idElement = document.querySelector('#id');
-
+const solicitanteElement = document.querySelector('#solicitante');
 const aprobadorElement = document.querySelector('#aprobador');
 const fechaInicioElement = document.querySelector('#fecha_inicio');
 const fechaFinElement = document.querySelector('#fecha_fin');
@@ -28,33 +28,20 @@ var datos;
 
 
 document.addEventListener("DOMContentLoaded", function() {
-
+    prueba();
     llenarTabla();
-    // llenarSelectSolicitante();
-    llenarSelectAprobador();
+    llenarSelectSolicitante();
+    // llenarSelectAprobador();
 
   
 
-    //levantar modal
-    nuevo.addEventListener("click", function() {
-        frm.reset();
-        resetRequiredFields()
-        btnAccion.textContent = 'Registrar';
-        titleModal.textContent = "Nueva Boleta";
-        cambiarEstadoInputs(1);
-        // document.querySelector('#radio-true').checked = true;
-        document.querySelector('#id').value = '';
-        // document.querySelectorAll('#estado-grupo').forEach(element => {
-        //     element.style.display = 'none';
-        // });
-        myModal.show();
-    });
+  
     
     //submit usuarios
     frm.addEventListener("submit", function(e) {
         e.preventDefault();
         let data = new FormData(this);
-        const url = base_url + "Boleta/registrarme";
+        const url = base_url + "Boleta/registrarHora";
 
         $.ajax({
             url: url,
@@ -68,8 +55,8 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             success: function(response) {
                 // Se ejecuta cuando se recibe una respuesta exitosa
-                console.log(response);
                 const res = JSON.parse(response);
+                console.log(response);
                 if (res.icono == "success") {
                     
                     tblUsuario.ajax.reload();
@@ -84,7 +71,22 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
- 
+        // const http = new XMLHttpRequest();
+        // http.open("POST", url, true);
+        // http.send(data);
+        // http.onreadystatechange = function() {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log(this.responseText);
+        //         const res = JSON.parse(this.responseText);
+        //         if (res.icono == "success") {
+                    
+        //             tblUsuario.ajax.reload();
+        //             frm.reset(); // Limpia el formulario
+        //             cerrarModal(); // Oculta el modal y el fondo oscuro
+        //         }
+        //         Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+        //     }
+        // }
     });
 });
 
@@ -92,13 +94,13 @@ document.addEventListener("DOMContentLoaded", function() {
 function llenarTabla(){
     tblUsuario = $("#table-alex").DataTable({
         ajax: {
-            url: base_url + "Boleta/listarMisBoletas",
+            url: base_url + "Boleta/listarPorteria",
             dataSrc: "",
         },
         columns: [
             { data: "posicion" },
             { data: "numero" },
-            { data: "nombre_aprobador" },
+            { data: "nombre_trabajador" },
             { data: "fecha_nueva" },
             // { data: "fecha_fin" },
             { data: "hora_salida" },
@@ -155,110 +157,37 @@ function edit(id) {
                 frm.reset();
                 resetRequiredFields();
                 console.log(response);
-                cambiarEstadoInputs(1);
-                const res = JSON.parse(response); 
-               
-                idElement.value = res.id;
-                // solicitanteElement.value = res.trabajador_id;
-                aprobadorElement.value = res.aprobado_por;
-                fechaInicioElement.value = res.fecha_inicio;
-                fechaFinElement.value = res.fecha_fin;
-                horaSalidaElement.value =res.hora_salida;
-                horaEntradaElement.value = res.hora_entrada;
-
-                razonElement.value = res.razon;
-                otra_razonElement.value = res.razon_especifica;
-
-                btnAccion.textContent = 'Actualizar';
-                titleModal.textContent = "Actualizar Boleta";
-
-
-                if (!aprobadorElement.value) {
-                    if(aprobadorElement.value==''){
-                        removeDefaultOption();
-                    }
-               
-                    var opcion = document.createElement('option');
-                    opcion.value = ''; // Cambia 'default_value' al valor predeterminado que desees
-                    opcion.text = "Seleccione un Aprobador";
-                    opcion.id = 'defaultOption';
-                    aprobadorElement.appendChild(opcion);
-                    aprobadorElement.value = '';
-                    
-                   
-                
-                }
-                myModal.show();
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-
-
-  
-       
-   
-}
-
-
-function view(id) {
-
-    $.ajax({
-        url: base_url + "Boleta/edit/" + id,
-        type: 'GET',
-
-        success: function(response) {
-                frm.reset();
-                resetRequiredFields();
-                console.log(response);
-                const res = JSON.parse(response); 
-
-                idElement.value = res.id;;
-                // solicitanteElement.value = res.trabajador_id;
-                aprobadorElement.value = res.aprobado_por;
-                fechaInicioElement.value = res.fecha_inicio;
-                fechaFinElement.value = res.fecha_fin;
-                horaSalidaElement.value =res.hora_salida;
-                horaEntradaElement.value = res.hora_entrada;
-                razonElement.value = res.razon;
-                otra_razonElement.value = res.razon_especifica;
-                
-
                 cambiarEstadoInputs(0);
-
-               
-               
+                const res = JSON.parse(response); 
                 
-                btnAccion.textContent = 'Actualizar';
-                titleModal.textContent = "Vizualizar";
-                
-                var html = 
-                '<div class="form-group">'+
-                '<label for="observaciones">Observaciones</label>'+
-                '<input type="text" class="form-control" id="observaciones" name="observaciones" value="'+res.observaciones+'" disabled>'+
-                '</div>';
+                idElement.value = res.id;
+                solicitanteElement.value = res.trabajador_id;
+                aprobadorElement.value = res.aprobado_por;
+                fechaInicioElement.value = res.fecha_inicio;
+                fechaFinElement.value = res.fecha_fin;
+                horaSalidaElement.value =res.hora_salida;
+                horaEntradaElement.value = res.hora_entrada;
+                razonElement.value = res.razon;
+                otra_razonElement.value = res.razon_especifica;
                
-                $('#resultado').html(html);
-
-
                 if (!aprobadorElement.value) {
-                    $.ajax({
-                        url: base_url + "Trabajador/edit/" + res.aprobado_por,
-                        type: 'GET',
-                    success: function(response) {
-                        const res = JSON.parse(response);
+                        
+                   
                         var opcion = document.createElement('option');
-                        opcion.value = res.id; // Cambia 'default_value' al valor predeterminado que desees
-                        opcion.text = res.apellido_nombre;
+                        opcion.value = res.aprobado_por; // Cambia 'default_value' al valor predeterminado que desees
+                        opcion.text = res.aprobado_por;
+                        
                         aprobadorElement.appendChild(opcion);
                         aprobadorElement.value = opcion.value;
+                        
+                       
                     
                     }
-                });
+              
                 
-                    
-                }
+                
+                btnAccion.textContent = 'Actualizar';
+                titleModal.textContent = "Actualizar Boleta";
                 myModal.show();
         },
         error: function(xhr, status, error) {
@@ -302,8 +231,30 @@ function llenarSelectSolicitante(){
                     
                     // Agregar la opción al select
                     solicitante.appendChild(option);
-                    
                     });
+                    datos.forEach(opcion => {
+                        // Crear un elemento de opción
+                        let option = document.createElement("option");
+                        // Establecer el valor y el texto de la opción
+        
+                        if (opcion.estado === "Inactivo" ) {
+                            // Aplicar estilo al campo seleccionado
+                            option.style.color = "red"; // Cambiar a tu color deseado
+                        }
+                        
+                        option.value = opcion.id;
+                       
+                        if(opcion.dni==null){
+                            option.text = opcion.apellido_nombre;
+                           
+                        }else{
+                            
+                            option.text = opcion.apellido_nombre+ ' - '+ opcion.dni;
+                        }
+                        
+                        // Agregar la opción al select
+                        aprobador.appendChild(option);
+                        });
             },
             error: function(xhr, status, error) {
                 console.error(error);
@@ -315,11 +266,12 @@ function llenarSelectSolicitante(){
 function llenarSelectAprobador(){
    
     $.ajax({
-        url: base_url + "Boleta/MilistarTrabajadoresPorCargoNivel",
-        type: 'GET',
+        url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
+        type: 'POST',
 
         success: function(response) {
             datos = JSON.parse(response); 
+            console.log(response);
             // Limpiar el select aprobadorElement
             aprobadorElement.innerHTML = '';
             datos.map(function(item) {
@@ -334,6 +286,7 @@ function llenarSelectAprobador(){
                     option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
                 }
                 aprobadorElement.appendChild(option);
+                
                 });
         },
         error: function(xhr, status, error) {
@@ -363,8 +316,8 @@ function cerrarModal() {
 function cambiarEstadoInputs(accion){
 
     $('#resultado').empty();
-    idElement.disabled = false;
-
+    // idElement.disabled = true;
+    solicitanteElement.disabled = false;
     aprobadorElement.disabled = false;
     fechaInicioElement.disabled = false;
     fechaFinElement.disabled = false;
@@ -372,22 +325,58 @@ function cambiarEstadoInputs(accion){
     horaEntradaElement.disabled = true;
     razonElement.disabled=false;
     otra_razonElement.disabled=false;
-    btnAccion.hidden = false;
+   
     if(accion==0){
-        idElement.disabled = true;
-       
+        idElement.disabled = false;
+        solicitanteElement.disabled = true;
         aprobadorElement.disabled = true;
         fechaInicioElement.disabled = true;
         fechaFinElement.disabled = true;
-        // horaSalidaElement.disabled = true;
-        // horaEntradaElement.disabled = true;
+        horaSalidaElement.disabled = false;
+        horaEntradaElement.disabled = false;
         razonElement.disabled=true;
         otra_razonElement.disabled=true;
 
-        btnAccion.hidden = true;
+       
     }
     // 
+    
+    
 }
+
+solicitanteElement.addEventListener('change', function() {
+    var selectedValue = solicitanteElement.value;
+    if(selectedValue==''){
+        selectedValue = 0;
+    }
+    $.ajax({
+        url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
+        type: 'POST',
+        data: { id: selectedValue }, // Puedes enviar datos adicionales si es necesario
+        success: function(response) {
+            datos = JSON.parse(response); 
+            // Limpiar el select aprobadorElement
+            aprobadorElement.innerHTML = '';
+            datos.map(function(item) {
+                var option = document.createElement('option');
+                if (item.trabajador_estado === "Inactivo" ) {
+                    option.style.color = "red";
+                }
+                option.value = item.trabajador_id;
+                if(item.trabajador_dni==null){
+                    option.text = item.trabajador_nombre;
+                }else{
+                    option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
+                }
+                aprobadorElement.appendChild(option);
+            });
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+});
 
 function removeDefaultOption() {
     const defaultOption = document.getElementById('defaultOption');
@@ -396,3 +385,24 @@ function removeDefaultOption() {
     }
 }
 
+
+
+function prueba(){
+   
+    $.ajax({
+        url: base_url + "Boleta/listarPorteria",
+        type: 'POST',
+
+        success: function(response) {
+            
+            console.log(response);
+           
+                
+           
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+}
