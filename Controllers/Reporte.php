@@ -1,4 +1,9 @@
 <?php
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Reporte extends Controller
 {
     public function __construct()
@@ -148,5 +153,159 @@ class Reporte extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         }
         die();
+    }
+
+    public function generar_trabajador(){
+        // $respuesta =array();
+        
+        $data[]=[];
+        $mensaje ='';
+        if (isset($_POST['trabajadores']) && isset($_POST['meses']) && isset($_POST['anio'])) {
+            $trabajadores = $_POST['trabajadores'];
+            $meses = $_POST['meses'];
+            $anio = $_POST['anio'];
+            $cantidad =0;
+            $reporte =0;
+            foreach($trabajadores as $trabajador) {
+                $trabajador_actual = $trabajador;
+                foreach($meses as $mes){
+                    // $respuesta[] = "Trabajador $trabajador Mes $mes año $anio";
+                    $reporte++;
+                    $cantidad++;
+                    $inasistencia=0;
+                    $tardanza=0;
+                    $data = $this->model->Reporte_Trabajador($trabajador,$mes,$anio);
+                    // $datos = $data;
+                    // // $respuesta[] = $data;
+                    // // $dato= $data;
+                    // // var_dump($respuesta);
+                    // if($data ==0 ){
+                       
+                    // //     $spread = new Spreadsheet();
+                     
+                    // //     for ($i = 0; $i < count($data); $i++) {
+                            
+                        
+                    // //         $sheet = $spread->getActiveSheet();
+                    // //         $sheet->setCellValue('A1', 'Nombre');
+                    // //         $sheet->setCellValue('B1','hola');
+                    // //         $sheet->setCellValue('C1','hola');
+                    // //         $sheet->setCellValue('D1','hola');
+                    // //         $sheet->setCellValue('E1','hola');
+                    // //         $sheet->setCellValue('F1','hola');
+                    // //         $sheet->setCellValue('G1','hola');
+                           
+                            
+                    // //             // $sheet->setCellValue('A1',$data[$i]['trabajador_nombre']);
+                    // //             // $sheet->setCellValue('B1',$data[$i]['fecha']);
+                    // //             // $sheet->setCellValue('C1',$data[$i]['licencia']);
+                    // //             // $sheet->setCellValue('D1',$data[$i]['entrada']);
+                    // //             // $sheet->setCellValue('E1',$data[$i]['salida']);
+                    // //             // $sheet->setCellValue('F1',$data[$i]['total_reloj']);
+                    // //             // $sheet->setCellValue('G1',$data[$i]['total']);
+
+                    // //             $tardanza = $tardanza + $data[$i]['tardanza_cantidad'];
+                    // //             $inasistencia = $inasistencia + $data[$i]['inasistencia'];
+                    // //             // $coordenadaCelda = PHPExcel_Cell::stringFromColumnIndex($indiceColumna) . $indiceFila;
+                    // //             // $sheet->setCellValue([$indiceColumna, $indiceFila], $valor .'-'.$cantidad.'prueba');
+                    // //             // $indiceColumna++;
+                            
+                    // //         // $indiceFila++;
+                    // //     }
+                    // //     $fileName = "Descarga_excelo_'$cantidad'.xlsx";
+
+                    // //     // Crear un escritor para guardar el archivo
+                    // //     $writer = new Xlsx($spread);
+
+                    // //     // Especificar la ruta donde guardar el archivo
+                    // //     $filePath = './Uploads/Reportes/'.$fileName;
+
+                    // //     // Guardar el archivo
+                    // //     $writer->save($filePath);
+
+                        
+                    // //     // $writer = new Xlsx($spreadsheet);
+                    // //     // header('Content-Type: application/xls');
+                    // //     // // header('Content-Disposition: attachment;filename="seguimiento_'.$cantidad.'_'.$nombre.'.xlsx"');
+                    // //     // header('Content-Disposition: attachment;filename="seguimiento_'.$cantidad.'.xlsx"');
+                    // //     // header('Pragma: no-cache');
+                    // //     // $writer->save('php://output');
+
+                        
+                     
+                    // //     // $writer->save('php://output');
+                       
+
+                    // }else{
+                    // //   $respuesta = array('msg' => $data, 'icono' => 'error');
+                    // }
+                    if(empty($data)){
+                        $mensaje += "valor Vacio para Trabajador $trabajador Mes $mes año $anio";
+                    }else{
+                        for ($i = 0; $i < count($data); $i++) {
+                            // $datos[$i] = $data[$i];
+                            // $datos[$i] = $data[$i]['trabajador_nombre'];
+                            $cantidad++;
+                        }
+                        array_push($data);
+                    }
+
+                   
+                  
+                }
+                // $respuesta = array('msg' => $dato, 'icono' => 'error');
+            }
+            if(empty($mensaje)){
+                $respuesta = array('msg' => 'agregado' . $data, 'icono' => 'success');
+            }else{
+                $respuesta = array('msg' => 'hola'.$mensaje, 'icono' => 'success');
+            }
+            
+            // $spread = new Spreadsheet();
+          
+
+            // // Añadir contenido a la hoja de cálculo
+            // $sheet = $spread->getActiveSheet();
+            // $sheet->setCellValue('A1', 'Nombre');
+            // $sheet->setCellValue('B1', 'Edad');
+            // $sheet->setCellValue('A2', 'Juan');
+            // $sheet->setCellValue('B2', '25');
+            // $sheet->setCellValue('A3', 'María');
+            // $sheet->setCellValue('B3', '30');
+            // $spread
+            //     ->getProperties()
+            //     ->setCreator("Nestor Tapia")
+            //     ->setLastModifiedBy('BaulPHP')
+            //     ->setTitle('Excel creado con PhpSpreadSheet')
+            //     ->setSubject('Excel de prueba')
+            //     ->setDescription('Excel generado como demostración')
+            //     ->setKeywords('PHPSpreadsheet')
+            //     ->setCategory('Categoría Excel');
+            
+            // $fileName="Descarga_excelo_'$cantidad'.xlsx";
+            // # Crear un "escritor"
+            // $writer = new Xlsx($spread);
+            // # Le pasamos la ruta de guardado
+            
+            // $filePath = './Uploads/Reportes/'.$fileName;
+            // $writer->save($filePath);
+            
+            // $data = $this->model->Reporte_Trabajador(812,5,2024);
+            // $nombre = $data[0]['trabajador_nombre'];
+            // $respuesta = array($data,$nombre);
+            // $respuesta = array($data);
+            //  $respuesta = array('msg' => 'registrado el reporte', 'icono' => 'error');
+            $respuesta = array('msg' => var_dump($data), 'icono' => 'success');
+
+        }else{
+            $respuesta = array('msg' => 'falta de datos', 'icono' => 'error');
+           
+        }
+        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function exportar($data){
+
     }
 }

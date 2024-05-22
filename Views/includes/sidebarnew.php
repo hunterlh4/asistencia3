@@ -8,10 +8,10 @@
       <li class="menu-header">General</li>
 
       <?php
-      // 1 admin
-      // 2 jefe oficina
-      // 3 vizualizador
-      // 4 portero
+      // 1 admin            alextm
+      // 2 jefe oficina     alextm1
+      // 3 vizualizador     alextm2
+      // 4 portero          alextm3
       // 100 mio
       //Solo el admin(1) y jefes de oficinas puede visualizar las tardanzas 
       if ($_SESSION['nivel'] == 5 || $_SESSION['nivel'] == 100) {

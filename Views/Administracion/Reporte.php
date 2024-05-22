@@ -15,7 +15,7 @@ include './Views/includes/sidebarnew.php';
 <div class="col-md-12">
 <div class="card">
 <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
-<h3 class="font-weight-bolder"><i class="fa fa-laptop"></i> Soporte</h3>
+<h3 class="font-weight-bolder"><i class="fa fa-laptop"></i> Reporte</h3>
 </div>
 <div class="row ">
     <div class="col-md-6 align-center">

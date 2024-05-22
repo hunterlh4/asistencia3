@@ -13,9 +13,26 @@ class ReporteModel extends Query
         // $sql = "SELECT T.id as tid,T.estado as testado from trabajadores as T ORDER BY id ASC";
         return $this->selectAll($sql);
     }
-    public function getSeguimientoPorTrabajador($id)
+    public function Reporte_Trabajador($id,$mes,$anio)
     {
-        $sql = "SELECT * FROM seguimientoTrabajador WHERE trabajador_id = $id order by id ;";
+        $sql = "SELECT 
+                t.apellido_nombre AS trabajador_nombre,
+                fecha,
+                licencia,
+                TO_CHAR(entrada, 'HH24:MI') AS entrada,
+                TO_CHAR(salida, 'HH24:MI') AS salida,
+                TO_CHAR(total_reloj, 'HH24:MI') AS total_reloj,
+                TO_CHAR(total, 'HH24:MI') AS total,
+                CASE WHEN tardanza_cantidad <> 0 THEN 1 ELSE 0 END AS tardanza_cantidad,
+                CASE WHEN licencia = 'NMS' THEN 1 ELSE 0 END AS inasistencia
+                FROM 
+                        asistencia AS a
+                INNER JOIN trabajador as t ON t.id = a.trabajador_id
+                WHERE 
+                        EXTRACT(MONTH FROM fecha) = $mes
+                        AND EXTRACT(YEAR FROM fecha) = $anio
+                        AND trabajador_id = $id
+                ORDER BY fecha asc";
 
         return $this->selectAll($sql);
     }
