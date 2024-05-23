@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     llenarSelectTrabajador();
 })
 
-function generar(){
+function generar2(){
     const trabajadores = Array.from(trabajador.selectedOptions).map(option => option.value);
     const meses = Array.from(mes.selectedOptions).map(option => option.value);
     const anioSeleccionado = anio.value;
@@ -35,6 +35,39 @@ function generar(){
             console.error(error);
         }
     });
+}
+
+function generar(){
+    const trabajadores = Array.from(trabajador.selectedOptions).map(option => option.value);
+    const meses = Array.from(mes.selectedOptions).map(option => option.value);
+    const anioSeleccionado = anio.value;
+
+    trabajadores.forEach(trabajador => {
+        // Dentro de cada trabajador, recorrer el array de meses
+        meses.forEach(mes => {
+            // Imprimir trabajador, mes y año seleccionado
+          
+
+            $.ajax({
+                url: base_url + "Reporte/generar_trabajador",
+                type: 'POST',
+                data: { trabajador: trabajador, mes:mes, anio:anioSeleccionado }, // Puedes enviar datos adicionales si es necesario
+                success: function(response) {
+                    // datos = JSON.parse(response); 
+                    // Limpiar el select aprobadorElement
+                   console.log(response);
+                //    console.log(datos);
+                   
+                   
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        });
+    });
+
 }
 function llenarSelectAnio() {
     anio.innerHTML = '';

@@ -521,7 +521,7 @@ function modificarCalendario(){
 
 function llenarselect(){
     $.ajax({
-        url: base_url + "usuario/listartrabajadores",
+        url: base_url + "Usuario/listartrabajadores",
         type: 'GET',
 
         success: function(response) {

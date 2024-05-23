@@ -23,6 +23,16 @@ class ReporteModel extends Query
                 TO_CHAR(salida, 'HH24:MI') AS salida,
                 TO_CHAR(total_reloj, 'HH24:MI') AS total_reloj,
                 TO_CHAR(total, 'HH24:MI') AS total,
+                TO_CHAR(reloj_1, 'HH24:MI') AS reloj_1,
+                TO_CHAR(reloj_2, 'HH24:MI') AS reloj_2,
+                TO_CHAR(reloj_3, 'HH24:MI') AS reloj_3,
+                TO_CHAR(reloj_4, 'HH24:MI') AS reloj_4,
+                TO_CHAR(reloj_5, 'HH24:MI') AS reloj_5,
+                TO_CHAR(reloj_6, 'HH24:MI') AS reloj_6,
+                TO_CHAR(reloj_7, 'HH24:MI') AS reloj_7,
+                TO_CHAR(reloj_8, 'HH24:MI') AS reloj_8,
+                justificacion,
+
                 CASE WHEN tardanza_cantidad <> 0 THEN 1 ELSE 0 END AS tardanza_cantidad,
                 CASE WHEN licencia = 'NMS' THEN 1 ELSE 0 END AS inasistencia
                 FROM 
@@ -36,6 +46,48 @@ class ReporteModel extends Query
 
         return $this->selectAll($sql);
     }
+
+    public function getTrabajador($id,$mes,$anio){
+    //     $sql  ="SELECT 
+    //     t.apellido_nombre AS trabajador_nombre, 
+    //     b.fecha_inicio AS fecha,
+    //     hd.hora_entrada AS horario_entrada,
+    //     hd.hora_salida AS horario_salida, 
+    //     SUM(CASE WHEN b.razon = 'Motivos Particulares' THEN 1 ELSE 0 END) AS total_motivos_particulares
+    // FROM 
+    //     trabajador AS t
+    // INNER JOIN 
+    //     horariodetalle AS hd ON hd.id = t.horariodetalle_id
+    // LEFT JOIN 
+    //     boleta AS b ON b.trabajador_id = t.id
+    // WHERE 
+    //     t.id = $id AND 
+    //     estado_tramite = 'Aprobado' AND 
+    //     razon = 'Motivos Particulares' AND
+    //     EXTRACT(MONTH FROM b.fecha_inicio) = $mes AND 
+    //     EXTRACT(YEAR FROM b.fecha_inicio) = $anio 
+    // GROUP BY 
+    //     t.apellido_nombre, 
+    //     b.fecha_inicio, 
+    //     hd.hora_entrada, 
+    //     hd.hora_salida";
+        $sql = "SELECT 
+        t.apellido_nombre AS trabajador_nombre, 
+        b.fecha_inicio AS fecha,
+        hd.hora_entrada AS horario_entrada,
+        hd.hora_salida AS horario_salida, 
+        CASE WHEN b.razon = 'Motivos Particulares' THEN 1 ELSE 0 END AS total_motivos_particulares
+    FROM 
+        trabajador AS t
+    INNER JOIN 
+        horariodetalle AS hd ON hd.id = t.horariodetalle_id
+    left JOIN 
+        boleta AS b ON b.trabajador_id = t.id AND EXTRACT(MONTH FROM b.fecha_inicio) = $mes AND EXTRACT(YEAR FROM b.fecha_inicio) = $anio
+    WHERE 
+        t.id = $id";
+        return $this->selectAll($sql);
+    }
+
     public function getSeguimiento($id){
         $sql = "SELECT * FROM seguimientoTrabajador WHERE id = $id";
        

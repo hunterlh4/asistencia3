@@ -247,7 +247,7 @@
 
   </html>
 
-  <script src="<?php echo BASE_URL; ?>assets/js/modulos/Asistencia.js"></script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/asistencia.js"></script>
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';

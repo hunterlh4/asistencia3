@@ -251,7 +251,7 @@ create table programacion(
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
-    FOREIGN KEY(programador_id) REFERENCES trabajador(id),
+    -- FOREIGN KEY(programador_id) REFERENCES trabajador(id),
     FOREIGN KEY(trabajador_id) REFERENCES trabajador(id)
 )
 
@@ -261,7 +261,7 @@ create table configuracion(
     api_2 varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP null,
+    update_at TIMESTAMP null
 )
 
 

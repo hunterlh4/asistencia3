@@ -1472,6 +1472,7 @@ class Importar extends Controller
                                             if($entrada ==NULL){
                                                 $licencia='SR';
                                                 $entrada='00:00';
+                                                $total_string='00:00';
                                             }else{
                                                 $hora_entrada = strtotime($entrada);
                                                 $hora_entrada_formato = date('H:i', $hora_entrada);
