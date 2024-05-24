@@ -35,33 +35,70 @@ document.addEventListener("DOMContentLoaded", function() {
     formulario.addEventListener("submit", function(e) {
         e.preventDefault();
 
-        loadingMessage.style.display = "block";
-
-
-        let data = new FormData(this);
-        const url = base_url + "importar/importar";
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(data);
-        http.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-                const res = JSON.parse(this.responseText);
-                if (res.icono == "success") {
-                    
-                    loadingMessage.style.display = "none";
-                    formulario.reset(); // Limpia el formulario
-                    inputHiddenFile.value = null;
-                    labelFile.innerHTML = 'Seleccione un Archivo';
-                    // Habilitar el botón de importar
-                    botonImportar.disabled = true;
-                    resetRequiredFields();
-                   
-                }
-                // console.log(res.encabezado);
-                Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+        // loadingMessage.style.display = "block";
+        let datosFormulario = new FormData(this);
+        $.ajax({
+            url: base_url + "Importar/importar",
+            type: 'POST',
+            data: datosFormulario,
+            processData: false, // Para que jQuery no convierta el FormData en una cadena
+            contentType: false,
+            beforeSend: function() {
+                // Mostrar mensaje de carga antes de enviar la solicitud
+                loadingMessage.style.display = "block";
+            },
+            success: function(response) {
+                console.log(response);
+             const res = JSON.parse(response); 
+            
+             if (res.icono == "success") {
+                 
+                 loadingMessage.style.display = "none";
+                 formulario.reset(); // Limpia el formulario
+                 inputHiddenFile.value = null;
+                 labelFile.innerHTML = 'Seleccione un Archivo';
+                 // Habilitar el botón de importar
+                 botonImportar.disabled = true;
+                 resetRequiredFields();
+                
+             }
+             res.post;
+             // console.log(res.encabezado);
+             Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+               
+               
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                loadingMessage.style.display = "none";
             }
-        }
+        });
+
+
+        // let data = new FormData(this);
+        // const url = base_url + "importar/importar";
+        // const http = new XMLHttpRequest();
+        // http.open("POST", url, true);
+        // http.send(data);
+        // http.onreadystatechange = function() {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         console.log(this.responseText);
+        //         const res = JSON.parse(this.responseText);
+        //         if (res.icono == "success") {
+                    
+        //             loadingMessage.style.display = "none";
+        //             formulario.reset(); // Limpia el formulario
+        //             inputHiddenFile.value = null;
+        //             labelFile.innerHTML = 'Seleccione un Archivo';
+        //             // Habilitar el botón de importar
+        //             botonImportar.disabled = true;
+        //             resetRequiredFields();
+                   
+        //         }
+        //         // console.log(res.encabezado);
+        //         Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+        //     }
+        // }
     });
 });
 

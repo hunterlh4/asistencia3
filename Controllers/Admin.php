@@ -29,12 +29,13 @@ class Admin extends Controller
                 if (empty($data)) {
                     $respuesta = array('msg' => ' no existe', 'icono' => 'warning');
                 } else {
-                    if (password_verify($_POST['password'], $data['password'])) {
+                    if (password_verify(strtolower($_POST['password']), $data['password'])) {
                         $_SESSION['id'] = $data['id'];
                         $_SESSION['username'] = $data['username'];
                         $_SESSION['nombre'] = $data['nombre'];
                         $_SESSION['apellido']  = $data['apellido'];
                         $_SESSION['nivel']  = $data['nivel'];
+                       
                         $validar = $this->model->usuario_conectado($data['id']);
 
                         // $_SERVER['usuario_autenticado'] = 'true';
@@ -177,6 +178,18 @@ class Admin extends Controller
     {
         session_destroy();
         header('Location: ' . BASE_URL);
+    }
+
+    public function aumentar_session(){
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
+            // Si ha pasado más de 30 minutos desde la última actividad, renueva la sesión
+            session_regenerate_id(true); // Renueva el ID de sesión para evitar ataques de fijación de sesión
+            $_SESSION['LAST_ACTIVITY'] = time(); // Actualiza la marca de tiempo de la última actividad
+        }
+        
+        
+        // Actualizar la marca de tiempo de la última actividad
+        $_SESSION['LAST_ACTIVITY'] = time();
     }
     
     

@@ -105,7 +105,7 @@ class Trabajador extends Controller
                 $nacimiento = null;
                 // $nacimiento_convertido = 'vacio';
             }else{
-                $nacimiento = date('d-m-Y', strtotime($_POST['nacimiento']));
+                $nacimiento = date('Y-m-d', strtotime($_POST['nacimiento']));
                 
             }
             

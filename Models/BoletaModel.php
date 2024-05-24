@@ -145,57 +145,63 @@ class BoletaModel extends Query
 
     public function getBoletaPorFecha($fecha,$trabajador_id){
         $sql = "SELECT 
-        id, 
-        numero, 
-        trabajador_id, 
-        aprobado_por, 
-        fecha_inicio, 
-        fecha_fin, 
-        hora_salida, 
-        hora_entrada, 
-        duracion, 
-        razon,
-        razon_especifica,
-        observaciones, 
-        estado_tramite, 
-        estado 
+        b.id AS bid, 
+        b.numero AS numero, 
+        b.trabajador_id AS trabajador_id, 
+        b.aprobado_por AS aprobado_por, 
+        ap.apellido_nombre AS aprobador_nombre,
+        b.fecha_inicio AS fecha_inicio, 
+        b.fecha_fin AS fecha_fin, 
+        b.hora_salida AS hora_salida, 
+        b.hora_entrada AS hora_entrada, 
+        b.duracion AS duracion, 
+        b.razon AS razon,
+        b.razon_especifica AS razon_especifica,
+        b.observaciones AS observaciones, 
+        b.estado_tramite AS estado_tramite, 
+        b.estado  AS estado
         FROM 
-            boleta 
+            boleta AS b
+            INNER JOIN trabajador AS t ON t.id = b.trabajador_id
+            INNER JOIN trabajador AS ap ON ap.id = b.aprobado_por
         WHERE 
-            estado = 'Activo' 
-            AND estado_tramite = 'Aprobado' 
-            AND trabajador_id = '$trabajador_id'
-            AND '$fecha' BETWEEN fecha_inicio AND fecha_fin 
+            b.estado = 'Activo' 
+            AND b.estado_tramite = 'Aprobado' 
+            AND b.trabajador_id = $trabajador_id
+            AND '$fecha'  BETWEEN fecha_inicio AND fecha_fin 
         ORDER BY 
-            id ASC;";
+            b.id ASC";
             return $this->selectAll($sql);
     }
 
 
     public function getBoletaPorFechaSola($trabajador_id){
         $sql = "SELECT 
-        id, 
-        numero, 
-        trabajador_id, 
-        aprobado_por, 
-        fecha_inicio, 
-        fecha_fin, 
-        hora_salida, 
-        hora_entrada, 
-        duracion, 
-        razon, 
-        razon_especifica
-        observaciones, 
-        estado_tramite, 
-        estado 
+        b.id AS bid, 
+        b.numero AS numero, 
+        b.trabajador_id AS trabajador_id, 
+        b.aprobado_por AS aprobado_por, 
+        ap.apellido_nombre AS aprobador_nombre,
+        b.fecha_inicio AS fecha_inicio, 
+        b.fecha_fin AS fecha_fin, 
+        b.hora_salida AS hora_salida, 
+        b.hora_entrada AS hora_entrada, 
+        b.duracion AS duracion, 
+        b.razon AS razon,
+        b.razon_especifica AS razon_especifica,
+        b.observaciones AS observaciones, 
+        b.estado_tramite AS estado_tramite, 
+        b.estado  AS estado
         FROM 
-            boleta 
+            boleta AS b
+            INNER JOIN trabajador AS t ON t.id = b.trabajador_id
+            INNER JOIN trabajador AS ap ON ap.id = b.aprobado_por
         WHERE 
-            estado = 'Activo' 
-            AND estado_tramite = 'Aprobado' 
-            AND trabajador_id = '$trabajador_id' 
+            b.estado = 'Activo' 
+            AND b.estado_tramite = 'Aprobado' 
+            AND b.trabajador_id = '$trabajador_id' 
         ORDER BY 
-            id ASC;";
+            b.id ASC;";
             return $this->selectAll($sql);
     }
 

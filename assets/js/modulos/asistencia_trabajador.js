@@ -145,6 +145,7 @@ eventClick: function (calEvent, jsEvent, view) {
         document.querySelector('#justificacion').value = justificacion;
         myModal.show();
        
+       
     }
 
     // Imprimir los valores en la consola
@@ -195,14 +196,14 @@ viewRender: function(view, element) {
   $(".fc-listMonth-button").click(function() {
     // Cambiar el texto del botón a "Lista"
     $(this).text("Lista");
-    // Llamar a la función hola()
+    
     modificarCalendario();
 });
 
 $(".fc-month-button").click(function() {
     // Cambiar el texto del botón a "Mes"
     $(this).text("Mes");
-    // Llamar a la función hola()
+    
     modificarCalendario();
 });
 
@@ -256,6 +257,7 @@ customButtons: {
 
   var currentDate = $('#myEvent').fullCalendar('getDate');
 $(document).ready(function() {
+  
   // Agrega un evento de clic al botón "Anterior"
   $('.fc-prev-button').on('click', function() {
     // Obtiene la fecha actual del calendario
@@ -303,55 +305,11 @@ document.addEventListener("DOMContentLoaded", function() {
         var trabajador = miVariable;
         // console.log(miVariable);
         buscarBoleta(trabajador,currentMonth,currentYear);
+        
+        
 });
 
-// actualizar justificacion
-// function guardar(){
-//         frm.addEventListener("submit", function(e) {
-//             e.preventDefault();
-           
-//             const formData = new FormData(frm);
-//             const url = base_url + "Asistencia/registrar";
-          
-//             $.ajax({
-//                 url: url,
-//                 method: 'POST',
-//                 data: formData,
-//                 processData: false, 
-//                 contentType: false,
-//                 beforeSend: function() {
-//                     // Se ejecuta antes de enviar la solicitud
-//                     // console.log('Enviando solicitud...');
-//                 },
-//                 success: function(response) {
-//                     // Se ejecuta cuando se recibe una respuesta exitosa
-//                     // console.log(response);
-                    
-//                     const res = JSON.parse(response);
-//                     if (res.icono == "success") {
-                        
-//                         // calendar.ajax.reload();
 
-                     
-//                         $('#myEvent').fullCalendar('refetchEvents');
-//                         // modificarCalendario();
-//                         modificarCalendario();
-//                         frm.reset();
-//                         cerrarModal(); 
-//                     }
-//                     Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
-                  
-//                 },
-//                 error: function(xhr, status, error) {
-//                     // Se ejecuta si hay algún error en la solicitud
-//                     console.error('Error en la solicitud:', error);
-//                 }
-//             });
-    
-           
-//         });
-    
-// }
 
 // llenar calendario con boleta
 function buscarBoleta(id,currentMonth,currentYear){
@@ -372,6 +330,7 @@ function buscarBoleta(id,currentMonth,currentYear){
             // console.log('boleta')
            
             verAsistencia(currentMonth,currentYear, id,boleta);
+           
                    
         },
         
@@ -409,14 +368,22 @@ function verAsistencia(mes,anio,id,boleta) {
                         // console.log(boleta);
                         for (let i = 0; i < boleta.length; i++) {
                             var boletacalendar ='';
-                            const boletaFecha = boleta[i].fecha_inicio;
+
+                            const boletaFecha = new Date(boleta[i].fecha_inicio);
+                            const boletaFecha_fin = new Date(boleta[i].fecha_fin);
+                            const eventoFecha = new Date(evento.fecha);
+
+
+                            // const boletaFecha = boleta[i].fecha_inicio;
+                            // const boletaFecha_fin = boleta[i].fecha_fin;
                            
-                             if (boletaFecha == evento.fecha) {
+                             if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin && evento.licencia !='SR') {
                                 
                                 // console.log(boletaFecha +'|-'+evento.fecha);
                                 
                               boletacalendar ='-Boleta';
                             //   console.log('fecha cambiada'+ boletaFecha + 'segunda'+ evento.fecha);
+                            // console.log(boletaFecha);
                              } 
                              evento.licencia = evento.licencia + boletacalendar;
                             // console.log(boletaFecha +'|'+evento.fecha);
@@ -562,6 +529,7 @@ function llenarBoleta(fecha,trabajador_id){
         "fecha": fechaFormateada,
         "trabajador_id": trabajador_id
     };
+    
     $.ajax({
         data:  parametros,
         url: base_url + "Boleta/buscarPorFecha",
@@ -569,6 +537,7 @@ function llenarBoleta(fecha,trabajador_id){
         beforeSend: function () {
             // console.log('procesando llenarBoleta');
         },
+
         success: function(response) {
                 // datos = JSON.parse(response);
                 const res = JSON.parse(response);
@@ -592,7 +561,7 @@ function llenarBoleta(fecha,trabajador_id){
                             '<div class="col-4">' +
                                 '<div class="form-group">' +
                                 '<label for="aprobado_por">Aprobado por:</label>' +
-                                    '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
+                                    '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobador_nombre + '" disabled>' +
                                 '</div>' +
                             '</div>' +
                             '<div class="col-4">' +
@@ -678,6 +647,7 @@ function llenarBoleta(fecha,trabajador_id){
                         console.error(error);
                     }
                 });
+                
             }
             
 

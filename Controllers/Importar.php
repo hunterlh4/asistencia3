@@ -939,7 +939,7 @@ class Importar extends Controller
         $cantidad_departamento_mal=0;
         $cantidad_departamento_bien=0;
     
-        if (isset($_FILES['archivo'])) {
+        if(isset($_FILES['archivo'])) {
             $archivo = $_FILES['archivo'];
             // Verifica si no hay errores al subir el archivo
             if ($archivo['error'] === UPLOAD_ERR_OK) {
@@ -1243,6 +1243,10 @@ class Importar extends Controller
                                                     
                                                  
                                                 }
+
+                                                if($licencia=='SR' || $licencia =="NMS"){
+                                                    $total_string='00:00';
+                                                }
                                                 $justificacion ='';
                                                 // $result=$this->model->getBoleta($trabajador_id,$fecha_0);
                                                 // if(empty($result)){
@@ -1472,7 +1476,7 @@ class Importar extends Controller
                                             if($entrada ==NULL){
                                                 $licencia='SR';
                                                 $entrada='00:00';
-                                                $total_string='00:00';
+                                               
                                             }else{
                                                 $hora_entrada = strtotime($entrada);
                                                 $hora_entrada_formato = date('H:i', $hora_entrada);
@@ -1518,53 +1522,7 @@ class Importar extends Controller
                                     // }
 
                                 }
-                                // VALIDAR EL TIPO DE MARCADA QUE FUE
-                                
-                                // if($entrada ==NULL){
-                                //         $licencia='SR';
-                                //         $entrada='00:00';
-                                // }else{
-                                //     $hora_entrada = strtotime($entrada);
-                                //     $hora_entrada_formato = date('H:i', $hora_entrada);
-                                    
-                                //     if ($hora_entrada_formato <= '07:35') {
-                                //         $tardanza_cantidad = 0;
-                                //     } elseif ($hora_entrada_formato >= '07:36' && $hora_entrada_formato <= '07:45') {
-                                //         $tardanza_cantidad = 1;
-                                //     } elseif ($hora_entrada_formato >= '07:46' && $hora_entrada_formato <= '07:55') {
-                                //         $tardanza_cantidad = 2;
-                                //     } elseif ($hora_entrada_formato >= '07:56' && $hora_entrada_formato <= '08:00') {
-                                //         $tardanza_cantidad = 3;
-                                //     } elseif ($hora_entrada_formato > '08:00') {
-                                //         $tardanza_cantidad = 0;
-                                //         $licencia = '+30';
-                                //     }
-
-                                //     if($entrada !=null && $salida == null){
-                                //         $salida ='00:00';
-                                //         $licencia='NMS';
-                                //     }else{
-                                //         $hora_salida = strtotime($salida);
-                                //         $hora_salida_formato = date('H:i', $hora_salida);
-
-                                //         if ($hora_salida_formato < '15:30') {
-                                //             $licencia = 'NMS';
-                                //         }else{
-                                //             if ($hora_entrada_formato <= '08:00' && $hora_salida_formato >= '15:30') {
-                                //                 $licencia = 'OK';
-                                //             }else{
-                                //                 $licencia ='otro';
-                                //             }
-                                //         }
-                                //     }
-                                // }
-                                // if($entrada !=null && $salida == null){
-                                //     $licencia='NMS';
-                                // }
-                                // if($entrada !=null && $salida !=null){
-                                //     $licencia='OK';
-                                // }
-                                //licencia =$licencia 
+                        
                                 $total_reloj = $diferencia_formato;
                                 $total= $diferencia_formato;
                                 $tardanza =$entrada .'-'.$salida;
@@ -1629,11 +1587,13 @@ class Importar extends Controller
             }
         } else {
             echo ".";
-            $mensaje='Error: No se ha subido ningún archivo.';
+            $mensaje='Error: No se ha subido ningun archivo.';
             $icono='error';
         }
+        $datos_post = $_POST;
+        
 
-        $respuesta = array('msg' => $mensaje, 'icono' => $icono,'encabezado' =>$tamaño);
+        $respuesta = array('msg' => $mensaje, 'icono' => $icono,'encabezado' =>$tamaño,'post'=>$datos_post);
 
         echo json_encode($respuesta);
         die();

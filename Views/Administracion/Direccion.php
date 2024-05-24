@@ -74,7 +74,7 @@
                   </div>
                 </div>
                 <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
-  maxlength="50" required>
+  maxlength="100" required>
               </div>
             </div>
             <div class="form-group">

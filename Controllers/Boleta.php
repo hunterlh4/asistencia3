@@ -429,7 +429,7 @@ class Boleta extends Controller
         $data['title'] = 'Revisar Boletas';
         $data1 = '';
 
-        $this->views->getView('Administracion', "boleta_revision", $data, $data1);
+        $this->views->getView('Administracion', "Boleta_Revision", $data, $data1);
     }
 
     public function listarRevisionBoletas()

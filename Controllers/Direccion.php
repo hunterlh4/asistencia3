@@ -79,8 +79,8 @@ class Direccion extends Controller
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
-                    $error_msg .= 'El Equipo debe tener entre 5 y 50 caracteres. <br>';
+                if (strlen($nombre) < 5 || strlen($nombre) > 100) {
+                    $error_msg .= 'El Equipo debe tener entre 5 y 100 caracteres. <br>';
                 }
 
                 if (!empty($error_msg)) {
@@ -88,7 +88,12 @@ class Direccion extends Controller
                     $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
                 } else {
                     // VERIFICO LA EXISTENCIA
-                    $result = $this->model->verificar($nombre);
+                    if($equipo_id==null){
+                        $result = $this->model->verificarNull($nombre);
+                    }else{
+                        $result = $this->model->verificar($nombre,$equipo_id);
+                    }
+                    
                     // REGISTRAR
                     if (empty($id)) {
                         if (empty($result)) {
@@ -105,29 +110,26 @@ class Direccion extends Controller
                         }
                         // MODIFICAR
                     } else {
-                        if ($result) {
-                            if ($result['id'] != $id) {
+                        // $data = $this->model->modificar($nombre,$equipo_id, $estado, $id);
+                        // if ($data == 1) {
+                        //     $respuesta = array('msg' => 'Direccion modificado', 'icono' => 'success');
+                        //     $this->model->registrarlog($_SESSION['id'],'Modificar','Direccion', $datos_log_json);
+                        // } else {
+                        //     $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
+                        // }
+                        // if ($result) {
+                            if ($result['id'] != $id && $result['equipo_id']==$equipo_id || $result['equipo_id']='') {
                                 $respuesta = array('msg' => 'Direccion en uso', 'icono' => 'warning');
                             } else {
                                 // El nombre de usuario es el mismo que el original, se permite la modificación
                                 $data = $this->model->modificar($nombre,$equipo_id, $estado, $id);
                                 if ($data == 1) {
-                                    $respuesta = array('msg' => 'Direccion modificado', 'icono' => 'success');
+                                    $respuesta = array('msg' => 'Direccion modificado' .$result['equipo_id'], 'icono' => 'success');
                                     $this->model->registrarlog($_SESSION['id'],'Modificar','Direccion', $datos_log_json);
                                 } else {
                                     $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
                                 }
                             }
-                        } else {
-                            // El usuario no existe, se permite la modificación
-                            $data = $this->model->modificar($nombre,$equipo_id, $estado, $id);
-                            if ($data == 1) {
-                                $respuesta = array('msg' => 'Direccion modificado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Modificar','Direccion', $datos_log_json);
-                            } else {
-                                $respuesta = array('msg' => 'Error al modificar el Direccion', 'icono' => 'error');
-                            }
-                        }
                     }
                 }
             }

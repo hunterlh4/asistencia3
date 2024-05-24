@@ -377,9 +377,15 @@ function verAsistencia(mes,anio,id,boleta) {
                         // console.log(boleta);
                         for (let i = 0; i < boleta.length; i++) {
                             var boletacalendar ='';
-                            const boletaFecha = boleta[i].fecha_inicio;
+                            const boletaFecha = new Date(boleta[i].fecha_inicio);
+                            const boletaFecha_fin = new Date(boleta[i].fecha_fin);
+                            const eventoFecha = new Date(evento.fecha);
+
+
+                            // const boletaFecha = boleta[i].fecha_inicio;
+                            // const boletaFecha_fin = boleta[i].fecha_fin;
                            
-                             if (boletaFecha == evento.fecha) {
+                             if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin  && evento.licencia !='SR') {
                                 
                                 // console.log(boletaFecha +'|-'+evento.fecha);
                                 
@@ -521,7 +527,7 @@ function modificarCalendario(){
 
 function llenarselect(){
     $.ajax({
-        url: base_url + "Usuario/listartrabajadores",
+        url: base_url + "usuario/listartrabajadores",
         type: 'GET',
 
         success: function(response) {
@@ -602,7 +608,7 @@ function llenarBoleta(fecha,trabajador_id){
                     '<div class="col-4">' +
                         '<div class="form-group">' +
                         '<label for="aprobado_por">Aprobado por:</label>' +
-                            '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobado_por + '" disabled>' +
+                            '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobador_nombre + '" disabled>' +
                         '</div>' +
                     '</div>' +
                     '<div class="col-4">' +

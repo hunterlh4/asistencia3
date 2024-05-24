@@ -9,7 +9,7 @@ RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
 
 RewriteRule ^(Views|Config|Controllers|Models)/.*$ BASE_URL/Views/Errors/index.php [L]
-RewriteRule ^(Uploads/DNI|Uploads/Institucion|Uploads/Reportes)/.*$ BASE_URL/Views/Errors/index.php [L]
+RewriteRule ^(Uploads/DNI|Uploads/Institucion)/.*$ BASE_URL/Views/Errors/index.php [L]
 
 
 # Requerir autenticación para acceder a la carpeta uploads

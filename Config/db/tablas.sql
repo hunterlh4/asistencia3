@@ -257,7 +257,7 @@ create table programacion(
 
 create table configuracion(
     id SERIAL PRIMARY KEY,
-    api varchar(100) null,
+    api_1 varchar(100) null,
     api_2 varchar(100) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

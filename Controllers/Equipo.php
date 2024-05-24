@@ -64,7 +64,7 @@ class Equipo extends Controller
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
+                if (strlen($nombre) < 5 || strlen($nombre) > 100) {
                     $error_msg .= 'El Equipo debe tener entre 5 y 50 caracteres. <br>';
                 }
                 if(!empty($estrategia)){

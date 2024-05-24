@@ -131,7 +131,7 @@
 
                 <div class="form-group">
                   <label for="otra_razon">Otra Razón</label>
-                  <input type="text" class="form-control" id="otra_razon" name="otra_razon">
+                  <input type="text" class="form-control" id="otra_razon" name="otra_razon" required>
                 </div>
                 </div>
                 <div id="resultado" class="col-md-12 col-sm-12">

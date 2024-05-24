@@ -28,9 +28,14 @@ class DireccionModel extends Query
         $sql = "SELECT * FROM Direccion WHERE id = $id";
         return $this->select($sql);
     }
-    public function verificar($nombre)
+    public function verificarNull($nombre)
     {
-        $sql = "SELECT id,nombre FROM Direccion WHERE nombre = '$nombre' ";
+        $sql = "SELECT id,nombre,equipo_id FROM Direccion WHERE nombre = '$nombre' AND equipo_id  IS NULL ";
+        return $this->select($sql);
+    }
+    public function verificar($nombre,$equipo_id)
+    {
+        $sql = "SELECT id,nombre,equipo_id FROM Direccion WHERE nombre = '$nombre' AND equipo_id = '$equipo_id' ";
         return $this->select($sql);
     }
     public function registrar($nombre, $equipo_id)

@@ -53,10 +53,28 @@ function generar(){
                 type: 'POST',
                 data: { trabajador: trabajador, mes:mes, anio:anioSeleccionado }, // Puedes enviar datos adicionales si es necesario
                 success: function(response) {
-                    // datos = JSON.parse(response); 
+                 const datos = JSON.parse(response); 
                     // Limpiar el select aprobadorElement
-                   console.log(response);
+                //    console.log(response);
                 //    console.log(datos);
+                    
+                // datos.msg;
+                // datos.icono;
+                // datos.archivo;
+                console.log(datos.msg);
+                console.log(datos.icono);
+                console.log(datos.archivo);
+                console.log(datos.nombre);
+
+                var link = document.createElement("a");
+                link.href =base_url+ datos.archivo;
+                link.download = datos.nombre; // Puedes establecer un nombre para el archivo descargado aquí
+                document.body.appendChild(link);
+                link.click();
+                
+                console.log(link.href);
+                document.body.removeChild(link);
+                
                    
                    
                 },

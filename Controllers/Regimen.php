@@ -64,8 +64,8 @@ class Regimen extends Controller
                 $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
             } else {
                 $error_msg = '';
-                if (strlen($nombre) < 5 || strlen($nombre) > 20) {
-                    $error_msg .= 'El Regimen debe tener entre 5 y 20 caracteres. <br>';
+                if (strlen($nombre) < 5 || strlen($nombre) > 50) {
+                    $error_msg .= 'El Regimen debe tener entre 5 y 50 caracteres. <br>';
                 }
                 
                 if ($sueldo <= 50) {

@@ -47,15 +47,31 @@
                           
                           <?php 
                            
-                          if( $data['nivel'] ==1 || $data['nivel'] ==2 ){
+                          if( $data['nivel'] ==1){
                             echo ' 
                             <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra visualizar el ingreso y salida que marcan los relojes, así como evaluar y generar los reportes.</p>
                              <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                            <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Usuarios"><i class="far fa-hand-point-right"></i> INICIAR</a>';
-                          }else{
-                            // echo '<a type="button" class="btn btn-primary btn-lg text-center" href="tab_search_new.php"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Asistencia"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           }
+                          if($data['nivel']==2)
+                          echo ' 
+                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+
+                          if($data['nivel']==3)
+                          echo ' 
+                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          if($data['nivel']==4)
+                          echo ' 
+                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Porteria"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           ?>
+
+                          
                          
                         </div>
                       </div>
