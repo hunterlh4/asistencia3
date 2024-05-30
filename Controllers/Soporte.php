@@ -8,7 +8,7 @@ class Soporte extends Controller
     }
     public function index()
     {
-        if (empty($_SESSION['nombre'])) {
+        if (empty($_SESSION['usuario_autenticado']) || ($_SESSION['usuario_autenticado'] != "true")) {
             header('Location: '. BASE_URL . 'admin/home');
             exit;
         }

@@ -13,7 +13,8 @@ month = today.getMonth();
 day = today.getDate();
 
 var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-var dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+// var dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+var dayNames = [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado","Domingo"];
 
 var dayNameMap = {
     'Sunday': 'Domingo',
@@ -28,9 +29,11 @@ var dayNameMap = {
   var calendar = $("#myEvent").fullCalendar({
     height: "auto",
     defaultView: "month",
+    firstDay: 1,
     editable: false,
     selectable: true,
     locate: 'es',
+    timeFormat: 'H:mm',
     displayEventTitle:false,
     displayEventTime: true, // Oculta la hora del evento
     displayEventEnd: true, // Oculta el fin del evento
@@ -395,6 +398,9 @@ function verAsistencia(mes,anio,id,boleta) {
                              evento.licencia = evento.licencia + boletacalendar;
                             // console.log(boletaFecha +'|'+evento.fecha);
                         }
+                        if(evento.tardanza_cantidad !='0'){
+                            evento.licencia = evento.licencia+'-T' +evento.tardanza_cantidad;
+                        }
                         
                         
 
@@ -451,76 +457,65 @@ function verAsistencia(mes,anio,id,boleta) {
 
 function modificarCalendario(){
     
-    const timeElements = document.querySelectorAll('.fc-time');
-    timeElements.forEach((element) => {
-        // Obtén el texto del elemento
-        // console.log(element);
-        let timeText = element.innerText.trim();
-        const titleElement = element.parentElement.querySelector('.fc-title');
-        const contenido = titleElement.innerText.trim();
+        const fcContents = document.querySelectorAll('.fc-content');
     
-        
-        // Divide el texto en horas y minutos
-        if (timeText.includes('12a')) {
-            if (titleElement && contenido === 'SR') {
-                timeText = ''; // Si es "12a" y fc-title contiene "SR", convierte el texto en una cadena vacía
-            }
-        } else if (timeText.includes('12p')) {
-            timeText = timeText.replace('12p', '12:00p'); // Si es "12p", agrega ":00"
-        } else {
-            // Divide el texto en horas y minutos
-            const [hour, minute, period] = timeText.split(/:- /);
-    
-            // Verifica si es antes o después del mediodía
-            if (period === 'a' || period === 'p') {
-                // Modifica la hora para que esté en formato de 12 horas
-                let modifiedHour = parseInt(hour) % 12;
-                if (modifiedHour === 0) {
-                    modifiedHour = 12;
-                }
-    
-                // Crea la nueva hora en formato deseado
-                timeText = `${modifiedHour}:${minute}${period}`;
-            }
-        }
-        // Asigna el nuevo texto al elemento
-        element.innerText = timeText;  
-    });
-    
-
-    $(".fc-list-item").each(function() {
-        // Encuentra el hijo .fc-list-item-title a
-        const titleElement = $(this).find('.fc-list-item-title a');
-        // Verifica si el texto del enlace es "SR"
-        if (titleElement.length && titleElement.text().trim() === 'SR') {
-            // Encuentra el elemento .fc-list-item-time y establece su texto como una cadena vacía
-            const timeElement = $(this).find('.fc-list-item-time');
-            timeElement.text('');
-        }
-        let texto = titleElement.text().trim();
-        if (texto.endsWith('-Boleta')) {
-            // Reemplaza "-Boleta" por el nuevo contenido deseado
-             const textoModificado = texto.replace(/-Boleta/g, ' ');
-            titleElement.html('<span style="color: orange; font-weight: bold;">' + textoModificado + '</span>');
+        fcContents.forEach(function(element) {
+            // Encontrar los elementos fc-time y fc-title dentro de este elemento
+            var fcTime = element.querySelector('.fc-time');
+            var fcTitle = element.querySelector('.fc-title');
             
-            // Asigna el nuevo contenido al elemento
-            // titleElement.html(texto);
-        }
-    });
-
-    $(".fc-title").each(function() {
-        // Verifica si el texto del título termina con "-Boleta"
-        var texto ='';
-         texto = $(this).text().trim();
-        if (texto.endsWith('-Boleta')) {
-            // Reemplaza "-Boleta" por el nuevo contenido deseado
-             const textoModificado = texto.replace(/-Boleta/g, ' ');
-            $(this).html('<span style="color: blue; font-weight: bold;">' +  textoModificado +'</span>');
-
-            // console.log('cambio');
-        }
-    });
+            
+            // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
+            if (fcTitle.textContent.includes('SR')) {
+                // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+                fcTime.textContent = '';
+            } 
+            if (/-Boleta/.test(fcTitle.textContent)) {
+                // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
+               
+               // Obtener el prefijo del título antes de '-Boleta'
+                var titlePrefix = fcTitle.textContent.split('-Boleta')[0];
     
+                // Establecer el HTML del título según la parte extraída
+                fcTitle.innerHTML = '<span style="color: blue; font-weight: bold;">' + titlePrefix + '</span><br><span style="color: blue; font-weight: bold;">' + '1 T' + '</span>';
+            }
+        });
+        const fcContentsList = document.querySelectorAll('.fc-list-item'); 
+        fcContentsList.forEach(function(element) {
+            // Encontrar los elementos fc-time y fc-title dentro de este elemento
+            var fcTime = element.querySelector('.fc-list-item-time');
+            var fcTitle = element.querySelector('.fc-list-item-title');
+            
+            // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
+            if (fcTitle.textContent.includes('SR')) {
+                // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+                fcTime.textContent = '';
+            } 
+            if (/-Boleta/.test(fcTitle.textContent)) {
+                // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
+               
+               // Obtener el prefijo del título antes de '-Boleta'
+                var titlePrefix = fcTitle.textContent.split('-Boleta')[0];
+    
+                // Establecer el HTML del título según la parte extraída
+                fcTitle.innerHTML = '<span style="color: blue; font-weight: bold;">' + titlePrefix + '</span> <br>';
+            }
+        });
+    
+        const fcDays = document.querySelectorAll('.fc-day');
+        fcDays.forEach(day => {
+            // Obtén el valor del atributo data-date
+            const date = day.getAttribute('data-date');
+            
+            // Crea un objeto Date a partir del valor de data-date
+            const dateObj = new Date(date);
+        
+            // Verifica si es sábado (6) o domingo (0)
+            if (dateObj.getDay() === 5 || dateObj.getDay() === 6) {
+                // Si es sábado o domingo, establece un fondo claro
+                day.style.backgroundColor = '#E5E8E8';
+            }
+        });
 }
 
 

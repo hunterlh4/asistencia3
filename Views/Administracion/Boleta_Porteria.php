@@ -18,24 +18,25 @@
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
 
                     <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Boletas</h3>
-                    <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button>
+                    <!-- <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button> -->
                   </div>
 
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-hover text-center" style="width:100%;" id="table-alex">
+                      <table class="table table-striped table-hover text-center" style="width:100%;" id="table-horas-alex">
                         <thead>
                           <tr>
-                            <th># </th>
-                            <th>Numero</th>
-                            <th>Solicitante</th>
-                            <th>Fecha</th>
-                            <!-- <th>Fin</th> -->
-                            <th>Salida</th>
-                            <th>Entrada</th>
-                            <th>tramite</th>
+                            <th style="width: 15px;"># </th>
+                            <th style="width: 30px;">Numero</th>
+                            <th style="width: 250px;">Aprobador</th>
+                            <th style="width: 50px;">Fecha</th>
+
+
+                            <th style="width: 50px;">Salida</th>
+                            <th style="width: 50px;">Entrada</th>
+                            <th style="width: 50px;">tramite</th>
                             <!-- <th>estado</th> -->
-                            <th>accion</th>
+                            <th style="width: 50px;">accion</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -70,57 +71,54 @@
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
             <div class="row">
-              <div class="col-md-6 col-sm-6">
+              <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label for="solicitante">Solicitante</label>
                   <select class="form-control" id="solicitante" name="solicitante" required>
-                  <option value="">Seleccione un Solicitante</option>
-                    
+                    <option value="">Seleccione un Solicitante</option>
+
                     <!-- Opciones del select -->
                   </select>
                 </div>
-                </div>
-                <div class="col-md-6 col-sm-6">
+              </div>
+              <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                   <label for="aprobador">Aprobador</label>
                   <select class="form-control" id="aprobador" name="aprobador" required>
-                  <option value="">Seleccione un aprobador</option>
+                    <option value="">Seleccione un aprobador</option>
                     <!-- Opciones del select -->
                   </select>
                 </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
+              </div>
+              <div class="col-md-12 col-sm-12">
                 <div class="form-group">
-                  <label for="fecha_inicio">Fecha de Inicio</label>
-                  <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                  <label for="fecha_inicio">Fecha</label>
+                  <input type="date" class="form-control" id="fecha" name="fecha" required>
                 </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                <div class="form-group">
-                  <label for="fecha_fin">Fecha de Fin</label>
-                  <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" >
-                </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
+              </div>
 
+
+              <div class="col-md-6 col-sm-6">
                 <div class="form-group">
                   <label for="hora_salida">Hora de Salida</label>
-                  <input type="time" class="form-control" id="hora_salida" name="hora_salida" required>
+                  <div class="d-flex align-items-start">
+                    <input type="time" class="form-control mr-3" id="hora_salida" name="hora_salida" required>
+                    <button class="btn btn-success " id="btn_salida" type="button" onclick="salida()">Ahora</button>
+                  </div>
                 </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
+              </div>
+              <div class="col-md-6 col-sm-6">
                 <div class="form-group">
                   <label for="hora_entrada">Hora de Retorno</label>
-                  <input type="time" class="form-control" id="hora_entrada" name="hora_entrada" required>
+                  <div class="d-flex align-items-start">
+                    <input type="time" class="form-control mr-3" id="hora_entrada" name="hora_entrada" required>
+                    <button class="btn btn-success " id="btn_retorno" type="button" onclick="retorno()">Ahora</button>
+                  </div>
                 </div>
-                </div>
-                <!-- <div class="col-md-3 col-sm-6">
-                <div class="form-group">
-                  <label for="duracion">Duración</label>
-                  <input type="time" class="form-control" id="duracion" name="duracion" required>
-                </div>
-                </div> -->
-                <div class="col-md-4 col-sm-6">
+              </div>
+
+
+              <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label for="razon">Razón</label>
                   <select class="form-control" id="razon" name="razon" required>
@@ -134,25 +132,25 @@
                     <!-- Opciones del select -->
                   </select>
                 </div>
-                </div>
-                <div class="col-md-8 col-sm-6">
+              </div>
+              <div class="col-md-8 col-sm-6">
 
                 <div class="form-group">
                   <label for="otra_razon">Otra Razón</label>
                   <input type="text" class="form-control" id="otra_razon" name="otra_razon">
                 </div>
-                </div>
-                <div id="resultado" class="col-md-12 col-sm-12">
+              </div>
+              <div id="resultado" class="col-md-12 col-sm-12">
 
-                </div>
-             
-               
+              </div>
 
-                <!--  -->
-                <div class="modal-footer bg-white col-md-12 col-sm-12">
-                  <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
-                  <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
-                </div>
+
+
+              <!--  -->
+              <div class="modal-footer bg-white col-md-12 col-sm-12">
+                <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
+                <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
+              </div>
         </form>
       </div>
     </div>
@@ -171,6 +169,12 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
+  <style>
+    .swal2-popup {
+      position: center;
+
+    }
+  </style>
 </body>
 
 </html>

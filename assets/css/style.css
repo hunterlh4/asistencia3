@@ -4028,7 +4028,10 @@ table tr:hover .table-links {
 }
 
 .badge.badge-warning {
-  color: #fff
+  color: #fff;
+  /* background-color: #ffffff; 
+  border: 1px solid #F4D03F; 
+  color: #F4D03F;  */
 }
 
 .badge.badge-primary {
@@ -4040,25 +4043,44 @@ table tr:hover .table-links {
 }
 
 .badge.badge-success {
-  background-color: #54ca68
+  background-color: #54ca68;
+  /* background-color: #ffffff; 
+  border: 1px solid #54ca68;
+  color: #54ca68; */
 }
 
 .badge.badge-info {
-  background-color: #3abaf4
+  background-color: #3abaf4;
+  /* background-color: #ffffff; 
+  border: 1px solid #3abaf4; 
+  color: #3abaf4; */
 }
 
 .badge.badge-danger {
-  background-color: #fc544b
+  background-color: #fc544b;
+
+  /* background-color: #ffffff; 
+  border: 1px solid #fc544b; 
+  color: #fc544b;  */
 }
 
 .badge.badge-light {
-  background-color: #e3eaef;
-  color: #191d21
+  /*  background-color: #85929E; */
+  /* color: #191d21 */
+  /* color:#fff;  */
+
+  /* background-color: #ffffff; 
+  border: 1px solid #85929E; 
+  color: #85929E;  */
+
+  background-color: #838383;
+  color: #ffff;  
+
 }
 
 .badge.badge-white {
   background-color: #fff;
-  color: #191d21
+  /* color: #191d21 */
 }
 
 .badge.badge-dark {
@@ -4176,7 +4198,7 @@ h6 .badge {
   vertical-align: middle;
   width: 70%;
   text-align: left;
-  padding-left: 10px
+  padding-left: 10p
 }
 
 .btn:not(.btn-social):not(.btn-social-icon):active, .btn:not(.btn-social):not(.btn-social-icon):focus, .btn:not(.btn-social):not(.btn-social-icon):hover {

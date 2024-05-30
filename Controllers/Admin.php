@@ -4,11 +4,13 @@ class Admin extends Controller
     public function __construct()
     {
         parent::__construct();
+        $sessionTime = 365 * 24 * 60 * 60; // 1 año de duración
+        session_set_cookie_params($sessionTime);
         session_start();
     }
     public function index()
-    {
-        if (!empty($_SESSION['nombre'])) {
+    { 
+        if (!empty($_SESSION['usuario_autenticado'])) {
             header('Location: '. BASE_URL . 'admin/home');
             exit;
         }
@@ -35,10 +37,13 @@ class Admin extends Controller
                         $_SESSION['nombre'] = $data['nombre'];
                         $_SESSION['apellido']  = $data['apellido'];
                         $_SESSION['nivel']  = $data['nivel'];
+                        $_SESSION['usuario_autenticado'] = "true";
+                        session_regenerate_id();
                        
                         $validar = $this->model->usuario_conectado($data['id']);
 
-                        // $_SERVER['usuario_autenticado'] = 'true';
+                     
+                       
                         
                         if(empty($validar)) {
                             $this->model->registrar_conectado($data['id']);

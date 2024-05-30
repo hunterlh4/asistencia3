@@ -3,10 +3,7 @@ require 'vendor/autoload.php';
 
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 
 
 class Importar extends Controller
@@ -15,16 +12,21 @@ class Importar extends Controller
     {
         parent::__construct();
         session_start();
-        if (empty($_SESSION['nombre'])) {
+        if (empty($_SESSION['usuario_autenticado']) || ($_SESSION['usuario_autenticado'] != "true")) {
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
     }
     public function index()
     {
-
+        ini_set('max_execution_time', '300'); // 300 segundos = 5 minutos
+        ini_set('memory_limit', '512M');
+        // $max_execution_time = ini_get('max_execution_time');
+        // $memory_limit = ini_get('memory_limit');
         $data['title'] = 'Importar';
-        $data1 = '';
+        // $data1['tiempo']= $max_execution_time;
+        // $data1['memoria'] =$memory_limit;
+        $data1='';
         $this->views->getView('Administracion', "Importar", $data, $data1);
     }
     

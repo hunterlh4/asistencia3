@@ -203,7 +203,7 @@ h5: 0.83em */
   .fc-day-grid-event .fc-time {
     font-weight: normal;
     font-style: normal;
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-family: "Nunito", "Segoe UI", arial;
     /* color: #6c757d; */
     color: #414141;
@@ -229,6 +229,7 @@ h5: 0.83em */
     color: #34395e !important;
     display: block;
     padding-top: 3px;
+    font-size: 1.4em;
    
 
   }

@@ -70,7 +70,7 @@
                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Boletas</span></a>
                   <ul class="dropdown-menu">';
       if ($_SESSION['nivel'] == 1) {
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Ver Boletas</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Boletas</span></a> </li> ';
       }
       if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';

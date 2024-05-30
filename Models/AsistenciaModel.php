@@ -45,7 +45,8 @@ class AsistenciaModel extends Query
         INNER JOIN trabajador AS t ON t.id = a.trabajador_id 
         inner JOIN horariodetalle AS hd ON t.horariodetalle_id = hd.id 
         WHERE trabajador_id = $id
-        AND EXTRACT(YEAR FROM fecha) = $anio";
+        AND EXTRACT(YEAR FROM fecha) = $anio
+        ORDER BY fecha asc";
 
       
         return $this->selectAll($sql);

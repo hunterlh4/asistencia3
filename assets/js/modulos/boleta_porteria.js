@@ -10,13 +10,20 @@ const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 const idElement = document.querySelector('#id');
 const solicitanteElement = document.querySelector('#solicitante');
 const aprobadorElement = document.querySelector('#aprobador');
-const fechaInicioElement = document.querySelector('#fecha_inicio');
-const fechaFinElement = document.querySelector('#fecha_fin');
+let tipo_boleta = document.querySelector("#tipo");
+let fechaInicioElement = document.querySelector("#fecha");
+// let fechaFinElement = document.querySelector("#fecha_fin");
 const horaSalidaElement = document.querySelector('#hora_salida');
 const horaEntradaElement = document.querySelector('#hora_entrada');
 const razonElement = document.querySelector('#razon');
 const otra_razonElement = document.querySelector('#otra_razon');
 // 
+const btn_salida = document.querySelector('#btn_salida');
+const btn_entrada = document.querySelector('#btn_retorno');
+
+const tbl_boleta_dias = document.getElementById("table-dias-alex");
+var tabla_dias, tabla_horas;
+const tbl_boleta_horas = document.getElementById("table-horas-alex");
 
 let mytable; // = document.querySelector("#table-1");
 let tblUsuario;
@@ -29,7 +36,7 @@ var datos;
 
 document.addEventListener("DOMContentLoaded", function() {
     prueba();
-    llenarTabla();
+    llenartablaHoras();
     llenarSelectSolicitante();
     // llenarSelectAprobador();
 
@@ -38,114 +45,123 @@ document.addEventListener("DOMContentLoaded", function() {
   
     
     //submit usuarios
-    frm.addEventListener("submit", function(e) {
-        e.preventDefault();
-        let data = new FormData(this);
-        const url = base_url + "Boleta/registrarHora";
-
-        $.ajax({
-            url: url,
-            method: 'POST',
-            data: data,
-            processData: false, 
-            contentType: false,
-            beforeSend: function() {
-                // Se ejecuta antes de enviar la solicitud
-                console.log('Enviando solicitud...');
-            },
-            success: function(response) {
-                // Se ejecuta cuando se recibe una respuesta exitosa
-                const res = JSON.parse(response);
-                console.log(response);
-                if (res.icono == "success") {
-                    
-                    tblUsuario.ajax.reload();
-                    frm.reset(); // Limpia el formulario
-                    cerrarModal(); // Oculta el modal y el fondo oscuro
-                }
-                Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
-            },
-            error: function(xhr, status, error) {
-                // Se ejecuta si hay algún error en la solicitud
-                console.error('Error en la solicitud:', error);
-            }
-        });
-
-        // const http = new XMLHttpRequest();
-        // http.open("POST", url, true);
-        // http.send(data);
-        // http.onreadystatechange = function() {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         console.log(this.responseText);
-        //         const res = JSON.parse(this.responseText);
-        //         if (res.icono == "success") {
-                    
-        //             tblUsuario.ajax.reload();
-        //             frm.reset(); // Limpia el formulario
-        //             cerrarModal(); // Oculta el modal y el fondo oscuro
-        //         }
-        //         Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
-        //     }
-        // }
-    });
+   
 });
 
-
-function llenarTabla(){
-    tblUsuario = $("#table-alex").DataTable({
-        ajax: {
-            url: base_url + "Boleta/listarPorteria",
-            dataSrc: "",
+frm.addEventListener("submit", function(e) {
+    horaSalidaElement.disabled =false;
+    horaEntradaElement.disabled =false;
+    e.preventDefault();
+    let data = new FormData(this);
+    const url = base_url + "Boleta/registrarHora";
+   
+    $.ajax({
+        url: url,
+        method: 'POST',
+        data: data,
+        processData: false, 
+        contentType: false,
+        beforeSend: function() {
+            // Se ejecuta antes de enviar la solicitud
+            console.log('Enviando solicitud...');
         },
-        columns: [
-            { data: "posicion" },
-            { data: "numero" },
-            { data: "nombre_trabajador" },
-            { data: "fecha_nueva" },
-            // { data: "fecha_fin" },
-            { data: "hora_salida" },
-            { data: "hora_entrada" },
-            { data: "estado_tramite" },
-            // { data: "estado" },
-            { data: "accion" }
-
-        ],
-        dom: 'Bfrtip',
-        
-        buttons: [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas copiar
-                }
-            },
-            {
-                extend: 'csv',
-                exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a CSV
-                }
-            },
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a Excel
-                }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas exportar a PDF
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6] // Especifica las columnas que deseas imprimir
-                }
+        success: function(response) {
+            horaSalidaElement.disabled =true;
+            horaEntradaElement.disabled =true;
+            console.log(response);
+            const res = JSON.parse(response);
+            // console.log(response);
+            if (res.icono == "success") {
+                // horaSalidaElement.disabled =true;
+                // horaEntradaElement.disabled =true;
+                
+                tabla_horas.ajax.reload();
+                frm.reset(); // Limpia el formulario
+                cerrarModal(); // Oculta el modal y el fondo oscuro
+                
             }
-        ]
+            Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+        },
+        error: function(xhr, status, error) {
+            // Se ejecuta si hay algún error en la solicitud
+            console.error('Error en la solicitud:', error);
+        }
     });
-}
+
+   
+});
+
+function llenartablaHoras() {
+    tipo = "1";
+    tabla_horas = $("#table-horas-alex").DataTable({
+      ajax: {
+        url: base_url + "Boleta/listarPorteria",
+        type: "POST", // Especifica el método HTTP como POST
+        dataSrc: "",
+        data: function (data) {
+          // Agrega los parámetros que deseas enviar
+          data.parametro = "1";
+  
+          // Agrega más parámetros si es necesario
+          return data;
+        },
+      },
+      columns: [
+        // Define tus columnas aquí según la estructura de tus datos
+        { data: "posicion" },
+  
+        { data: "numero" },
+        { data: "nombre_trabajador" },
+        { data: "fecha_nueva" },
+        // { data: "fecha_fin_formateada" },
+        { data: "hora_salida" },
+        { data: "hora_entrada" },
+        { data: "estado_tramite" },
+        // { data: "estado" },
+        { data: "accion" },
+      ],
+      dom: "Bfrtip",
+      columnDefs: [
+        //   { width: "15px", targets: 0 }, // Ancho de la primera columna
+        //   { width: "30px", targets: 1 }, // Ancho de la segunda columna
+        //   { width: "250px", targets: 2 }, // Ancho de la segunda columna
+        // Agrega más columnDefs según sea necesario
+      ],
+  
+      buttons: [
+        {
+          extend: "copy",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas copiar
+          },
+        },
+        {
+          extend: "csv",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a CSV
+          },
+        },
+        {
+          extend: "excel",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a Excel
+          },
+        },
+        {
+          extend: "pdf",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas exportar a PDF
+          },
+        },
+        {
+          extend: "print",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas imprimir
+          },
+        },
+      ],
+    });
+  }
 
 function edit(id) {
 
@@ -164,12 +180,37 @@ function edit(id) {
                 solicitanteElement.value = res.trabajador_id;
                 aprobadorElement.value = res.aprobado_por;
                 fechaInicioElement.value = res.fecha_inicio;
-                fechaFinElement.value = res.fecha_fin;
+                // fechaFinElement.value = res.fecha_fin;
                 horaSalidaElement.value =res.hora_salida;
                 horaEntradaElement.value = res.hora_entrada;
                 razonElement.value = res.razon;
                 otra_razonElement.value = res.razon_especifica;
-               
+                
+                horaSalidaElement.disabled =true;
+                horaEntradaElement.disabled =true;
+                btn_entrada.disabled=true;
+                btn_salida.disabled=true;
+                btn_entrada.classList.replace('btn-success', 'btn-dark');
+                btn_salida.classList.replace('btn-success', 'btn-dark');
+                if(res.hora_salida==null && res.hora_entrada == null){
+                    // horaSalidaElement.disabled = false;
+                    btn_salida.disabled = false;
+                   
+                    // horaEntradaElement.disabled = true;
+                    // btn_entrada.disabled=true;
+                    btn_salida.classList.replace('btn-dark','btn-success');
+                }
+                if(res.hora_salida !=null && res.hora_entrada == null){
+                    // horaEntradaElement.disabled = false;
+                    btn_entrada.disabled = false;
+                    btn_entrada.classList.replace('btn-dark','btn-success');
+                   
+                }
+                // if(res.hora_entrada==null){
+                //     horaEntradaElement.style.disabled=true;
+                //     console.log('entro entrada');
+                // }
+
                 if (!aprobadorElement.value) {
                         
                    
@@ -320,7 +361,7 @@ function cambiarEstadoInputs(accion){
     solicitanteElement.disabled = false;
     aprobadorElement.disabled = false;
     fechaInicioElement.disabled = false;
-    fechaFinElement.disabled = false;
+    // fechaFinElement.disabled = false;
     horaSalidaElement.disabled = true;
     horaEntradaElement.disabled = true;
     razonElement.disabled=false;
@@ -331,7 +372,7 @@ function cambiarEstadoInputs(accion){
         solicitanteElement.disabled = true;
         aprobadorElement.disabled = true;
         fechaInicioElement.disabled = true;
-        fechaFinElement.disabled = true;
+        // fechaFinElement.disabled = true;
         horaSalidaElement.disabled = false;
         horaEntradaElement.disabled = false;
         razonElement.disabled=true;
@@ -344,39 +385,39 @@ function cambiarEstadoInputs(accion){
     
 }
 
-solicitanteElement.addEventListener('change', function() {
-    var selectedValue = solicitanteElement.value;
-    if(selectedValue==''){
-        selectedValue = 0;
-    }
-    $.ajax({
-        url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
-        type: 'POST',
-        data: { id: selectedValue }, // Puedes enviar datos adicionales si es necesario
-        success: function(response) {
-            datos = JSON.parse(response); 
-            // Limpiar el select aprobadorElement
-            aprobadorElement.innerHTML = '';
-            datos.map(function(item) {
-                var option = document.createElement('option');
-                if (item.trabajador_estado === "Inactivo" ) {
-                    option.style.color = "red";
-                }
-                option.value = item.trabajador_id;
-                if(item.trabajador_dni==null){
-                    option.text = item.trabajador_nombre;
-                }else{
-                    option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
-                }
-                aprobadorElement.appendChild(option);
-            });
-            console.log(response);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-});
+// solicitanteElement.addEventListener('change', function() {
+//     var selectedValue = solicitanteElement.value;
+//     if(selectedValue==''){
+//         selectedValue = 0;
+//     }
+//     $.ajax({
+//         url: base_url + "Boleta/listarTrabajadoresPorCargoNivel",
+//         type: 'POST',
+//         data: { id: selectedValue }, // Puedes enviar datos adicionales si es necesario
+//         success: function(response) {
+//             datos = JSON.parse(response); 
+//             // Limpiar el select aprobadorElement
+//             aprobadorElement.innerHTML = '';
+//             datos.map(function(item) {
+//                 var option = document.createElement('option');
+//                 if (item.trabajador_estado === "Inactivo" ) {
+//                     option.style.color = "red";
+//                 }
+//                 option.value = item.trabajador_id;
+//                 if(item.trabajador_dni==null){
+//                     option.text = item.trabajador_nombre;
+//                 }else{
+//                     option.text = item.trabajador_nombre+ ' - '+ item.trabajador_dni;
+//                 }
+//                 aprobadorElement.appendChild(option);
+//             });
+//             console.log(response);
+//         },
+//         error: function(xhr, status, error) {
+//             console.error(error);
+//         }
+//     });
+// });
 
 function removeDefaultOption() {
     const defaultOption = document.getElementById('defaultOption');
@@ -406,3 +447,25 @@ function prueba(){
     });
 
 }
+
+function salida() {
+    // Obtener la hora actual
+    let now = new Date();
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let currentTime = `${hours}:${minutes}`;
+
+    // Asignar la hora actual al input
+    document.getElementById('hora_salida').value = currentTime;
+  }
+
+  function retorno() {
+    // Obtener la hora y minuto actual
+    let now = new Date();
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let currentTime = `${hours}:${minutes}`;
+
+    // Asignar la hora y minuto actual al input
+    document.getElementById('hora_entrada').value = currentTime;
+  }

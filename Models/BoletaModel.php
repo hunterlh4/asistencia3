@@ -6,30 +6,32 @@ class BoletaModel extends Query
     {
         parent::__construct();
     }
-    public function getBoletas()
+    public function getBoletas($parametro)
     {
         $sql = "SELECT b.id AS bid, numero,
                 trabajador_id AS solicitanteid,
-                t.apellido_nombre AS solitantenombre,
+                t.apellido_nombre AS nombre_trabajador,
                 aprobado_por AS aprobadorid, 
-                t2.apellido_nombre AS aprobadornombre,
+                t2.apellido_nombre AS nombre_aprobador,
                 fecha_inicio,fecha_fin,hora_salida,hora_entrada,duracion,razon,razon_especifica,observaciones,estado_tramite,
-                b.estado AS bestado 
+                b.estado AS bestado ,
+                tipo
                 from boleta AS b 
                 INNER JOIN trabajador AS t ON  t.id =b.trabajador_id 
                 left JOIN trabajador AS t2 ON t2.id = b.aprobado_por
+                where b.tipo ='$parametro'
                 order by
                 CASE 
                 WHEN b.estado_tramite = 'Pendiente' THEN 1
                 ELSE 2
                 END,
-                b.id desc";
+                b.create_At desc";
                 
 
         return $this->selectAll($sql);
     }
 
-    public function getMisBoletas($id)
+    public function getMisBoletas($id,$parametro)
     {
         $sql = "SELECT 
 
@@ -47,7 +49,8 @@ class BoletaModel extends Query
         b.razon AS razon,
         b.razon_especifica as razon_especifica,
         b.observaciones AS observaciones,
-        b.estado_tramite AS estado_tramite
+        b.estado_tramite AS estado_tramite,
+        b.tipo as boleta_tipo
         FROM 
             boleta AS b
         LEFT JOIN 
@@ -57,8 +60,9 @@ class BoletaModel extends Query
         inner JOIN
             cargo AS c ON c.id = t1.cargo_id
         
-        WHERE b.trabajador_id = $id
-        ORDER BY b.id asc ";
+        WHERE b.trabajador_id = $id and
+        b.tipo ='$parametro'
+        order by b.create_At desc";
 
         return $this->selectAll($sql);
     }
@@ -70,7 +74,7 @@ class BoletaModel extends Query
         return $this->select($sql);
     }
 
-    public function getMisRevisiones($id)
+    public function getMisRevisiones($id,$parametro)
     {
         $sql = "SELECT 
         b.id ,
@@ -87,7 +91,8 @@ class BoletaModel extends Query
         b.razon AS razon,
         b.razon_especifica as razon_especifica,
         b.observaciones AS observaciones,
-        b.estado_tramite AS estado_tramite
+        b.estado_tramite AS estado_tramite,
+        b.tipo as boleta_tipo
         FROM 
             boleta AS b
         LEFT JOIN 
@@ -96,14 +101,15 @@ class BoletaModel extends Query
             trabajador AS t2 ON b.aprobado_por = t2.id
         inner JOIN
             cargo AS c ON c.id = t1.cargo_id
-        WHERE aprobado_por = $id
+        WHERE aprobado_por = $id and
+        b.tipo ='$parametro'
         order by
         CASE 
         WHEN b.estado_tramite = 'Pendiente' THEN 1
         WHEN b.estado_tramite = 'Aprobado' THEN 2
         ELSE 3
         END,
-        b.id desc";
+        b.create_At desc";
         return $this->selectAll($sql);
     }
 
@@ -123,7 +129,8 @@ class BoletaModel extends Query
         b.razon AS razon,
         b.razon_especifica as razon_especifica,
         b.observaciones AS observaciones,
-        b.estado_tramite AS estado_tramite
+        b.estado_tramite AS estado_tramite,
+        b.tipo as boleta_tipo
         FROM 
             boleta AS b
         LEFT JOIN 
@@ -132,7 +139,8 @@ class BoletaModel extends Query
             trabajador AS t2 ON b.aprobado_por = t2.id
         inner JOIN
             cargo AS c ON c.id = t1.cargo_id
-        WHERE b.estado_tramite = 'Aprobado'
+        WHERE b.estado_tramite = 'Aprobado' AND
+        b.tipo ='1'
         order by
         
         b.fecha_inicio DESC,
@@ -159,7 +167,8 @@ class BoletaModel extends Query
         b.razon_especifica AS razon_especifica,
         b.observaciones AS observaciones, 
         b.estado_tramite AS estado_tramite, 
-        b.estado  AS estado
+        b.estado  AS estado,
+        b.tipo as boleta_tipo
         FROM 
             boleta AS b
             INNER JOIN trabajador AS t ON t.id = b.trabajador_id
@@ -191,7 +200,8 @@ class BoletaModel extends Query
         b.razon_especifica AS razon_especifica,
         b.observaciones AS observaciones, 
         b.estado_tramite AS estado_tramite, 
-        b.estado  AS estado
+        b.estado  AS estado,
+        b.tipo as boleta_tipo
         FROM 
             boleta AS b
             INNER JOIN trabajador AS t ON t.id = b.trabajador_id
@@ -201,7 +211,7 @@ class BoletaModel extends Query
             AND b.estado_tramite = 'Aprobado' 
             AND b.trabajador_id = '$trabajador_id' 
         ORDER BY 
-            b.id ASC;";
+             b.fecha_inicio,b.fecha_fin ASC;";
             return $this->selectAll($sql);
     }
 
@@ -294,10 +304,10 @@ class BoletaModel extends Query
     }
     
                    
-    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite)
+    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite,$tipo)
     {
-        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite) VALUES (?,?,?,?,?,?,?)";
-        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite);
+        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite,tipo) VALUES (?,?,?,?,?,?,?,?)";
+        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite,$tipo);
         return $this->insertar($sql, $array);
     }
     public function modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$id)

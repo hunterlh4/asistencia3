@@ -35,7 +35,8 @@ month = today.getMonth();
 day = today.getDate();
 
 var monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-var dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+// var dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+var dayNames = [ "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado","Domingo"];
 
 var dayNameMap = {
     'Sunday': 'Domingo',
@@ -50,9 +51,11 @@ var dayNameMap = {
   var calendar = $("#myEvent").fullCalendar({
     height: "auto",
     defaultView: "month",
+    firstDay: 1,
     editable: false,
     selectable: true,
     locate: 'es',
+    timeFormat: 'H:mm',
     displayEventTitle:false,
     displayEventTime: true, // Oculta la hora del evento
     displayEventEnd: true, // Oculta el fin del evento
@@ -94,7 +97,7 @@ eventClick: function (calEvent, jsEvent, view) {
     let mes = (fechaformateada.getMonth() + 1).toString().padStart(2, '0');
     let dia = (fechaformateada.getDate()).toString().padStart(2, '0');
     fechaFormateada = año + "-" + mes + "-" + dia;
-        if(licencia !=='SR'){
+        // if(licencia !=='SR'){
         // frm.reset();
         var dayOfWeek = dayNames[fecha.getDay()+1];
         // Obtener el nombre del mes
@@ -144,9 +147,9 @@ eventClick: function (calEvent, jsEvent, view) {
 
         document.querySelector('#justificacion').value = justificacion;
         myModal.show();
+    // }
        
-       
-    }
+    
 
     // Imprimir los valores en la consola
     
@@ -248,12 +251,6 @@ customButtons: {
 });
 
 
-//   function asistencias(moth,year){
-//     var trabajadores_id = 1; //$('#trabajadores_id').val()
-  
-//     // console.log(moth,year,trabajadores_id);
-  
-//   }
 
   var currentDate = $('#myEvent').fullCalendar('getDate');
 $(document).ready(function() {
@@ -265,8 +262,6 @@ $(document).ready(function() {
         // Obtiene el nuevo mes y año
         var newMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var newYear = currentDate.year();
-        // Realiza alguna acción con el nuevo mes y año
-        // asistencias(newMonth, newYear);
         modificarCalendario();
 });
 
@@ -277,8 +272,6 @@ $('.fc-next-button').on('click', function() {
     // Obtiene el nuevo mes y año
     var newMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
     var newYear = currentDate.year();
-    // Realiza alguna acción con el nuevo mes y año
-    // asistencias(newMonth, newYear);
     modificarCalendario();
 });
 
@@ -289,8 +282,6 @@ $('.fc-today-button').on('click', function() {
         // Obtiene el mes y año actual
         var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
         var currentYear = currentDate.year();
-        // Realiza alguna acción con el mes y año actual
-        // asistencias(currentMonth, currentYear);
         modificarCalendario();
 });
 });
@@ -362,34 +353,78 @@ function verAsistencia(mes,anio,id,boleta) {
                     events = [];
                     const res = JSON.parse(response);
                     // console.log(boleta);
+                  
                     res.forEach((evento) => {
 
                         
+                        // console.log(evento.fecha);
+                        
                         // console.log(boleta);
+                       
                         for (let i = 0; i < boleta.length; i++) {
-                            var boletacalendar ='';
+                            let boletacalendar ='';
+                            let boletaparticular = '';
+                          
 
                             const boletaFecha = new Date(boleta[i].fecha_inicio);
                             const boletaFecha_fin = new Date(boleta[i].fecha_fin);
                             const eventoFecha = new Date(evento.fecha);
+                            boletaFecha_fin.setUTCDate(boletaFecha_fin.getUTCDate() + 0);
+                            boletaFecha.setUTCDate(boletaFecha.getUTCDate() + 0);
+                            eventoFecha.setUTCDate(eventoFecha.getUTCDate() + 0);
+
+                            const Motivo_particular = boleta[i].razon;
+                            // console.log(eventoFecha,i);
 
 
                             // const boletaFecha = boleta[i].fecha_inicio;
                             // const boletaFecha_fin = boleta[i].fecha_fin;
+                            
                            
-                             if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin && evento.licencia !='SR') {
+                             if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin ) {
                                 
                                 // console.log(boletaFecha +'|-'+evento.fecha);
                                 
                               boletacalendar ='-Boleta';
+                             
+
+                             
+                             
+                             
                             //   console.log('fecha cambiada'+ boletaFecha + 'segunda'+ evento.fecha);
                             // console.log(boletaFecha);
+                            if(Motivo_particular==='Motivos Particulares'){
+                                boletaparticular ='+MP';
+
+                                //  console.log(boletaparticular,i,eventoFecha);
+                              }else{
+                                boletaparticular =''
+                                // console.log(boletaparticular,i,eventoFecha);
+                              }
+                               
                              } 
-                             evento.licencia = evento.licencia + boletacalendar;
+                            
+                             
+                            
+                             evento.licencia = evento.licencia +boletaparticular+ boletacalendar;
+                            //   if(Motivo_particular ==='Motivos Particulares'){
+                            //     evento.licencia = evento.licencia +'-';
+                            //     console.log(Motivo_particular)
+                            //     console.log(boletaFecha)
+                            //     console.log(boletaFecha_fin)
+                            //     console.log(eventoFecha)
+                            //     }
+                            
                             // console.log(boletaFecha +'|'+evento.fecha);
+                        }
+                        if(evento.tardanza !=='00:00'){
+                            evento.licencia = evento.licencia +'-'+evento.tardanza_cantidad;
                         }
                         
                         
+                        // console.log(evento.tid,evento.fecha);
+
+                       
 
                         events.push({
                             id: evento.aid,
@@ -398,7 +433,7 @@ function verAsistencia(mes,anio,id,boleta) {
                             end: new Date(evento.anio, evento.mes-1, evento.dia,evento.hora_salida,evento.minuto_salida),
                        
                             trabajador_id: evento.tid,
-                            backgroundColor: "transparent",
+                            backgroundColor: 'transparent',
                             entrada: evento.entrada,
                             salida: evento.salida,
                             total_reloj: evento.total_reloj,
@@ -440,76 +475,187 @@ function verAsistencia(mes,anio,id,boleta) {
 }
 // modificar datos del calendario
 function modificarCalendario(){
+    const fcContents = document.querySelectorAll('.fc-content');
+
+    fcContents.forEach(function(element) {
+        // Encontrar los elementos fc-time y fc-title dentro de este elemento
+        var fcTime = element.querySelector('.fc-time');
+        var fcTitle = element.querySelector('.fc-title');
+        
+        
+        // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
+        if (fcTitle.textContent.includes('SR')) {
+            // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+            fcTime.textContent = '';
+        } 
+
+       
+        if (/-Boleta/.test(fcTitle.textContent)) {
+            var titlePrefix = fcTitle.textContent.split('-Boleta')[0];
+            fcTitle.innerHTML =  titlePrefix+'-B';
+        }
+
+        if (fcTitle.textContent.includes('+MP')) {
+            
+        }
+        
+        // if (/MP/.test(fcTitle.textContent)) {
+        //     var titlePrefix = fcTitle.textContent.split('+MP')[0];
+        //     fcTitle.innerHTML =  + titlePrefix + '-MP' ;
+        // }
+
+      
+           
+        
+        
+
+        let titulo , color;
+        switch(fcTitle.textContent){
+            case "OK":
+                titulo ='OK';color = 'blue';
+                break;
+            case "OK-B":
+                titulo ='OK';color = 'blue';
+                break;
+            case "NMS":
+                titulo ='NMS';color = 'red';
+                break;
+            case "NMS-B":
+                titulo ='NMS';color = 'red';
+                break;
+            case "SR":
+                titulo ='SR';color = 'red';
+                break;
+            case "SR-B":
+                titulo ='SR';color = 'red';
+                break;
+            case "+30":
+                titulo ='+30';color = 'red';
+                break;
+            case "+30-B":
+                titulo ='+30';color = 'red';
+                break; 
+            case "V":
+                break; 
+            case "AP-B":
+                break; 
+            default:
+                titulo ='DIFERENTE';color = 'black';
+                break; 
+        }
+        // fcTitle.innerHTML = '<span style="color:'+color+'; font-weight: bold;">' + titulo + '</span>'
+       
+       
+    });
+    const fcContentsList = document.querySelectorAll('.fc-list-item'); 
+    fcContentsList.forEach(function(element) {
+        // Encontrar los elementos fc-time y fc-title dentro de este elemento
+        var fcTime = element.querySelector('.fc-list-item-time');
+        var fcTitle = element.querySelector('.fc-list-item-title');
+        
+        // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
+        if (fcTitle.textContent.includes('SR')) {
+            // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+            fcTime.textContent = '';
+        } 
+        if (/-Boleta/.test(fcTitle.textContent)) {
+            // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
+           
+           // Obtener el prefijo del título antes de '-Boleta'
+            var titlePrefix = fcTitle.textContent.split('-Boleta')[0];
+
+            // Establecer el HTML del título según la parte extraída
+            fcTitle.innerHTML = '<span style="color: blue; font-weight: bold;">' + titlePrefix + '</span> <br>';
+        }
+    });
+
+    const fcDays = document.querySelectorAll('.fc-day');
+    fcDays.forEach(day => {
+        // Obtén el valor del atributo data-date
+        const date = day.getAttribute('data-date');
+        
+        // Crea un objeto Date a partir del valor de data-date
+        const dateObj = new Date(date);
     
-    const timeElements = document.querySelectorAll('.fc-time');
-    timeElements.forEach((element) => {
-        // Obtén el texto del elemento
-        // console.log(element);
-        let timeText = element.innerText.trim();
-        const titleElement = element.parentElement.querySelector('.fc-title');
-        const contenido = titleElement.innerText.trim();
+        // Verifica si es sábado (6) o domingo (0)
+        if (dateObj.getDay() === 5 || dateObj.getDay() === 6) {
+            // Si es sábado o domingo, establece un fondo claro
+            day.style.backgroundColor = '#E5E8E8';
+        }
+    });
+
+
+
+    // const timeElements = document.querySelectorAll('.fc-time');
+    // timeElements.forEach((element) => {
+    //     // Obtén el texto del elemento
+    //     // console.log(element);
+    //     let timeText = element.innerText.trim();
+    //     const titleElement = element.parentElement.querySelector('.fc-title');
+    //     const contenido = titleElement.innerText.trim();
     
         
-        // Divide el texto en horas y minutos
-        if (timeText.includes('12a')) {
-            if (titleElement && contenido === 'SR') {
-                timeText = ''; // Si es "12a" y fc-title contiene "SR", convierte el texto en una cadena vacía
-            }
-        } else if (timeText.includes('12p')) {
-            timeText = timeText.replace('12p', '12:00p'); // Si es "12p", agrega ":00"
-        } else {
-            // Divide el texto en horas y minutos
-            const [hour, minute, period] = timeText.split(/:- /);
+    //     // Divide el texto en horas y minutos
+    //     if (timeText.includes('12a')) {
+    //         if (titleElement && contenido === 'SR') {
+    //             timeText = ''; // Si es "12a" y fc-title contiene "SR", convierte el texto en una cadena vacía
+    //         }
+    //     } else if (timeText.includes('12p')) {
+    //         timeText = timeText.replace('12p', '12:00p'); // Si es "12p", agrega ":00"
+    //     } else {
+    //         // Divide el texto en horas y minutos
+    //         const [hour, minute, period] = timeText.split(/:- /);
     
-            // Verifica si es antes o después del mediodía
-            if (period === 'a' || period === 'p') {
-                // Modifica la hora para que esté en formato de 12 horas
-                let modifiedHour = parseInt(hour) % 12;
-                if (modifiedHour === 0) {
-                    modifiedHour = 12;
-                }
+    //         // Verifica si es antes o después del mediodía
+    //         if (period === 'a' || period === 'p') {
+    //             // Modifica la hora para que esté en formato de 12 horas
+    //             let modifiedHour = parseInt(hour) % 12;
+    //             if (modifiedHour === 0) {
+    //                 modifiedHour = 12;
+    //             }
     
-                // Crea la nueva hora en formato deseado
-                timeText = `${modifiedHour}:${minute}${period}`;
-            }
-        }
-        // Asigna el nuevo texto al elemento
-        element.innerText = timeText;  
-    });
+    //             // Crea la nueva hora en formato deseado
+    //             timeText = `${modifiedHour}:${minute}${period}`;
+    //         }
+    //     }
+    //     // Asigna el nuevo texto al elemento
+    //     element.innerText = timeText;  
+    // });
     
 
-    $(".fc-list-item").each(function() {
-        // Encuentra el hijo .fc-list-item-title a
-        const titleElement = $(this).find('.fc-list-item-title a');
-        // Verifica si el texto del enlace es "SR"
-        if (titleElement.length && titleElement.text().trim() === 'SR') {
-            // Encuentra el elemento .fc-list-item-time y establece su texto como una cadena vacía
-            const timeElement = $(this).find('.fc-list-item-time');
-            timeElement.text('');
-        }
-        let texto = titleElement.text().trim();
-        if (texto.endsWith('-Boleta')) {
-            // Reemplaza "-Boleta" por el nuevo contenido deseado
-            const textoModificado = texto.replace(/-Boleta/g, ' ');
-            titleElement.html('<span style="color: orange; font-weight: bold;">' + textoModificado + '</span>');
+    // $(".fc-list-item").each(function() {
+    //     // Encuentra el hijo .fc-list-item-title a
+    //     const titleElement = $(this).find('.fc-list-item-title a');
+    //     // Verifica si el texto del enlace es "SR"
+    //     if (titleElement.length && titleElement.text().trim() === 'SR') {
+    //         // Encuentra el elemento .fc-list-item-time y establece su texto como una cadena vacía
+    //         const timeElement = $(this).find('.fc-list-item-time');
+    //         timeElement.text('');
+    //     }
+    //     let texto = titleElement.text().trim();
+    //     if (texto.endsWith('-Boleta')) {
+    //         // Reemplaza "-Boleta" por el nuevo contenido deseado
+    //         const textoModificado = texto.replace(/-Boleta/g, ' ');
+    //         titleElement.html('<span style="color: orange; font-weight: bold;">' + textoModificado + '</span>');
             
-            // Asigna el nuevo contenido al elemento
-            // titleElement.html(texto);
-        }
-    });
+    //         // Asigna el nuevo contenido al elemento
+    //         // titleElement.html(texto);
+    //     }
+    // });
 
-    $(".fc-title").each(function() {
-        // Verifica si el texto del título termina con "-Boleta"
-        var texto ='';
-         texto = $(this).text().trim();
-        if (texto.endsWith('-Boleta')) {
-            // Reemplaza "-Boleta" por el nuevo contenido deseado
-            const textoModificado = texto.replace(/-Boleta/g, ' ');
-            $(this).html('<span style="color: blue; font-weight: bold;">' +  textoModificado +'</span>');
+    // $(".fc-title").each(function() {
+    //     // Verifica si el texto del título termina con "-Boleta"
+    //     var texto ='';
+    //      texto = $(this).text().trim();
+    //     if (texto.endsWith('-Boleta')) {
+    //         // Reemplaza "-Boleta" por el nuevo contenido deseado
+    //         const textoModificado = texto.replace(/-Boleta/g, ' ');
+    //         $(this).html('<span style="color: blue; font-weight: bold;">' +  textoModificado +'</span>');
 
-            // console.log('cambio');
-        }
-    });
+    //         // console.log('cambio');
+    //     }
+       
+    // });
     
 }
 //  llenar con la boleta al calendario
