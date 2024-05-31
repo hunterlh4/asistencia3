@@ -66,9 +66,10 @@ frm.addEventListener("submit", function(e) {
             console.log('Enviando solicitud...');
         },
         success: function(response) {
+            console.log(response);
             horaSalidaElement.disabled =true;
             horaEntradaElement.disabled =true;
-            console.log(response);
+            // console.log(response);
             const res = JSON.parse(response);
             // console.log(response);
             if (res.icono == "success") {

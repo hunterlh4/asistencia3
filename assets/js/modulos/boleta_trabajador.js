@@ -90,7 +90,8 @@ frm.addEventListener("submit", function (e) {
         frm.reset(); // Limpia el formulario
         cerrarModal(); // Oculta el modal y el fondo oscuro
       }
-      Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+      // Swal.fire("Aviso", res.msg.toUpperCase(), res.icono);
+      Swal.fire("Aviso", res.msg, res.icono);
     },
     error: function (xhr, status, error) {
       // Se ejecuta si hay algún error en la solicitud
@@ -294,6 +295,7 @@ function edit(id) {
       fechaFinElement.value = res.fecha_fin;
       horaSalidaElement.value = res.hora_salida;
       horaEntradaElement.value = res.hora_entrada;
+      tipo_boleta.value = res.tipo;
 
       razonElement.value = res.razon;
       otra_razonElement.value = res.razon_especifica;
@@ -341,6 +343,7 @@ function view(id) {
       horaEntradaElement.value = res.hora_entrada;
       razonElement.value = res.razon;
       otra_razonElement.value = res.razon_especifica;
+      tipo_boleta.value = res.tipo;
 
       cambiarEstadoInputs(0);
 

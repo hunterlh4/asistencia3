@@ -162,7 +162,8 @@ class BoletaModel extends Query
         b.fecha_fin AS fecha_fin, 
         b.hora_salida AS hora_salida, 
         b.hora_entrada AS hora_entrada, 
-        b.duracion AS duracion, 
+        -- b.duracion AS duracion, 
+        TO_CHAR(b.duracion ::interval, 'HH24:MI') AS duracion,
         b.razon AS razon,
         b.razon_especifica AS razon_especifica,
         b.observaciones AS observaciones, 
@@ -195,7 +196,8 @@ class BoletaModel extends Query
         b.fecha_fin AS fecha_fin, 
         b.hora_salida AS hora_salida, 
         b.hora_entrada AS hora_entrada, 
-        b.duracion AS duracion, 
+        -- b.duracion AS duracion, 
+        TO_CHAR(b.duracion ::interval, 'HH24:MI') AS duracion,
         b.razon AS razon,
         b.razon_especifica AS razon_especifica,
         b.observaciones AS observaciones, 
@@ -302,6 +304,20 @@ class BoletaModel extends Query
         $sql = "SELECT * FROM Boleta WHERE id = '$id' ";
         return $this->select($sql);
     }
+
+    public function verificarExistencia($fecha_inicio,$fecha_fin,$trabajador_id)
+    {
+
+        $sql = "SELECT * FROM boleta 
+        WHERE 
+        (fecha_inicio <= '$fecha_fin' AND 
+        fecha_fin >= '$fecha_inicio') AND
+       trabajador_id = $trabajador_id AND
+        tipo='2' AND
+        (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado')" 
+        ;
+        return $this->selectAll($sql);
+    }
     
                    
     public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite,$tipo)
@@ -318,15 +334,15 @@ class BoletaModel extends Query
     }
     public function modificarSalida($salida,$id)
     {
-        $sql = "UPDATE boleta SET hora_salida = ?, update_at=NOW()  WHERE id = ?";
+        $sql = "UPDATE boleta SET hora_salida = ? ,  update_at=NOW()  WHERE id = ?";
         $array = array($salida, $id);
         return $this->save($sql, $array);
     }
 
-    public function modificarEntrada($entrada,$id)
+    public function modificarEntrada($entrada,$duracion,$id)
     {
-        $sql = "UPDATE boleta SET hora_entrada = ?, update_at=NOW()  WHERE id = ?";
-        $array = array($entrada, $id);
+        $sql = "UPDATE boleta SET hora_entrada = ?,duracion = ?, update_at=NOW()  WHERE id = ?";
+        $array = array($entrada,$duracion, $id);
         return $this->save($sql, $array);
     }
     public function modificarHora($salida,$entrada,$id)

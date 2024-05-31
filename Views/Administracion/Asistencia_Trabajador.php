@@ -145,14 +145,14 @@
                     </div>
                     <div>
                     </div>
-                    <div id="resultado">
+                    <div id="resultado" class="col-md-12 col-sm-6">
                   
                     </div>
                     <div  class="col-md-12 col-sm-6">
                      
                       <div class="form-group">
                         <label for="justificacion">Numero Informe</label>
-                        <input type="text" class="form-control" placeholder="justificacion" name="justificacion" id="justificacion" minlength="5" maxlength="30" readonly>
+                        <input type="text" class="form-control"  name="justificacion" id="justificacion" minlength="5" maxlength="30" readonly>
                       </div>
                     </div>
                     <div class="modal-footer bg-white col-md-12 col-sm-12">

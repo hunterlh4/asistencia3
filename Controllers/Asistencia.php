@@ -52,28 +52,25 @@ class Asistencia extends Controller
             
                 $data = $this->model->modificarJustificacion($justificacion,$id);
                 if($data >0){
-                    $respuesta = array('msg' => 'Se ha Actualizado su Justificacion', 'icono' => 'success');
+                    $respuesta = ['msg' => 'Se ha Actualizado su Justificacion', 'icono' => 'success'];
                 }else{
-                    $respuesta = array('msg' => 'Se ha Producido un error', 'icono' => 'warning');
+                    $respuesta = ['msg' => 'Se ha Producido un error', 'icono' => 'warning'];
                 }
         }else{
-            $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+            $respuesta = ['msg' => 'todo los campos son requeridos', 'icono' => 'warning'];
         }
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
     //eliminar user
-    public function delete($id)
+    public function edit($id)
     {
         if (is_numeric($id)) {
-            $data = $this->model->eliminar($id);
-            if ($data == 1) {
-                $respuesta = array('msg' => 'se ha dado de baja', 'icono' => 'success');
-            } else {
-                $respuesta = array('msg' => 'error al eliminar', 'icono' => 'error');
-            }
+            $data = $this->model->edit($id);
+            $respuesta = $data;
+            
         } else {
-            $respuesta = array('msg' => 'error desconocido', 'icono' => 'error');
+            $respuesta = ['msg' => 'error desconocido', 'icono' => 'error'];
         }
         echo json_encode($respuesta);
         die();
@@ -106,11 +103,11 @@ class Asistencia extends Controller
                 
             } else {
                 // Si el ID no es numérico, devuelve un mensaje de error
-                echo json_encode(array('error' => 'El ID no es válido'));
+                echo json_encode(['error' => 'El ID no es válido']);
             }
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            echo json_encode(array('error' => 'Se requieren los parámetros "id", "anio" y "mes"'));
+            echo json_encode(['error' => 'Se requieren los parámetros "id", "anio" y "mes"']);
         }
     
         // Detiene la ejecución del script

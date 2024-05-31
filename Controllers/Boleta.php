@@ -113,14 +113,14 @@ class Boleta extends Controller
 
             if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($fecha_fin) || empty($razon) || empty($razon_especifica)) {
                 // if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) || empty($salida) || empty($entrada) || empty($razon) || empty($razon_especifica)) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+                $respuesta = ['msg' => 'todo los campos son requeridos', 'icono' => 'warning'];
             } else {
                 $inicio_timestamp = strtotime($fecha_inicio);
                 $fin_timestamp = strtotime($fecha_fin);
                 if ($inicio_timestamp > $fin_timestamp) {
-                    $respuesta = array('msg' => 'la fecha inicio no puede ser menor', 'icono' => 'warning');
+                    $respuesta = ['msg' => 'la fecha inicio no puede ser menor', 'icono' => 'warning'];
                 } else {
-                    $datos_log = array(
+                    $datos_log = [
                         "id" => $id,
                         "solicitante" => $solicitante,
                         "aprobador" => $aprobador,
@@ -132,43 +132,55 @@ class Boleta extends Controller
                         "razon_especifica" => $razon_especifica,
 
 
-                    );
+                    ];
                     $datos_log_json = json_encode($datos_log);
+
+                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin);
 
                     if (empty($id)) {
                         $estado_tramite = 'Pendiente';
                         // $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon,$razon_especifica, $estado_tramite);
-                        $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+
+                        if ($tipo == '1') {
+                            $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+                        } else {
+                            $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+                        }
                         if ($data > 0) {
-                            $respuesta = array('msg' => 'Boleta registrada', 'icono' => 'success');
+                            $respuesta = ['msg' => 'Boleta registrada', 'icono' => 'success'];
                             // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
                         } else {
-                            $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+                            $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
                         }
-                        // $respuesta = array('msg' => 'modificar', 'icono' => 'success');
+                        // $respuesta = ['msg' => 'modificar', 'icono' => 'success');
                     } else {
                         $result = $this->model->verificar($id);
                         if ($result['estado_tramite'] == 'Pendiente') {
+                            if ($tipo == '1') {
+                                $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+                            } else {
+                                // VALIDAR DIAS
+                                $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+                            }
 
-                            $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
                             if ($data > 0) {
-                                $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
+                                $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
                                 // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
                             } else {
-                                $respuesta = array('msg' => 'error al Actualizar', 'icono' => 'error');
+                                $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
                             }
                         } else {
-                            $respuesta = array('msg' => 'La Solicitud ya fue atendida', 'icono' => 'error');
+                            $respuesta = ['msg' => 'La Solicitud ya fue atendida', 'icono' => 'error'];
                         }
                         // $data = $this->model->modificar($nombre, $nivel);
 
-                        // $respuesta = array('msg' => 'Actualizar', 'icono' => 'success');
+                        // $respuesta = ['msg' => 'Actualizar', 'icono' => 'success');
                     }
                 }
             }
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            $respuesta = ['msg' => 'error', 'icono' => 'error'];
         }
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
@@ -192,18 +204,18 @@ class Boleta extends Controller
             // $entrada = $_POST['hora_entrada'];
             $razon = $_POST['razon'];
             $razon_especifica = $_POST['otra_razon'];
-
+            // $respuesta = ['msg' => 'llego a pendiente'.$_POST['tipo'], 'icono' => 'success'];
 
             if (empty($solicitante) || empty($aprobador) || empty($fecha_inicio) ||  empty($razon) || empty($razon_especifica)) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+                $respuesta = ['msg' => 'todo los campos son requeridos', 'icono' => 'warning'];
             } else {
 
                 $inicio_timestamp = strtotime($fecha_inicio);
                 $fin_timestamp = strtotime($fecha_fin);
                 if ($inicio_timestamp > $fin_timestamp) {
-                    $respuesta = array('msg' => 'la fecha inicio no puede ser menor', 'icono' => 'warning');
+                    $respuesta = ['msg' => 'la fecha inicio no puede ser menor', 'icono' => 'warning'];
                 } else {
-                    $datos_log = array(
+                    $datos_log = [
                         "id" => $id,
                         "solicitante" => $solicitante,
                         "aprobador" => $aprobador,
@@ -214,46 +226,116 @@ class Boleta extends Controller
                         "razon" => $razon,
                         "razon_especifica" => $razon_especifica,
 
-                    );
+                    ];
                     $datos_log_json = json_encode($datos_log);
-
+                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin,$solicitante);
+                    $valor = 0;
+                    $dato = [];
+                    $i = 0;
+                    $id_temporal = '';
+                   
+                    if (count($existencia) == 0 && $tipo == '2') {
+                        // $valor = 0;                        
+                    }
+                    if (count($existencia) == 1 && $tipo == '2') {
+                        $valor = 1;
+                        $id_temporal = $existencia[0]['id'];
+                      
+                    }
+                    if (count($existencia) > 1 && $tipo == '2') {
+                        foreach ($existencia as $elemento) {
+                            $i++; // Mostrar cada elemento
+                            $dato[$i] = $elemento['id'];
+                        }
+                        $valor = 2;
+                    }
+                    
                     if (empty($id)) {
                         $estado_tramite = 'Pendiente';
 
-                        // $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon,$razon_especifica, $estado_tramite);
-                        $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
-                        if ($data > 0) {
-                            $respuesta = array('msg' => 'Boleta registrada', 'icono' => 'success');
-                            // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
-                        } else {
-                            $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
+
+                        if ($tipo == '1') {
+                            $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+                            if ($data > 0) {
+                                // $respuesta = ['msg' => $existencia, 'icono' => 'success'];
+                                $respuesta = ['msg' => 'Boleta registrada', 'icono' => 'success'];
+
+                                // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
+                            } else {
+                                $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
+                            }
                         }
-                        // $respuesta = array('msg' => 'modificar', 'icono' => 'success');
+
+                        if ($tipo == '2' && $valor == 0) {
+                            $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+                            if ($data > 0) {
+                                // $respuesta = ['msg' => $existencia, 'icono' => 'success'];
+                                $respuesta = ['msg' => 'Boleta registrada', 'icono' => 'success'];
+
+                                // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
+                            } else {
+                                $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
+                            }
+                        }
+                        if ($tipo == '2' && $valor != 0) {
+                            $respuesta = ['msg' => 'ya existe una boleta', 'icono' => 'error'];
+                        }
+                        // $respuesta = ['msg' => 'modificar', 'icono' => 'success');
                     } else {
                         $result = $this->model->verificar($id);
                         if ($result['estado_tramite'] == 'Pendiente') {
+                       
 
-                            $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
-                            if ($data > 0) {
-                                $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
-                                // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
-                            } else {
-                                $respuesta = array('msg' => 'error al Actualizar', 'icono' => 'error');
+                            if ($tipo == '1') {
+                                $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+                                if ($data > 0) {
+                                    $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+                                } else {
+                                    $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
+                                }
+                            }
+                            
+                            if ($tipo == '2' && ($valor == 1 ||   $valor == 0)) {
+                                if ($valor == 0) {
+                                    $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+                                    if ($data > 0) {
+                                        $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+                                        // $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+                                        // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
+                                    } else {
+                                        $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
+                                    }
+                                }
+                                if ($valor == 1) {
+                                    if ($id == $id_temporal) {
+                                        $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+                                        if ($data > 0) {
+                                            $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+                                            // $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+                                            // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
+                                        } else {
+                                            $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
+                                        }
+                                    } else {
+                                        $respuesta = ['msg' => 'ya existe una boleta', 'icono' => 'error'];
+                                    }
+                                }
+                            }
+                            if ($tipo == '2' && $valor == 2) {
+                                $respuesta = ['msg' => 'ya existe una boleta', 'icono' => 'error'];
                             }
                         } else {
-                            $respuesta = array('msg' => 'La Solicitud ya fue enviada, Espere su Respuesta', 'icono' => 'error');
+                            $respuesta = ['msg' => 'La Solicitud ya fue enviada, Espere su Respuesta', 'icono' => 'error'];
                         }
-                        // $data = $this->model->modificar($nombre, $nivel);
-
-                        // $respuesta = array('msg' => 'Actualizar', 'icono' => 'success');
                     }
                 }
             }
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
 
-            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            $respuesta = ['msg' => 'error', 'icono' => 'error'];
         }
+       
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
@@ -266,55 +348,81 @@ class Boleta extends Controller
             $id = $_POST['id'];
 
             $salida = $_POST['hora_salida'];
-            $entrada = $_POST['hora_entrada'];
+            $retorno = $_POST['hora_entrada'];
 
 
 
-            if (empty($salida) && empty($entrada)) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
+            if (empty($salida) && empty($retorno)) {
+                $respuesta = ['msg' => 'todo los campos son requeridos', 'icono' => 'warning'];
             } else {
 
                 $inicio_timestamp = strtotime($salida);
-                $fin_timestamp = strtotime($entrada);
-                if ($inicio_timestamp > $fin_timestamp && $entrada !='') {
-                    $respuesta = array('msg' => 'la fecha inicio no puede ser menor'.$salida.'-'.$entrada, 'icono' => 'warning');
-                } else {
-                    $datos_log = array(
-                        "id" => $id,
-                        "salida" => $salida,
-                        "entrada" => $entrada,
-                    );
-                    $datos_log_json = json_encode($datos_log);
+                $fin_timestamp = strtotime($retorno);
 
-
+                if (!empty($salida) && empty($retorno)) {
                     $result = $this->model->verificar($id);
-                    if ($result['estado_tramite'] == 'Aprobado') {
-                        if (empty($salida)) {
-                            $data = $this->model->modificarEntrada($entrada, $id);
-                        }
-                        if (empty($entrada)) {
-                            $data = $this->model->modificarSalida($salida, $id);
-                        }
-                        if (!empty($entrada) && !empty($salida)) {
-                            $data = $this->model->modificarHora($salida, $entrada, $id);
-                        }
+                    if ($result['estado_tramite'] == 'Aprobado'  && empty($result['hora_salida'])) {
 
-
+                        $data = $this->model->modificarSalida($salida, $id);
                         if ($data > 0) {
-                            $respuesta = array('msg' => 'Boleta Actualizada', 'icono' => 'success');
+                            $respuesta = ['msg' => 'Boleta Actualizada1', 'icono' => 'success'];
+                            $datos_log = [
+                                "id" => $id,
+                                "salida" => $salida,
+                                // "entrada" => $retorno,
+                            ];
+                            $datos_log_json = json_encode($datos_log);
+
                             // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
                         } else {
-                            $respuesta = array('msg' => 'error al Actualizar', 'icono' => 'error');
+                            $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
                         }
                     } else {
-                        $respuesta = array('msg' => 'La Solicitud Solo es Para Boletas Aprobadas, Espere su Respuesta', 'icono' => 'error');
+                        $respuesta = ['msg' => 'La Solicitud fue rechazada', 'icono' => 'error'];
+                    }
+                }
+
+                if (!empty($salida) && !empty($retorno)) {
+                    $diferencia_segundos = $fin_timestamp - $inicio_timestamp;
+                    if ($diferencia_segundos < 0) {
+                        // Si la diferencia es negativa, significa que la hora de entrada es al día siguiente
+                        $fin_timestamp = strtotime('+1 day', $fin_timestamp);
+                        $diferencia_segundos = $fin_timestamp - $inicio_timestamp;
+                    }
+                    $horas = floor($diferencia_segundos / 3600);
+                    $minutos = floor(($diferencia_segundos % 3600) / 60);
+                    $diferencia = $horas . ':' . str_pad($minutos, 2, '0', STR_PAD_LEFT);
+
+                    if ($inicio_timestamp > $fin_timestamp) {
+                        $respuesta = ['msg' => 'la fecha salida no puede ser menor' . $salida . '-' . $retorno, 'icono' => 'warning'];
+                    } else {
+                        $result = $this->model->verificar($id);
+                        if ($result['estado_tramite'] == 'Aprobado' && empty($result['hora_entrada'])) {
+                            if (!empty($retorno)) {
+                                $data = $this->model->modificarEntrada($retorno, $diferencia, $id);
+                            }
+                            if ($data > 0) {
+                                $respuesta = ['msg' => 'Boleta Actualizada2', 'icono' => 'success'];
+                                $datos_log = [
+                                    "id" => $id,
+                                    "salida" => $salida,
+                                    // "entrada" => $retorno,
+                                ];
+                                $datos_log_json = json_encode($datos_log);
+                                // $this->model->registrarlog($_SESSION['id'],'Actualizar','Boleta', $datos_log_json);
+                            } else {
+                                $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
+                            }
+                        } else {
+                            $respuesta = ['msg' => 'La Solicitud fue rechazada', 'icono' => 'error'];
+                        }
                     }
                 }
             }
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-           
-            $respuesta = array('msg' => 'error datos vacios', 'icono' => 'error');
+
+            $respuesta = ['msg' => 'error datos vacios', 'icono' => 'error'];
         }
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
@@ -347,7 +455,7 @@ class Boleta extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            $respuesta = ['msg' => 'error', 'icono' => 'error'];
             echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
 
@@ -368,7 +476,7 @@ class Boleta extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
         } else {
             // Si no se recibieron todos los datos esperados, devuelve un mensaje de error
-            $respuesta = array('msg' => 'error', 'icono' => 'error');
+            $respuesta = ['msg' => 'error', 'icono' => 'error'];
             echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         }
 
@@ -562,14 +670,13 @@ class Boleta extends Controller
             if ($entrada == null && $salida == null) {
                 $data[$i]['estado_tramite'] = '<span class="badge badge-warning">En Espera</span>';
             }
-            if($entrada != null && $salida == null){
+            if ($entrada != null && $salida == null) {
                 $data[$i]['estado_tramite'] = '<span class="badge badge-info">En Proceso</span>';
-
             }
 
 
             // if ($estado_tramite == 'Aprobado') {
-           
+
             // }
 
         }

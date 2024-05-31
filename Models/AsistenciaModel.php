@@ -83,11 +83,29 @@ class AsistenciaModel extends Query
         $array = array($justificacion, $id);
         return $this->save($sql, $array);
     }
-    public function eliminar($id)
+    public function edit($id)
     {
-        $sql = "UPDATE asistencia SET estado = ? WHERE id = ?";
-        $array = array(0, $id);
-        return $this->save($sql, $array);
+        $sql = "SELECT   id ,
+        trabajador_id,
+        fecha,
+        TO_CHAR(total ::interval, 'HH24:MI') AS total,
+        TO_CHAR(entrada ::interval, 'HH24:MI') AS entrada,
+        TO_CHAR(salida ::interval, 'HH24:MI') AS salida,
+        TO_CHAR(total_reloj ::interval, 'HH24:MI') AS total_reloj,
+        TO_CHAR(tardanza ::interval, 'HH24:MI') AS tardanza,
+        tardanza_cantidad,
+        TO_CHAR(reloj_1 ::interval, 'HH24:MI') AS reloj_1,
+        TO_CHAR(reloj_2 ::interval, 'HH24:MI') AS reloj_2,
+        TO_CHAR(reloj_3 ::interval, 'HH24:MI') AS reloj_3,
+        TO_CHAR(reloj_4 ::interval, 'HH24:MI') AS reloj_4,
+        TO_CHAR(reloj_5 ::interval, 'HH24:MI') AS reloj_5,
+        TO_CHAR(reloj_6 ::interval, 'HH24:MI') AS reloj_6,
+        TO_CHAR(reloj_7 ::interval, 'HH24:MI') AS reloj_7,
+        TO_CHAR(reloj_8 ::interval, 'HH24:MI') AS reloj_8,
+        licencia, 
+        justificacion FROM asistencia  WHERE id = $id";
+        
+        return $this->select($sql);
     }
 
     

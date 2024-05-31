@@ -18,6 +18,7 @@ const razonElement = document.querySelector("#razon");
 const otra_razonElement = document.querySelector("#otra_razon");
 //
 
+
 let mytable; // = document.querySelector("#table-1");
 const tbl_boleta_dias = document.getElementById("table-dias-alex");
 var tabla_dias, tabla_horas;
