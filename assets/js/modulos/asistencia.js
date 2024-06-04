@@ -26,6 +26,29 @@ var dayNameMap = {
     'Saturday': 'Sábado'
   };
 
+
+  const razones = {
+    CS: "Comisión de Servicio",
+    DHE: "Devolución de Horas",
+    AP: "Asuntos Particulares",
+    ESS: "ESSALUD",
+    CAP: "Capacitación",
+    "LM/LP": "Licencia por Maternidad/Paternidad",
+    "C.ESP": "Casos Especiales",
+    O: "Onomástico",
+    D: "Duelo",
+    AV: "A cuenta de Vacaciones por Asuntos Personales",
+    V: "Vacaciones",
+    LE: "Lic. por Enfermedad",
+    "LIC. F.G.": "Lic Por Familiar Grave",
+    "LIC. GEST.": "Lic. Gestación",
+    OTR: "Otro"
+  };
+  
+  function obtenerDescripcion(abreviacion) {
+    return razones[abreviacion] || "Desconocido";
+  }
+
   var calendar = $("#myEvent").fullCalendar({
     height: "auto",
     defaultView: "month",
@@ -584,103 +607,128 @@ function llenarBoleta(fecha,trabajador_id){
                 // datos = JSON.parse(response);
                 const res = JSON.parse(response);
             
-                var html; 
+                var html = "";
                 // console.log(datos);
                 $('#resultado').empty();
                 res.map(datos => {
                     console.log(datos);
                     if (datos !== undefined && datos.numero !== undefined) {
-                    
-                    html += '<div class="row text-center">' +
-                    '<hr>' +
-                    '<div class="col-12">' +
-                        '<div class="form-group">' +
-                            '<h4 for="numero">Boleta N° <span>' + datos.numero + '</span></h4>' +
-                        '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="row">' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                        '<label for="aprobado_por">Aprobado por:</label>' +
-                            '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' + datos.aprobador_nombre + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="fecha_inicio">Desde:</label>' +
-                            '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' + datos.fecha_inicio + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="fecha_fin">Hasta:</label>' +
-                            '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' + datos.fecha_fin + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="hora_salida">Salida:</label>' +
-                            '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' + datos.hora_salida + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="hora_entrada">Entrada:</label>' +
-                            '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' + datos.hora_entrada + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="duracion">Duración:</label>' +
-                            '<input type="time" class="form-control" name="duracion" id="duracion" value="' + datos.duracion + '" disabled>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="col-4">' +
-                        '<div class="form-group">' +
-                            '<label for="razon">Razón:</label>' +
-                            '<select class="form-control" name="razon" id="razon" disabled>';
-                            // Agregar opciones de razón
-                        
-                            
-                            if(datos.razon=='Comision de Servicio'|| datos.razon=='Compensacion Horas'|| datos.razon=='Motivos Particulares'||datos.razon=='Enfermedad'||datos.razon=='ESSALUD'){
-                                html += '<option value="' + datos.razon + '">' + datos.razon + '</option>';
-                                html += '</select>' +
-                            '</div>' +
-                            '</div>' +
+                        html +=
+                          '<div class="row text-center">' +
+                          "<hr>" +
+                          '<div class="col-12">' +
+                          '<div class="form-group">' +
+                          '<h4 for="numero">Boleta N° <span>' +
+                          datos.numero +
+                          "</span></h4>" +
+                          "</div>" +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="row">' +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="aprobado_por">Aprobado por:</label>' +
+                          '<input type="text" class="form-control" placeholder="Aprobado por" name="aprobado_por" id="aprobado_por" value="' +
+                          datos.aprobador_nombre +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="fecha_inicio">Desde:</label>' +
+                          '<input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="' +
+                          datos.fecha_inicio +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="fecha_fin">Hasta:</label>' +
+                          '<input type="date" class="form-control" name="fecha_fin" id="fecha_fin" value="' +
+                          datos.fecha_fin +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="hora_salida">Salida:</label>' +
+                          '<input type="time" class="form-control" name="hora_salida" id="hora_salida" value="' +
+                          datos.hora_salida +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="hora_entrada">Entrada:</label>' +
+                          '<input type="time" class="form-control" name="hora_entrada" id="hora_entrada" value="' +
+                          datos.hora_entrada +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="duracion">Duración:</label>' +
+                          '<input type="time" class="form-control" name="duracion" id="duracion" value="' +
+                          datos.duracion +
+                          '" disabled>' +
+                          "</div>" +
+                          "</div>" +
+                          '<div class="col-4">' +
+                          '<div class="form-group">' +
+                          '<label for="razon">Razón:</label>' +
+                          '<select class="form-control" name="razon" id="razon" disabled>';
+                          const descripcionRazon = obtenerDescripcion(datos.razon);
+                          html +=
+                            '<option value="' +
+                            datos.razon +
+                            '">' +
+                            descripcionRazon +
+                            "</option>";
+                          html +=
+                            "</select>" +
+                            "</div>" +
+                            "</div>" +
                             '<div class="col-4">' +
                             '<div class="form-group" id="otra_razon" >' +
                             '<label for="otra_razon_texto">Otra razón:</label>' +
-                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                            '</div>' +
-                            '</div>' +
+                            '<input type="text" class="form-control" value ='+datos.razon_especifica+
+                            ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                            "</div>" +
+                            "</div>" +
                             '<div class="col-4">' +
                             '<div class="form-group">' +
                             '<label for="observaciones">Observaciones:</label>' +
-                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                            }else{
-                                html += '<option value="">' + 'Otra' + '</option>';
-                                html += '</select>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="col-4">' +
-                            '<div class="form-group" id="otra_razon" >' +
-                            '<label for="otra_razon_texto">Otra razón:</label>' +
-                            '<input type="text" class="form-control" value ='+datos.razon+' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="col-4">' +
-                            '<div class="form-group">' +
-                            '<label for="observaciones">Observaciones:</label>' +
-                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' + datos.observaciones + '</textarea>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                            }
-                }
+                            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
+                            datos.observaciones +
+                            "</textarea>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>";
+                        // } else {
+                        //   html += '<option value="">' + "Otra" + "</option>";
+                        //   html +=
+                        //     "</select>" +
+                        //     "</div>" +
+                        //     "</div>" +
+                        //     '<div class="col-4">' +
+                        //     '<div class="form-group" id="otra_razon" >' +
+                        //     '<label for="otra_razon_texto">Otra razón:</label>' +
+                        //     '<input type="text" class="form-control" value =' +
+                        //     datos.razon +
+                        //     ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+                        //     "</div>" +
+                        //     "</div>" +
+                        //     '<div class="col-4">' +
+                        //     '<div class="form-group">' +
+                        //     '<label for="observaciones">Observaciones:</label>' +
+                        //     '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
+                        //     datos.observaciones +
+                        //     "</textarea>" +
+                        //     "</div>" +
+                        //     "</div>" +
+                        //     "</div>";
+                        // }
+                      }
             });
             $('#resultado').html(html);
             

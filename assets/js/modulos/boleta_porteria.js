@@ -193,10 +193,14 @@ function edit(id) {
                 btn_salida.disabled=true;
                 btn_entrada.classList.replace('btn-success', 'btn-dark');
                 btn_salida.classList.replace('btn-success', 'btn-dark');
+                btnAccion.disabled=true;
+                btnAccion.style.display='none';
+              
                 if(res.hora_salida==null && res.hora_entrada == null){
                     // horaSalidaElement.disabled = false;
                     btn_salida.disabled = false;
-                   
+                    btnAccion.disabled=false;
+                    btnAccion.style.display='block';
                     // horaEntradaElement.disabled = true;
                     // btn_entrada.disabled=true;
                     btn_salida.classList.replace('btn-dark','btn-success');
@@ -204,6 +208,8 @@ function edit(id) {
                 if(res.hora_salida !=null && res.hora_entrada == null){
                     // horaEntradaElement.disabled = false;
                     btn_entrada.disabled = false;
+                    btnAccion.disabled=false;
+                    btnAccion.style.display='block';
                     btn_entrada.classList.replace('btn-dark','btn-success');
                    
                 }

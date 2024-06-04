@@ -409,18 +409,21 @@ function cambiarPage(nuevo) {
       opcionInicial.textContent = "Seleccione una Razon";
       razon.appendChild(opcionInicial);
       const razones = [
-        "Comsion de Servicio",
-        "Compensacion Horas",
-        "Motivos Particulares",
-        "Enfermedad",
-        "ESSALUD",
-        "Otra",
-      ];
+        { descripcion: "Comisión de Servicio", abreviacion: "CS" },
+        { descripcion: "Devolucion de Horas", abreviacion: "DHE" },
+        { descripcion: "Asuntos Particulares", abreviacion: "AP" },
+        // { descripcion: "Licencia por Enfermedad", abreviacion: "ENF" },
+        { descripcion: "ESSALUD", abreviacion: "ESS" },
+        { descripcion: "Capacitacion", abreviacion: "CAP" },
+        { descripcion: "Licencia por Maternidad/Paternidad", abreviacion: "LM/LP" },
+        { descripcion: "Casos Especiales", abreviacion: "C.ESP" },
+        { descripcion: "Otro", abreviacion: "OTR" }
+    ];
   
       razones.forEach((razon_t) => {
         const opcion = document.createElement("option");
-        opcion.value = razon_t;
-        opcion.textContent = razon_t;
+        opcion.value = razon_t.abreviacion;
+        opcion.textContent = razon_t.descripcion;
         razon.appendChild(opcion);
       });
      
@@ -441,19 +444,27 @@ function cambiarPage(nuevo) {
       opcionInicial.textContent = "Seleccione una Razon";
       razon.appendChild(opcionInicial);
       const razones = [
-        "Enfermedad",
-        "Asuntos Particulares",
-        "Asuntos Personales, Vacaciones",
-        "Pre-Natal",
-        "Post-Natal",
-        "Comision de Servicio",
-        "Otro",
+        { descripcion: "Asuntos Particulares", abreviacion: "AP" },
+      { descripcion: "Comision de Servicios", abreviacion: "CS" },
+      
+      { descripcion: "Dev. Horas Extra", abreviacion: "DHE" },
+      { descripcion: "Onomastico", abreviacion: "O" },
+      { descripcion: "Capacitacion", abreviacion: "CAP" },
+      { descripcion: "Duelo", abreviacion: "D" },
+      { descripcion: "A cuenta de Vacaciones por Asuntos Personales", abreviacion: "AV" },
+      { descripcion: "Vacaciones", abreviacion: "V" },
+      { descripcion: "Lic. por Enfermedad", abreviacion: "LE" },
+      { descripcion: "Lic. por Maternidad-Paternidad", abreviacion: "LM/LP" },
+      { descripcion: "Lic Por Familiar Grave", abreviacion: "LIC. F.G." },
+      { descripcion: "Lic. Gestacion", abreviacion: "LIC. GEST." },
+      { descripcion: "Casos Especiales", abreviacion: "C.ESP" },
+      { descripcion: "Otro", abreviacion: "OTR" }
       ];
-  
+
       razones.forEach((razon_t) => {
         const opcion = document.createElement("option");
-        opcion.value = razon_t;
-        opcion.textContent = razon_t;
+        opcion.value = razon_t.abreviacion;
+        opcion.textContent = razon_t.descripcion;
         razon.appendChild(opcion);
       });
   

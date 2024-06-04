@@ -106,8 +106,8 @@ class BoletaModel extends Query
         order by
         CASE 
         WHEN b.estado_tramite = 'Pendiente' THEN 1
-        WHEN b.estado_tramite = 'Aprobado' THEN 2
-        ELSE 3
+        -- WHEN b.estado_tramite = 'Aprobado' THEN 2
+        ELSE 2
         END,
         b.create_At desc";
         return $this->selectAll($sql);
@@ -196,7 +196,7 @@ class BoletaModel extends Query
         b.fecha_fin AS fecha_fin, 
         b.hora_salida AS hora_salida, 
         b.hora_entrada AS hora_entrada, 
-        -- b.duracion AS duracion, 
+       
         TO_CHAR(b.duracion ::interval, 'HH24:MI') AS duracion,
         b.razon AS razon,
         b.razon_especifica AS razon_especifica,

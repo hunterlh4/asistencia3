@@ -118,22 +118,24 @@
               </div>
 
 
-              <div class="col-md-4 col-sm-6">
+              <div class="col-md-6 col-sm-6">
                 <div class="form-group">
                   <label for="razon">Razón</label>
                   <select class="form-control" id="razon" name="razon" required>
                     <option value="">Seleccione una Razon</option>
-                    <option value="Comsion de Servicio">Comsion de Servicio</option>
-                    <option value="Compensacion Horas">Compensacion Horas</option>
-                    <option value="Motivos Particulares">Motivos Particulares</option>
-                    <option value="Enfermedad">Enfermedad</option>
-                    <option value="ESSALUD">ESSALUD</option>
-                    <option value="Otra">Otra Razon</option>
+                    <option value="CS">Comisión de Servicio</option>
+                    <option value="DHE">Devolucion de Horas</option>
+                    <option value="AP">Asuntos Particulares</option>
+                    <option value="ESS">ESSALUD</option>
+                    <option value="CAP">Capacitacion</option>
+                    <option value="LM/LP">Licencia por Maternidad/Paternidad</option>
+                    <option value="C.ESP">Casos Especiales</option>
+                    <option value="OTR">Otro</option>
                     <!-- Opciones del select -->
                   </select>
                 </div>
               </div>
-              <div class="col-md-8 col-sm-6">
+              <div class="col-md-6 col-sm-6">
 
                 <div class="form-group">
                   <label for="otra_razon">Otra Razón</label>

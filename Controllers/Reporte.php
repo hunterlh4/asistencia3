@@ -466,6 +466,8 @@ class Reporte extends Controller
         } else {
             $respuesta = array('msg' => 'falta de datos', 'icono' => 'error');
         }
+
+      
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }

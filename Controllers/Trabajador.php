@@ -47,6 +47,15 @@ class Trabajador extends Controller
         return $data;
     }
 
+    public function listarActivo()
+    {
+        $data = $this->model->getAllTrabajador();
+
+      
+        echo json_encode($data);
+        return $data;
+    }
+
     public function listarDireccion()
     {
         $data1 = $this->model->getDireccion();

@@ -28,6 +28,20 @@ class TrabajadorModel extends Query
         // $sql = "SELECT T.id as tid,T.estado as testado from trabajadores as T ORDER BY id ASC";
         return $this->selectAll($sql);
     }
+
+    public function getAllTrabajador()
+    {
+       
+
+        $sql = "SELECT 
+                id,dni,apellido_nombre,estado
+              
+                FROM trabajador 
+                where estado = 'Activo'
+                ORDER BY apellido_nombre asc ";
+        // $sql = "SELECT T.id as tid,T.estado as testado from trabajadores as T ORDER BY id ASC";
+        return $this->selectAll($sql);
+    }
     // public function getTrabajador2($id)
     // {
     //     $sql = "SELECT 

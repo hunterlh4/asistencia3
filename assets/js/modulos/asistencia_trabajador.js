@@ -67,6 +67,29 @@ var dayNameMap = {
   Friday: "Viernes",
   Saturday: "Sábado",
 };
+
+const razones = {
+  CS: "Comisión de Servicio",
+  DHE: "Devolución de Horas",
+  AP: "Asuntos Particulares",
+  ESS: "ESSALUD",
+  CAP: "Capacitación",
+  "LM/LP": "Licencia por Maternidad/Paternidad",
+  "C.ESP": "Casos Especiales",
+  O: "Onomástico",
+  D: "Duelo",
+  AV: "A cuenta de Vacaciones por Asuntos Personales",
+  V: "Vacaciones",
+  LE: "Lic. por Enfermedad",
+  "LIC. F.G.": "Lic Por Familiar Grave",
+  "LIC. GEST.": "Lic. Gestación",
+  OTR: "Otro",
+};
+
+function obtenerDescripcion(abreviacion) {
+  return razones[abreviacion] || "Desconocido";
+}
+
 // calendario click, buttons y renderizado de datos
 var calendar = $("#myEvent").fullCalendar({
   height: "auto",
@@ -196,6 +219,8 @@ var calendar = $("#myEvent").fullCalendar({
     if (event.concatenado_span) {
       element.find(".fc-title").html(event.concatenado_span);
     }
+
+    // console.log(event.fecha);
     // console.log(event);
   },
 });
@@ -243,6 +268,23 @@ document.addEventListener("DOMContentLoaded", function () {
   buscarBoleta(trabajador, currentMonth, currentYear);
 });
 
+function tiempoASegundos(tiempo) {
+  let partes = tiempo.split(':');
+  let horas = parseInt(partes[0], 10);
+  let minutos = parseInt(partes[1], 10);
+  return horas * 3600 + minutos * 60;
+}
+
+function segundosATiempo(segundos) {
+  let horas = Math.floor(segundos / 3600);
+  segundos %= 3600;
+  let minutos = Math.floor(segundos / 60);
+  // Formatear las horas y los minutos para que siempre tengan dos dígitos
+  horas = String(horas).padStart(2, '0');
+  minutos = String(minutos).padStart(2, '0');
+  return `${horas}:${minutos}`;
+}
+
 // llenar calendario con boleta
 function buscarBoleta(id, currentMonth, currentYear) {
   var parametros = {
@@ -265,15 +307,11 @@ function buscarBoleta(id, currentMonth, currentYear) {
 }
 //  llenar calendario
 function verAsistencia(mes, anio, id, boleta) {
-  // Aquí puedes realizar cualquier acción que desees con la fecha del calendario y el valor seleccionado
-
-  // Llama a tu función deseada con estos valores como parámetros
   var parametros = {
     mes: mes,
     anio: anio,
     id: id,
   };
-
   const url = base_url + "asistencia/listaCalendarioAsistenciaTrabajador/";
 
   $.ajax({
@@ -291,12 +329,19 @@ function verAsistencia(mes, anio, id, boleta) {
       // console.log(boleta);
 
       res.forEach((evento) => {
-        // console.log(evento.fecha);
-
-        // console.log(boleta);
         let boleta_calendar = "";
-        let boleta_particular = "";
+        let boleta_auxiliar = "";
+        let boleta_particular_Tiempo = "";
         let tardanza_cantidad = "";
+        let tiempo_boletas = new Date();
+        let cantidad_boletas = 0;
+        let tiempo_segundos = 0;
+        let boleta_Personales = [];
+        let boleta_Personales_fechas = [];
+
+        // const partes = tiempoInicial.split(':');
+        const horas = 0;
+        const minutos = 0;
 
         for (let i = 0; i < boleta.length; i++) {
           const boletaFecha = new Date(boleta[i].fecha_inicio);
@@ -306,36 +351,65 @@ function verAsistencia(mes, anio, id, boleta) {
           boletaFecha.setUTCDate(boletaFecha.getUTCDate() + 0);
           eventoFecha.setUTCDate(eventoFecha.getUTCDate() + 0);
 
+          const fecha_auxiliar = eventoFecha;
+
           const Motivo_particular = boleta[i].razon;
 
           if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin) {
+            cantidad_boletas++;
 
-            if (Motivo_particular === "Motivos Particulares") {
-              boleta_particular = boleta[i].duracion;
-              boleta_calendar = 'AP';
+            boleta_auxiliar = boleta_auxiliar + boleta[i].razon + "<br>";
 
-              //  console.log(boletaparticular,i,eventoFecha);
-            } else {
-              boleta_calendar = boleta[i].razon;
+            boleta_calendar = boleta_calendar + boleta[i].razon;
 
+            if (Motivo_particular == "AP" && boleta[i].duracion != null) {
+              boleta_particular_Tiempo = boleta[i].duracion;
+              boleta_Personales.push({
+                fecha: eventoFecha,
+                duracion: boleta[i].duracion,
+              });
+              // boleta_Personales_fechas.push(eventoFecha);
+              // console.log('fecha:'+ eventoFecha, 'duracion:' +boleta[i].duracion)
             }
+            if (Motivo_particular == "AP" && boleta[i].duracion == null) {
+              boleta_particular_Tiempo = "Dia Com.";
+            }
+            // else {
+            //   boleta_calendar = boleta[i].razon;
+
+            // }
           }
-
-          //   evento.licencia = evento.licencia + boletaparticular + boletacalendar;
-          //   if(Motivo_particular ==='Motivos Particulares'){
-          //     evento.licencia = evento.licencia +'-';
-          //     console.log(Motivo_particular)
-          //     console.log(boletaFecha)
-          //     console.log(boletaFecha_fin)
-          //     console.log(eventoFecha)
-          //     }
-
-          // console.log(boletaFecha +'|'+evento.fecha);
         }
-        if (evento.tardanza !== "00:00") {
-          tardanza_cantidad = "1T";
+        // console.log(evento.fecha,boleta_particular_Tiempo);
+        if (evento.tardanza !== "00:00" && evento.tardanza_cantidad != "0") {
+          tardanza_cantidad = evento.tardanza_cantidad + "T";
           //   evento.licencia = evento.licencia + "-" + evento.tardanza_cantidad;
         }
+        if (cantidad_boletas > 1) {
+          // boleta_calendar  ='B('+cantidad_boletas+')';
+          boleta_calendar = boleta_auxiliar;
+        }
+
+        let prueba = 0;
+        if (boleta_Personales.length > 1) {
+          // let contador = 0;
+
+          // Iteramos sobre cada objeto en boleta_Personales
+          boleta_Personales.forEach((evento) => {
+            // Para cada objeto, comparamos su fecha con todas las otras fechas
+            boleta_Personales.forEach((otroEvento) => {
+              if (evento.fecha === otroEvento.fecha) {
+                // Si las fechas son iguales, incrementamos el contador
+                // contador++;
+                let otraDuracionSegundos = tiempoASegundos(otroEvento.duracion);
+                prueba += otraDuracionSegundos;
+              }
+            });
+          });
+          prueba = segundosATiempo(prueba);
+          boleta_particular_Tiempo = prueba;
+        }
+       
 
         // console.log(evento.tid,evento.fecha);
         // const concatenado = evento.licencia +'|'+boleta_calendar+'|'+boleta_particular+'|'+tardanza_cantidad;
@@ -348,7 +422,7 @@ function verAsistencia(mes, anio, id, boleta) {
           boleta_calendar +
           "</span>" +
           '<span style="color: red; display: block; font-weight: bold;">' +
-          boleta_particular +
+          boleta_particular_Tiempo +
           "</span>" +
           '<span style="color: orange; display: block; font-weight: bold;">' +
           tardanza_cantidad +
@@ -392,7 +466,7 @@ function verAsistencia(mes, anio, id, boleta) {
           reloj_8: evento.reloj_8,
           fecha: evento.fecha,
           boleta_calendar: boleta_calendar,
-          boleta_particular: boleta_particular,
+          boleta_particular: boleta_particular_Tiempo,
           tardanza_cantidad: tardanza_cantidad,
           concatenado_span: concatenado,
         });
@@ -568,6 +642,7 @@ function llenarBoleta(fecha, trabajador_id) {
 
     success: function (response) {
       // datos = JSON.parse(response);
+      console.log(response);
       const res = JSON.parse(response);
 
       var html = "";
@@ -640,66 +715,58 @@ function llenarBoleta(fecha, trabajador_id) {
             '<div class="form-group">' +
             '<label for="razon">Razón:</label>' +
             '<select class="form-control" name="razon" id="razon" disabled>';
-          // Agregar opciones de razón
-
-          if (
-            datos.razon == "Comision de Servicio" ||
-            datos.razon == "Compensacion Horas" ||
-            datos.razon == "Motivos Particulares" ||
-            datos.razon == "Enfermedad" ||
-            datos.razon == "ESSALUD"
-          ) {
-            html +=
-              '<option value="' +
-              datos.razon +
-              '">' +
-              datos.razon +
-              "</option>";
-            html +=
-              "</select>" +
-              "</div>" +
-              "</div>" +
-              '<div class="col-4">' +
-              '<div class="form-group" id="otra_razon" >' +
-              '<label for="otra_razon_texto">Otra razón:</label>' +
-              '<input type="text" class="form-control" value =' +
-              datos.razon +
-              ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-              "</div>" +
-              "</div>" +
-              '<div class="col-4">' +
-              '<div class="form-group">' +
-              '<label for="observaciones">Observaciones:</label>' +
-              '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
-              datos.observaciones +
-              "</textarea>" +
-              "</div>" +
-              "</div>" +
-              "</div>";
-          } else {
-            html += '<option value="">' + "Otra" + "</option>";
-            html +=
-              "</select>" +
-              "</div>" +
-              "</div>" +
-              '<div class="col-4">' +
-              '<div class="form-group" id="otra_razon" >' +
-              '<label for="otra_razon_texto">Otra razón:</label>' +
-              '<input type="text" class="form-control" value =' +
-              datos.razon +
-              ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-              "</div>" +
-              "</div>" +
-              '<div class="col-4">' +
-              '<div class="form-group">' +
-              '<label for="observaciones">Observaciones:</label>' +
-              '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
-              datos.observaciones +
-              "</textarea>" +
-              "</div>" +
-              "</div>" +
-              "</div>";
-          }
+          const descripcionRazon = obtenerDescripcion(datos.razon);
+          html +=
+            '<option value="' +
+            datos.razon +
+            '">' +
+            descripcionRazon +
+            "</option>";
+          html +=
+            "</select>" +
+            "</div>" +
+            "</div>" +
+            '<div class="col-4">' +
+            '<div class="form-group" id="otra_razon" >' +
+            '<label for="otra_razon_texto">Otra razón:</label>' +
+            '<input type="text" class="form-control" value =' +
+            datos.razon_especifica +
+            ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+            "</div>" +
+            "</div>" +
+            '<div class="col-4">' +
+            '<div class="form-group">' +
+            '<label for="observaciones">Observaciones:</label>' +
+            '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
+            datos.observaciones +
+            "</textarea>" +
+            "</div>" +
+            "</div>" +
+            "</div>";
+          // } else {
+          //   html += '<option value="">' + "Otra" + "</option>";
+          //   html +=
+          //     "</select>" +
+          //     "</div>" +
+          //     "</div>" +
+          //     '<div class="col-4">' +
+          //     '<div class="form-group" id="otra_razon" >' +
+          //     '<label for="otra_razon_texto">Otra razón:</label>' +
+          //     '<input type="text" class="form-control" value =' +
+          //     datos.razon +
+          //     ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+          //     "</div>" +
+          //     "</div>" +
+          //     '<div class="col-4">' +
+          //     '<div class="form-group">' +
+          //     '<label for="observaciones">Observaciones:</label>' +
+          //     '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
+          //     datos.observaciones +
+          //     "</textarea>" +
+          //     "</div>" +
+          //     "</div>" +
+          //     "</div>";
+          // }
         }
       });
       $("#resultado").html(html);

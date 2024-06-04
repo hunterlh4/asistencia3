@@ -8,7 +8,7 @@ class AsistenciaModel extends Query
     }
     public function getasistencias()
     {
-        $sql = "SELECT * from asistencia ORDER BY id ASC";
+        $sql = "SELECT * from asistencia ORDER BY fecha asc ASC";
 
         return $this->selectAll($sql);
     }

@@ -153,7 +153,7 @@
               <!-- </div> -->
 
 
-              <div class="col-md-4 col-sm-6">
+              <div class="col-md-6 col-sm-6">
                 <div class="form-group">
                   <label for="razon">Razón</label>
                   <select class="form-control" id="razon" name="razon" required>
@@ -162,7 +162,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-8 col-sm-6">
+              <div class="col-md-6 col-sm-6">
 
                 <div class="form-group">
                   <label for="otra_razon">Otra Razón</label>

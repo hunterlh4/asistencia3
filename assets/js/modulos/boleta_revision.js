@@ -1,12 +1,11 @@
-
 const frm = document.querySelector("#formulario");
 const titleModal = document.querySelector("#titleModal");
 const btnAprobar = document.querySelector("#btnAprobar");
 const btnRechazar = document.querySelector("#btnRechazar");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 var flag = true;
-let accion = '';
-let boton =1;
+let accion = "";
+let boton = 1;
 
 // INPUTS
 
@@ -42,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   llenartablaHoras();
   llenarTablaDias();
-
-
 });
 var cantidad = 0;
 function revisar(accion) {
@@ -78,13 +75,10 @@ function revisar(accion) {
       error: function (xhr, status, error) {
         console.error("Error en la solicitud:", error);
         flag = true; // Marcar que la acción ha terminado incluso si hay un error
-      }
+      },
     });
   }
 }
-
-
-
 
 function llenartablaHoras() {
   tipo = "1";
@@ -236,12 +230,11 @@ function llenarTablaDias() {
 }
 $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
   var target = $(e.target).attr("href"); // Get the target pane ID
- 
 
   if (target === "#hora") {
-    boton=1; // Set value to 1 for Hora
+    boton = 1; // Set value to 1 for Hora
   } else if (target === "#dia") {
-    boton=2; // Set value to 2 for Día
+    boton = 2; // Set value to 2 for Día
     var thElements = document.querySelectorAll("#table-dias-alex th");
 
     // Define los anchos personalizados para cada <th>
@@ -263,9 +256,8 @@ $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 });
 
 function view(id) {
-  
   flag = true;
-  
+
   $.ajax({
     url: base_url + "Boleta/edit/" + id,
     type: "GET",
@@ -274,7 +266,7 @@ function view(id) {
       frm.reset();
       resetRequiredFields();
       cambiarPage(boton);
-    
+
       const res = JSON.parse(response);
       console.log(res.estado_tramite);
       idElement.value = res.id;
@@ -290,25 +282,24 @@ function view(id) {
       cambiarEstadoInputs();
       titleModal.textContent = "Vizualizar";
 
-      if(res.estado_tramite=='Anulado'){
-        aprobado.style.display ="none";
-        rechazado.style.display ="none";
-        anulado.style.display="none";
+      if (res.estado_tramite == "Anulado") {
+        aprobado.style.display = "none";
+        rechazado.style.display = "none";
+        anulado.style.display = "none";
       }
-      if(res.estado_tramite =='Aprobado' || res.estado_tramite=='Rechazado'){
-        aprobado.style.display ="none";
-        rechazado.style.display ="none";
-        anulado.style.display="block";
+      if (
+        res.estado_tramite == "Aprobado" ||
+        res.estado_tramite == "Rechazado"
+      ) {
+        aprobado.style.display = "none";
+        rechazado.style.display = "none";
+        anulado.style.display = "block";
       }
-      if(res.estado_tramite=='Pendiente'){
-        aprobado.style.display ="block";
-        rechazado.style.display ="block";
-        anulado.style.display="none";
+      if (res.estado_tramite == "Pendiente") {
+        aprobado.style.display = "block";
+        rechazado.style.display = "block";
+        anulado.style.display = "none";
       }
-
-
-
-
 
       myModal.show();
     },
@@ -343,18 +334,24 @@ function cambiarPage(boton) {
     opcionInicial.textContent = "Seleccione una Razon";
     razon.appendChild(opcionInicial);
     const razones = [
-      "Comsion de Servicio",
-      "Compensacion Horas",
-      "Motivos Particulares",
-      "Enfermedad",
-      "ESSALUD",
-      "Otra",
+      { descripcion: "Comisión de Servicio", abreviacion: "CS" },
+      { descripcion: "Devolucion de Horas", abreviacion: "DHE" },
+      { descripcion: "Asuntos Particulares", abreviacion: "AP" },
+      // { descripcion: "Licencia por Enfermedad", abreviacion: "ENF" },
+      { descripcion: "ESSALUD", abreviacion: "ESS" },
+      { descripcion: "Capacitacion", abreviacion: "CAP" },
+      {
+        descripcion: "Licencia por Maternidad/Paternidad",
+        abreviacion: "LM/LP",
+      },
+      { descripcion: "Casos Especiales", abreviacion: "C.ESP" },
+      { descripcion: "Otro", abreviacion: "OTR" },
     ];
 
     razones.forEach((razon_t) => {
       const opcion = document.createElement("option");
-      opcion.value = razon_t;
-      opcion.textContent = razon_t;
+      opcion.value = razon_t.abreviacion;
+      opcion.textContent = razon_t.descripcion;
       razon.appendChild(opcion);
     });
   }
@@ -374,19 +371,30 @@ function cambiarPage(boton) {
     opcionInicial.textContent = "Seleccione una Razon";
     razon.appendChild(opcionInicial);
     const razones = [
-      "Enfermedad",
-      "Asuntos Particulares",
-      "Asuntos Personales, Vacaciones",
-      "Pre-Natal",
-      "Post-Natal",
-      "Comision de Servicio",
-      "Otro",
+      { descripcion: "Asuntos Particulares", abreviacion: "AP" },
+      { descripcion: "Comision de Servicios", abreviacion: "CS" },
+
+      { descripcion: "Dev. Horas Extra", abreviacion: "DHE" },
+      { descripcion: "Onomastico", abreviacion: "O" },
+      { descripcion: "Capacitacion", abreviacion: "CAP" },
+      { descripcion: "Duelo", abreviacion: "D" },
+      {
+        descripcion: "A cuenta de Vacaciones por Asuntos Personales",
+        abreviacion: "AV",
+      },
+      { descripcion: "Vacaciones", abreviacion: "V" },
+      { descripcion: "Lic. por Enfermedad", abreviacion: "LE" },
+      { descripcion: "Lic. por Maternidad-Paternidad", abreviacion: "LM/LP" },
+      { descripcion: "Lic Por Familiar Grave", abreviacion: "LIC. F.G." },
+      { descripcion: "Lic. Gestacion", abreviacion: "LIC. GEST." },
+      { descripcion: "Casos Especiales", abreviacion: "C.ESP" },
+      { descripcion: "Otro", abreviacion: "OTR" },
     ];
 
     razones.forEach((razon_t) => {
       const opcion = document.createElement("option");
-      opcion.value = razon_t;
-      opcion.textContent = razon_t;
+      opcion.value = razon_t.abreviacion;
+      opcion.textContent = razon_t.descripcion;
       razon.appendChild(opcion);
     });
   }
