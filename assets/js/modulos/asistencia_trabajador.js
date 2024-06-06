@@ -266,6 +266,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var trabajador = miVariable;
   // console.log(miVariable);
   buscarBoleta(trabajador, currentMonth, currentYear);
+  listarAsistencia();
+
 });
 
 function tiempoASegundos(tiempo) {
@@ -342,6 +344,13 @@ function verAsistencia(mes, anio, id, boleta) {
         // const partes = tiempoInicial.split(':');
         const horas = 0;
         const minutos = 0;
+
+        if(evento.licencia =='SR'){
+          evento.licencia ='Sin Marcación'
+        }
+        if(evento.licencia =='NMS'){
+          evento.licencia ='No Marco Salida'
+        }
 
         for (let i = 0; i < boleta.length; i++) {
           const boletaFecha = new Date(boleta[i].fecha_inicio);
@@ -488,60 +497,20 @@ function verAsistencia(mes, anio, id, boleta) {
 // modificar datos del calendario
 function modificarCalendario() {
   const fcContents = document.querySelectorAll(".fc-content");
-
+  // MES
   fcContents.forEach(function (element) {
     // Encontrar los elementos fc-time y fc-title dentro de este elemento
     var fcTime = element.querySelector(".fc-time");
     var fcTitle = element.querySelector(".fc-title");
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
-    if (fcTitle.textContent.includes("SR")) {
+    if (fcTitle.textContent.includes("SR")|| fcTitle.textContent.includes("Sin Marcación")) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
 
-    // if (/-Boleta/.test(fcTitle.textContent)) {
-    //   var titlePrefix = fcTitle.textContent.split("-Boleta")[0];
-    //   fcTitle.innerHTML = titlePrefix + "-B";
-    // }
-
-    // if (fcTitle.textContent.includes("+MP")) {
-    // }
-
-    // if (/MP/.test(fcTitle.textContent)) {
-    //     var titlePrefix = fcTitle.textContent.split('+MP')[0];
-    //     fcTitle.innerHTML =  + titlePrefix + '-MP' ;
-    // }
-
-    let titulo, color;
-
-    // const obtenerInfo = (indice) =>
-    //   ({
-    //     OK: { titulo: "OK", color: "blue" },
-    //     "OK-B": { titulo: "OK", color: "blue" },
-    //     "OK+MP-B": { titulo: "OK", color: "red" },
-    //     NMS: { titulo: "NMS", color: "red" },
-    //     "NMS-B": { titulo: "NMS", color: "red" },
-    //     "NMS+MP-B": { titulo: "NMS", color: "red" },
-    //     SR: { titulo: "SR", color: "red" },
-    //     "SR-B": { titulo: "SR", color: "red" },
-    //     "SR+MP-B": { titulo: "SR", color: "red" },
-    //     "+30": { titulo: "+30", color: "red" },
-    //     "+30-B": { titulo: "+30", color: "red" },
-    //     "+30+MP-B": { titulo: "+30", color: "red" },
-    //     NMS: { titulo: "NMS", color: "red" },
-    //   }[indice] || { titulo: indice, color: "defaultColor" });
-
-    // let info = obtenerInfo(fcTitle.textContent);
-    // fcTitle.innerHTML =
-    //   '<span style="color:' +
-    //   info.color +
-    //   '; font-weight: bold;">' +
-    //   fcTitle.textContent +
-    //   "</span>";
-
-    // fcTitle.innerHTML = '<span style="color:'+color+'; font-weight: bold;">' + titulo + '</span>'
-  });
+   });
+  //  LISTA
   const fcContentsList = document.querySelectorAll(".fc-list-item");
   fcContentsList.forEach(function (element) {
     // Encontrar los elementos fc-time y fc-title dentro de este elemento
@@ -549,22 +518,13 @@ function modificarCalendario() {
     var fcTitle = element.querySelector(".fc-list-item-title");
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
-    if (fcTitle.textContent.includes("SR")) {
+    if (fcTitle.textContent.includes("SR") || fcTitle.textContent.includes("Sin Marcación")) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
+    }else{
+      fcTime.classList.add("align-left");
     }
-    if (/-Boleta/.test(fcTitle.textContent)) {
-      // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
-
-      // Obtener el prefijo del título antes de '-Boleta'
-      var titlePrefix = fcTitle.textContent.split("-Boleta")[0];
-
-      // Establecer el HTML del título según la parte extraída
-      fcTitle.innerHTML =
-        '<span style="color: blue; font-weight: bold;">' +
-        titlePrefix +
-        "</span> <br>";
-    }
+   
   });
 
   const fcDays = document.querySelectorAll(".fc-day");
@@ -582,35 +542,6 @@ function modificarCalendario() {
     }
   });
 
-  var eventos = calendar.fullCalendar("clientEvents");
-  eventos.forEach(function (evento) {
-    // Obtener la fecha del evento
-    var fechaEvento = evento.start.format("YYYY-MM-DD");
-
-    // Obtener el contenido del evento
-    var contenidoEvento = evento.title; // Suponiendo que el título del evento contiene el contenido
-    var contenido_boleta = evento.boleta_calendar;
-    var contenido_particular = evento.boleta_particular;
-    var contenido_tardanza = evento.tardanza_cantidad;
-
-    var contenidoHTML =
-      '<span style="color: blue; font-weight: bold;">' +
-      contenidoEvento +
-      contenido_boleta +
-      '</span><br><span style="color: blue; font-weight: bold;">' +
-      "1 T" +
-      "</span>";
-    evento.title = contenidoHTML;
-    // calendar.fullCalendar('updateEvent', evento);
-
-    // Mostrar la fecha y el contenido del evento en la consola
-
-    // console.log("Fecha del evento:", fechaEvento);
-    // console.log("Contenido del licencia:", contenidoEvento);
-    // console.log("Contenido del boleta:", contenido_boleta);
-    // console.log("Contenido del particular:", contenido_particular);
-    // console.log("Contenido del tardanza:", contenido_tardanza);
-  });
   // calendar.fullCalendar('refetchEvents');
 }
 
@@ -785,3 +716,146 @@ function abrirModal() {
 function cerrarModal() {
   myModal.hide();
 }
+
+
+function listarAsistencia(){
+  
+  tabla_horas = $("#table-detalle-alex").DataTable({
+    ajax: {
+      url: base_url + "asistencia/listarTrabajadorAsistencia",
+      // type: "POST", // Especifica el método HTTP como POST
+      dataSrc: "",
+    },
+    columns: [
+      // Define tus columnas aquí según la estructura de tus datos
+      { data: "dia" },
+
+      { data: "fecha" },
+      { data: "entrada" },
+      { data: "salida" },
+      // { data: "fecha_fin_formateada" },
+      { data: "tardanza_cantidad" },
+      { data: "licencia" },
+     
+    ],
+    dom: "Bfrtip",
+    select: false,
+    order: [],
+    buttons: [
+      {
+        extend: "copy",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas copiar
+        },
+      },
+      {
+        extend: "csv",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a CSV
+        },
+      },
+      {
+        extend: "excel",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a Excel
+        },
+      },
+      {
+        extend: "pdf",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a PDF
+        },
+      },
+      {
+        extend: "print",
+        exportOptions: {
+          columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas imprimir
+        },
+      },
+    ],
+    drawCallback: function(settings) {
+      let api = this.api();
+      let rows = api.rows().nodes();
+      
+      rows.each(function(row, index) {
+        let data = api.row(row).data();
+        let dia = data["dia"];
+        let licencia = data['licencia'];
+        
+        // Comprobar si el día es sábado o domingo
+        if (dia === "Sábado" || dia === "Domingo") {
+          $(row).addClass("dia"); // Agregar clase de fila especial
+        } else {
+          $(row).removeClass("fila-normal"); // Quitar clase de fila especial
+        }
+        if(licencia == "No Marco Salida" || licencia =="+30" || (licencia =="Sin Marcacion" && dia != "Sábado" && dia != "Domingo")){
+          $(row).addClass("licencia");
+        }
+        
+      
+
+
+      });
+      pintarFilasEspeciales()
+    }
+  });
+}
+
+
+function pintarFilasEspeciales() {
+  // Seleccionar todas las filas con la clase fila-especial
+  $('#table-detalle-alex tbody tr.dia').css('background-color', '#E5E8E8');
+  $('#table-detalle-alex tbody tr.licencia').css('background-color', '#F1948A');
+}
+
+
+var boton = document.getElementById('dropdownMenuButton');
+var dropdown = boton.nextElementSibling;
+
+// Mostrar el menú al hacer hover sobre el botón
+boton.addEventListener('mouseenter', function(event) {
+  dropdown.classList.add('show');
+});
+
+// Ocultar el menú al salir del botón o del menú
+boton.addEventListener('mouseleave', function(event) {
+  setTimeout(function() {
+    if (!boton.matches(':hover') && !dropdown.matches(':hover')) {
+      dropdown.classList.remove('show');
+    }
+  }, 100);
+});
+
+dropdown.addEventListener('mouseleave', function(event) {
+  setTimeout(function() {
+    if (!boton.matches(':hover') && !dropdown.matches(':hover')) {
+      dropdown.classList.remove('show');
+    }
+  }, 100);
+});
+
+dropdown.addEventListener('mouseenter', function(event) {
+  dropdown.classList.add('show');
+});
+
+// Obtener el botón y el dropdown
+
+
+
+
+// function listarAsistencia2() {
+//   $.ajax({
+//     url: base_url + "asistencia/listarTrabajadorAsistencia",
+//     type: "POST",
+
+//     success: function (response) {
+//     //  console.log(response);
+//      const res = JSON.parse(response);
+//      console.log(res);
+
+//     },
+//     error: function (xhr, status, error) {
+//       console.error(error);
+//     },
+//   });
+// }

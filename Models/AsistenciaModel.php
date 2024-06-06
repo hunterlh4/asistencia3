@@ -51,6 +51,21 @@ class AsistenciaModel extends Query
       
         return $this->selectAll($sql);
     }
+
+    public function getAllAsistenciasTrabajador($id,$anio){
+        $sql= "SELECT fecha,
+        TO_CHAR(entrada ::interval, 'HH24:MI') AS entrada,
+        TO_CHAR(salida ::interval, 'HH24:MI') AS salida,
+        
+        licencia,tardanza_cantidad 
+        FROM asistencia
+        WHERE trabajador_id = $id
+        AND EXTRACT(YEAR FROM fecha) = $anio 
+        -- AND EXTRACT(MONTH FROM fecha) = 5
+
+         ORDER BY fecha ASC";
+          return $this->selectAll($sql);
+    }
     public function verificar($nombre)
     {
         $sql = "SELECT id,nombre FROM asistencia WHERE nombre = '$nombre' ";

@@ -16,41 +16,73 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
+                    <div class="d-flex align-items-center" style="flex: 1;">
+                      <h3 class="font-weight-bolder mb-0 mr-3"><i class="fa fa-briefcase"></i> Mi Asistencia</h3>
 
-                    <h3 class="font-weight-bolder col-md-3"><i class="fa fa-briefcase"></i> Busqueda</h3>
-                    
-                    <!-- <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button> -->
-
-
-                    <!-- <label>Select2</label> -->
-                  
-
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="calendario-tab" data-toggle="tab" href="#calendario" role="tab" aria-controls="hora" aria-selected="true">Calendario</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="false">Detallado</a>
+                        </li>
+                      </ul>
+                      <div class="dropdown d-inline" id="miDropdown">
+                        <button class="btn btn-info btn-icon icon-left dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-align-justify"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle red"></i> No Marco Salida</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle orange"></i> +30</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle gray"></i> Sin registro</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle green"></i> OK</a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="card-body">
-                    <!-- <div class="table-responsive">
-                      <table class="table table-striped table-hover" style="width:100%;" id="table-alex">
-                        <thead>
-                          <tr>
-                            <th class="text-center"># </th>
-                            <th>Nombre</th>
-                            <th>Nivel</th>
-                            <th>Estado</th>
-                            <th>accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                    </div> -->
 
-                    <div class="fc-overflow">
 
-                      <div id="myEvent">
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="calendario" role="tabpanel" aria-labelledby="calendario-tab">
+                        <div class="fc-overflow">
 
+                          <div id="myEvent">
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="detalle" role="tabpanel" aria-labelledby="detalle-tab">
+                        <div class="table-responsive">
+                          <table class="table table-striped table-hover text-center " style="width:100%;" id="table-detalle-alex">
+                            <thead>
+                              <tr>
+                                <th style="width: 40px;">Dia </th>
+                                <th style="width: 40px;">Fecha</th>
+                                <th style="width: 50px;">Entrada</th>
+                                <th style="width: 50px;">Salida</th>
+                                <th style="width: 30px;">Tarde</th>
+                                <th style="width: 30px;">Licencia</th>
+                                <!-- <th>estado</th> -->
+                                <!-- <th style="width: 50px;">accion</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
 
+
+
+
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -146,20 +178,20 @@
                     <div>
                     </div>
                     <div id="resultado" class="col-md-12 col-sm-6">
-                  
+
                     </div>
-                    <div  class="col-md-12 col-sm-6">
-                     
+                    <div class="col-md-12 col-sm-6">
+
                       <div class="form-group">
                         <label for="justificacion">Numero Informe</label>
-                        <input type="text" class="form-control"  name="justificacion" id="justificacion" minlength="5" maxlength="30" readonly>
+                        <input type="text" class="form-control" name="justificacion" id="justificacion" minlength="5" maxlength="30" readonly>
                       </div>
                     </div>
                     <div class="modal-footer bg-white col-md-12 col-sm-12">
-                  <!-- <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button> -->
-                  <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
-                </div>
- 
+                      <!-- <button class="btn btn-primary" type="submit" onclick=guardar() id="btnAccion">Registrar</button> -->
+                      <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
+                    </div>
+
         </form>
       </div>
     </div>
@@ -174,15 +206,14 @@
 
   </html>
 
-  
+
 
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
- 
-    var miVariable = <?php echo $data1['id']; ?>;
 
-</script>
-<script src="<?php echo BASE_URL; ?>assets/js/modulos/asistencia_trabajador.js"></script>
+    var miVariable = <?php echo $data1['id']; ?>;
+  </script>
+  <script src="<?php echo BASE_URL; ?>assets/js/modulos/asistencia_trabajador.js"></script>
 </body>
 
 <style>
@@ -230,9 +261,50 @@ h5: 0.83em */
     display: block;
     padding-top: 3px;
     font-size: 1.4em;
-   
+
 
   }
+
+  /* Estilo para el dropdown */
+  .dropdown-menu {
+    border-radius: 0.25rem;
+  }
+
+  /* Estilo para los items del dropdown */
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Estilo para el ícono en los items del dropdown */
+  .dropdown-item i {
+    margin-right: 10px;
+  }
+
+
+  .dropdown-menu .dropdown-item:nth-child(1) i {
+    color: #F1948A;
+    /* Color para "No Marco Salida" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(2) i {
+    color: #F1948A;
+    /* Color para "+30" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(3) i {
+    color: gray;
+    /* Color para "Sin registro" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(4) i {
+    color: white; /* Color del icono */
+   
+}
+  .dropdown-menu {
+    left: -115px; /* Ajusta este valor según sea necesario */
+    /* background-color: #E5E8E8; */
+}
 </style>
 
 </html>

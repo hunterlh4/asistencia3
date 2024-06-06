@@ -40,7 +40,7 @@
                                 <th style="width: 30px;">Numero</th>
                                 <th style="width: 250px;">Aprobador</th>
                                 <th style="width: 50px;">Fecha</th>
-                           
+
 
                                 <th style="width: 50px;">Salida</th>
                                 <th style="width: 50px;">Entrada</th>
@@ -108,28 +108,28 @@
         <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
-            <input type="hidden" id="tipo" name="tipo" value=0 >
+            <input type="hidden" id="tipo" name="tipo" value=0>
             <div class="row">
-             
-                <div class="col-md-12 col-sm-12">
+
+              <div class="col-md-12 col-sm-12">
                 <div class="form-group">
                   <label for="aprobador">Aprobador</label>
                   <select class="form-control" id="aprobador" name="aprobador" required>
-                  <option value="">Seleccione un aprobador</option>
+                    <option value="">Seleccione un aprobador</option>
                     <!-- Opciones del select -->
                   </select>
                 </div>
-                </div>
-               
+              </div>
 
-                <div class="col-md-6 col-sm-6 fechas" >
+
+              <div class="col-md-6 col-sm-6 fechas">
 
                 <div class="form-group">
                   <label for="fecha_inicio">Fecha de Inicio</label>
                   <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 fechas" >
+              <div class="col-md-6 col-sm-6 fechas">
 
                 <div class="form-group">
                   <label for="fecha_fin">Fecha de Fin</label>
@@ -145,46 +145,46 @@
 
                 </div>
               </div>
-                <div class="col-md-6 col-sm-6 horas">
+              <div class="col-md-6 col-sm-6 horas">
                 <div class="form-group">
                   <label for="hora_entrada">Hora de Retorno</label>
                   <input type="time" class="form-control" id="hora_entrada" name="hora_entrada" required>
                 </div>
               </div>
-            <!-- </div> -->
+              <!-- </div> -->
 
 
-            <div class="col-md-6 col-sm-6">
-              <div class="form-group">
-                <label for="razon">Razón</label>
-                <select class="form-control" id="razon" name="razon" required>
-                  
-                  <!-- Opciones del select -->
-                </select>
+              <div class="col-md-6 col-sm-6">
+                <div class="form-group">
+                  <label for="razon">Razón</label>
+                  <select class="form-control" id="razon" name="razon" required>
+
+                    <!-- Opciones del select -->
+                  </select>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
+              <div class="col-md-6 col-sm-6">
 
-              <div class="form-group">
-                <label for="otra_razon">Otra Razón</label>
-                <input type="text" class="form-control" id="otra_razon" name="otra_razon" required>
+                <div class="form-group">
+                  <label for="otra_razon">Otra Razón</label>
+                  <input type="text" class="form-control" id="otra_razon" name="otra_razon" required>
+                </div>
+              </div>
+              <div id="resultado" class="col-md-12 col-sm-12">
+
               </div>
             </div>
             <div id="resultado" class="col-md-12 col-sm-12">
 
             </div>
-          </div>
-                <div id="resultado" class="col-md-12 col-sm-12">
 
-                </div>
-             
-               
 
-                <!--  -->
-                <div class="modal-footer bg-white col-md-12 col-sm-12">
-                  <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
-                  <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
-                </div>
+
+            <!--  -->
+            <div class="modal-footer bg-white col-md-12 col-sm-12">
+              <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
+              <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
+            </div>
         </form>
       </div>
     </div>
@@ -203,11 +203,11 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
-    <style>
+  <style>
     .swal2-popup {
-  position: center;
+      position: center;
 
-}
+    }
   </style>
 </body>
 

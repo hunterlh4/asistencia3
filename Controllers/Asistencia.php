@@ -84,7 +84,74 @@ class Asistencia extends Controller
     //     }
     //     die();
     // }
+    public function listarTrabajadorAsistencia(){
 
+        $dayNames = [
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes",
+            "Sábado",
+            "Domingo",
+          ];
+
+
+        if (isset($_POST['id'])){
+            $id = $_POST['id'];
+
+        }else{
+            $id= $_SESSION['id'];
+            $data = $this->model->getusuario($id);
+            $id = $data['trabajador_id'];
+        }
+
+        // $fecha = new DateTime();
+        // $anio = $fecha->format("Y");
+        $anio = date("Y");
+
+
+        $data = $this->model->getAllAsistenciasTrabajador($id,$anio);
+
+        for ($i = 0; $i < count($data); $i++) {
+            // $data[$i]['cantidad']= $i+1;
+         
+            $fecha  = $data[$i]['fecha'];
+            $fecha_nueva = new DateTime($fecha);
+           
+            $fecha_invertida = date('d-m-Y', strtotime($fecha));
+    
+            $diaSemana0to6 = $fecha_nueva->format("N");
+            $dia = $dayNames[$diaSemana0to6-1];
+           
+            
+
+            $data[$i]['dia'] = $dia;
+            if($data[$i]['licencia']=='SR'){
+                $data[$i]['licencia']='Sin Marcacion';
+            }
+            if($data[$i]['licencia']=='NMS'){
+                $data[$i]['licencia']='No Marco Salida';
+            }
+            if($data[$i]['tardanza_cantidad']=='0'){
+                $data[$i]['tardanza_cantidad']='-';
+            }
+
+            
+            $data[$i]['fecha'] = $fecha_invertida;
+
+            
+            
+
+
+        }
+
+      
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        
+        
+        
+    }
     public function listaCalendarioAsistenciaTrabajador()
     {
         // $id = 812;
