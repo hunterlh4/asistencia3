@@ -19,7 +19,19 @@
                     <div class="d-flex align-items-center" style="flex: 1;">
                       <h3 class="font-weight-bolder mb-0 mr-3"><i class="fa fa-briefcase"></i> Mi Asistencia</h3>
 
+                      <div class="dropdown" id="miDropdown">
+                      <h4 class="font-weight-bolder mb-0 mr-3" id="dropdownMenuButton" >
+                          <i class="fa fa-info-circle"></i>
+                        </h4>
+                        <div class="dropdown-menu dropdown-menu-left">
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle red"></i> No Marco Salida</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle orange"></i> +30</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle gray"></i> Sin registro</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle green"></i> OK</a>
+                        </div>
+                      </div>
                     </div>
+                    
                     <div class="d-flex align-items-center">
                       <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -29,17 +41,7 @@
                           <a class="nav-link" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="false">Detallado</a>
                         </li>
                       </ul>
-                      <div class="dropdown d-inline" id="miDropdown">
-                        <button class="btn btn-info btn-icon icon-left dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-align-justify"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item has-icon"><i class="fas fa-circle red"></i> No Marco Salida</a>
-                          <a class="dropdown-item has-icon"><i class="fas fa-circle orange"></i> +30</a>
-                          <a class="dropdown-item has-icon"><i class="fas fa-circle gray"></i> Sin registro</a>
-                          <a class="dropdown-item has-icon"><i class="fas fa-circle green"></i> OK</a>
-                        </div>
-                      </div>
+                     
                     </div>
                   </div>
 
@@ -267,7 +269,7 @@ h5: 0.83em */
 
   /* Estilo para el dropdown */
   .dropdown-menu {
-    border-radius: 0.25rem;
+    /* border-radius: 0.25rem; */
   }
 
   /* Estilo para los items del dropdown */
@@ -278,7 +280,7 @@ h5: 0.83em */
 
   /* Estilo para el ícono en los items del dropdown */
   .dropdown-item i {
-    margin-right: 10px;
+    /* margin-right: 10px; */
   }
 
 
@@ -303,8 +305,28 @@ h5: 0.83em */
 }
   .dropdown-menu {
     left: -115px; /* Ajusta este valor según sea necesario */
-    /* background-color: #E5E8E8; */
+    background-color: #e4e7e7; 
 }
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: black; /* Mantener el mismo color de fondo en hover */
+    color: black; /* Mantener el color de texto original en hover */
+}
+#dropdownMenuButton{
+  background-color: white;
+  border-color: white;
+  box-shadow:none;
+  color:#6c757d;
+
+  /* font-size: 4.5em; */
+ 
+}
+
+.dropdown-menu .dropdown-item i {
+    /* font-size: 1.2em; Aumentar el tamaño del icono */
+}
+
+
 </style>
 
 </html>

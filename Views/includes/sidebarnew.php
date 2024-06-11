@@ -39,7 +39,8 @@
         // echo '<li><a class="nav-link" href="'.BASE_URL.'Licencia">Licencia</a></li>';
         echo '<li><a class="nav-link" href="' . BASE_URL . 'Cargo">Cargo</a></li>';
         echo '<li><a class="nav-link" href="' . BASE_URL . 'Regimen">Regimen</a></li>';
-        echo '<li><a class="nav-link" href="' . BASE_URL . 'Usuario">Usuarios</a></li>
+        echo '<li><a class="nav-link" href="' . BASE_URL . 'Usuario">Usuarios</a></li>';
+        echo '<li><a class="nav-link" href="' . BASE_URL . 'Festividades">Festividades</a></li>
               </ul>
             </li>';
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
@@ -57,6 +58,7 @@
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="file-text"></i><span>Hoja de Asistencia</span></a> </li> ';
       }
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a> </li> ';
+      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="file-text"></i><span>Calendario</span></a> </li> ';
       echo '</ul>
       </li> ';
      ?>

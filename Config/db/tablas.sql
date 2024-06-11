@@ -264,6 +264,30 @@ create table configuracion(
     update_at TIMESTAMP null
 )
 
+-- CREATE TABLE festividad (
+--     id SERIAL PRIMARY KEY,
+--     fecha DATE NOT NULL,
+--     nombre VARCHAR(100) NOT NULL,
+--     descripcion TEXT,
+--     tipo VARCHAR(50),
+--     dia_semana VARCHAR(20),
+--     estado varchar(10) NOT NULL DEFAULT 'Activo',
+--     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--     update_at TIMESTAMP null
+-- );
+CREATE TABLE festividad (
+    id SERIAL PRIMARY KEY,
+    dia INTEGER NOT NULL CHECK (dia BETWEEN 1 AND 31),
+    mes INTEGER NOT NULL CHECK (mes BETWEEN 1 AND 12),
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    tipo VARCHAR(50),
+    dia_semana VARCHAR(20),
+    estado VARCHAR(10) NOT NULL DEFAULT 'Activo',
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP NULL
+);
+
 
 -- create table pruebaasistencia(
 --     id SERIAL PRIMARY KEY,

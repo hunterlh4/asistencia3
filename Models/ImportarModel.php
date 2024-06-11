@@ -75,4 +75,10 @@ class ImportarModel extends Query
         $array = array($usuario,$accion,$tabla,$detalles);
         return $this->save($sql, $array);
     }
+
+
+    public function findAllFestividades(){
+        $sql = "SELECT * from festividad";
+        return $this->selectAll($sql);
+    }
 }

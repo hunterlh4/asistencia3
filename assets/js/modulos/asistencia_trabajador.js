@@ -419,11 +419,12 @@ function verAsistencia(mes, anio, id, boleta) {
           boleta_particular_Tiempo = prueba;
         }
        
-
+        
         // console.log(evento.tid,evento.fecha);
         // const concatenado = evento.licencia +'|'+boleta_calendar+'|'+boleta_particular+'|'+tardanza_cantidad;
         concatenado =
-          "<div>" +
+         
+          
           '<span style="color: black; display: block;">' +
           evento.licencia +
           "</span>" +
@@ -435,8 +436,8 @@ function verAsistencia(mes, anio, id, boleta) {
           "</span>" +
           '<span style="color: orange; display: block; font-weight: bold;">' +
           tardanza_cantidad +
-          "</span>" +
-          "</div>";
+          "</span>";
+         
 
         events.push({
           id: evento.aid,
@@ -508,6 +509,16 @@ function modificarCalendario() {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
+    if (fcTitle.textContent.includes("No Marco Salida")) {
+      console.log('llego');
+      var spans = fcTitle.querySelectorAll("span");
+      spans.forEach(function(span) {
+        if (span.textContent.includes("No Marco Salida")) {
+          span.style.color = "red";
+          span.style.fontWeight="bold" ;
+        }
+      });
+    }
 
    });
   //  LISTA
@@ -524,6 +535,8 @@ function modificarCalendario() {
     }else{
       fcTime.classList.add("align-left");
     }
+
+    
    
   });
 
