@@ -77,7 +77,7 @@ class ImportarModel extends Query
     }
 
 
-    public function findAllFestividades(){
+    public function findAllFestividad(){
         $sql = "SELECT * from festividad";
         return $this->selectAll($sql);
     }

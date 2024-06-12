@@ -277,8 +277,10 @@ create table configuracion(
 -- );
 CREATE TABLE festividad (
     id SERIAL PRIMARY KEY,
-    dia INTEGER NOT NULL CHECK (dia BETWEEN 1 AND 31),
-    mes INTEGER NOT NULL CHECK (mes BETWEEN 1 AND 12),
+    dia_inicio INTEGER NOT NULL CHECK (dia_inicio BETWEEN 1 AND 31),
+    mes_inicio INTEGER NOT NULL CHECK (mes_inicio BETWEEN 1 AND 12),
+    dia_fin INTEGER NOT NULL CHECK (dia_fin BETWEEN 1 AND 31),
+    mes_fin INTEGER NOT NULL CHECK (mes_fin BETWEEN 1 AND 12),
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     tipo VARCHAR(50),

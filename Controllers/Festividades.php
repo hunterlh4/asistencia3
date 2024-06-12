@@ -55,10 +55,18 @@ class Festividades extends Controller
 
             // $dia_formateado = sprintf("%02d", $data[$i]['dia']); // sprintf
             // $mes_formateado = sprintf("%02d",  $data[$i]['mes']); // sprintf
-            $dia_formateado = str_pad($data[$i]['dia'], 2, '0', STR_PAD_LEFT); // str_pad
-            $mes_formateado = str_pad($data[$i]['mes'], 2, '0', STR_PAD_LEFT); // str_pad
+            $dia_formateado_inicio = str_pad($data[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT); // str_pad
+            $mes_formateado_inicio = str_pad($data[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT); // str_pad
 
-            $data[$i]['fecha'] = $dia_formateado ." de ".$meses[$mes_formateado -1] ;
+
+            $dia_formateado_fin = str_pad($data[$i]['dia_fin'], 2, '0', STR_PAD_LEFT); // str_pad
+            $mes_formateado_fin = str_pad($data[$i]['mes_fin'], 2, '0', STR_PAD_LEFT); // str_pad
+            $data[$i]['fecha'] = $dia_formateado_inicio ." de ".$meses[$mes_formateado_inicio -1] .'<br>'.$dia_formateado_fin ." de ".$meses[$mes_formateado_fin -1];
+            if($dia_formateado_inicio == $dia_formateado_fin && $mes_formateado_inicio ==$mes_formateado_fin){
+                $data[$i]['fecha'] = $dia_formateado_inicio ." de ".$meses[$mes_formateado_inicio -1] ;
+            }   
+
+            
 
             if ($datonuevo == 'Activo') {
                 $data[$i]['estado'] = "<div class='badge badge-info'>Activo</div>";

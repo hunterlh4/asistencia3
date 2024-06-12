@@ -91,6 +91,10 @@ function obtenerDescripcion(abreviacion) {
 }
 
 // calendario click, buttons y renderizado de datos
+const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
+    const fechaInicio = añoActual + '-01-01'; // Primero de enero del año actual
+    const fechaFin = añoActual + '-12-31'; // Último de diciembre del año actual
 var calendar = $("#myEvent").fullCalendar({
   height: "auto",
   defaultView: "month",
@@ -108,6 +112,11 @@ var calendar = $("#myEvent").fullCalendar({
     // right: "month,agendaWeek,agendaDay,listMonth",
     right: "month,listMonth",
   },
+
+  validRange: {
+    start: fechaInicio,
+    end: fechaFin
+},
   events: events,
 
   eventClick: function (calEvent, jsEvent, view) {

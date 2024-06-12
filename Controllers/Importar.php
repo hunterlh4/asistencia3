@@ -940,6 +940,8 @@ class Importar extends Controller
         $tardanza_cantidad=0;
         $cantidad_departamento_mal=0;
         $cantidad_departamento_bien=0;
+
+        $diasFestivo=$this->model->findAllFestividad();
     
         if(isset($_FILES['archivo'])) {
             $archivo = $_FILES['archivo'];
@@ -1246,7 +1248,11 @@ class Importar extends Controller
                                                  
                                                 }
 
-                                                if($licencia=='SR' || $licencia =="NMS"){
+                                                if($licencia=='SR'){
+                                                    $total_string='00:00';
+                                                    
+                                                }
+                                                if($licencia =="NMS"){
                                                     $total_string='00:00';
                                                 }
                                                 $justificacion ='';
@@ -1254,6 +1260,8 @@ class Importar extends Controller
                                                 // if(empty($result)){
                                                 //     $justificacion='si';
                                                 // }
+
+                                               
                                                 $result=$this->model->getAsistencia($Telefono_id_trabajador,$fecha_0);
                                                 $marcada = $hora_marcada->format('H:i');
                                                 $salida = $salida_marcada->format('H:i');

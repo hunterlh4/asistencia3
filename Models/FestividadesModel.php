@@ -11,11 +11,11 @@ class FestividadesModel extends Query
     FROM festividad
     ORDER BY 
         CASE 
-            WHEN mes >= '$mes' THEN 0
+            WHEN mes_inicio >= '$mes' THEN 0
             ELSE 1
         END,
-        mes,
-        dia;";
+        mes_inicio,
+        dia_inicio;";
         return $this->selectAll($sql);
     }
 
@@ -31,16 +31,16 @@ class FestividadesModel extends Query
         return $this->select($sql);
     }
 
-    public function create($dia, $mes, $nombre, $descripcion, $tipo)
+    public function create($dia_inicio, $mes_inicio,$dia_fin,$mes_fin, $nombre, $descripcion, $tipo)
     {
-        $sql = "INSERT INTO festividad (dia,mes,nombre,descripcion,tipo) VALUES (?,?,?,?,?)";
-        $array = array($dia, $mes, $nombre, $descripcion, $tipo);
+        $sql = "INSERT INTO festividad (dia_inicio,mes_inicio,dia_fin,mes_fin,nombre,descripcion,tipo) VALUES (?,?,?,?,?,?,?)";
+        $array = array($dia_inicio, $mes_inicio,$dia_fin,$mes_fin, $nombre, $descripcion, $tipo);
         return $this->insertar($sql, $array);
     }
-    public function update($dia, $mes, $nombre, $descripcion, $tipo, $estado, $id)
+    public function update($dia_inicio, $mes_inicio,$dia_fin,$mes_fin, $nombre, $descripcion, $tipo, $estado, $id)
     {
-        $sql = "UPDATE festividad SET dia=?,mes = ?,nombre=?,descripcion=?,tipo=?,estado=?, update_at=NOW()  WHERE id = ?";
-        $array = array($dia, $mes, $nombre, $descripcion, $tipo, $estado, $id);
+        $sql = "UPDATE festividad SET dia_inicio=?,mes_inicio = ?,dia_fin=?,mes_fin=?,nombre=?,descripcion=?,tipo=?,estado=?, update_at=NOW()  WHERE id = ?";
+        $array = array($dia_inicio, $mes_inicio,$dia_fin,$mes_fin, $nombre, $descripcion, $tipo, $estado, $id);
         return $this->save($sql, $array);
     }
     public function createLog($usuario, $accion, $tabla, $detalles)
