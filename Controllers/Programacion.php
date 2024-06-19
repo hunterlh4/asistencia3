@@ -1,5 +1,5 @@
 <?php
-class Festividades extends Controller
+class Programacion extends Controller
 {
     public function __construct()
     {
@@ -12,16 +12,16 @@ class Festividades extends Controller
     }
     public function index()
     {
-        $data['title'] = 'Festividades';
+        $data['title'] = 'Programacion';
         $data1 = '';
-        $this->views->getView('Administracion', "Festividades", $data, $data1);
+        $this->views->getView('Administracion', "Programacion", $data, $data1);
     }
 
     public function ver()
     {
-        $data['title'] = 'Festividades';
+        $data['title'] = 'Programacion';
         $data1 = '';
-        $this->views->getView('Administracion', "Festividades_ver", $data, $data1);
+        $this->views->getView('Administracion', "Programacion_ver", $data, $data1);
     }
 
     public function listar()
@@ -117,7 +117,7 @@ class Festividades extends Controller
                 $error_msg .= 'Ingrese los datos Necesarios. <br>';
             }
             if (strlen($nombre) < 5 || strlen($nombre) > 50) {
-                $error_msg .= 'El Festividades debe tener entre 3 y 50 caracteres. <br>';
+                $error_msg .= 'El Programacion debe tener entre 3 y 50 caracteres. <br>';
             }
             if (!empty($descripcion)) {
                 if (strlen($descripcion) <= 5) {
@@ -143,7 +143,7 @@ class Festividades extends Controller
                         $data = $this->model->create($dia,$mes,$nombre,$descripcion,$tipo);
                         if ($data > 0) {
                             $respuesta = ['msg' => 'Festividad registrado', 'icono' => 'success'];
-                            $this->model->createLog($_SESSION['id'], 'Crear', 'Festividades', $datos_log_json);
+                            $this->model->createLog($_SESSION['id'], 'Crear', 'Programacion', $datos_log_json);
                         } else {
                             $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
                         }
@@ -152,7 +152,7 @@ class Festividades extends Controller
                     $data = $this->model->update($dia,$mes,$nombre,$descripcion,$tipo, $estado, $id);
                     if ($data == 1) {
                         $respuesta = ['msg' => 'Festividad modificada', 'icono' => 'success'];
-                        $this->model->createLog($_SESSION['id'], 'Modificar', 'Festividades', $datos_log_json);
+                        $this->model->createLog($_SESSION['id'], 'Modificar', 'Programacion', $datos_log_json);
                     } else {
                         $respuesta = ['msg' => 'Error al modificar', 'icono' => 'error'];
                     }

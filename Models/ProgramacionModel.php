@@ -1,21 +1,14 @@
 <?php
-class FestividadesModel extends Query
+class ProgramacionModel extends Query
 {
     public function __construct()
     {
         parent::__construct();
     }
-    public function findAll($mes)
+    public function findAll()
     {
         $sql = "SELECT * 
-    FROM festividad
-    ORDER BY 
-        CASE 
-            WHEN mes_inicio >= '$mes' THEN 0
-            ELSE 1
-        END,
-        mes_inicio,
-        dia_inicio;";
+        FROM festividad";
         return $this->selectAll($sql);
     }
 

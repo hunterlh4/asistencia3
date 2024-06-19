@@ -48,6 +48,7 @@
       ?>
 
       <!-- <li class="menu-header">Asistencia</li> -->
+      <!-- ASISTENCIAS -->
       <?php
       echo '<li class="dropdown">
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
@@ -61,13 +62,22 @@
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="file-text"></i><span>Calendario</span></a> </li> ';
       echo '</ul>
       </li> ';
-     ?>
+      ?>
       <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
       <!-- <li class="menu-header">Boletas</li> -->
-      
+      <!-- PROGRAMACION -->
+      <?php
+      if ($_SESSION['nivel'] == 1) {
+      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Programacion" class="nav-link"><i data-feather="monitor"></i><span>Programacion</span></a> </li> ';
+      }
+      ?>
+      <!-- BOLETAS -->
       <?php
 
       // echo '  <li class="menu-header">Excel</li>';
+
+     
+      
       echo '<li class="dropdown">
                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Boletas</span></a>
                   <ul class="dropdown-menu">';
@@ -104,12 +114,10 @@
       <?php
       if ($_SESSION['nivel'] == 1) {
         // echo '  <li class="menu-header">Excel</li>';
-        echo '<li class="dropdown">';
+      
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Configuracion/" class="nav-link"><i data-feather="settings"></i><span>Configuracion</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Log/" class="nav-link"><i data-feather="archive"></i><span>Log</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Soporte/" class="nav-link"><i data-feather="info"></i><span>Soporte</span></a> 
-               
-                  </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Soporte/" class="nav-link"><i data-feather="info"></i><span>Soporte</span></a> ';
       }
       ?>
 

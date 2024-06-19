@@ -23,7 +23,7 @@
                       <h4 class="font-weight-bolder mb-0 mr-3" id="dropdownMenuButton" >
                           <i class="fa fa-info-circle"></i>
                         </h4>
-                        <div class="dropdown-menu dropdown-menu-left">
+                        <div class="dropdown-menu info dropdown-menu-left">
                           <a class="dropdown-item has-icon"><i class="fas fa-circle red"></i> No Marco Salida</a>
                           <a class="dropdown-item has-icon"><i class="fas fa-circle orange"></i> +30</a>
                           <a class="dropdown-item has-icon"><i class="fas fa-circle gray"></i> Sin registro</a>
@@ -267,10 +267,7 @@ h5: 0.83em */
 
   }
 
-  /* Estilo para el dropdown */
-  .dropdown-menu {
-    /* border-radius: 0.25rem; */
-  }
+
 
   /* Estilo para los items del dropdown */
   .dropdown-item {
@@ -279,9 +276,7 @@ h5: 0.83em */
   }
 
   /* Estilo para el ícono en los items del dropdown */
-  .dropdown-item i {
-    /* margin-right: 10px; */
-  }
+  
 
 
   .dropdown-menu .dropdown-item:nth-child(1) i {
@@ -303,15 +298,12 @@ h5: 0.83em */
     color: white; /* Color del icono */
    
 }
-  .dropdown-menu {
-    left: -115px; /* Ajusta este valor según sea necesario */
+  .info {
+    /* left: -10px; Ajusta este valor según sea necesario */
     background-color: #e4e7e7; 
 }
 
-.dropdown-menu .dropdown-item:hover {
-    background-color: black; /* Mantener el mismo color de fondo en hover */
-    color: black; /* Mantener el color de texto original en hover */
-}
+
 #dropdownMenuButton{
   background-color: white;
   border-color: white;
@@ -322,9 +314,6 @@ h5: 0.83em */
  
 }
 
-.dropdown-menu .dropdown-item i {
-    /* font-size: 1.2em; Aumentar el tamaño del icono */
-}
 
 
 </style>

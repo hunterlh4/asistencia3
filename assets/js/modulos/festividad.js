@@ -12,6 +12,7 @@ const tipo = document.querySelector('#tipo');
 const activo = document.querySelector('#radio-true');
 const inactivo = document.querySelector('#radio-false');
 
+
 let year = new Date().getFullYear();
 fecha.setAttribute("min", year + "-01-01");
 fecha.setAttribute("max", year + "-12-31");

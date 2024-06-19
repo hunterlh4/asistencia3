@@ -237,23 +237,37 @@ create table seguimientoTrabajador(
     -- FOREIGN KEY (regimen_id) REFERENCES regimen(id),
     -- FOREIGN KEY (direccion_id) REFERENCES direccion(id),
     -- FOREIGN KEY (cargo_id) REFERENCES cargo(id)
-)
+);
 
 create table programacion(
     id SERIAL PRIMARY KEY,
-    -- programador_id int not null,
+    numero varchar(50) not null,
     nombre varchar(50) not null,
-    trabajador_id int  not null,
-    fecha date not null,
-    entrada interval(6)  null default '00:00:00',
-    salida interval(6)  null default '00:00:00',
-    total interval(6)  null default '00:00:00',
+    programador_id int  not null,
+    direccion_id int not null,
+    fecha_desde date not null,
+    fecha_hasta date not null,
+    hora_desde interval(6)  null default '00:00:00',
+    hora_hasta interval(6)  null default '00:00:00',
+    dia_completo BOOLEAN null,
+    dia_total int null,
+    hora_total interval(6)  null default '00:00:00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
     -- FOREIGN KEY(programador_id) REFERENCES trabajador(id),
+    FOREIGN KEY(programador_id) REFERENCES trabajador(id)
+);
+
+create table programacionDetalle(
+    id SERIAL PRIMARY KEY,
+    programacion_id int not null,
+    trabajador_id int not null,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP null,
     FOREIGN KEY(trabajador_id) REFERENCES trabajador(id)
-)
+);
 
 create table configuracion(
     id SERIAL PRIMARY KEY,
@@ -262,7 +276,7 @@ create table configuracion(
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null
-)
+);
 
 -- CREATE TABLE festividad (
 --     id SERIAL PRIMARY KEY,
