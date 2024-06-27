@@ -2,14 +2,36 @@
 const trabajador = document.querySelector("#trabajador");
 const mes = document.querySelector("#mes");
 const anio = document.querySelector("#anio");
+const tipo = document.querySelector("#tipo");
 const currentYear = new Date().getFullYear();
+const contenedorTrabajadores = document.querySelector("#contenedor_trabajadores");
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   llenarSelectAnio();
   llenarSelectMes();
   llenarSelectTrabajador();
+toggleTrabajadores()
+tipo.addEventListener('change', toggleTrabajadores);
 });
 
+function toggleTrabajadores() {
+  contenedorTrabajadores.classList.add('col-md-12');
+  if (tipo.value === 'general') {
+      contenedorTrabajadores.classList.add('d-none');
+      contenedorTrabajadores.classList.remove('col-md-12');
+  } 
+  if (tipo.value === 'detallado') {
+      contenedorTrabajadores.classList.remove('d-none');
+      contenedorTrabajadores.classList.add('col-md-12');
+      
+      // Reinicializar select2
+     
+  }
+}
 // function generar2() {
 //   const trabajadores = Array.from(trabajador.selectedOptions).map(
 //     (option) => option.value
@@ -37,40 +59,73 @@ document.addEventListener("DOMContentLoaded", function () {
 //   });
 // }
 
+
+function borrarArchivo(datos) {
+  var link = document.createElement("a");
+  link.href = base_url + datos.archivo;
+  link.download = datos.nombre; // Puedes establecer un nombre para el archivo descargado aquí
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  $.ajax({
+    url: base_url + 'Reporte/borrar',
+    type: 'POST',
+    data: { filePath: datos.nombre },
+    success: function(result) {
+      console.log(result);
+        if (result.status === 'success') {
+            console.log('Archivo eliminado:', result.message);
+        } 
+    },
+    error: function(xhr, status, error) {
+        // console.error('Error:', error);
+    }
+});
+}
+
+
 function generar() {
-  const trabajadores = Array.from(trabajador.selectedOptions).map(
+
+  let trabajadores = []
+  let meses = []
+
+   trabajadores = Array.from(trabajador.selectedOptions).map(
     (option) => option.value
   );
-  const meses = Array.from(mes.selectedOptions).map((option) => option.value);
+   meses = Array.from(mes.selectedOptions).map((option) => option.value);
   const anioSeleccionado = anio.value;
+  let error = false;
 
-  console.log(trabajadores.length, meses.length, anioSeleccionado);
-  if (trabajadores.length != 0 && meses != 0) {
+  if ((trabajadores.length === 0 || meses === 0 || anioSeleccionado.value === 0) && tipo.value === 'detallado') {
+      error = true;
+     
+  }
+
+  if ((meses === 0 || anioSeleccionado.value === 0) && tipo.value === 'general') {
+      error = true;
+  }
+  if(error){
+    Swal.fire("Aviso", 'Datos Insuficientes1'.toUpperCase(), 'warning');
+  }
+
+  if (!error) {
+    if(tipo.value === 'detallado')
     trabajadores.forEach((trabajador) => {
       // Dentro de cada trabajador, recorrer el array de meses
       meses.forEach((mes) => {
         // Imprimir trabajador, mes y año seleccionado
         $.ajax({
-          url: base_url + "Reporte/generar_trabajador",
+          url: base_url + "Reporte/generar_reporte_detallado",
           type: "POST",
-          data: { trabajador: trabajador, mes: mes, anio: anioSeleccionado }, // Puedes enviar datos adicionales si es necesario
+          data: { trabajador: trabajador, mes: mes, anio: anioSeleccionado ,tipo:tipo.value }, // Puedes enviar datos adicionales si es necesario
           success: function (response) {
             console.log(response);
             const datos = JSON.parse(response);
 
-            console.log(datos.msg);
-            console.log(datos.icono);
-            console.log(datos.archivo);
-            console.log(datos.nombre);
+            borrarArchivo(datos);
 
-            var link = document.createElement("a");
-            link.href = base_url + datos.archivo;
-            link.download = datos.nombre; // Puedes establecer un nombre para el archivo descargado aquí
-            document.body.appendChild(link);
-            link.click();
-
-            console.log(link.href);
-            document.body.removeChild(link);
+            
           },
           error: function (xhr, status, error) {
             console.error(error);
@@ -78,11 +133,32 @@ function generar() {
         });
       });
     });
+    if(tipo.value ==='general'){
+      meses.forEach((mes) => {
+        // Imprimir trabajador, mes y año seleccionado
+        $.ajax({
+          url: base_url + "Reporte/generar_reporte_general",
+          type: "POST",
+          data: {mes: mes, anio: anioSeleccionado ,tipo:tipo.value }, // Puedes enviar datos adicionales si es necesario
+          success: function (response) {
+            console.log(response);
+            // const datos = JSON.parse(response);
+
+            // borrarArchivo(datos);
+
+            
+          },
+          error: function (xhr, status, error) {
+            console.error(error);
+          },
+        });
+      });
+    }
   }
-  if(trabajadores.length == 0 || meses == 0){
-    Swal.fire("Aviso", 'Datos Insuficientes'.toUpperCase(), 'warning');
-  }
+ 
+ 
 }
+
 function llenarSelectAnio() {
   anio.innerHTML = "";
   // Generate the options for current year, previous year, and year before that

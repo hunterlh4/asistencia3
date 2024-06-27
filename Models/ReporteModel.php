@@ -47,6 +47,53 @@ class ReporteModel extends Query
         return $this->selectAll($sql);
     }
 
+    public function reporteGeneral($mes,$anio){
+        $mes_formateado = sprintf("%02d", $mes);
+        //  $sql = "SELECT 
+        //         t.apellido_nombre AS trabajador_nombre,
+        //         fecha,
+        //         licencia,
+        //         tardanza_cantidad,
+        //         justificacion
+
+               
+        //         FROM 
+        //                 asistencia AS a
+        //         INNER JOIN trabajador as t ON t.id = a.trabajador_id
+        //         WHERE 
+        //                 EXTRACT(MONTH FROM fecha) = $mes
+        //                 AND EXTRACT(YEAR FROM fecha) = $anio
+                        
+        //         ORDER BY t.apellido_nombre, fecha asc";
+
+        $sql = "WITH dias_del_mes AS (
+                SELECT generate_series(
+                         DATE_TRUNC('month', DATE '$anio-$mes_formateado-01'),  -- Primer día del mes
+                        (DATE_TRUNC('month', DATE '$anio-$mes_formateado-01') + INTERVAL '1 month - 1 day'),  -- Último día del mes
+                        INTERVAL '1 day'
+                    ) AS fecha
+                )
+
+                SELECT
+                    t.apellido_nombre AS trabajador_nombre,
+                    STRING_AGG(
+                        TO_CHAR(DATE_TRUNC('day', d.fecha), 'YYYY-MM-DD') || '_' || a.licencia,
+                        ' '
+                    ) AS detalles
+                FROM
+                    dias_del_mes d
+                LEFT JOIN asistencia a ON DATE_TRUNC('day', a.fecha) = d.fecha
+                LEFT JOIN trabajador t ON t.id = a.trabajador_id
+                WHERE t.apellido_nombre IS NOT NULL
+                GROUP BY
+                    trabajador_nombre
+                ORDER BY
+                    trabajador_nombre ASC";
+         return $this->selectAll($sql);
+
+
+    }
+
     public function getTrabajador($id,$mes,$anio){
     //     $sql  ="SELECT 
     //     t.apellido_nombre AS trabajador_nombre, 
@@ -122,29 +169,29 @@ class ReporteModel extends Query
         $sql = "SELECT * FROM cargo";
         return $this->selectAll($sql);
     }
-    public function verificar($id)
-    {
-        $sql = "SELECT id,documento FROM seguimientotrabajador WHERE id = '$id' ";
-        return $this->select($sql);
-    }
-    public function registrar($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin)
-    {
-        $sql = "INSERT INTO seguimientoTrabajador (trabajador_id, regimen, direccion, cargo, documento, sueldo, fecha_inicio, fecha_fin) VALUES (?,?,?,?,?,?,?,?)";
-        $array = array($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin);
-        return $this->insertar($sql, $array);
-    }
-    public function modificar($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
-    {
-        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,documento=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
-        $array = array($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
-        return $this->save($sql, $array);
-    }
-    public function modificarSinArchivo($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
-    {
-        $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
-        $array = array($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
-        return $this->save($sql, $array);
-    }
+    // public function verificar($id)
+    // {
+    //     $sql = "SELECT id,documento FROM seguimientotrabajador WHERE id = '$id' ";
+    //     return $this->select($sql);
+    // }
+    // public function registrar($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin)
+    // {
+    //     $sql = "INSERT INTO seguimientoTrabajador (trabajador_id, regimen, direccion, cargo, documento, sueldo, fecha_inicio, fecha_fin) VALUES (?,?,?,?,?,?,?,?)";
+    //     $array = array($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin);
+    //     return $this->insertar($sql, $array);
+    // }
+    // public function modificar($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
+    // {
+    //     $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,documento=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
+    //     $array = array($trabajador_id,$regimen,$direccion, $cargo,$documento,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
+    //     return $this->save($sql, $array);
+    // }
+    // public function modificarSinArchivo($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado,$id)
+    // {
+    //     $sql = "UPDATE seguimientoTrabajador SET trabajador_id=?,regimen=?,direccion=?,cargo=?,sueldo=?,fecha_inicio=?,fecha_fin=?,estado=? ,update_at = NOW()  WHERE id = ?";
+    //     $array = array($trabajador_id,$regimen,$direccion, $cargo,$sueldo,$fecha_inicio,$fecha_fin,$estado, $id);
+    //     return $this->save($sql, $array);
+    // }
    
     // public function eliminar($id)
     // {

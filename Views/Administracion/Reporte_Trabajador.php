@@ -1,4 +1,5 @@
 <?php include_once './Views/includes/header.php'; ?>
+
 <body>
 <div class="loader"></div>
 <div id="app">
@@ -24,30 +25,13 @@ include './Views/includes/sidebarnew.php';
 <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
 <div class="row ">
 
-    <div class="col-md-12">
-        <div class="form-group">
-            <label for="direccion">Trabajadores</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <i class="fas fa-address-card"></i>
-                    </div>
-                </div>
-                <select class="form-control select2"  multiple="" id="trabajador" name="trabajador" required>
-                </select>
-            </div>
-        </div>
-    </div>
+    
 
     <div class="col-md-8">
             <div class="form-group">
-                <label for="direccion">Mes</label>
+                <label for="mes">Mes</label>
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <i class="fas fa-address-card"></i>
-                        </div>
-                    </div>
+                    
                 <select class="form-control select2"  multiple="" id="mes" name="mes" required>
                
                 </select>
@@ -55,7 +39,7 @@ include './Views/includes/sidebarnew.php';
             </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-2">
             <div class="form-group">
                 <label for="direccion">Año</label>
                 <div class="input-group">
@@ -65,12 +49,60 @@ include './Views/includes/sidebarnew.php';
             </div>
 
     </div>
+    <div class="col-md-2">
+            <div class="form-group">
+                <label for="Tipo">Tipo</label>
+                <div class="input-group">
+                <select class="form-control"  id="tipo" name="tipo" required>
+                <option value="detallado">Trabajador</option>
+                    <option value="general">General</option>
+                    
+                </select>
+                </div>
+            </div>
+
+    </div>
+    <div class="col-md-12" id ="contenedor_trabajadores">
+        <div class="form-group">
+            <label for="direccion">Trabajadores</label>
+            <div class="input-group">
+              
+                <select class="form-control select2"  multiple="" id="trabajador" name="trabajador" required>
+                </select>
+            </div>
+        </div>
+    
+    </div>
+
+    <!-- <div class="col-md-12"> -->
+
+    
+    <!-- </div> -->
 
 </div>
 </form>   
     
 </div>
+
+
 </div>
+
+<div class="card">
+<div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3 pb-0">
+<h5 class="font-weight-bolder"><i class="fa fa-print"></i> Tipo de Reporte</h5>
+</div>
+<!-- <hr> -->
+<div class="card-body">
+
+<div class="row ">
+
+    <div class="col-md-12">
+    </div>
+</div>
+</div>
+</div>
+
+
 </div>
 </div>
 </div>
@@ -85,5 +117,9 @@ include './Views/includes/sidebarnew.php';
 <script>
 const base_url = '<?php echo BASE_URL; ?>';
 </script>
+<!-- <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script> -->
+<style>
+
+</style>
 </body>
 </html>
