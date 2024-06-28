@@ -35,25 +35,26 @@ class Importar extends Controller
             http_response_code(405);
             echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
             exit;
-        }        
+        }
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
-
         if ($data === null) {
             http_response_code(400);
             echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
             exit;
         }
-        // if($tipo=='asistencia_csv'){
-        //     $respuesta = $this->insertar_asistencias($data);
-        // }
-        // if($tipo =='usuario_csv'){
-        //     $respuesta = $this->insertar_usuarios($data);
-        // }
-        foreach ($data as $registro) {
-            // $nombre = mb_convert_encoding($registro['Nombre Usuario'], "ISO-8859-1");
-            // $str = str_replace('�', '1', $str);
-            // $registro['Nombre Usuario'] = str_replace('?', 'Ñ', $nombre);
+        foreach ($data as $key => $value) {
+            // foreach ($data as $registro) {
+            // $nombre = mb_convert_encoding($data['Nombre Usuario'], "ISO-8859-1");
+            // $data['Nombre Usuario'] = str_replace('?', 'Ñ', $nombre);
+            if (isset($value['Nombre']) && !empty($value['Nombre'])) {
+                // Convertir la cadena del campo 'Nombre' a ISO-8859-1 y reemplazar caracteres incorrectos
+                $nombre = mb_convert_encoding($value['Nombre'], 'ISO-8859-1', 'UTF-8');
+                $nombre = str_replace('?', 'Ñ', $nombre); // Reemplazar caracteres incorrectos
+
+                // Asignar el nuevo valor al campo 'Nombre'
+                $data[$key]['Nombre'] = $nombre;
+            }
             //     Fecha,ID,Nombre Usuario,Departamento,Entrada - Salida 1,Entrada - Salida 2,Entrada - Salida 3,Entrada - Salida 4,Entrada - Salida 5,Entrada - Salida 6,Entrada - Salida 7,Entrada - Salida 8,Descanso,Tiempo Trabajado
             //     // Asegúrate de que cada registro tiene la estructura esperada
             //     if (isset($registro['Fecha'], $registro['ID'])) {
@@ -72,30 +73,163 @@ class Importar extends Controller
 
     }
 
-    public function insertar_datos($data){
+    public function importar_trabajador_csv()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
+            exit;
+        }
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        if ($data === null) {
+            http_response_code(400);
+            echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
+            exit;
+        }
+        $aceptado=0;
+        $ignorado=0;
+        $total =0;
+        $nombresAceptados =[];
+        foreach ($data as $key => $registro) {
+            
+            $valido = true;
 
+            $idUsuario = isset($registro['ID Usuario']) ? $registro['ID Usuario'] : '';
+            $nombre = isset($registro['Nombre']) ? $registro['Nombre'] : '';
+            $departamento = isset($registro['Departamento']) ? $registro['Departamento'] : '';
+            $fechaInicio = isset($registro['Fecha Inicio']) ? $registro['Fecha Inicio'] : '';
+            $fechaVencimiento = isset($registro['Fecha Vencimiento']) ? $registro['Fecha Vencimiento'] : '';
+  
+            if (!empty($departamento)) {
+                if (strpos($departamento, 'DIRESA/PASIVOS') !== false || 
+                    strpos($departamento, 'DIRESA/PROYECTOS') !== false || 
+                    strpos($departamento, 'RED SALUD') !== false) {
+                    $valido = false;
+                    
+                }
+            }
+            if(!$valido){
+                $total++;
+                $ignorado++;
+            }
+            if($valido && $idUsuario){
+                $total++;
+                $result = $this->model->getTrabajador($idUsuario);
+                if (empty($result)) {
+                    $modalidad_trabajo = 'Presencial';
+                    $institucion = 'DIRESA';
+
+                    if(!empty($nombre)){
+                        $nombre = mb_convert_encoding($nombre, 'ISO-8859-1', 'UTF-8');
+                        $nombre = str_replace('?', 'Ñ', $nombre);
+                        $nombre = preg_replace('/\s+/', ' ', $nombre); // Eliminar espacios adicionales
+                
+                            // $data[$key]['Nombre'] = $nombre;
+                    }
+                    // if (!empty($fechaInicio)) {
+                    //     $timestamp = strtotime($fechaInicio);
+                    //     $fechaInicio = date('Y-m-d', $timestamp);
+                    //         // $data[$key]['Fecha Inicio'] = $fechaInicio;
+                    // }
+                    // if (!empty($fechaVencimiento)) {
+                    //     $timestamp = strtotime($fechaVencimiento);
+                    //     $fechaVencimiento = date('Y-m-d', $timestamp);
+                    //         // $data[$key]['Fecha Vencimiento'] = $fechaVencimiento;
+                    // }    
+                    // registrarTrabajador
+                    // $nombresAceptados[] =$idUsuario.'|'. $nombre .'|'.$departamento .'|'.$total;
+                   
+                    // $aceptado++;
+                    $result = $this->model->registrarTrabajador($nombre, $idUsuario, $institucion, $modalidad_trabajo);
+                    if ($result > 0) {
+                        $aceptado++;
+                    } else {
+                        $ignorado++;
+                    }
+                }else{
+                    $ignorado++;
+                }
+            }
+        }
+        
+        $respuesta =['aceptado'=> $aceptado, 'ignorado'=> $ignorado,'total'=> $total];
+        echo json_encode($respuesta);
     }
 
-    function compararEncabezados($encabezadoRecibido, $encabezadoEsperado) {
+    public function importar_asistencia_csv()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
+            exit;
+        }
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        if ($data === null) {
+            http_response_code(400);
+            echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
+            exit;
+        }
+        $aceptado=0;
+        $ignorado=0;
+        $total =count($data);
+        $nombresAceptados =[];
+        foreach ($data as $key => $registro) {
+            $valido = true;
+            //  $this->model->registrarAsistencia(
+                // $trabajador_id, $licencia, $fecha_0, $marcada, $salida, $tardanza, $tardanza_cantidad, $total_reloj, $total_string, $justificacion, $reloj_1, $reloj_2, $reloj_3, $reloj_4, $reloj_5, $reloj_6, $reloj_7, $reloj_8);
+            $fecha_csv = isset($registro['Fecha']) ? $registro['Fecha'] : '';
+            $idUsuario_csv = isset($registro['ID']) ? $registro['ID'] : '';
+            // $nombre = isset($registro['Nombre']) ? $registro['Nombre'] : '';
+            $departamento = isset($registro['Departamento']) ? $registro['Departamento'] : '';
+            $ES_1_csv = isset($registro['Entrada - Salida 1']) ? $registro['Entrada - Salida 1'] : '';
+            $ES_1_csv = isset($registro['Entrada - Salida 1']) ? $registro['Entrada - Salida 1'] : '';
+  
+            if (!empty($departamento)) {
+                if (strpos($departamento, 'DIRESA/PASIVOS') !== false || 
+                    strpos($departamento, 'DIRESA/PROYECTOS') !== false || 
+                    strpos($departamento, 'RED SALUD') !== false) {
+                    $valido = false;
+                    
+                }
+            }
+            if(!$valido){
+                $total++;
+                $ignorado++;
+            }
+        }
+
+        $respuesta =['aceptado'=> $aceptado, 'ignorado'=> $ignorado,'total'=> $total];
+        echo json_encode($data);
+    }
+
+    public function importar5()
+    {
+    }
+
+    function compararEncabezados($encabezadoRecibido, $encabezadoEsperado)
+    {
         // Convertir ambos encabezados a minúsculas y quitar espacios en blanco
         $encabezadoRecibido = array_map('strtolower', array_map('trim', $encabezadoRecibido));
         $encabezadoEsperado = array_map('strtolower', array_map('trim', $encabezadoEsperado));
-    
+
         // Comparar los encabezados normalizados
         return array_diff($encabezadoRecibido, $encabezadoEsperado) === array_diff($encabezadoEsperado, $encabezadoRecibido);
     }
 
-    public function validar_archivo(){
+    public function validar_archivo()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo json_encode(['msg' => 'Método no permitido', 'validado' => false]);
             exit;
         }
-    
+
         $archivo = $_FILES['archivo']; // Obtener el archivo enviado
         $nombreArchivo = $archivo['name'];
         $tipoArchivo = $archivo['type'];
-    
+
         // Validar que sea un archivo CSV o Excel
         $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
         if ($extension == 'xls') {
@@ -106,41 +240,24 @@ class Importar extends Controller
             echo json_encode(['msg' => 'Tipo de archivo no válido', 'validado' => false]);
             exit;
         }
-    
+
         // Leer el encabezado del archivo enviado
         $encabezado = json_decode($_POST['encabezado'], true);
         // if($extension =='xls'){
 
         // }
-        
+
         $tiposEncabezado = [
             'asistencia_csv' => ["Fecha", "ID", "Nombre Usuario", "Departamento", "Entrada - Salida 1", "Entrada - Salida 2", "Entrada - Salida 3", "Entrada - Salida 4", "Entrada - Salida 5", "Entrada - Salida 6", "Entrada - Salida 7", "Entrada - Salida 8", "Descanso", "Tiempo Trabajado"],
-            'usuario_csv' => ["ID Usuario","Nombre","Departamento","Correo","Tel�fono","Fecha Inicio","Fecha Vencimiento","Nivel Admin.","Modo Autenticaci�n","N�mero de Template","Grupo de Acceso1","Grupo de Acceso2","Grupo de Acceso3","Grupo de Acceso4","N�mero Tarjeta","Bypass","Title","Mobile","Gender","Date of Birth"],
-            // 'tipo3' => ["Dpto.", "Nombre", "No.", "Fecha/Hora","Locación ID","ID Número","VerificaCod","No.tarjeta"],
-            // 'tipo4' => ["Header1", "Header2", "Header3"],
+            'usuario_csv' => ["ID Usuario", "Nombre", "Departamento", "Correo", "Tel�fono", "Fecha Inicio", "Fecha Vencimiento", "Nivel Admin.", "Modo Autenticaci�n", "N�mero de Template", "Grupo de Acceso1", "Grupo de Acceso2", "Grupo de Acceso3", "Grupo de Acceso4", "N�mero Tarjeta", "Bypass", "Title", "Mobile", "Gender", "Date of Birth"],
+            'frontera_samu_1' => ["Dpto.", "Nombre", "No.", "Fecha/Hora", "Locación ID", "ID Número", "VerificaCod", "No.tarjeta"],
+            'frontera_samu_2' => ["AC No.", "Nombre", "Dpto.", "Fecha", "Hora"],
             // 'tipo5' => ["ColumnaA", "ColumnaB", "ColumnaC", "ColumnaD"],
-            
+
         ];
-        // frontera 1 asistencia
-        // Dpto.	Nombre	No.	Fecha/Hora	Locación ID	ID Número	VerificaCod	No.tarjeta
-        // frontera 2 asistencia
-        // AC No.	Nombre	Dpto.	Fecha	Hora
-        // samu 1 asistencia
-        // Dpto.	Nombre	No.	Fecha/Hora	Locación ID	ID Número	VerificaCod	No.tarjeta
-        // samu 2 
-        // AC No.	Nombre	Dpto.	Fecha	Hora
-    
-        // // Validar el encabezado según el tipo
         $tipoValidado = false;
         $tipoArchivoValidado = '';
-    
-        // foreach ($tiposEncabezado as $tipo => $esperado) {
-        //     if ($encabezado === $esperado) {
-        //         $tipoValidado = true;
-        //         $tipoArchivoValidado = $tipo;
-        //         break;
-        //     }
-        // }
+
         foreach ($tiposEncabezado as $tipo => $esperado) {
             // Comparar encabezados ignorando diferencias de codificación y mayúsculas/minúsculas
             if ($this->compararEncabezados($encabezado, $esperado)) {
@@ -150,18 +267,48 @@ class Importar extends Controller
             }
         }
 
-        // $datosComparados = [
-        //     'encabezado_recibido' => $encabezado,
-        //     'encabezados_esperados' => $tiposEncabezado,
-        // ];
+        $datosComparados = [
+            'encabezado_recibido' => $encabezado,
+            'encabezados_esperados' => $tiposEncabezado,
+        ];
+
+        if ($tipoArchivoValidado == 'frontera_samu_1' || $tipoArchivoValidado == 'frontera_samu_2') {
+            $fila1 = json_decode($_POST['fila_1'], true);
+            // $tipoValidado = false;
+            $tipo_fila = '';
+            if (in_array("FRONTERA", $fila1)) {
+                $tipo_fila = 'FRONTERA';
+            }
+            if (in_array("SAMU2023", $fila1)) {
+                $tipo_fila = 'SAMU2023';
+            }
+            if ($tipoArchivoValidado == 'frontera_samu_1' && $tipo_fila == 'FRONTERA') {
+
+                $tipoArchivoValidado = 'frontera_1';
+            }
+            if ($tipoArchivoValidado == 'frontera_samu_2' && $tipo_fila == 'FRONTERA') {
+                $tipoArchivoValidado = 'frontera_2';
+                // Aquí puedes agregar la lógica específica para 'frontera_samu_1'
+            }
+
+            if ($tipoArchivoValidado == 'frontera_samu_1' && $tipo_fila == 'SAMU2023') {
+                $tipoArchivoValidado = 'samu_1';
+                // Aquí puedes agregar la lógica específica para 'frontera_samu_2'
+            }
+            if ($tipoArchivoValidado == 'frontera_samu_2' && $tipo_fila == 'SAMU2023') {
+                $tipoArchivoValidado = 'samu_2';
+                // Aquí puedes agregar la lógica específica para 'frontera_samu_2'
+            }
+        }
+
 
         if (!$tipoValidado) {
-            // echo json_encode($datosComparados);
+            // echo json_encode($tipoArchivoValidado);
             echo json_encode(['msg' => 'Encabezado no valido', 'validado' => false]);
             exit;
         }
-    
-        echo json_encode(['msg' => 'Archivo valido', 'validado' => true, 'tipo'=>$tipoArchivoValidado,  'datos' => $encabezado]);
+
+        echo json_encode(['msg' => 'Archivo valido', 'validado' => true, 'tipo' => $tipoArchivoValidado,  'datos' => $encabezado]);
     }
 
     // public function importarAntiguo(){
@@ -1691,6 +1838,4 @@ class Importar extends Controller
         echo json_encode($respuesta);
         die();
     }
-
-    
 }

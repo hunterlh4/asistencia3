@@ -46,7 +46,7 @@ class ImportarModel extends Query
     public function registrarTrabajador($nombre,$telefono_id,$institucion,$modalidad_trabajo)
     {
         $sql = "INSERT INTO trabajador (apellido_nombre,telefono_id,institucion,modalidad_trabajo) VALUES (?,?,?,?)";
-        $array = array($nombre,$telefono_id);
+        $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo);
         return $this->insertar($sql, $array);
     }
 
