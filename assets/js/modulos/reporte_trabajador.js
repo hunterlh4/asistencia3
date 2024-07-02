@@ -20,7 +20,7 @@ tipo.addEventListener('change', toggleTrabajadores);
 
 function toggleTrabajadores() {
   contenedorTrabajadores.classList.add('col-md-12');
-  if (tipo.value === 'general') {
+  if (tipo.value !== 'detallado') {
       contenedorTrabajadores.classList.add('d-none');
       contenedorTrabajadores.classList.remove('col-md-12');
   } 
@@ -133,7 +133,7 @@ function generar() {
         });
       });
     });
-    if(tipo.value ==='general'){
+    if(tipo.value ==='general' || tipo.value ==='tardanza'){
       meses.forEach((mes) => {
         // Imprimir trabajador, mes y año seleccionado
         $.ajax({
@@ -141,10 +141,10 @@ function generar() {
           type: "POST",
           data: {mes: mes, anio: anioSeleccionado ,tipo:tipo.value }, // Puedes enviar datos adicionales si es necesario
           success: function (response) {
-            console.log(response);
-            // const datos = JSON.parse(response);
+            // console.log(response);
+            const datos = JSON.parse(response);
 
-            // borrarArchivo(datos);
+            borrarArchivo(datos);
 
             
           },
@@ -154,6 +154,8 @@ function generar() {
         });
       });
     }
+
+    
   }
  
  

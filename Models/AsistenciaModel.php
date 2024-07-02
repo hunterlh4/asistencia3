@@ -63,7 +63,7 @@ class AsistenciaModel extends Query
         AND EXTRACT(YEAR FROM fecha) = $anio 
         -- AND EXTRACT(MONTH FROM fecha) = 5
 
-         ORDER BY fecha ASC";
+         ORDER BY fecha desc";
           return $this->selectAll($sql);
     }
     public function verificar($nombre)

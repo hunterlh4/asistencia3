@@ -352,6 +352,9 @@ function verAsistencia(mes, anio, id, boleta) {
         if(evento.licencia =='SR'){
           evento.licencia ='Sin Marcación'
         }
+        if(evento.licencia =='NME'){
+          evento.licencia ='No Marco Entrada'
+        }
         if(evento.licencia =='NMS'){
           evento.licencia ='No Marco Salida'
         }
@@ -513,11 +516,25 @@ function modificarCalendario() {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
+    if ((fcTitle.textContent.includes("FERIADO")|| fcTitle.textContent.includes("HONOMASTICO")) &&  fcTime.textContent.includes("0:00") ) {
+      // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+      fcTime.textContent = "";
+    }
     if (fcTitle.textContent.includes("No Marco Salida")) {
-      console.log('llego');
+     
       var spans = fcTitle.querySelectorAll("span");
       spans.forEach(function(span) {
         if (span.textContent.includes("No Marco Salida")) {
+          span.style.color = "red";
+          span.style.fontWeight="bold" ;
+        }
+      });
+    }
+    if (fcTitle.textContent.includes("No Marco Entrada")) {
+     
+      var spans = fcTitle.querySelectorAll("span");
+      spans.forEach(function(span) {
+        if (span.textContent.includes("No Marco Entrada")) {
           span.style.color = "red";
           span.style.fontWeight="bold" ;
         }

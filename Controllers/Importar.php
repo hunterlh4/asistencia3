@@ -171,10 +171,10 @@ class Importar extends Controller
         }
         $aceptado = 0;
         $ignorado = 0;
-        $modificado =0;
+        $modificado = 0;
         $total = count($data);
         $registros = [];
-        $posicion =0;
+        $posicion = 0;
         foreach ($data as $key => $registro) {
             $posicion++;
             $valido = true;
@@ -190,19 +190,16 @@ class Importar extends Controller
                     $ignorado++;
                 }
             }
-            // if (!$valido) {
-            //     // $total++;
-            //     $ignorado++;
-            // }
+
             if ($valido) {
                 $fecha_csv = isset($registro['Fecha']) ? $registro['Fecha'] : '';
                 $nombre = isset($registro['Nombre Usuario']) ? $registro['Nombre Usuario'] : '';
                 $timestamp = strtotime(str_replace('/', '-', $fecha_csv));
                 $fecha_csv = date('Y-m-d', $timestamp);
                 $fecha_cumpleaños_csv = date('m-d', $timestamp);
-                
+
                 $idUsuario_csv = isset($registro['ID']) ? $registro['ID'] : '';
-               
+
                 $ES_1_csv = isset($registro['Entrada - Salida 1']) ? $registro['Entrada - Salida 1'] : '00:00';
                 $ES_2_csv = isset($registro['Entrada - Salida 2']) ? $registro['Entrada - Salida 2'] : '00:00';
                 $ES_3_csv = isset($registro['Entrada - Salida 3']) ? $registro['Entrada - Salida 3'] : '00:00';
@@ -219,8 +216,8 @@ class Importar extends Controller
                 $es_honomastico = false;
                 $entrada = '00:00';
                 $salida = '00:00';
-                $total_horario='00:00';
-                $total_entrada_salida_reloj='00:00';
+                $total_horario = '00:00';
+                $total_entrada_salida_reloj = '00:00';
 
                 $result = $this->model->getAllfestividad();
                 $dia_csv = date('d', strtotime($fecha_csv));
@@ -233,7 +230,7 @@ class Importar extends Controller
                     if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
                         $es_festividad = true;
                         break;
-                    }  
+                    }
                 }
 
 
@@ -256,16 +253,16 @@ class Importar extends Controller
                     $fecha_nacimiento_csv = isset($result['fecha_nacimiento']) ? $result['fecha_nacimiento'] : '3000-01-01';
                     // $timestamp = strtotime(str_replace('/', '-', $fecha_nacimiento));
                     $fecha_nacimiento = strtotime($fecha_nacimiento_csv);
-                    $mes_nacimiento = date('m', $fecha_nacimiento);
-                    $dia_nacimiento = date('d', $fecha_nacimiento);
-                    $fecha_nacimiento =date('m-d', $fecha_nacimiento);
+                    // $mes_nacimiento = date('m', $fecha_nacimiento);
+                    // $dia_nacimiento = date('d', $fecha_nacimiento);
+                    $fecha_nacimiento = date('m-d', $fecha_nacimiento);
 
                     $hora_entrada_trabajador_formato = strtotime($result['hora_entrada']);
                     $hora_salida_trabajador_formato = strtotime($result['hora_salida']);
-                    
-                    $hora_entrada_trabajador = date('H:i', $hora_entrada_trabajador_formato);
-                    $hora_salida_trabajador = date('H:i', $hora_salida_trabajador_formato);
-                    
+
+                    // $hora_entrada_trabajador = date('H:i', $hora_entrada_trabajador_formato);
+                    // $hora_salida_trabajador = date('H:i', $hora_salida_trabajador_formato);
+
                     $entrada_trabajador_mas_6 = strtotime('+6 minutes', $hora_entrada_trabajador_formato);
                     $entrada_trabajador_mas_30 = strtotime('+31 minutes', $hora_entrada_trabajador_formato);
 
@@ -275,24 +272,20 @@ class Importar extends Controller
                     $salida_timestamp = strtotime($salida);
                     $diferencia_trabajador_segundos = $hora_salida_trabajador_formato - $hora_entrada_trabajador_formato;
                     $diferencia_entrada_salida_segundos = $salida_timestamp - $entrada_timestamp;
-                   
-                    
 
                     if ($ES_1_csv == '00:00') {
                         $licencia = 'SR';
                     }
+
                     if ($ES_1_csv !== '00:00') {
+
                         if ($salida == '00:00') {
                             $licencia = 'NMS';
                         }
                         if ($salida !== '00:00') {
-                            $total_horario = gmdate('H:i', $diferencia_trabajador_segundos);
-                            $total_entrada_salida_reloj = gmdate('H:i', $diferencia_entrada_salida_segundos);
-                           
-                            $tardanza = (strtotime($entrada) -$entrada_trabajador_limite) / 60;
                             if (strtotime($entrada) < $entrada_trabajador_mas_6) {
                                 // Llegó menos de 6 minutos tarde  
-                                $tardanza='0';
+                                $tardanza = '00:00';
                                 $tardanza_cantidad = 0;
                             }
                             if (
@@ -313,21 +306,29 @@ class Importar extends Controller
 
                             if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) >= $hora_salida_trabajador_formato) {
                                 $licencia = 'OK';
+                                $total_horario = gmdate('H:i', $diferencia_trabajador_segundos);
+                                $total_entrada_salida_reloj = gmdate('H:i', $diferencia_entrada_salida_segundos);
                             }
-                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) <= $hora_salida_trabajador_formato) {
+                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) < $hora_salida_trabajador_formato) {
                                 $licencia = 'NMS';
                             }
                         }
                     }
+                    if ($ES_1_csv !== '00:00' && $licencia == 'OK' && ($entrada_timestamp >= $entrada_trabajador_mas_6 &&
+                        $entrada_timestamp < $entrada_trabajador_mas_30)) {
 
-                    if($es_festividad==true){
+                        $diferencia_tardanza = $entrada_timestamp - $entrada_trabajador_limite;
+                        $tardanza = gmdate('H:i', $diferencia_tardanza);
+                    }
+
+                    if ($es_festividad == true) {
                         $licencia = 'FERIADO';
                     }
-                    if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !=='3000-01-01')) {
-                        $licencia ='HONOMASTICO';
-                    } 
+                    if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
+                        $licencia = 'HONOMASTICO';
+                    }
                     $result = $this->model->getAsistencia($idUsuario_csv, $fecha_csv);
-                    $justificacion='';
+                    $justificacion = '';
                     // $registros[] = [$result];
                     if (empty($result)) {
                         // REGISTRO ASISTENCIA
@@ -339,7 +340,7 @@ class Importar extends Controller
                         $modificado++;
                         $this->model->modificarAsistencia($trabajador_id, $licencia, $fecha_csv, $entrada, $salida, $tardanza, $tardanza_cantidad, $total_entrada_salida_reloj, $total_horario, $justificacion, $ES_1_csv, $ES_2_csv, $ES_3_csv, $ES_4_csv, $ES_5_csv, $ES_6_csv, $ES_7_csv, $ES_8_csv, $asistencia_id);
                     }
-                    
+
                     // $registros[] = [
                     //     // 'honomastico' => $fecha_nacimiento,
                     //     'honosmastico' => $fecha_nacimiento.'|'.$fecha_cumpleaños_csv,
@@ -365,12 +366,12 @@ class Importar extends Controller
                     //     'ES_7_csv' => $ES_7_csv,
                     //     'ES_8_csv' => $ES_8_csv,
                     // ];
-                    
+
                 }
             }
         }
 
-        $respuesta = ['aceptado' => $aceptado,'modificado'=>$modificado, 'ignorado' => $ignorado, 'total' => $total];
+        $respuesta = ['aceptado' => $aceptado, 'modificado' => $modificado, 'ignorado' => $ignorado, 'total' => $total];
         echo json_encode($respuesta);
     }
 

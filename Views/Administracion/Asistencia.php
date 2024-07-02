@@ -329,6 +329,7 @@ h5: 0.83em */
     box-shadow: none;
     display: flex;
     flex-direction: column;
+    
   }
 
   .fc-event {

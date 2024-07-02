@@ -55,7 +55,8 @@ include './Views/includes/sidebarnew.php';
                 <div class="input-group">
                 <select class="form-control"  id="tipo" name="tipo" required>
                 <option value="detallado">Trabajador</option>
-                    <option value="general">General</option>
+                <option value="general">General</option>
+                <option value="tardanza">Tardanza</option>
                     
                 </select>
                 </div>

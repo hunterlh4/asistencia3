@@ -4,6 +4,8 @@ const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
 const select1 = document.getElementById("trabajador");
+var tabla_horas;
+const sidebar = document.getElementById("sidebar_click");
 let concatenado = "";
 // FORMULARIO
 let id = document.querySelector("#id");
@@ -271,6 +273,10 @@ $(document).ready(function () {
     asistencias(currentMonth, currentYear);
     modificarCalendario();
   });
+  //   $("#sidebar_click").click();
+  setTimeout(function () {
+    sidebar.click(); // Simula el clic en el enlace después de un tiempo de espera
+  }, 1);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -280,10 +286,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Obtiene el valor seleccionado del select
     var selectedValue = $(this).val();
     // Muestra el valor en la consola
-    var currentDate = $("#myEvent").fullCalendar("getDate");
-    var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
-    var currentYear = currentDate.year();
-    buscarBoleta(selectedValue, currentMonth, currentYear);
+    if (selectedValue > 1) {
+      var currentDate = $("#myEvent").fullCalendar("getDate");
+      var currentMonth = currentDate.month() + 1; // Sumamos 1 porque los meses son indexados desde 0
+      var currentYear = currentDate.year();
+      buscarBoleta(selectedValue, currentMonth, currentYear);
+      listarAsistencia(selectedValue);
+      //   testing(selectedValue)
+      console.log(selectedValue);
+    }
   });
 });
 
@@ -377,37 +388,118 @@ function verAsistencia(mes, anio, id, boleta) {
       events = [];
       const res = JSON.parse(response);
       // console.log(boleta);
+
       res.forEach((evento) => {
-        // console.log(boleta);
+        let boleta_calendar = "";
+        let boleta_auxiliar = "";
+        let boleta_particular_Tiempo = "";
+        let tardanza_cantidad = "";
+        let tiempo_boletas = new Date();
+        let cantidad_boletas = 0;
+        let tiempo_segundos = 0;
+        let boleta_Personales = [];
+        let boleta_Personales_fechas = [];
+
+        // const partes = tiempoInicial.split(':');
+        const horas = 0;
+        const minutos = 0;
+
+        if (evento.licencia == "SR") {
+          evento.licencia = "Sin Marcación";
+        }
+        if (evento.licencia == "NMS") {
+          evento.licencia = "No Marco Salida";
+        }
+        if (evento.licencia == "NME") {
+          evento.licencia = "No Marco Entrada";
+        }
+
         for (let i = 0; i < boleta.length; i++) {
-          var boletacalendar = "";
           const boletaFecha = new Date(boleta[i].fecha_inicio);
           const boletaFecha_fin = new Date(boleta[i].fecha_fin);
           const eventoFecha = new Date(evento.fecha);
+          boletaFecha_fin.setUTCDate(boletaFecha_fin.getUTCDate() + 0);
+          boletaFecha.setUTCDate(boletaFecha.getUTCDate() + 0);
+          eventoFecha.setUTCDate(eventoFecha.getUTCDate() + 0);
 
-          // const boletaFecha = boleta[i].fecha_inicio;
-          // const boletaFecha_fin = boleta[i].fecha_fin;
+          const fecha_auxiliar = eventoFecha;
 
-          if (
-            eventoFecha >= boletaFecha &&
-            eventoFecha <= boletaFecha_fin &&
-            evento.licencia != "SR"
-          ) {
-            // console.log(boletaFecha +'|-'+evento.fecha);
+          const Motivo_particular = boleta[i].razon;
 
-            boletacalendar = "-Boleta";
-            //   console.log('fecha cambiada'+ boletaFecha + 'segunda'+ evento.fecha);
+          if (eventoFecha >= boletaFecha && eventoFecha <= boletaFecha_fin) {
+            cantidad_boletas++;
+
+            boleta_auxiliar = boleta_auxiliar + boleta[i].razon + "<br>";
+
+            boleta_calendar = boleta_calendar + boleta[i].razon;
+
+            if (Motivo_particular == "AP" && boleta[i].duracion != null) {
+              boleta_particular_Tiempo = boleta[i].duracion;
+              boleta_Personales.push({
+                fecha: eventoFecha,
+                duracion: boleta[i].duracion,
+              });
+              // boleta_Personales_fechas.push(eventoFecha);
+              // console.log('fecha:'+ eventoFecha, 'duracion:' +boleta[i].duracion)
+            }
+            if (Motivo_particular == "AP" && boleta[i].duracion == null) {
+              boleta_particular_Tiempo = "Dia Com.";
+            }
+            // else {
+            //   boleta_calendar = boleta[i].razon;
+
+            // }
           }
-          evento.licencia = evento.licencia + boletacalendar;
-          // console.log(boletaFecha +'|'+evento.fecha);
         }
-        if (evento.tardanza_cantidad != "0") {
-          evento.licencia = evento.licencia + "-T" + evento.tardanza_cantidad;
+        // console.log(evento.fecha,boleta_particular_Tiempo);
+        if (evento.tardanza !== "00:00" && evento.tardanza_cantidad != "0") {
+          tardanza_cantidad = evento.tardanza_cantidad + "T";
+          //   evento.licencia = evento.licencia + "-" + evento.tardanza_cantidad;
         }
+        if (cantidad_boletas > 1) {
+          // boleta_calendar  ='B('+cantidad_boletas+')';
+          boleta_calendar = boleta_auxiliar;
+        }
+
+        let prueba = 0;
+        if (boleta_Personales.length > 1) {
+          // let contador = 0;
+
+          // Iteramos sobre cada objeto en boleta_Personales
+          boleta_Personales.forEach((evento) => {
+            // Para cada objeto, comparamos su fecha con todas las otras fechas
+            boleta_Personales.forEach((otroEvento) => {
+              if (evento.fecha === otroEvento.fecha) {
+                // Si las fechas son iguales, incrementamos el contador
+                // contador++;
+                let otraDuracionSegundos = tiempoASegundos(otroEvento.duracion);
+                prueba += otraDuracionSegundos;
+              }
+            });
+          });
+          prueba = segundosATiempo(prueba);
+          boleta_particular_Tiempo = prueba;
+        }
+
+        // console.log(evento.tid,evento.fecha);
+        // const concatenado = evento.licencia +'|'+boleta_calendar+'|'+boleta_particular+'|'+tardanza_cantidad;
+        concatenado =
+          '<span style="color: black; display: inline;">' +
+          evento.licencia +
+          "</span>" +
+          '<span style="color: blue; display: block; font-weight: bold;">' +
+          boleta_calendar +
+          "</span>" +
+          '<span style="color: red; display: block; font-weight: bold;">' +
+          boleta_particular_Tiempo +
+          "</span>" +
+          '<span style="color: orange; display: block; font-weight: bold;">' +
+          tardanza_cantidad +
+          "</span>";
 
         events.push({
           id: evento.aid,
-          title: evento.licencia,
+          title: evento.licencia, // evento.licencia,
           start: new Date(
             evento.anio,
             evento.mes - 1,
@@ -441,6 +533,10 @@ function verAsistencia(mes, anio, id, boleta) {
           reloj_7: evento.reloj_7,
           reloj_8: evento.reloj_8,
           fecha: evento.fecha,
+          boleta_calendar: boleta_calendar,
+          boleta_particular: boleta_particular_Tiempo,
+          tardanza_cantidad: tardanza_cantidad,
+          concatenado_span: concatenado,
         });
       });
 
@@ -460,32 +556,49 @@ function verAsistencia(mes, anio, id, boleta) {
 
 function modificarCalendario() {
   const fcContents = document.querySelectorAll(".fc-content");
-
+  // MES
   fcContents.forEach(function (element) {
     // Encontrar los elementos fc-time y fc-title dentro de este elemento
     var fcTime = element.querySelector(".fc-time");
     var fcTitle = element.querySelector(".fc-title");
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
-    if (fcTitle.textContent.includes("SR")) {
+    if (
+      fcTitle.textContent.includes("SR") ||
+      fcTitle.textContent.includes("Sin Marcación")
+    ) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
-    if (/-Boleta/.test(fcTitle.textContent)) {
-      // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
-
-      // Obtener el prefijo del título antes de '-Boleta'
-      var titlePrefix = fcTitle.textContent.split("-Boleta")[0];
-
-      // Establecer el HTML del título según la parte extraída
-      fcTitle.innerHTML =
-        '<span style="color: blue; font-weight: bold;">' +
-        titlePrefix +
-        '</span><br><span style="color: blue; font-weight: bold;">' +
-        "1 T" +
-        "</span>";
+    if (
+      (fcTitle.textContent.includes("FERIADO") ||
+        fcTitle.textContent.includes("HONOMASTICO")) &&
+      fcTime.textContent.includes("0:00")
+    ) {
+      // Si fc-title contiene 'SR', vaciar el contenido de fc-time
+      fcTime.textContent = "";
+    }
+    if (fcTitle.textContent.includes("No Marco Salida")) {
+      console.log("llego");
+      var spans = fcTitle.querySelectorAll("span");
+      spans.forEach(function (span) {
+        if (span.textContent.includes("No Marco Salida")) {
+          span.style.color = "red";
+          span.style.fontWeight = "bold";
+        }
+      });
+    }
+    if (fcTitle.textContent.includes("No Marco Entrada")) {
+      var spans = fcTitle.querySelectorAll("span");
+      spans.forEach(function (span) {
+        if (span.textContent.includes("No Marco Entrada")) {
+          span.style.color = "red";
+          span.style.fontWeight = "bold";
+        }
+      });
     }
   });
+  //  LISTA
   const fcContentsList = document.querySelectorAll(".fc-list-item");
   fcContentsList.forEach(function (element) {
     // Encontrar los elementos fc-time y fc-title dentro de este elemento
@@ -493,21 +606,14 @@ function modificarCalendario() {
     var fcTitle = element.querySelector(".fc-list-item-title");
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
-    if (fcTitle.textContent.includes("SR")) {
+    if (
+      fcTitle.textContent.includes("SR") ||
+      fcTitle.textContent.includes("Sin Marcación")
+    ) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
-    }
-    if (/-Boleta/.test(fcTitle.textContent)) {
-      // Si fc-title contiene '-Boleta', cambiar el color a azul y establecer el texto según el tipo
-
-      // Obtener el prefijo del título antes de '-Boleta'
-      var titlePrefix = fcTitle.textContent.split("-Boleta")[0];
-
-      // Establecer el HTML del título según la parte extraída
-      fcTitle.innerHTML =
-        '<span style="color: blue; font-weight: bold;">' +
-        titlePrefix +
-        "</span> <br>";
+    } else {
+      fcTime.classList.add("align-left");
     }
   });
 
@@ -525,6 +631,8 @@ function modificarCalendario() {
       day.style.backgroundColor = "#E5E8E8";
     }
   });
+
+  // calendar.fullCalendar('refetchEvents');
 }
 
 function llenarselect() {
@@ -726,124 +834,152 @@ function abrirModal() {
 function cerrarModal() {
   myModal.hide();
 }
+function listarAsistencia(id,callback) {
+    var parametros = {
+        id: id,
+    };
 
-function listarAsistencia(id){
-  
-    tabla_horas = $("#table-detalle-alex").DataTable({
-      ajax: {
-        url: base_url + "asistencia/listarTrabajadorAsistencia",
-        // type: "POST", // Especifica el método HTTP como POST
-        dataSrc: "",
-      },
-      data:{
-        function(data) {
-          // Aquí agregas los parámetros adicionales que quieres enviar
-          data.id = id;
+    $.ajax({
+        url: base_url + "asistencia/listarTrabajadorAsistenciaGeneral",
+        type: "POST",
+        data: parametros,
+        success: function(response) {
+            var data = JSON.parse(response); // Parsea la respuesta JSON
+            llenarTablaAsistencia(data);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al obtener datos:", error);
         }
-      },
-      columns: [
-        // Define tus columnas aquí según la estructura de tus datos
-        { data: "dia" },
-  
-        { data: "fecha" },
-        { data: "entrada" },
-        { data: "salida" },
-        // { data: "fecha_fin_formateada" },
-        { data: "tardanza_cantidad" },
-        { data: "licencia" },
-       
-      ],
-      dom: "Bfrtip",
-      select: false,
-      order: [],
-      buttons: [
-        {
-          extend: "copy",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas copiar
-          },
-        },
-        {
-          extend: "csv",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a CSV
-          },
-        },
-        {
-          extend: "excel",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a Excel
-          },
-        },
-        {
-          extend: "pdf",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a PDF
-          },
-        },
-        {
-          extend: "print",
-          exportOptions: {
-            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas imprimir
-          },
-        },
-      ],
-      drawCallback: function(settings) {
-        let api = this.api();
-        let rows = api.rows().nodes();
-        
-        rows.each(function(row, index) {
-          let data = api.row(row).data();
-          let dia = data["dia"];
-          let licencia = data['licencia'];
-          
-          // Comprobar si el día es sábado o domingo
-          if (dia === "Sábado" || dia === "Domingo") {
-            $(row).addClass("dia"); // Agregar clase de fila especial
-          } else {
-            $(row).removeClass("fila-normal"); // Quitar clase de fila especial
-          }
-          if(licencia == "No Marco Salida" || licencia =="+30" || (licencia =="Sin Marcacion" && dia != "Sábado" && dia != "Domingo")){
-            $(row).addClass("licencia");
-          }
-        });
-        pintarFilasEspeciales()
-      }
     });
-  }
+}
+
+function llenarTablaAsistencia(data) {
+    if ($.fn.DataTable.isDataTable('#table-detalle-alex')) {
+        tabla_horas.clear().rows.add(data).draw(); // Actualiza los datos en la tabla existente
+    } else {
+        tabla_horas = $("#table-detalle-alex").DataTable({
+            data: data,
+            columns: [
+                { data: "dia" },
+                { data: "fecha" },
+                { data: "entrada" },
+                { data: "salida" },
+                { data: "tardanza_cantidad" },
+                { data: "licencia" }
+            ],
+            dom: "Bfrtip",
+            select: false,
+            order: [],
+            buttons: [
+                {
+                  extend: "copy",
+                  exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas copiar
+                  },
+                },
+                {
+                  extend: "csv",
+                  exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a CSV
+                  },
+                },
+                {
+                  extend: "excel",
+                  exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a Excel
+                  },
+                },
+                {
+                  extend: "pdf",
+                  exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a PDF
+                  },
+                },
+                {
+                  extend: "print",
+                  exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas imprimir
+                  },
+                },
+              ],
+            drawCallback: function(settings) {
+                let api = this.api();
+                let rows = api.rows().nodes();
+
+                rows.each(function(row, index) {
+                    let data = api.row(row).data();
+                    let dia = data["dia"];
+                    let licencia = data["licencia"];
+
+                    // Personaliza las filas según tu lógica
+                    if (dia === "Sábado" || dia === "Domingo") {
+                        $(row).addClass("dia");
+                    } else {
+                        $(row).removeClass("fila-normal");
+                    }
+                    if (licencia == "No Marco Salida" || licencia == "+30" || (licencia == "Sin Marcacion" && dia != "Sábado" && dia != "Domingo")) {
+                        $(row).addClass("licencia");
+                    }
+                });
+
+                pintarFilasEspeciales();
+            }
+        });
+    }
+}
+
+
 
 function pintarFilasEspeciales() {
-    // Seleccionar todas las filas con la clase fila-especial
-    $('#table-detalle-alex tbody tr.dia').css('background-color', '#E5E8E8');
-    $('#table-detalle-alex tbody tr.licencia').css('background-color', '#F1948A');
-  }
-  
-  
-  var boton = document.getElementById('dropdownMenuButton');
-  var dropdown = boton.nextElementSibling;
-  
-  // Mostrar el menú al hacer hover sobre el botón
-  boton.addEventListener('mouseenter', function(event) {
-    dropdown.classList.add('show');
-  });
-  
-  // Ocultar el menú al salir del botón o del menú
-  boton.addEventListener('mouseleave', function(event) {
-    setTimeout(function() {
-      if (!boton.matches(':hover') && !dropdown.matches(':hover')) {
-        dropdown.classList.remove('show');
-      }
-    }, 100);
-  });
-  
-  dropdown.addEventListener('mouseleave', function(event) {
-    setTimeout(function() {
-      if (!boton.matches(':hover') && !dropdown.matches(':hover')) {
-        dropdown.classList.remove('show');
-      }
-    }, 100);
-  });
-  
-  dropdown.addEventListener('mouseenter', function(event) {
-    dropdown.classList.add('show');
-  });
+  // Seleccionar todas las filas con la clase fila-especial
+  $("#table-detalle-alex tbody tr.dia").css("background-color", "#E5E8E8");
+  $("#table-detalle-alex tbody tr.licencia").css("background-color", "#F1948A");
+}
+
+var boton = document.getElementById("dropdownMenuButton");
+var dropdown = boton.nextElementSibling;
+
+// Mostrar el menú al hacer hover sobre el botón
+boton.addEventListener("mouseenter", function (event) {
+  dropdown.classList.add("show");
+});
+
+// Ocultar el menú al salir del botón o del menú
+boton.addEventListener("mouseleave", function (event) {
+  setTimeout(function () {
+    if (!boton.matches(":hover") && !dropdown.matches(":hover")) {
+      dropdown.classList.remove("show");
+    }
+  }, 100);
+});
+
+dropdown.addEventListener("mouseleave", function (event) {
+  setTimeout(function () {
+    if (!boton.matches(":hover") && !dropdown.matches(":hover")) {
+      dropdown.classList.remove("show");
+    }
+  }, 100);
+});
+
+dropdown.addEventListener("mouseenter", function (event) {
+  dropdown.classList.add("show");
+});
+
+// function testing(id) {
+//     var parametros = {
+//         id: id,
+//     };
+//     const url = base_url + "Asistencia/listarTrabajadorAsistenciaGeneral";
+//     $.ajax({
+//       data: parametros, //datos que se envian a traves de ajax
+//       url: url, //archivo que recibe la peticion
+//       type: "POST", //método de envio
+//       success: function (response) {
+//         console.log(response);
+//         const res = JSON.parse(response);
+//         // boleta = res;
+
+//         // verAsistencia(currentMonth, currentYear, id, boleta);
+//       },
+//     });
+//   }

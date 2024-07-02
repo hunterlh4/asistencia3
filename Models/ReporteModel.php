@@ -47,7 +47,7 @@ class ReporteModel extends Query
         return $this->selectAll($sql);
     }
 
-    public function reporteGeneral($mes,$anio){
+    public function reporteGeneralLicencia($mes,$anio){
         $mes_formateado = sprintf("%02d", $mes);
         //  $sql = "SELECT 
         //         t.apellido_nombre AS trabajador_nombre,
@@ -78,6 +78,39 @@ class ReporteModel extends Query
                     t.apellido_nombre AS trabajador_nombre,
                     STRING_AGG(
                         TO_CHAR(DATE_TRUNC('day', d.fecha), 'YYYY-MM-DD') || '_' || a.licencia,
+                        ' '
+                    ) AS detalles
+                FROM
+                    dias_del_mes d
+                LEFT JOIN asistencia a ON DATE_TRUNC('day', a.fecha) = d.fecha
+                LEFT JOIN trabajador t ON t.id = a.trabajador_id
+                WHERE t.apellido_nombre IS NOT NULL
+                GROUP BY
+                    trabajador_nombre
+                ORDER BY
+                    trabajador_nombre ASC";
+         return $this->selectAll($sql);
+
+
+    }
+
+    public function reporteGeneralTardanza($mes,$anio){
+        $mes_formateado = sprintf("%02d", $mes);
+        
+
+        $sql = "WITH dias_del_mes AS (
+                SELECT generate_series(
+                         DATE_TRUNC('month', DATE '$anio-$mes_formateado-01'),  -- Primer día del mes
+                        (DATE_TRUNC('month', DATE '$anio-$mes_formateado-01') + INTERVAL '1 month - 1 day'),  -- Último día del mes
+                        INTERVAL '1 day'
+                    ) AS fecha
+                )
+
+                SELECT
+                    t.apellido_nombre AS trabajador_nombre,
+                     TO_CHAR(INTERVAL '1 second' * SUM(EXTRACT(EPOCH FROM a.tardanza)), 'HH24:MI') AS total_tardanza,
+                    STRING_AGG(
+                        TO_CHAR(DATE_TRUNC('day', d.fecha), 'YYYY-MM-DD') || '_' || TO_CHAR(a.tardanza, 'HH24:MI'),
                         ' '
                     ) AS detalles
                 FROM

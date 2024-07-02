@@ -213,10 +213,17 @@ class Reporte extends Controller
     {
         $data[] = [];
         $mensaje = '';
-        if (isset($_POST['mes']) && isset($_POST['anio'])) {
+        if (isset($_POST['mes']) && isset($_POST['anio']) && isset($_POST['tipo'])) {
             $mes = $_POST['mes'];
             $anio = $_POST['anio'];
-            $peticion = $this->exportarGeneral($mes, $anio);
+            $tipo = $_POST['tipo'];
+            if ($tipo == 'general') {
+                $peticion = $this->exportarGeneralLicencia($mes, $anio);
+            }
+            if ($tipo == 'tardanza') {
+                $peticion = $this->exportarGeneralTardanza($mes, $anio);
+            }
+
             $filePath = $peticion['filepath'];
             $nombreArchivo = $peticion['nombreArchivo'];
             $mensaje = $peticion['mensaje'];
@@ -519,7 +526,7 @@ class Reporte extends Controller
         return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje];
     }
 
-    public function exportarGeneral($mes, $anio)
+    public function exportarGeneralLicencia($mes, $anio)
     {
         $mensaje = '';
         $cantidad = 0;
@@ -562,7 +569,7 @@ class Reporte extends Controller
         $total = 0;
         $total_real = 0;
 
-        $data = $this->model->reporteGeneral($mes, $anio);
+        $data = $this->model->reporteGeneralLicencia($mes, $anio);
         // if (empty($data)) {
         //     $mensaje = "valor Vacio  Mes $mes año $anio";
         // }
@@ -614,7 +621,7 @@ class Reporte extends Controller
         // $sheet->mergeCells('A6:AG6');
         $sheet->mergeCells('J3:AG5');
 
-        $headers = ['Nombre', '01', '02', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+        $headers = ['Nombre', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
         $sheet->fromArray($headers, NULL, 'A6');
         $sheet->getStyle('A6:AG6')->getFont()->setBold(true);
         $sheet->getStyle('A6:AG6')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
@@ -640,6 +647,12 @@ class Reporte extends Controller
 
                     if (count($detalle_partes) >= 2) {
                         $fecha_completa = $detalle_partes[0];
+                        if ($detalle_partes[1] == 'HONOMASTICO') {
+                            $detalle_partes[1] = 'HO';
+                        }
+                        if ($detalle_partes[1] == 'FERIADO') {
+                            $detalle_partes[1] = 'FE';
+                        }
                         $licencia = $detalle_partes[1];
 
                         // Formatear la fecha
@@ -652,8 +665,6 @@ class Reporte extends Controller
 
                             // Asignar la licencia al array de días
                             $dias[$indice_dia] = $licencia;
-
-                           
                         }
                     }
                 }
@@ -665,7 +676,7 @@ class Reporte extends Controller
                         $sheet->setCellValue($columna . $row, $dias[$indice_dia]);
                     }
                 }
-                
+
 
                 // for ($i = 1; $i <= 31; $i++) {
                 //     $columna = chr(65 + $i); // 'B' para el día 01, 'C' para el día 02, etc.
@@ -682,7 +693,7 @@ class Reporte extends Controller
         foreach (range('A', 'AG') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(false);
         }
-       
+
         // $sheet->mergeCells('E7:E' . ($row - 1));
         // $sheet->mergeCells('A' . $row . ':Q' . $row);
         $row++;
@@ -694,40 +705,307 @@ class Reporte extends Controller
         $sheet->getStyle('A1:AG' . $row)->getFont()->setName('Arial');
         // $sheet->getStyle('A' . ($row - 2) . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        $sheet->getColumnDimension('A')->setWidth(35);
-        $sheet->getColumnDimension('B')->setWidth(6);
-        $sheet->getColumnDimension('C')->setWidth(6);
-        $sheet->getColumnDimension('D')->setWidth(6);
-        $sheet->getColumnDimension('E')->setWidth(6);
-        $sheet->getColumnDimension('F')->setWidth(6);
-        $sheet->getColumnDimension('G')->setWidth(6);
-        $sheet->getColumnDimension('H')->setWidth(6);
-        $sheet->getColumnDimension('I')->setWidth(6);
-        $sheet->getColumnDimension('J')->setWidth(6);
-        $sheet->getColumnDimension('K')->setWidth(6);
-        $sheet->getColumnDimension('L')->setWidth(6);
-        $sheet->getColumnDimension('M')->setWidth(6);
-        $sheet->getColumnDimension('N')->setWidth(6);
-        $sheet->getColumnDimension('O')->setWidth(6);
-        $sheet->getColumnDimension('P')->setWidth(6);
-        $sheet->getColumnDimension('Q')->setWidth(6);
-        $sheet->getColumnDimension('R')->setWidth(6);
-        $sheet->getColumnDimension('S')->setWidth(6);
-        $sheet->getColumnDimension('T')->setWidth(6);
-        $sheet->getColumnDimension('U')->setWidth(6);
-        $sheet->getColumnDimension('V')->setWidth(6);
-        $sheet->getColumnDimension('W')->setWidth(6);
-        $sheet->getColumnDimension('X')->setWidth(6);
-        $sheet->getColumnDimension('Y')->setWidth(6);
-        $sheet->getColumnDimension('Z')->setWidth(6);
-        $sheet->getColumnDimension('AA')->setWidth(6);
-        $sheet->getColumnDimension('AB')->setWidth(6);
-        $sheet->getColumnDimension('AC')->setWidth(6);
-        $sheet->getColumnDimension('AD')->setWidth(6);
-        $sheet->getColumnDimension('AE')->setWidth(6);
-        $sheet->getColumnDimension('AF')->setWidth(6);
-        $sheet->getColumnDimension('AG')->setWidth(6);
+        // $sheet->getColumnDimension('A')->setWidth(35);
+        // $sheet->getColumnDimension('B')->setWidth(6);
+        // $sheet->getColumnDimension('C')->setWidth(6);
+        // $sheet->getColumnDimension('D')->setWidth(6);
+        // $sheet->getColumnDimension('E')->setWidth(6);
+        // $sheet->getColumnDimension('F')->setWidth(6);
+        // $sheet->getColumnDimension('G')->setWidth(6);
+        // $sheet->getColumnDimension('H')->setWidth(6);
+        // $sheet->getColumnDimension('I')->setWidth(6);
+        // $sheet->getColumnDimension('J')->setWidth(6);
+        // $sheet->getColumnDimension('K')->setWidth(6);
+        // $sheet->getColumnDimension('L')->setWidth(6);
+        // $sheet->getColumnDimension('M')->setWidth(6);
+        // $sheet->getColumnDimension('N')->setWidth(6);
+        // $sheet->getColumnDimension('O')->setWidth(6);
+        // $sheet->getColumnDimension('P')->setWidth(6);
+        // $sheet->getColumnDimension('Q')->setWidth(6);
+        // $sheet->getColumnDimension('R')->setWidth(6);
+        // $sheet->getColumnDimension('S')->setWidth(6);
+        // $sheet->getColumnDimension('T')->setWidth(6);
+        // $sheet->getColumnDimension('U')->setWidth(6);
+        // $sheet->getColumnDimension('V')->setWidth(6);
+        // $sheet->getColumnDimension('W')->setWidth(6);
+        // $sheet->getColumnDimension('X')->setWidth(6);
+        // $sheet->getColumnDimension('Y')->setWidth(6);
+        // $sheet->getColumnDimension('Z')->setWidth(6);
+        // $sheet->getColumnDimension('AA')->setWidth(6);
+        // $sheet->getColumnDimension('AB')->setWidth(6);
+        // $sheet->getColumnDimension('AC')->setWidth(6);
+        // $sheet->getColumnDimension('AD')->setWidth(6);
+        // $sheet->getColumnDimension('AE')->setWidth(6);
+        // $sheet->getColumnDimension('AF')->setWidth(6);
+        // $sheet->getColumnDimension('AG')->setWidth(6);
+        foreach (range('A', 'AG') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        foreach (range('A', 'AG') as $columnID) {
+            $currentWidth = $sheet->getColumnDimension($columnID)->getWidth();
+            $extraWidth = 14; // Define el margen adicional que quieres agregar
+            $sheet->getColumnDimension($columnID)->setWidth($currentWidth + $extraWidth);
+        }
 
+        // Ajustar la altura de las filas dinámicamente a partir de la fila 7
+        $rowIterator = $sheet->getRowIterator(7); // Comienza desde la fila 7
+        foreach ($rowIterator as $row) {
+            $sheet->getRowDimension($row->getRowIndex())->setRowHeight(-1); // Ajusta automáticamente
+        }
+        $sheet->getColumnDimension('A')->setWidth(45);
+
+
+        $nombreArchivo = "Reporte_General_" . $anio . "_" . $nombreMes . ".xlsx";
+        $fileName = $nombreArchivo;
+
+        // Crear un escritor para guardar el archivo
+        $writer = new Xlsx($spread);
+
+        // Especificar la ruta donde guardar el archivo
+        $filePath = './Uploads/Reportes/' . $fileName;
+
+        // Guardar el archivo
+        $writer->save($filePath);
+        // }
+
+
+        if ($data == 0) {
+            $mensaje = "valor Vacio  Mes $mes año $anio";
+        }
+
+        return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje];
+    }
+
+    public function exportarGeneralTardanza($mes, $anio)
+    {
+        $mensaje = '';
+        $cantidad = 0;
+        $reporte = 0;
+        $filePath = '';
+        $fileName = '';
+        $nuevo_nombre = "";
+        $nombreArchivo = '';
+
+        $nombre_mes = [
+            'Enero',
+            'Febrero',
+            'Marzo',
+            'Abril',
+            'Mayo',
+            'Junio',
+            'Julio',
+            'Agosto',
+            'Setiembre',
+            'Octubre',
+            'Noviembre',
+            'Diciembre'
+
+        ];
+        $diasDeLaSemana = [
+            'lun.',
+            'mar.',
+            'mié.',
+            'jue.',
+            'vie.',
+            'sáb.',
+            'dom.'
+        ];
+
+        $nombreMes = $nombre_mes[$mes - 1];
+
+        $cantidad++;
+        $nombre = '';
+
+        $total = 0;
+        $total_real = 0;
+
+        $data = $this->model->reporteGeneralTardanza($mes, $anio);
+        // if (empty($data)) {
+        //     $mensaje = "valor Vacio  Mes $mes año $anio";
+        // }
+        // if ($data) {
+        date_default_timezone_set("America/Lima");
+        setlocale(LC_TIME, 'es_PE.UTF-8', 'esp');
+
+        $fecha_actual = date('d-m-Y');
+        $hora_actual = date('H:i:s');
+
+        $spread = new Spreadsheet();
+        $sheet = $spread->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Reporte de Trabajadores ' . strtoupper($nombreMes) . ' del ' . $anio);
+        $sheet->mergeCells('A1:Q1');
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(18);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+
+        $sheet->mergeCells('A2:Q2');
+
+        // $sheet->setCellValue('A3', 'Nombre:');
+        // $sheet->mergeCells('A3:C3');
+        // $sheet->getStyle('A3')->getFont()->setBold(true)->setSize(10);
+        // $sheet->getStyle('A3')->getAlignment()->setHorizontal('center');
+        // $sheet->getStyle('A3')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff424242'); // Cambia 'FFFF0000' al color deseado
+        // $sheet->getStyle('A3')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+
+        // $sheet->setCellValue('D3', $nombre);
+        // $sheet->mergeCells('D3:I3');
+        // $sheet->getStyle('D3')->getFont()->setBold(true)->setSize(10);
+        // $sheet->getStyle('D3')->getAlignment()->setHorizontal('center');
+
+
+        $sheet->setCellValue('A4', 'Hora de Reporte:');
+        $sheet->mergeCells('A4:C4');
+        $sheet->getStyle('A4')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('A4')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff424242'); // Cambia 'FFFF0000' al color deseado
+        $sheet->getStyle('A4')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+
+        $sheet->mergeCells('A3:I3');
+        $sheet->setCellValue('D4', "$hora_actual - $fecha_actual");
+        $sheet->mergeCells('D4:I4');
+        $sheet->getStyle('D4')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('D4')->getAlignment()->setHorizontal('center');
+        $sheet->mergeCells('A5:I5');
+
+
+        // $sheet->mergeCells('A6:AG6');
+        $sheet->mergeCells('J3:AG5');
+
+        $headers = ['Nombre','Total', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+        $sheet->fromArray($headers, NULL, 'A6');
+        $sheet->getStyle('A6:AG6')->getFont()->setBold(true);
+        $sheet->getStyle('A6:AG6')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+        $sheet->getStyle('A6:AG6')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff5dade2');
+        // $sheet->getStyle('E7')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffffffff');
+
+        $row = 7; // Comienza en la fila 7
+
+        if (!empty($data)) {
+            foreach ($data as $registro) {
+                $nombre = $registro['trabajador_nombre'];
+                $tardanza = $registro['trabajador_nombre'];
+                $detalle = $registro['detalles'];
+                
+
+
+                // Dividir los detalles por espacio para obtener cada día
+                $detalles_separados = explode(' ', $detalle);
+
+                $dias = [];
+
+                foreach ($detalles_separados as $detalle) {
+                    // Separar cada detalle por '_'
+                    $detalle_partes = explode('_', $detalle);
+
+                    if (count($detalle_partes) >= 2) {
+                        $fecha_completa = $detalle_partes[0];
+                        if ($detalle_partes[1] == 'HONOMASTICO') {
+                            $detalle_partes[1] = 'HO';
+                        }
+                        if ($detalle_partes[1] == 'FERIADO') {
+                            $detalle_partes[1] = 'FE';
+                        }
+                        $licencia = $detalle_partes[1];
+
+                        // Formatear la fecha
+                        $fecha_partes = explode('-', $fecha_completa);
+                        if (count($fecha_partes) == 3) {
+                            $dia = (int)$fecha_partes[2]; // Obtener el día como entero
+
+                            // Crear el índice del día
+                            $indice_dia = sprintf("%02d", $dia);
+
+                            // Asignar la licencia al array de días
+                            $dias[$indice_dia] = $licencia;
+                        }
+                    }
+                }
+                $sheet->setCellValue('A' . $row, $nombre);
+                $sheet->setCellValue('B' . $row, $tardanza);
+                for ($i = 1; $i <= 31; $i++) {
+                    $columna = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i + 2); // Usar la función correcta para obtener la letra de la columna
+                    $indice_dia = sprintf("%02d", $i);                                            // este numero es la columna
+                    if (isset($dias[$indice_dia])) {
+                        $sheet->setCellValue($columna . $row, $dias[$indice_dia]);
+                    }
+                }
+
+
+                // for ($i = 1; $i <= 31; $i++) {
+                //     $columna = chr(65 + $i); // 'B' para el día 01, 'C' para el día 02, etc.
+                //     $indice_dia = sprintf("%02d", $i);
+                //     if (isset($dias[$indice_dia])) {
+                //         $sheet->setCellValue($columna . $row, $dias[$indice_dia]);
+                //     }
+                // }
+                $row++;
+            }
+        }
+
+
+        foreach (range('A', 'AG') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(false);
+        }
+
+        // $sheet->mergeCells('E7:E' . ($row - 1));
+        // $sheet->mergeCells('A' . $row . ':Q' . $row);
+        $row++;
+
+        $sheet->getStyle('A6:AG' . $row)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A7:A' . $row)->getAlignment()->setHorizontal('left');
+        $sheet->getStyle('A6:AG' . $row)->getFont()->setSize(11);
+
+        $sheet->getStyle('A1:AG' . $row)->getFont()->setName('Arial');
+        // $sheet->getStyle('A' . ($row - 2) . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
+        // $sheet->getColumnDimension('A')->setWidth(35);
+        // $sheet->getColumnDimension('B')->setWidth(6);
+        // $sheet->getColumnDimension('C')->setWidth(6);
+        // $sheet->getColumnDimension('D')->setWidth(6);
+        // $sheet->getColumnDimension('E')->setWidth(6);
+        // $sheet->getColumnDimension('F')->setWidth(6);
+        // $sheet->getColumnDimension('G')->setWidth(6);
+        // $sheet->getColumnDimension('H')->setWidth(6);
+        // $sheet->getColumnDimension('I')->setWidth(6);
+        // $sheet->getColumnDimension('J')->setWidth(6);
+        // $sheet->getColumnDimension('K')->setWidth(6);
+        // $sheet->getColumnDimension('L')->setWidth(6);
+        // $sheet->getColumnDimension('M')->setWidth(6);
+        // $sheet->getColumnDimension('N')->setWidth(6);
+        // $sheet->getColumnDimension('O')->setWidth(6);
+        // $sheet->getColumnDimension('P')->setWidth(6);
+        // $sheet->getColumnDimension('Q')->setWidth(6);
+        // $sheet->getColumnDimension('R')->setWidth(6);
+        // $sheet->getColumnDimension('S')->setWidth(6);
+        // $sheet->getColumnDimension('T')->setWidth(6);
+        // $sheet->getColumnDimension('U')->setWidth(6);
+        // $sheet->getColumnDimension('V')->setWidth(6);
+        // $sheet->getColumnDimension('W')->setWidth(6);
+        // $sheet->getColumnDimension('X')->setWidth(6);
+        // $sheet->getColumnDimension('Y')->setWidth(6);
+        // $sheet->getColumnDimension('Z')->setWidth(6);
+        // $sheet->getColumnDimension('AA')->setWidth(6);
+        // $sheet->getColumnDimension('AB')->setWidth(6);
+        // $sheet->getColumnDimension('AC')->setWidth(6);
+        // $sheet->getColumnDimension('AD')->setWidth(6);
+        // $sheet->getColumnDimension('AE')->setWidth(6);
+        // $sheet->getColumnDimension('AF')->setWidth(6);
+        // $sheet->getColumnDimension('AG')->setWidth(6);
+        foreach (range('A', 'AG') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+        foreach (range('A', 'AG') as $columnID) {
+            $currentWidth = $sheet->getColumnDimension($columnID)->getWidth();
+            $extraWidth = 14; // Define el margen adicional que quieres agregar
+            $sheet->getColumnDimension($columnID)->setWidth($currentWidth + $extraWidth);
+        }
+
+        // Ajustar la altura de las filas dinámicamente a partir de la fila 7
+        $rowIterator = $sheet->getRowIterator(7); // Comienza desde la fila 7
+        foreach ($rowIterator as $row) {
+            $sheet->getRowDimension($row->getRowIndex())->setRowHeight(-1); // Ajusta automáticamente
+        }
+        $sheet->getColumnDimension('A')->setWidth(45);
 
 
         $nombreArchivo = "Reporte_General_" . $anio . "_" . $nombreMes . ".xlsx";
