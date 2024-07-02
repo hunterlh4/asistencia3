@@ -29,7 +29,7 @@ class ImportarModel extends Query
     // }
     public function getTrabajador($telefono_id)
     {
-        $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total
+        $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total,t.fecha_nacimiento as fecha_nacimiento
         FROM trabajador AS t INNER JOIN horariodetalle AS hd
         ON hd.id = t.horariodetalle_id WHERE telefono_id = '$telefono_id' ";
         return $this->select($sql);
@@ -48,6 +48,11 @@ class ImportarModel extends Query
         $sql = "INSERT INTO trabajador (apellido_nombre,telefono_id,institucion,modalidad_trabajo) VALUES (?,?,?,?)";
         $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo);
         return $this->insertar($sql, $array);
+    }
+
+    public function getAllfestividad (){
+        $sql = "SELECT * from festividad";
+        return $this->selectAll($sql);
     }
 
     // public function registrarAsistenciaantiguo($trabajador_id,$licencia,$fecha,$entrada,$salida,$total_reloj,$total,$tardanza,$tardanza_cantidad,$justificacion,$reloj_1,$reloj_2,$reloj_3,$reloj_4,$reloj_5,$reloj_6,$reloj_7,$reloj_8)

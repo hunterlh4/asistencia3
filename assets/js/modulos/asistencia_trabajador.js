@@ -24,7 +24,6 @@ const reloj_5 = document.querySelector("#reloj_5");
 const reloj_6 = document.querySelector("#reloj_6");
 const reloj_7 = document.querySelector("#reloj_7");
 const reloj_8 = document.querySelector("#reloj_8");
-//
 var events = [];
 
 var boleta = [];
@@ -90,7 +89,6 @@ function obtenerDescripcion(abreviacion) {
   return razones[abreviacion] || "Desconocido";
 }
 
-// calendario click, buttons y renderizado de datos
 const fechaActual = new Date();
     const añoActual = fechaActual.getFullYear();
     const fechaInicio = añoActual + '-01-01'; // Primero de enero del año actual
@@ -173,7 +171,6 @@ var calendar = $("#myEvent").fullCalendar({
 
   viewRender: function (view, element) {
     // Cambia el texto del encabezado del calendario
-
     var mesActual = view.intervalStart.month();
     var añoActual = view.intervalStart.year();
     var nombremes = monthNames[mesActual];
@@ -198,7 +195,6 @@ var calendar = $("#myEvent").fullCalendar({
       // Establecer el texto del elemento con el nombre del día de la semana en español
       $(this).text(spanishDayName);
     });
-
     // Cambia los nombres de los meses
     $(".fc-month-button").text("Mes");
     $(".fc-agendaWeek-button").text("Semana");
@@ -219,7 +215,6 @@ var calendar = $("#myEvent").fullCalendar({
 
       modificarCalendario();
     });
-
     // var monthName = moment(view.start).format("MMMM");
     //               $(".fc-center").text(monthName);
   },

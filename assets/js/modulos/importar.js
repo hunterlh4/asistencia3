@@ -254,7 +254,9 @@ function cargarDatos_csv(file, tipo) {
           loadingMessage.style.display = "none";
           
           resetFileInput();
-          Swal.fire("Aviso", "Todos los datos han sido enviados. <br> Aceptados:"+aceptado+"<br> Ignorados:"+ignorado+"<br>Total:"+total, "success");
+          Swal.fire("Aviso", `Todos los datos han sido enviados. <br> Aceptados: ${aceptado}  <br> Modificados: ${modificado} <br> Ignorados: ${ignorado} <br>Total: ${total}`, "success");
+          // Swal.fire("Aviso", `Todos los datos han sido enviados. <br> Aceptados: ${aceptado} <br> Ignorados: ${ignorado} <br> Total: ${total}`, "success");
+
           return;
         }
 
@@ -282,11 +284,13 @@ function cargarDatos_csv(file, tipo) {
             botonImportar.disabled = true;
           },
           success: function (response) {
-            console.log(response);
+            // console.log(response);
             const res = JSON.parse(response);
+            console.log(res);
             total=total+res.total;
             ignorado = ignorado+res.ignorado;
             aceptado = aceptado+res.aceptado;
+            modificado = aceptado+res.modificado;
             // console.log(res);
             sendBatch(batchNumber + 1);
           },

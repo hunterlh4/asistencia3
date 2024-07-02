@@ -17,42 +17,87 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
 
-                    <h3 class="font-weight-bolder col-md-3"><i class="fa fa-briefcase"></i> Busqueda</h3>
+                    <!-- <h3 class="font-weight-bolder col-md-3"><i class="fa fa-briefcase"></i> Busqueda</h3> -->
                     <!-- <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button> -->
+                    <div class="d-flex align-items-center" style="flex: 1;">
+                      <h3 class="font-weight-bolder mb-0 mr-3"><i class="fa fa-briefcase"></i> Busqueda</h3>
 
+                      <div class="dropdown" id="miDropdown">
+                      <h4 class="font-weight-bolder mb-0 mr-3" id="dropdownMenuButton" >
+                          <i class="fa fa-info-circle"></i>
+                        </h4>
+                        <div class="dropdown-menu info dropdown-menu-left">
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle red"></i> No Marco Salida</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle orange"></i> +30</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle gray"></i> Sin registro</a>
+                          <a class="dropdown-item has-icon"><i class="fas fa-circle green"></i> OK</a>
+                        </div>
+                      </div>
+                      
+                    </div>
 
                     <!-- <label>Select2</label> -->
-                    <select class="form-control select2 col-md-9" id="trabajador" required>
+                    <div class="d-flex align-items-center" style="flex: 2;">
+                    <select class="form-control select2 col-md-12" id="trabajador" required>
                       <option value="" selected>Selecciona un trabajador</option>
 
                     </select>
+                    </div>
+                    <div class="d-flex align-items-center" >
+                  
+                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="calendario-tab" data-toggle="tab" href="#calendario" role="tab" aria-controls="hora" aria-selected="true">Calendario</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="detalle-tab" data-toggle="tab" href="#detalle" role="tab" aria-controls="detalle" aria-selected="false">Detallado</a>
+                        </li>
+                      </ul>
+                     
+                    </div>
 
                   </div>
 
                   <div class="card-body">
-                    <!-- <div class="table-responsive">
-                      <table class="table table-striped table-hover" style="width:100%;" id="table-alex">
-                        <thead>
-                          <tr>
-                            <th class="text-center"># </th>
-                            <th>Nombre</th>
-                            <th>Nivel</th>
-                            <th>Estado</th>
-                            <th>accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                    </div> -->
 
-                    <div class="fc-overflow">
 
-                      <div id="myEvent">
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="calendario" role="tabpanel" aria-labelledby="calendario-tab">
+                        <div class="fc-overflow">
 
+                          <div id="myEvent">
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="detalle" role="tabpanel" aria-labelledby="detalle-tab">
+                        <div class="table-responsive">
+                          <table class="table table-striped table-hover text-center " style="width:100%;" id="table-detalle-alex">
+                            <thead>
+                              <tr>
+                                <th style="width: 40px;">Dia </th>
+                                <th style="width: 40px;">Fecha</th>
+                                <th style="width: 50px;">Entrada</th>
+                                <th style="width: 50px;">Salida</th>
+                                <th style="width: 30px;">Tarde</th>
+                                <th style="width: 30px;">Licencia</th>
+                                <!-- <th>estado</th> -->
+                                <!-- <th style="width: 50px;">accion</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
 
+
+
+
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -255,7 +300,7 @@
 </body>
 
 <style>
- #myEvent .fc-center {
+  #myEvent .fc-center {
     font-size: 1.5em;
     /* Tamaño de fuente h2 */
     margin-top: 4px;
@@ -299,9 +344,58 @@ h5: 0.83em */
     display: block;
     padding-top: 3px;
     font-size: 1.4em;
-   
+
 
   }
+
+
+
+  /* Estilo para los items del dropdown */
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+  }
+
+  /* Estilo para el ícono en los items del dropdown */
+  
+
+
+  .dropdown-menu .dropdown-item:nth-child(1) i {
+    color: #F1948A;
+    /* Color para "No Marco Salida" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(2) i {
+    color: #F1948A;
+    /* Color para "+30" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(3) i {
+    color: gray;
+    /* Color para "Sin registro" */
+  }
+
+  .dropdown-menu .dropdown-item:nth-child(4) i {
+    color: white; /* Color del icono */
+   
+}
+  .info {
+    /* left: -10px; Ajusta este valor según sea necesario */
+    background-color: #e4e7e7; 
+}
+
+
+#dropdownMenuButton{
+  background-color: white;
+  border-color: white;
+  box-shadow:none;
+  color:#6c757d;
+
+  /* font-size: 4.5em; */
+ 
+}
+
+
 </style>
 
 </html>
