@@ -181,6 +181,7 @@ CREATE TABLE boleta (
     duracion interval(6) NULL,
     razon VARCHAR(150) NOT NULL,
     razon_especifica VARCHAR(150) NOT NULL,
+    tipo varchar(5) null,
     observaciones TEXT NULL,
     estado_tramite varchar(20) null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
@@ -303,6 +304,8 @@ CREATE TABLE festividad (
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP NULL
 );
+por cada tabla esto
+GRANT USAGE, SELECT ON SEQUENCE festividad_id_seq TO zqavzvpn_rrhh;
 
 
 -- create table pruebaasistencia(

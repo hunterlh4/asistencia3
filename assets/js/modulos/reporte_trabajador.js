@@ -141,7 +141,7 @@ function generar() {
           type: "POST",
           data: {mes: mes, anio: anioSeleccionado ,tipo:tipo.value }, // Puedes enviar datos adicionales si es necesario
           success: function (response) {
-            // console.log(response);
+            console.log(response);
             const datos = JSON.parse(response);
 
             borrarArchivo(datos);

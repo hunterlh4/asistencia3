@@ -227,7 +227,7 @@ class Reporte extends Controller
             $filePath = $peticion['filepath'];
             $nombreArchivo = $peticion['nombreArchivo'];
             $mensaje = $peticion['mensaje'];
-
+            // $envio = $peticion['data'];
             if (empty($mensaje)) {
                 $respuesta = ['msg' => 'agregado', 'icono' => 'success', 'archivo' => $filePath, 'nombre' => $nombreArchivo];
             } else {
@@ -236,7 +236,8 @@ class Reporte extends Controller
         } else {
             $respuesta = ['msg' => 'falta de datos', 'icono' => 'error'];
         }
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        // echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+        echo json_encode($respuesta);
         die();
     }
 
@@ -755,7 +756,7 @@ class Reporte extends Controller
         $sheet->getColumnDimension('A')->setWidth(45);
 
 
-        $nombreArchivo = "Reporte_General_" . $anio . "_" . $nombreMes . ".xlsx";
+        $nombreArchivo = "Reporte_General_Licencia_" . $anio . "_" . $nombreMes . ".xlsx";
         $fileName = $nombreArchivo;
 
         // Crear un escritor para guardar el archivo
@@ -879,13 +880,13 @@ class Reporte extends Controller
         // $sheet->getStyle('E7')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffffffff');
 
         $row = 7; // Comienza en la fila 7
-
+        // $envio []=[];
         if (!empty($data)) {
             foreach ($data as $registro) {
                 $nombre = $registro['trabajador_nombre'];
-                $tardanza = $registro['trabajador_nombre'];
+                $tardanza = $registro['suma_tardanza'];
                 $detalle = $registro['detalles'];
-                
+                // $envio []=$registro;
 
 
                 // Dividir los detalles por espacio para obtener cada día
@@ -958,42 +959,7 @@ class Reporte extends Controller
         $sheet->getStyle('A1:AG' . $row)->getFont()->setName('Arial');
         // $sheet->getStyle('A' . ($row - 2) . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        // $sheet->getColumnDimension('A')->setWidth(35);
-        // $sheet->getColumnDimension('B')->setWidth(6);
-        // $sheet->getColumnDimension('C')->setWidth(6);
-        // $sheet->getColumnDimension('D')->setWidth(6);
-        // $sheet->getColumnDimension('E')->setWidth(6);
-        // $sheet->getColumnDimension('F')->setWidth(6);
-        // $sheet->getColumnDimension('G')->setWidth(6);
-        // $sheet->getColumnDimension('H')->setWidth(6);
-        // $sheet->getColumnDimension('I')->setWidth(6);
-        // $sheet->getColumnDimension('J')->setWidth(6);
-        // $sheet->getColumnDimension('K')->setWidth(6);
-        // $sheet->getColumnDimension('L')->setWidth(6);
-        // $sheet->getColumnDimension('M')->setWidth(6);
-        // $sheet->getColumnDimension('N')->setWidth(6);
-        // $sheet->getColumnDimension('O')->setWidth(6);
-        // $sheet->getColumnDimension('P')->setWidth(6);
-        // $sheet->getColumnDimension('Q')->setWidth(6);
-        // $sheet->getColumnDimension('R')->setWidth(6);
-        // $sheet->getColumnDimension('S')->setWidth(6);
-        // $sheet->getColumnDimension('T')->setWidth(6);
-        // $sheet->getColumnDimension('U')->setWidth(6);
-        // $sheet->getColumnDimension('V')->setWidth(6);
-        // $sheet->getColumnDimension('W')->setWidth(6);
-        // $sheet->getColumnDimension('X')->setWidth(6);
-        // $sheet->getColumnDimension('Y')->setWidth(6);
-        // $sheet->getColumnDimension('Z')->setWidth(6);
-        // $sheet->getColumnDimension('AA')->setWidth(6);
-        // $sheet->getColumnDimension('AB')->setWidth(6);
-        // $sheet->getColumnDimension('AC')->setWidth(6);
-        // $sheet->getColumnDimension('AD')->setWidth(6);
-        // $sheet->getColumnDimension('AE')->setWidth(6);
-        // $sheet->getColumnDimension('AF')->setWidth(6);
-        // $sheet->getColumnDimension('AG')->setWidth(6);
-        foreach (range('A', 'AG') as $columnID) {
-            $sheet->getColumnDimension($columnID)->setAutoSize(true);
-        }
+      
         foreach (range('A', 'AG') as $columnID) {
             $currentWidth = $sheet->getColumnDimension($columnID)->getWidth();
             $extraWidth = 14; // Define el margen adicional que quieres agregar
@@ -1005,10 +971,11 @@ class Reporte extends Controller
         foreach ($rowIterator as $row) {
             $sheet->getRowDimension($row->getRowIndex())->setRowHeight(-1); // Ajusta automáticamente
         }
-        $sheet->getColumnDimension('A')->setWidth(45);
+        $sheet->getColumnDimension('A')->setWidth(46);
+        
 
 
-        $nombreArchivo = "Reporte_General_" . $anio . "_" . $nombreMes . ".xlsx";
+        $nombreArchivo = "Reporte_General_Tardanza_" . $anio . "_" . $nombreMes . ".xlsx";
         $fileName = $nombreArchivo;
 
         // Crear un escritor para guardar el archivo
@@ -1026,7 +993,7 @@ class Reporte extends Controller
             $mensaje = "valor Vacio  Mes $mes año $anio";
         }
 
-        return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje];
+        return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje,'data' => ''  ];
     }
 
     public function mal()

@@ -108,7 +108,7 @@ class ReporteModel extends Query
 
                 SELECT
                     t.apellido_nombre AS trabajador_nombre,
-                     TO_CHAR(INTERVAL '1 second' * SUM(EXTRACT(EPOCH FROM a.tardanza)), 'HH24:MI') AS total_tardanza,
+                     TO_CHAR(INTERVAL '1 second' * SUM(EXTRACT(EPOCH FROM a.tardanza)), 'HH24:MI') AS suma_tardanza,
                     STRING_AGG(
                         TO_CHAR(DATE_TRUNC('day', d.fecha), 'YYYY-MM-DD') || '_' || TO_CHAR(a.tardanza, 'HH24:MI'),
                         ' '

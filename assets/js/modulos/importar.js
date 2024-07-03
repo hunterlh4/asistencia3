@@ -6,12 +6,16 @@ const inputHiddenFile = document.querySelector("#nombreArchivoActual");
 const labelFile = document.querySelector("#nombreArchivo");
 const archivo = document.getElementById("archivo");
 
+var buttons = document.querySelectorAll('button[data-toggle="collapse"]');
+var collapses = document.querySelectorAll('.collapse');
+
 const botonImportar = document.getElementById("Importar");
 
 const loadingMessage = document.getElementById("loadingMessage");
 
 document.addEventListener("DOMContentLoaded", function () {
   botonImportar.disabled = true;
+  collapsebutton()
 });
 
 function resetFileInput() {
@@ -207,25 +211,30 @@ formulario.addEventListener("submit", function (e) {
     });
   }
   if (extension === "xls") {
-    let reader = new FileReader();
-    reader.onload = function (e) {
-      let data = new Uint8Array(e.target.result);
-      let workbook = XLSX.read(data, { type: "array" });
-      let sheet = workbook.Sheets[workbook.SheetNames[0]];
-      let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    Swal.fire(
+      "Aviso",
+      "Por favor, selecciona un archivo CSV o XLS".toUpperCase(),
+      "warning"
+    );
+    // let reader = new FileReader();
+    // reader.onload = function (e) {
+    //   let data = new Uint8Array(e.target.result);
+    //   let workbook = XLSX.read(data, { type: "array" });
+    //   let sheet = workbook.Sheets[workbook.SheetNames[0]];
+    //   let jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-      let header = jsonData[0].map((item) =>
-        typeof item === "string" ? item : ""
-      );
-      let cleanedHeader = limpiarEncabezado(header);
+    //   let header = jsonData[0].map((item) =>
+    //     typeof item === "string" ? item : ""
+    //   );
+    //   let cleanedHeader = limpiarEncabezado(header);
 
-      // console.log(header);
-      // console.log(jsonData[0]);
-      // console.log(jsonData);
-      // console.log(JSON.stringify(jsonData[0]));
-    //   console.log(cleanedHeader);
-    };
-    reader.readAsArrayBuffer(file);
+    //   // console.log(header);
+    //   // console.log(jsonData[0]);
+    //   // console.log(jsonData);
+    //   // console.log(JSON.stringify(jsonData[0]));
+    // //   console.log(cleanedHeader);
+    // };
+    // reader.readAsArrayBuffer(file);
   }
 });
 
@@ -354,7 +363,7 @@ function cargarDatos_xlsx(file, tipo) {
         },
         success: function (response) {
           const res = JSON.parse(response);
-        //   console.log(res);
+          console.log(res);
           sendBatch(batchNumber + 1);
         },
         error: function (xhr, status, error) {
@@ -368,6 +377,28 @@ function cargarDatos_xlsx(file, tipo) {
     sendBatch(0); // Iniciar el envío de lotes
   };
   reader.readAsArrayBuffer(file);
+}
+
+function cargarDatos_xlsx_vertical(file, tipo){
+
+}
+
+function collapsebutton(){
+  buttons.forEach(function(button) {
+    button.addEventListener('click', function() {
+        var target = document.querySelector(this.dataset.target);
+
+        // Cierra todos los paneles excepto el seleccionado
+        collapses.forEach(function(collapse) {
+            if (collapse !== target) {
+                $(collapse).collapse('hide');
+            }
+        });
+
+        // Abre el panel seleccionado
+        $(target).collapse('toggle');
+    });
+});
 }
 
 // codigo antiguio

@@ -52,18 +52,7 @@ class Importar extends Controller
                 // Asignar el nuevo valor al campo 'Nombre'
                 $data[$key]['Nombre'] = $nombre;
             }
-            //     Fecha,ID,Nombre Usuario,Departamento,Entrada - Salida 1,Entrada - Salida 2,Entrada - Salida 3,Entrada - Salida 4,Entrada - Salida 5,Entrada - Salida 6,Entrada - Salida 7,Entrada - Salida 8,Descanso,Tiempo Trabajado
-            //     // Asegúrate de que cada registro tiene la estructura esperada
-            //     if (isset($registro['Fecha'], $registro['ID'])) {
-            //         // $columna1 = $registro['columna1'];
-            //         // $columna2 = $registro['columna2'];
-            //         // Procesa cada campo según sea necesario
-            //         // $this->model->insertarRegistro($columna1, $columna2);
-            //     } else {
-            //         http_response_code(400);
-            //         echo json_encode(['msg' => 'Estructura de datos incorrecta', 'icono' => 'error']);
-            //         exit;
-            //     }
+
         }
         echo json_encode($data);
         // echo json_encode(['msg' => 'Datos importados exitosamente', 'icono' => 'success']);

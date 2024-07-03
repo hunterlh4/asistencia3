@@ -62,4 +62,3 @@ class Query extends Conexion{
     }
 }
 ?>
-
