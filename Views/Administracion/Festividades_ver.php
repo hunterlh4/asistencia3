@@ -181,9 +181,15 @@ include './Views/includes/sidebarnew.php';
     </html>
     <script src="<?php echo BASE_URL; ?>/assets/js/modulos/festividad_ver.js"></script>
     <!-- <script src="<?php echo BASE_URL; ?>assets/bundles/fullcalendar/locales-all.js"></script> -->
+    <script>
+         const nivel_session = '<?php echo $data['nivel']; ?>';
+      
 
+    </script>
     <script>
         const base_url = '<?php echo BASE_URL; ?>';
+       
+        // console.log(nivel);
     </script>
 
     <style>

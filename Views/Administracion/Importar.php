@@ -42,6 +42,14 @@ include './Views/includes/sidebarnew.php';
                 </div>
                
             </form>
+            <!-- <div id="progress-container" style="display: none;">
+                <div id="progress-bar" style="width: 0%; background: green; height: 20px;"></div>
+            </div> -->
+            <div class="progress mb-3" style="height: 25px;" id="progress-container" style="display: none;">
+                <div class="progress-bar bg-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                <span id="progress-text">0%</span>
+                </div>
+            </div>
 
             
         </div>
@@ -70,7 +78,7 @@ include './Views/includes/sidebarnew.php';
                 </ul>
                      
             </div>
-        <div class="tab-content" id="myTabContent">
+            <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade show active" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
                         <div class="table-responsive">
                         <table class="table table-xl table-lg table-sm">
@@ -353,7 +361,7 @@ include './Views/includes/sidebarnew.php';
                         </div>
                       </div>
                       <div class="tab-pane fade" id="nav6" role="tabpanel" aria-labelledby="nav6-tab">
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                         <div class="selectgroup-pills">
                         <div class="scrollable">
                             <label class="selectgroup-item">ID Usuario</label>
@@ -379,9 +387,84 @@ include './Views/includes/sidebarnew.php';
                             </div>
                         </div>
                         
+                        </div> -->
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID Usuario</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Departamento</th>
+                                        <th scope="col">Correo</th>
+                                        <th scope="col">Teléfono</th>
+                                        <th scope="col">Fecha Inicio</th>
+                                        <th scope="col">Fecha Vencimiento</th>
+                                        <th scope="col">Nivel Admin</th>
+                                        <th scope="col">Modo Autenticación</th>
+                                        <th scope="col">Número de Template</th>
+                                        <th scope="col">Grupo de Acceso1</th>
+                                        <th scope="col">Grupo de Acceso2</th>
+                                        <th scope="col">Grupo de Acceso3</th>
+                                        <th scope="col">Grupo de Acceso4</th>
+                                        <th scope="col">Número Tarjeta</th>
+                                        <th scope="col">Bypass</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Date of Birth</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12345678</td>
+                                        <td>John Doe</td>
+                                        <td>DIRESA/NOMBRADO</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>2010-01-01 00:00:00</td>
+                                        <td>2030-09-01 01:00:00</td>
+                                        <td>Usuario Normal</td>
+                                        <td>Dispositivo Predeterminado</td>
+                                        <td>3</td>
+                                        <td>Acceso Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>5000000-99</td>
+                                        <td>Y</td>
+                                        <td>Guest</td>
+                                        <td></td>
+                                        <td>Male</td>
+                                        <td>26/03/2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td>87654321</td>
+                                        <td>Jane Smith</td>
+                                        <td>DIRESA/NOMBRADO</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>2010-01-01 00:00:00</td>
+                                        <td>2030-09-01 01:00:00</td>
+                                        <td>Usuario Normal</td>
+                                        <td>Dispositivo Predeterminado</td>
+                                        <td>3</td>
+                                        <td>Acceso Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>5000000-99</td>
+                                        <td>Y</td>
+                                        <td>Guest</td>
+                                        <td></td>
+                                        <td>Female</td>
+                                        <td>26/03/2024</td>
+                                    </tr>
+                                    <!-- Puedes agregar más filas según sea necesario -->
+                                </tbody>
+                            </table>
                         </div>
-                        </div>
-                      </div>
+                    </div>
+            </div>
         </div>
     </div>
 

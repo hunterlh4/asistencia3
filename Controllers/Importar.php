@@ -52,7 +52,6 @@ class Importar extends Controller
                 // Asignar el nuevo valor al campo 'Nombre'
                 $data[$key]['Nombre'] = $nombre;
             }
-
         }
         echo json_encode($data);
         // echo json_encode(['msg' => 'Datos importados exitosamente', 'icono' => 'success']);
@@ -72,19 +71,30 @@ class Importar extends Controller
             echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
             exit;
         }
+        
         $aceptado = 0;
         $ignorado = 0;
+        $modificado = 0;
         $total = count($data);
-        $nombresAceptados = [];
+        $detalles = []; 
         foreach ($data as $key => $registro) {
-
             $valido = true;
-
+    
             $idUsuario = isset($registro['ID Usuario']) ? $registro['ID Usuario'] : '';
             $nombre = isset($registro['Nombre']) ? $registro['Nombre'] : '';
             $departamento = isset($registro['Departamento']) ? $registro['Departamento'] : '';
             $fechaInicio = isset($registro['Fecha Inicio']) ? $registro['Fecha Inicio'] : '';
             $fechaVencimiento = isset($registro['Fecha Vencimiento']) ? $registro['Fecha Vencimiento'] : '';
+            
+            $detalleRegistro = [
+                'ID Usuario' => $idUsuario,
+                'Nombre' => $nombre,
+                'Departamento' => $departamento,
+                'Aceptado' => false,
+                'Modificado' => false,
+                'Ignorado' => false,
+                // Agrega otros detalles que desees filtrar y mostrar
+            ];
 
             if (!empty($departamento)) {
                 if (
@@ -94,53 +104,52 @@ class Importar extends Controller
                 ) {
                     $valido = false;
                     $ignorado++;
+                    $detalleRegistro['Ignorado'] = true;
                 }
             }
-            // if (!$valido) {
-            //     // $total++;
-            //     $ignorado++;
-            // }
+    
             if ($valido && $idUsuario) {
-                // $total++;
                 $result = $this->model->getTrabajador($idUsuario);
+                $modalidad_trabajo = 'Presencial';
+                $institucion = 'DIRESA';
+    
+                if (!empty($nombre)) {
+                    $nombre = mb_convert_encoding($nombre, 'ISO-8859-1', 'UTF-8');
+                    $nombre = str_replace('?', 'Ñ', $nombre);
+                    $nombre = preg_replace('/\s+/', ' ', $nombre); // Eliminar espacios adicionales
+                }
+    
                 if (empty($result)) {
-                    $modalidad_trabajo = 'Presencial';
-                    $institucion = 'DIRESA';
-
-                    if (!empty($nombre)) {
-                        $nombre = mb_convert_encoding($nombre, 'ISO-8859-1', 'UTF-8');
-                        $nombre = str_replace('?', 'Ñ', $nombre);
-                        $nombre = preg_replace('/\s+/', ' ', $nombre); // Eliminar espacios adicionales
-
-                        // $data[$key]['Nombre'] = $nombre;
-                    }
-                    // if (!empty($fechaInicio)) {
-                    //     $timestamp = strtotime($fechaInicio);
-                    //     $fechaInicio = date('Y-m-d', $timestamp);
-                    //         // $data[$key]['Fecha Inicio'] = $fechaInicio;
-                    // }
-                    // if (!empty($fechaVencimiento)) {
-                    //     $timestamp = strtotime($fechaVencimiento);
-                    //     $fechaVencimiento = date('Y-m-d', $timestamp);
-                    //         // $data[$key]['Fecha Vencimiento'] = $fechaVencimiento;
-                    // }    
-                    // registrarTrabajador
-                    // $nombresAceptados[] =$idUsuario.'|'. $nombre .'|'.$departamento .'|'.$total;
-
-                    // $aceptado++;
                     $result = $this->model->registrarTrabajador($nombre, $idUsuario, $institucion, $modalidad_trabajo);
                     if ($result > 0) {
                         $aceptado++;
+                        // $detalleRegistro['Aceptado'] = true;
                     } else {
                         $ignorado++;
+                        // $detalleRegistro['Ignorado'] = true;
                     }
                 } else {
-                    $ignorado++;
+                    $trabajador_id = $result['tid'];
+                    $result = $this->model->modificarTrabajador($nombre, $idUsuario, $institucion, $modalidad_trabajo, $trabajador_id);
+                    if ($result > 0) {
+                        $modificado++;
+                        // $detalleRegistro['Modificado'] = true;
+                    } else {
+                        $ignorado++;
+                        // $detalleRegistro['Ignorado'] = true;
+                    }
                 }
             }
+            // $detalles[] = $detalleRegistro;
         }
-
-        $respuesta = ['aceptado' => $aceptado, 'ignorado' => $ignorado, 'total' => $total];
+        $respuesta = [
+            'aceptado' => $aceptado,
+            'modificado' => $modificado,
+            'ignorado' => $ignorado,
+            'total' => $total,
+            // 'detalles' => $detalles, // Agrega el arreglo de detalles a la respuesta
+        ];
+        // echo json_encode($respuesta);
         echo json_encode($respuesta);
     }
 
@@ -223,13 +232,28 @@ class Importar extends Controller
                 }
 
 
+                // for ($i = 1; $i <= 8; $i++) {
+                //     $es_csv = isset($registro["Entrada - Salida $i"]) ? $registro["Entrada - Salida $i"] : '00:00';
+                //     if ($es_csv !== '00:00') {
+                //         if ($entrada === '00:00') {
+                //             $entrada = $es_csv;
+                //         }
+
+                //         $salida = $es_csv;
+                //     }
+                // }
+
                 for ($i = 1; $i <= 8; $i++) {
                     $es_csv = isset($registro["Entrada - Salida $i"]) ? $registro["Entrada - Salida $i"] : '00:00';
+
                     if ($es_csv !== '00:00') {
+                        // Si aún no se ha establecido la hora de entrada, asigna la marcación actual como la hora de entrada
                         if ($entrada === '00:00') {
                             $entrada = $es_csv;
                         }
-                        $salida = $es_csv;
+                        if ($es_csv !== $entrada) {
+                            $salida = $es_csv;
+                        }
                     }
                 }
 
@@ -286,7 +310,7 @@ class Importar extends Controller
                             }
                             if (strtotime($entrada) >= $entrada_trabajador_mas_30) {
                                 // Llegó más de 30 minutos tarde
-                                $tardanza_cantidad = 1;
+                                $tardanza_cantidad = 0;
                                 $licencia = '+30';
                             }
                             if (strtotime($entrada) >= $hora_salida_trabajador_formato) {
@@ -316,6 +340,9 @@ class Importar extends Controller
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
                         $licencia = 'HONOMASTICO';
                     }
+                    // if ($entrada == $salida && $licencia == 'NMS') {
+                    // }
+
                     $result = $this->model->getAsistencia($idUsuario_csv, $fecha_csv);
                     $justificacion = '';
                     // $registros[] = [$result];
@@ -361,6 +388,485 @@ class Importar extends Controller
         }
 
         $respuesta = ['aceptado' => $aceptado, 'modificado' => $modificado, 'ignorado' => $ignorado, 'total' => $total];
+        echo json_encode($respuesta);
+    }
+    public function importar_asistencia_frontera()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
+            exit;
+        }
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        if ($data === null) {
+            http_response_code(400);
+            echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
+            exit;
+        }
+
+        $aceptado = 0;
+        $ignorado = 0;
+        $modificado = 0;
+        $total = count($data);
+        $registros = [];
+        $posicion = 0;
+        foreach ($data as $key => $registro) {
+            $posicion++;
+            $valido = true;
+            $accion = '';
+            if (isset($registro['Fecha']) && isset($registro['Horas']) && isset($registro['Nro.'])) {
+                $fecha = $registro['Fecha'];
+                $timestamp = strtotime($fecha);
+                $fecha_cumpleaños_csv = date('m-d', $timestamp);
+                $telefono_id = $registro['Nro.'];
+                $accion = 'crear';
+                $registroHoras = [
+                    isset($registro['Horas'][0]) ? $registro['Horas'][0] : '00:00:00',
+                    isset($registro['Horas'][1]) ? $registro['Horas'][1] : '00:00:00',
+                    isset($registro['Horas'][2]) ? $registro['Horas'][2] : '00:00:00',
+                    isset($registro['Horas'][3]) ? $registro['Horas'][3] : '00:00:00',
+                    isset($registro['Horas'][4]) ? $registro['Horas'][4] : '00:00:00',
+                    isset($registro['Horas'][5]) ? $registro['Horas'][5] : '00:00:00',
+                    isset($registro['Horas'][6]) ? $registro['Horas'][6] : '00:00:00',
+                    isset($registro['Horas'][7]) ? $registro['Horas'][7] : '00:00:00'
+                ];
+
+                $result = $this->model->getAsistencia($telefono_id, $fecha);
+                if (($result)) {
+                    $asistencia_id = $result['aid'];
+                    $accion = 'editar';
+                    $dbHoras = [
+                        $result['reloj_1'],
+                        $result['reloj_2'],
+                        $result['reloj_3'],
+                        $result['reloj_4'],
+                        $result['reloj_5'],
+                        $result['reloj_6'],
+                        $result['reloj_7'],
+                        $result['reloj_8']
+                    ];
+                    $horasOrdenadas = $this->combinarYOrdenarHoras($dbHoras, $registroHoras);
+                    $reloj_1 = $horasOrdenadas[0];
+                    $reloj_2 = $horasOrdenadas[1];
+                    $reloj_3 = $horasOrdenadas[2];
+                    $reloj_4 = $horasOrdenadas[3];
+                    $reloj_5 = $horasOrdenadas[4];
+                    $reloj_6 = $horasOrdenadas[5];
+                    $reloj_7 = $horasOrdenadas[6];
+                    $reloj_8 = $horasOrdenadas[7];
+                } else {
+                    // Si no hay datos previos, usar las horas del registro directamente
+                    $reloj_1 = $registroHoras[0];
+                    $reloj_2 = $registroHoras[1];
+                    $reloj_3 = $registroHoras[2];
+                    $reloj_4 = $registroHoras[3];
+                    $reloj_5 = $registroHoras[4];
+                    $reloj_6 = $registroHoras[5];
+                    $reloj_7 = $registroHoras[6];
+                    $reloj_8 = $registroHoras[7];
+                }
+
+                $licencia = '';
+                $tardanza = '00:00:00';
+                $tardanza_cantidad = 0;
+                $es_festividad = false;
+                $es_honomastico = false;
+                $entrada = '00:00:00';
+                $salida = '00:00:00';
+                $total_horario = '00:00:00';
+                $total_entrada_salida_reloj = '00:00:00';
+
+                $timestamp = strtotime($fecha);
+                $fecha_csv = date('Y-m-d', $timestamp);
+
+                $result = $this->model->getAllfestividad();
+                $dia_csv = date('d', strtotime($fecha_csv));
+                $mes_csv = date('m', strtotime($fecha_csv));
+                for ($i = 0; $i < count($result); $i++) {
+
+                    // $dia = $result[$i]['dia_inicio'];
+                    $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
+                    $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
+                    if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                        $es_festividad = true;
+                        break;
+                    }
+                }
+
+                foreach ($horasOrdenadas as $hora) {
+                    if ($hora !== '00:00:00') {
+                        if ($entrada === '00:00:00') {
+                            $entrada = $hora;
+                        }
+                        if($hora !==$entrada){
+                        $salida = $hora;
+                        }
+
+                    }
+                }
+
+                $result = $this->model->getTrabajador($telefono_id);
+
+                if (empty($result)) {
+                    $ignorado++;
+                }
+                if ($result) {
+                    $trabajador_id = $result['tid'];
+                    $fecha_nacimiento_csv = isset($result['fecha_nacimiento']) ? $result['fecha_nacimiento'] : '3000-01-01';
+
+                    $fecha_nacimiento = strtotime($fecha_nacimiento_csv);
+                    $fecha_nacimiento = date('m-d', $fecha_nacimiento);
+
+                    $hora_entrada_trabajador_formato = strtotime($result['hora_entrada']);
+                    $hora_salida_trabajador_formato = strtotime($result['hora_salida']);
+                    $entrada_trabajador_mas_6 = strtotime('+6 minutes', $hora_entrada_trabajador_formato);
+                    $entrada_trabajador_mas_30 = strtotime('+31 minutes', $hora_entrada_trabajador_formato);
+
+                    $entrada_trabajador_limite = strtotime('+5 minutes', $hora_entrada_trabajador_formato);
+
+                    $entrada_timestamp = strtotime($entrada);
+                    $salida_timestamp = strtotime($salida);
+                    $diferencia_trabajador_segundos = $hora_salida_trabajador_formato - $hora_entrada_trabajador_formato;
+                    $diferencia_entrada_salida_segundos = $salida_timestamp - $entrada_timestamp;
+
+                    if ($reloj_1 == '00:00:00') {
+                        $licencia = 'SR';
+                    }
+
+                    if ($reloj_1 !== '00:00:00') {
+
+                        if ($salida == '00:00:00') {
+                            $licencia = 'NMS';
+                        }
+                        if ($salida !== '00:00:00') {
+                            if (strtotime($entrada) < $entrada_trabajador_mas_6) {
+                                // Llegó menos de 6 minutos tarde  
+                                $tardanza = '00:00:00';
+                                $tardanza_cantidad = 0;
+                            }
+                            if (
+                                strtotime($entrada) >= $entrada_trabajador_mas_6 &&
+                                strtotime($entrada) < $entrada_trabajador_mas_30
+                            ) {
+                                // Llegó entre 6 y 30 minutos tarde
+                                $tardanza_cantidad = 1;
+                            }
+                            if (strtotime($entrada) >= $entrada_trabajador_mas_30) {
+                                // Llegó más de 30 minutos tarde
+                                $tardanza_cantidad = 0;
+                                $licencia = '+30';
+                            }
+                            if (strtotime($entrada) >= $hora_salida_trabajador_formato) {
+                                $licencia = 'NME';
+                            }
+
+                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) >= $hora_salida_trabajador_formato) {
+                                $licencia = 'OK';
+                                $total_horario = gmdate('H:i', $diferencia_trabajador_segundos);
+                                $total_entrada_salida_reloj = gmdate('H:i', $diferencia_entrada_salida_segundos);
+                            }
+                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) < $hora_salida_trabajador_formato) {
+                                $licencia = 'NMS';
+                            }
+                        }
+                    }
+                    if ($reloj_1 !== '00:00' && $licencia == 'OK' && ($entrada_timestamp >= $entrada_trabajador_mas_6 &&
+                        $entrada_timestamp < $entrada_trabajador_mas_30)) {
+
+                        $diferencia_tardanza = $entrada_timestamp - $entrada_trabajador_limite;
+                        $tardanza = gmdate('H:i', $diferencia_tardanza);
+                    }
+
+                    if ($es_festividad == true) {
+                        $licencia = 'FERIADO';
+                    }
+                    if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
+                        $licencia = 'HONOMASTICO';
+                    }
+                    if ($entrada == $salida && $licencia == 'NMS') {
+                    }
+
+                    $justificacion = '';
+                    // $registros[] = [$result];
+                    if ($accion == 'crear') {
+                        // REGISTRO ASISTENCIA
+                        $aceptado++;
+                        $this->model->registrarAsistencia($trabajador_id, $licencia, $fecha, $entrada, $salida, $tardanza, $tardanza_cantidad, $total_entrada_salida_reloj, $total_horario, $justificacion, $reloj_1, $reloj_2, $reloj_3, $reloj_4, $reloj_5, $reloj_6, $reloj_7, $reloj_8);
+                    }
+                    if ($accion == 'editar') {
+
+                        // ACTUALIZO ASISTENCIA
+                        $modificado++;
+                        $this->model->modificarAsistencia($trabajador_id, $licencia, $fecha, $entrada, $salida, $tardanza, $tardanza_cantidad, $total_entrada_salida_reloj, $total_horario, $justificacion, $reloj_1, $reloj_2, $reloj_3, $reloj_4, $reloj_5, $reloj_6, $reloj_7, $reloj_8, $asistencia_id);
+                    }
+                    $registros[] = [
+                        'Fecha' => $fecha,
+                        'trabajador_id' => $trabajador_id,
+                        'Entrada' => $entrada,
+                        'Salida' => $salida,
+                        'Hora1' => $reloj_1,
+                        'Hora2' => $reloj_2,
+                        'Hora3' => $reloj_3,
+                        'Hora4' => $reloj_4,
+                        'Hora5' => $reloj_5,
+                        'Hora6' => $reloj_6,
+                        'Hora7' => $reloj_7,
+                        'Hora8' => $reloj_8,
+                        'licencia' => $licencia,
+                        'total' => $total_horario,
+                        'total_reloj' => $total_entrada_salida_reloj,
+                        'tardanza' => $tardanza,
+                        'tardanza_cantidad' => $tardanza_cantidad,
+                        'Accion' => $accion,
+                        // $dbHoras, $registroHoras
+                    ];
+                }
+            }
+        }
+
+        $respuesta = ['aceptado' => $aceptado, 'modificado' => $modificado, 'ignorado' => $ignorado, 'total' => $total];
+        // echo json_encode($registros);
+        echo json_encode($respuesta);
+    }
+
+    public function importar_asistencia_samu()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
+            exit;
+        }
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        if ($data === null) {
+            http_response_code(400);
+            echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
+            exit;
+        }
+
+        $aceptado = 0;
+        $ignorado = 0;
+        $modificado = 0;
+        $total = count($data);
+        $registros = [];
+        $posicion = 0;
+        foreach ($data as $key => $registro) {
+            $posicion++;
+            $valido = true;
+            $accion = '';
+            if (isset($registro['Fecha']) && isset($registro['Horas']) && isset($registro['nombre'])  && isset($registro['Nro.'])) {
+                $fecha = $registro['Fecha'];
+                $timestamp = strtotime($fecha);
+                $fecha_cumpleaños_csv = date('m-d', $timestamp);
+                $nombre = $registro['nombre'];
+                $result_trabajador = $this->model->getTrabajadorPorNombre($nombre);
+                if(empty($result_trabajador)){
+                    $dni = $registro['Nro.'];
+                    $result_trabajador = $this->model->getTrabajadorPorDNI($dni);
+                }
+
+
+                $accion = 'crear';
+                $registroHoras = [
+                    isset($registro['Horas'][0]) ? $registro['Horas'][0] : '00:00:00',
+                    isset($registro['Horas'][1]) ? $registro['Horas'][1] : '00:00:00',
+                    isset($registro['Horas'][2]) ? $registro['Horas'][2] : '00:00:00',
+                    isset($registro['Horas'][3]) ? $registro['Horas'][3] : '00:00:00',
+                    isset($registro['Horas'][4]) ? $registro['Horas'][4] : '00:00:00',
+                    isset($registro['Horas'][5]) ? $registro['Horas'][5] : '00:00:00',
+                    isset($registro['Horas'][6]) ? $registro['Horas'][6] : '00:00:00',
+                    isset($registro['Horas'][7]) ? $registro['Horas'][7] : '00:00:00'
+                ];
+
+
+                $result = $this->model->getAsistenciaPorId($result_trabajador['tid'], $fecha);
+                if (($result)) {
+                    $asistencia_id = $result['aid'];
+                    $accion = 'editar';
+                    $dbHoras = [
+                        $result['reloj_1'],
+                        $result['reloj_2'],
+                        $result['reloj_3'],
+                        $result['reloj_4'],
+                        $result['reloj_5'],
+                        $result['reloj_6'],
+                        $result['reloj_7'],
+                        $result['reloj_8']
+                    ];
+                    $horasOrdenadas = $this->combinarYOrdenarHoras($dbHoras, $registroHoras);
+                } else {
+                    // Si no hay datos previos, usar las horas del registro directamente
+                    $horasOrdenadas = $registroHoras;
+                }
+                $reloj_1 = $horasOrdenadas[0];
+                $reloj_2 = $horasOrdenadas[1];
+                $reloj_3 = $horasOrdenadas[2];
+                $reloj_4 = $horasOrdenadas[3];
+                $reloj_5 = $horasOrdenadas[4];
+                $reloj_6 = $horasOrdenadas[5];
+                $reloj_7 = $horasOrdenadas[6];
+                $reloj_8 = $horasOrdenadas[7];
+
+                $licencia = '';
+                $tardanza = '00:00:00';
+                $tardanza_cantidad = 0;
+                $es_festividad = false;
+                $es_honomastico = false;
+                $entrada = '00:00:00';
+                $salida = '00:00:00';
+                $total_horario = '00:00:00';
+                $total_entrada_salida_reloj = '00:00:00';
+
+                $timestamp = strtotime($fecha);
+                $fecha_csv = date('Y-m-d', $timestamp);
+
+                $result = $this->model->getAllfestividad();
+                $dia_csv = date('d', strtotime($fecha_csv));
+                $mes_csv = date('m', strtotime($fecha_csv));
+                for ($i = 0; $i < count($result); $i++) {
+
+                    // $dia = $result[$i]['dia_inicio'];
+                    $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
+                    $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
+                    if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                        $es_festividad = true;
+                        break;
+                    }
+                }
+
+                foreach ($horasOrdenadas as $hora) {
+                    if ($hora !== '00:00:00') {
+                        if ($entrada === '00:00:00') {
+                            $entrada = $hora;
+                        }
+                        if ($hora !== $entrada) {
+                            $salida = $hora;
+                        }
+                    }
+                }
+
+
+                if (empty($result_trabajador)) {
+                    $ignorado++;
+                }
+                if ($result_trabajador) {
+                    $trabajador_id = $result_trabajador['tid'];
+                    $fecha_nacimiento_csv = isset($result_trabajador['fecha_nacimiento']) ? $result_trabajador['fecha_nacimiento'] : '3000-01-01';
+
+                    $fecha_nacimiento = strtotime($fecha_nacimiento_csv);
+                    $fecha_nacimiento = date('m-d', $fecha_nacimiento);
+
+                    $hora_entrada_trabajador_formato = strtotime($result_trabajador['hora_entrada']);
+                    $hora_salida_trabajador_formato = strtotime($result_trabajador['hora_salida']);
+                    $entrada_trabajador_mas_6 = strtotime('+6 minutes', $hora_entrada_trabajador_formato);
+                    $entrada_trabajador_mas_30 = strtotime('+31 minutes', $hora_entrada_trabajador_formato);
+
+                    $entrada_trabajador_limite = strtotime('+5 minutes', $hora_entrada_trabajador_formato);
+
+                    $entrada_timestamp = strtotime($entrada);
+                    $salida_timestamp = strtotime($salida);
+                    $diferencia_trabajador_segundos = $hora_salida_trabajador_formato - $hora_entrada_trabajador_formato;
+                    $diferencia_entrada_salida_segundos = $salida_timestamp - $entrada_timestamp;
+
+                    if ($reloj_1 == '00:00:00') {
+                        $licencia = 'SR';
+                    }
+
+                    if ($reloj_1 !== '00:00:00') {
+
+                        if ($salida == '00:00:00') {
+                            $licencia = 'NMS';
+                        }
+                        if ($salida !== '00:00:00') {
+                            if (strtotime($entrada) < $entrada_trabajador_mas_6) {
+                                // Llegó menos de 6 minutos tarde  
+                                $tardanza = '00:00:00';
+                                $tardanza_cantidad = 0;
+                            }
+                            if (
+                                strtotime($entrada) >= $entrada_trabajador_mas_6 &&
+                                strtotime($entrada) < $entrada_trabajador_mas_30
+                            ) {
+                                // Llegó entre 6 y 30 minutos tarde
+                                $tardanza_cantidad = 1;
+                            }
+                            if (strtotime($entrada) >= $entrada_trabajador_mas_30) {
+                                // Llegó más de 30 minutos tarde
+                                $tardanza_cantidad = 0;
+                                $licencia = '+30';
+                            }
+                            if (strtotime($entrada) >= $hora_salida_trabajador_formato) {
+                                $licencia = 'NME';
+                            }
+
+                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) >= $hora_salida_trabajador_formato) {
+                                $licencia = 'OK';
+                                $total_horario = gmdate('H:i', $diferencia_trabajador_segundos);
+                                $total_entrada_salida_reloj = gmdate('H:i', $diferencia_entrada_salida_segundos);
+                            }
+                            if (strtotime($entrada) < $entrada_trabajador_mas_30 && strtotime($salida) < $hora_salida_trabajador_formato) {
+                                $licencia = 'NMS';
+                            }
+                        }
+                    }
+                    if ($reloj_1 !== '00:00' && $licencia == 'OK' && ($entrada_timestamp >= $entrada_trabajador_mas_6 &&
+                        $entrada_timestamp < $entrada_trabajador_mas_30)) {
+
+                        $diferencia_tardanza = $entrada_timestamp - $entrada_trabajador_limite;
+                        $tardanza = gmdate('H:i', $diferencia_tardanza);
+                    }
+
+                    if ($es_festividad == true) {
+                        $licencia = 'FERIADO';
+                    }
+                    if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
+                        $licencia = 'HONOMASTICO';
+                    }
+                    if ($entrada == $salida && $licencia == 'NMS') {
+                    }
+
+                    $justificacion = '';
+                    // $registros[] = [$result];
+                    if ($accion == 'crear') {
+                        // REGISTRO ASISTENCIA
+                        $aceptado++;
+                        $this->model->registrarAsistencia($trabajador_id, $licencia, $fecha, $entrada, $salida, $tardanza, $tardanza_cantidad, $total_entrada_salida_reloj, $total_horario, $justificacion, $reloj_1, $reloj_2, $reloj_3, $reloj_4, $reloj_5, $reloj_6, $reloj_7, $reloj_8);
+                    }
+                    if ($accion == 'editar') {
+
+                        // ACTUALIZO ASISTENCIA
+                        $modificado++;
+                        $this->model->modificarAsistencia($trabajador_id, $licencia, $fecha, $entrada, $salida, $tardanza, $tardanza_cantidad, $total_entrada_salida_reloj, $total_horario, $justificacion, $reloj_1, $reloj_2, $reloj_3, $reloj_4, $reloj_5, $reloj_6, $reloj_7, $reloj_8, $asistencia_id);
+                    }
+                    $registros[] = [
+                        'nombre' => $nombre,
+                        'Fecha' => $fecha,
+                        'trabajador_id' => $trabajador_id,
+                        'Entrada' => $entrada,
+                        'Salida' => $salida,
+                        'Hora1' => $reloj_1,
+                        'Hora2' => $reloj_2,
+                        'Hora3' => $reloj_3,
+                        'Hora4' => $reloj_4,
+                        'Hora5' => $reloj_5,
+                        'Hora6' => $reloj_6,
+                        'Hora7' => $reloj_7,
+                        'Hora8' => $reloj_8,
+                        'licencia' => $licencia,
+                        'total' => $total_horario,
+                        'total_reloj' => $total_entrada_salida_reloj,
+                        'tardanza' => $tardanza,
+                        'tardanza_cantidad' => $tardanza_cantidad,
+                        'Accion' => $accion,
+                        // $dbHoras, $registroHoras
+                    ];
+                }
+            }
+        }
+
+        $respuesta = ['aceptado' => $aceptado, 'modificado' => $modificado, 'ignorado' => $ignorado, 'total' => $total];
+        // echo json_encode($registros);
         echo json_encode($respuesta);
     }
 
@@ -409,7 +915,7 @@ class Importar extends Controller
             'asistencia_csv' => ["Fecha", "ID", "Nombre Usuario", "Departamento", "Entrada - Salida 1", "Entrada - Salida 2", "Entrada - Salida 3", "Entrada - Salida 4", "Entrada - Salida 5", "Entrada - Salida 6", "Entrada - Salida 7", "Entrada - Salida 8", "Descanso", "Tiempo Trabajado"],
             'usuario_csv' => ["ID Usuario", "Nombre", "Departamento", "Correo", "Tel�fono", "Fecha Inicio", "Fecha Vencimiento", "Nivel Admin.", "Modo Autenticaci�n", "N�mero de Template", "Grupo de Acceso1", "Grupo de Acceso2", "Grupo de Acceso3", "Grupo de Acceso4", "N�mero Tarjeta", "Bypass", "Title", "Mobile", "Gender", "Date of Birth"],
             'frontera_samu_1' => ["Dpto.", "Nombre", "No.", "Fecha/Hora", "Locación ID", "ID Número", "VerificaCod", "No.tarjeta"],
-            'frontera_samu_2' => ["AC No.", "Nombre", "Dpto.", "Fecha", "Hora"],
+            // 'frontera_samu_2' => ["AC No.", "Nombre", "Dpto.", "Fecha", "Hora"],
             // 'tipo5' => ["ColumnaA", "ColumnaB", "ColumnaC", "ColumnaD"],
 
         ];
@@ -1096,5 +1602,23 @@ class Importar extends Controller
 
         echo json_encode($respuesta);
         die();
+    }
+
+
+    function combinarYOrdenarHoras($dbHoras, $registroHoras)
+    {
+        // Combinar ambas listas de horas
+        $todasHoras = array_merge($dbHoras, $registroHoras);
+
+        // Eliminar '00:00:00' y ordenar las horas
+        $horasFiltradas = array_unique(array_filter($todasHoras, function ($hora) {
+            return $hora != '00:00:00';
+        }));
+        sort($horasFiltradas);
+
+        // Rellenar con '00:00:00' hasta completar 8 horas
+        $horasOrdenadas = array_pad($horasFiltradas, 8, '00:00:00');
+
+        return $horasOrdenadas;
     }
 }

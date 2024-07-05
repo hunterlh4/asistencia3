@@ -13,6 +13,7 @@ class Festividades extends Controller
     public function index()
     {
         $data['title'] = 'Festividades';
+        $data['nivel'] =  $_SESSION['nivel'];
         $data1 = '';
         $this->views->getView('Administracion', "Festividades", $data, $data1);
     }
@@ -20,6 +21,7 @@ class Festividades extends Controller
     public function ver()
     {
         $data['title'] = 'Festividades';
+        $data['nivel'] =  $_SESSION['nivel'];
         $data1 = '';
         $this->views->getView('Administracion', "Festividades_ver", $data, $data1);
     }

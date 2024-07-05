@@ -34,11 +34,34 @@ class ImportarModel extends Query
         ON hd.id = t.horariodetalle_id WHERE telefono_id = '$telefono_id' ";
         return $this->select($sql);
     }
+    public function getTrabajadorPorNombre($nombre){
+        $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total,t.fecha_nacimiento as fecha_nacimiento
+        FROM trabajador AS t INNER JOIN horariodetalle AS hd
+        ON hd.id = t.horariodetalle_id WHERE apellido_nombre LIKE'%$nombre%' ";
+        return $this->select($sql);
+    }
+    public function getTrabajadorPorDNI($dni){
+        $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total,t.fecha_nacimiento as fecha_nacimiento
+        FROM trabajador AS t INNER JOIN horariodetalle AS hd
+        ON hd.id = t.horariodetalle_id WHERE telefono_id like '%$dni%' ";
+        return $this->select($sql);
+    }
     public function getAsistencia($telefono_id,$fecha)
     {
-        $sql = "SELECT t.id AS tid,a.id as aid,fecha,entrada,salida ,t.horarioDetalle_id as th
+        $sql = "SELECT t.id AS tid,a.id as aid,fecha,entrada,salida ,t.horarioDetalle_id as th,
+        reloj_1,reloj_2,reloj_3,reloj_4,reloj_5,reloj_6,reloj_7,reloj_8
         FROM asistencia AS a INNER JOIN trabajador as t ON t.id = a.trabajador_id 
         where telefono_id = '$telefono_id' and fecha = '$fecha'";
+        // $sql = "SELECT id,trabajador_id,fecha FROM asistencia WHERE trabajador_id = '$telefono_id' and fecha = '$fecha' ";
+        return $this->select($sql);
+    }
+
+    public function getAsistenciaPorId($id,$fecha)
+    {
+        $sql = "SELECT t.id AS tid,a.id as aid,fecha,entrada,salida ,t.horarioDetalle_id as th,
+        reloj_1,reloj_2,reloj_3,reloj_4,reloj_5,reloj_6,reloj_7,reloj_8
+        FROM asistencia AS a INNER JOIN trabajador as t ON t.id = a.trabajador_id 
+        where a.trabajador_id  = '$id' and fecha = '$fecha'";
         // $sql = "SELECT id,trabajador_id,fecha FROM asistencia WHERE trabajador_id = '$telefono_id' and fecha = '$fecha' ";
         return $this->select($sql);
     }
@@ -48,6 +71,12 @@ class ImportarModel extends Query
         $sql = "INSERT INTO trabajador (apellido_nombre,telefono_id,institucion,modalidad_trabajo) VALUES (?,?,?,?)";
         $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo);
         return $this->insertar($sql, $array);
+    }
+    public function modificarTrabajador($nombre,$telefono_id,$institucion,$modalidad_trabajo,$id)
+    {
+        $sql = "UPDATE trabajador SET apellido_nombre=?,telefono_id=?,institucion=?,modalidad_trabajo=?,update_at = NOW()  WHERE id = ?";
+        $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo, $id);
+        return $this->save($sql, $array);
     }
 
     public function getAllfestividad (){

@@ -180,13 +180,32 @@ function MostrarCalendario(){
             // console.log(calEvent.id);
             // console.log('editar');
             // const tipo = 1;
-            abrirModal(2, calEvent);
+           
+            if(nivel_session==1){
+                abrirModal(2, calEvent);
+            }
             // console.log(calEvent.start.format('YYYY-MM-DD'))
         },
         dayClick: function(date, jsEvent, view) {
        
-            
-            abrirModal(1, null, date);
+            let eventsOnDay = $('#Calendario').fullCalendar('clientEvents', function(event) {
+                return moment(event.start).isSame(date, 'day');
+            });
+    
+            // Si hay eventos en el día, seleccionar el primer evento
+            if (eventsOnDay.length > 0) {
+                let calEvent = eventsOnDay[0];
+                if(nivel_session == 1){
+                    abrirModal(2, calEvent);
+                }
+                return;
+            }
+    
+    
+            if(nivel_session==1){
+                abrirModal(1, null, date);
+            }
+           
         },
 
         // dayRender: function(date, cell) {
