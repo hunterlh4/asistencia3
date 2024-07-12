@@ -305,7 +305,7 @@ function cargarDatos_csv(file, tipo) {
           success: function (response) {
             // console.log(response);
             const res = JSON.parse(response);
-            // console.log(res);
+            console.log(res);
             total = total + res.total;
             ignorado = ignorado + res.ignorado;
             aceptado = aceptado + res.aceptado;

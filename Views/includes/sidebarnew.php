@@ -5,9 +5,12 @@
       </a>
     </div>
     <ul class="sidebar-menu">
-      <li class="menu-header">General</li>
+     
 
       <?php
+       if ($_SESSION['nivel'] !== 0) {
+      echo ' <li class="menu-header">General</li>';
+       }
       // 1 admin            alextm
       // 2 jefe oficina     alextm1
       // 3 vizualizador     alextm2
@@ -50,6 +53,7 @@
       <!-- <li class="menu-header">Asistencia</li> -->
       <!-- ASISTENCIAS -->
       <?php
+      if ($_SESSION['nivel'] !== 0) {
       echo '<li class="dropdown">
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
       <ul class="dropdown-menu">';
@@ -62,6 +66,7 @@
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="file-text"></i><span>Calendario</span></a> </li> ';
       echo '</ul>
       </li> ';
+      }
       ?>
       <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
       <!-- <li class="menu-header">Boletas</li> -->
@@ -77,7 +82,7 @@
       // echo '  <li class="menu-header">Excel</li>';
 
      
-      
+      if ($_SESSION['nivel'] !== 0) {
       echo '<li class="dropdown">
                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Boletas</span></a>
                   <ul class="dropdown-menu">';
@@ -92,9 +97,12 @@
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Porteria" class="nav-link"><i data-feather="file-text"></i><span>Porteria</span></a> </li> ';
       }
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4) {
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
+      }
       echo '</ul>
       </li> ';
+      }
       ?>
       <!-- <li class="menu-header">Reportes</li> -->
       <?php
@@ -103,9 +111,11 @@
         echo '<li class="dropdown">
                   <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Reportes</span></a>
                   <ul class="dropdown-menu">';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte" class="nav-link"><i data-feather="file-text"></i><span>General</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte/Trabajador" class="nav-link"><i data-feather="file-text"></i><span>Trabajador</span></a> </li> ';
-        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte/Direccion" class="nav-link"><i data-feather="file-text"></i><span>Direccion</span></a> 
+        // echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte" class="nav-link"><i data-feather="file-text"></i><span>General</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte/Mensual" class="nav-link"><i data-feather="file-text"></i><span>Mensual</span></a> </li> ';
+        echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte/Fechas" class="nav-link"><i data-feather="file-text"></i><span>Entre Fechas</span></a> ';
+         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Reporte/Kardex" class="nav-link"><i data-feather="file-text"></i><span>Kardex</span></a> 
+        
                   </ul>
                   </li> ';
       }

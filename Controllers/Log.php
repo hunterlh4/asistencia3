@@ -28,7 +28,7 @@ class Log extends Controller
             $fecha = $data[$i]['fecha'];
 
 
-            $fecha = date('d-m-Y', strtotime($fecha));
+            $fecha = date('d-m-Y H:i:s', strtotime($fecha));
             $data[$i]['fecha']= $fecha;
 
             

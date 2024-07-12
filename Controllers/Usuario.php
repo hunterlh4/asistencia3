@@ -24,7 +24,7 @@ class Usuario extends Controller
     {
         $data = $this->model->getUsuarios();
         for ($i = 0; $i < count($data); $i++) {
-        
+           
             $datonuevo = $data[$i]['usuario_estado'];
             if($datonuevo=='Activo'){
                 $data[$i]['usuario_estado'] ="<div class='badge badge-info'>Activo</div>";  

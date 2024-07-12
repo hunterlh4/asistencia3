@@ -17,8 +17,9 @@
   <div class="forms-container">
     <div class="signin-signup">
       <form role="form" class="sign-in-form" id="formulario" autocomplete="off">
-          <img class="logo" src="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png" alt=""><br>
-          <h2 class="title">Sistema de Control de Asistencia </h2> <br><br>
+          <img class="d-block w-100" src="<?php echo BASE_URL; ?>/assets/img/logo.png" alt=""><br>
+          <!-- <h2 class="title">Sistema de Control de Asistencia </h2>  -->
+          
           <div class="input-field">
             <i class="fas fa-user"></i>
             <input type="text" id="username" name="username" placeholder="Usuario" />
@@ -28,8 +29,10 @@
             
             <input type="password" id="password" name="password" placeholder="Contraseña" />
           </div>
+         <br>
           <div class="text-center">
             <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Ingresar</button>
+            <a href="<?php echo BASE_URL; ?>Registro" class=""><button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2">registrate</button></a>
           </div>
       </form>
       <form action="login.php" method="POST" class="sign-up-form">

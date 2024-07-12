@@ -34,6 +34,13 @@ class ImportarModel extends Query
         ON hd.id = t.horariodetalle_id WHERE telefono_id = '$telefono_id' ";
         return $this->select($sql);
     }
+
+    public function getTrabajador_prueba($telefono_id)
+    {
+        $sql = "SELECT t.id AS tid ,t.fecha_nacimiento as fecha_nacimiento
+        FROM trabajador_prueba AS t WHERE telefono_id ='$telefono_id' ";
+        return $this->select($sql);
+    }
     public function getTrabajadorPorNombre($nombre){
         $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total,t.fecha_nacimiento as fecha_nacimiento
         FROM trabajador AS t INNER JOIN horariodetalle AS hd
@@ -75,6 +82,19 @@ class ImportarModel extends Query
     public function modificarTrabajador($nombre,$telefono_id,$institucion,$modalidad_trabajo,$id)
     {
         $sql = "UPDATE trabajador SET apellido_nombre=?,telefono_id=?,institucion=?,modalidad_trabajo=?,update_at = NOW()  WHERE id = ?";
+        $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo, $id);
+        return $this->save($sql, $array);
+    }
+
+    public function registrarTrabajador_prueba($nombre,$telefono_id,$institucion,$modalidad_trabajo)
+    {
+        $sql = "INSERT INTO trabajador_prueba (apellido_nombre,telefono_id,institucion,modalidad_trabajo) VALUES (?,?,?,?)";
+        $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo);
+        return $this->insertar($sql, $array);
+    }
+    public function modificarTrabajador_prueba($nombre,$telefono_id,$institucion,$modalidad_trabajo,$id)
+    {
+        $sql = "UPDATE trabajador_prueba SET apellido_nombre=?,telefono_id=?,institucion=?,modalidad_trabajo=?,update_at = NOW()  WHERE id = ?";
         $array = array($nombre,$telefono_id,$institucion,$modalidad_trabajo, $id);
         return $this->save($sql, $array);
     }

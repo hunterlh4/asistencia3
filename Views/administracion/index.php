@@ -1,4 +1,5 @@
 <?php include_once './Views/includes/header.php'; ?>
+
 <body>
   <div class="loader"></div>
   <div id="app">
@@ -24,7 +25,7 @@
                       <div class="col-md-8">
                         <div class="card-content">
                           <h3 class="card-title text-danger text-center font-weight-bold">¡BIENVENIDO AL SISTEMA DE CONTROL DE ASISTENCIA DE LA DIRESA TACNA! </h3>
-                          <?php 
+                          <?php
                           // $usuario_nivel ='';
                           // if ($data['nivel'] === 1) {
                           //   $usuario_nivel = "Administrador";
@@ -42,37 +43,40 @@
                           //     $usuario_nivel = "Nivel no definido";
                           // }
                           ?>
-   
-                          <h4 class="font-weight-bold text-center"> <?php echo  $data['nombre'] . ' ' .  $data['apellido'] ;  ?></h4>
-                          
-                          <?php 
-                           
-                          if( $data['nivel'] ==1){
+
+                          <h4 class="font-weight-bold text-center"> <?php echo  $data['nombre'] . ' ' .  $data['apellido'];  ?></h4>
+
+                          <?php
+                          if ($data['nivel'] == 0) {
+                            echo ' <p style="text-align: center;">Usted no cuenta con los privilegios suficientes. </p>
+                             <p style="text-align: center;">Espere que un Administrador del Sistema le otorgue los permisos suficientes.</p>';
+                          }
+                          if ($data['nivel'] == 1) {
                             echo ' 
                             <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra visualizar el ingreso y salida que marcan los relojes, así como evaluar y generar los reportes.</p>
                              <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                            <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Asistencia"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Asistencia"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           }
-                          if($data['nivel']==2)
-                          echo ' 
+                          if ($data['nivel'] == 2)
+                            echo ' 
                           <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
                            <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
 
-                          if($data['nivel']==3)
-                          echo ' 
+                          if ($data['nivel'] == 3)
+                            echo ' 
                           <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
                            <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
-                          if($data['nivel']==4)
-                          echo ' 
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          if ($data['nivel'] == 4)
+                            echo ' 
                           <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
                            <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="'.BASE_URL.'Porteria"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Porteria"><i class="far fa-hand-point-right"></i> INICIAR</a>';
                           ?>
 
-                          
-                         
+
+
                         </div>
                       </div>
                     </div>
@@ -178,97 +182,98 @@
             <!-- GRAFICOS -->
             <div class="row">
               <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
+                <div class="card">
                   <div class="card-body">
-                      <div class="row">
-                          <div class="col-12">
-                              <div class="d-flex justify-content-between align-items-center">
-                              <div style="width: 100%; text-align: center;">
-                                  <h5 class="font-15">Puntuales</h5>
-                              </div>
-                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
-                              </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="width: 100%; text-align: center;">
+                            <h5 class="font-15">Puntuales</h5>
                           </div>
-                          <div class="col-12 mt-3">
-                          <div class="banner-img d-flex justify-content-center">
-                                  <img src="<?php echo BASE_URL; ?>assets/img/banner/1.png" alt="">
-                              </div>
-                          </div>
+                          <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                        </div>
                       </div>
+                      <div class="col-12 mt-3">
+                        <div class="banner-img d-flex justify-content-center">
+                          <img src="<?php echo BASE_URL; ?>assets/img/banner/1.png" alt="">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
+                <div class="card">
                   <div class="card-body">
-                      <div class="row">
-                          <div class="col-12">
-                              <div class="d-flex justify-content-between align-items-center">
-                              <div style="width: 100%; text-align: center;">
-                                  <h5 class="font-15">Tardanzas</h5>
-                              </div>
-                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
-                              </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="width: 100%; text-align: center;">
+                            <h5 class="font-15">Tardanzas</h5>
                           </div>
-                          <div class="col-12 mt-3">
-                          <div class="banner-img d-flex justify-content-center">
-                                <img src="<?php echo BASE_URL; ?>assets/img/banner/3.png" alt="tardanzas">
-                              </div>
-                          </div>
+                          <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                        </div>
                       </div>
+                      <div class="col-12 mt-3">
+                        <div class="banner-img d-flex justify-content-center">
+                          <img src="<?php echo BASE_URL; ?>assets/img/banner/3.png" alt="tardanzas">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
+                <div class="card">
                   <div class="card-body">
-                      <div class="row">
-                          <div class="col-12">
-                              <div class="d-flex justify-content-between align-items-center">
-                              <div style="width: 100%; text-align: center;">
-                                  <h5 class="font-15">Sin Registro</h5>
-                              </div>
-                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
-                              </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="width: 100%; text-align: center;">
+                            <h5 class="font-15">Sin Registro</h5>
                           </div>
-                          <div class="col-12 mt-3">
-                          <div class="banner-img d-flex justify-content-center">
+                          <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-3">
+                        <div class="banner-img d-flex justify-content-center">
                           <img src="<?php echo BASE_URL; ?>assets/img/banner/2.png" alt="">
-                              </div>
-                          </div>
+                        </div>
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <div class="card">
+                <div class="card">
                   <div class="card-body">
-                      <div class="row">
-                          <div class="col-12">
-                              <div class="d-flex justify-content-between align-items-center">
-                              <div style="width: 100%; text-align: center;">
-                                  <h5 class="font-15">Total</h5>
-                              </div>
-                                  <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
-                              </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div style="width: 100%; text-align: center;">
+                            <h5 class="font-15">Total</h5>
                           </div>
-                          <div class="col-12 mt-3">
-                          <div class="banner-img d-flex justify-content-center">
-                          <img src="<?php echo BASE_URL; ?>assets/img/banner/4.png" alt="">
-                              </div>
-                          </div>
+                          <a type="button" class="btn btn-primary text-center" href=""><i class="fa fa-eye"></i> </a>
+                        </div>
                       </div>
+                      <div class="col-12 mt-3">
+                        <div class="banner-img d-flex justify-content-center">
+                          <img src="<?php echo BASE_URL; ?>assets/img/banner/4.png" alt="">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-             </div>
+            </div>
           </div>
         </section>
         <!--<section class="section">-->
 
         <!--</section>-->
-        <?php // include './Views/includes/sidebar-config.html'; ?>
+        <?php // include './Views/includes/sidebar-config.html'; 
+        ?>
       </div>
       <?php include './Views/includes/footer.php'; ?>
     </div>

@@ -27,28 +27,9 @@ include './Views/includes/sidebarnew.php';
 
     
 
-    <div class="col-md-8 div_mes">
-            <div class="form-group">
-                <label for="mes">Mes</label>
-                <div class="input-group">
-                    
-                <select class="form-control select2"  multiple="" id="mes" name="mes" required>
-               
-                </select>
-                </div>
-            </div>
-    </div>
 
-    <div class="col-md-2 div_anio">
-            <div class="form-group">
-                <label for="direccion">Año</label>
-                <div class="input-group">
-                <select class="form-control"  id="anio" name="anio" required>
-                </select>
-                </div>
-            </div>
 
-    </div>
+   
     <!-- <div class="col-md-4 div_fecha_desde">
         <div class="form-group">
             <label>Desde</label>
@@ -62,7 +43,7 @@ include './Views/includes/sidebarnew.php';
         </div>
     </div> -->
 
-    <div class="col-md-2">
+    <!-- <div class="col-md-2">
             <div class="form-group">
                 <label for="Tipo">Tipo</label>
                 <div class="input-group">
@@ -75,8 +56,8 @@ include './Views/includes/sidebarnew.php';
                 </div>
             </div>
 
-    </div>
-    <div class="col-md-12" id ="contenedor_trabajadores">
+    </div> -->
+    <div class="col-md-10" id ="contenedor_trabajadores">
         <div class="form-group">
             <label for="direccion">Trabajadores</label>
             <div class="input-group">
@@ -86,6 +67,16 @@ include './Views/includes/sidebarnew.php';
             </div>
         </div>
     
+    </div>
+    <div class="col-md-2 div_anio">
+            <div class="form-group">
+                <label for="direccion">Año</label>
+                <div class="input-group">
+                <select class="form-control"  id="anio" name="anio" required>
+                </select>
+                </div>
+            </div>
+
     </div>
 
     <!-- <div class="col-md-12"> -->
@@ -127,7 +118,7 @@ include './Views/includes/sidebarnew.php';
 </div>
 <?php include './Views/includes/script_new.php' ?>
 </html>
-<script src="<?php echo BASE_URL; ?>assets/js/modulos/reporte_trabajador.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/modulos/reporte_kardex.js"></script>
 <script>
 const base_url = '<?php echo BASE_URL; ?>';
 </script>

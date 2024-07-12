@@ -26,22 +26,31 @@ class Reporte extends Controller
 
         $this->views->getView('Administracion', "Reporte", $data, $data1);
     }
-    public function Trabajador()
+    public function Mensual()
     {
 
-        $data['title'] = 'Reporte Trabajador';
+        $data['title'] = 'Reporte Mensual';
         $data1 = '';
 
         $this->views->getView('Administracion', "Reporte_Trabajador", $data, $data1);
     }
 
-    public function Direccion()
+    public function Fechas()
     {
 
-        $data['title'] = 'Reporte por Direccion';
+        $data['title'] = 'Reporte Entre dos Fechas';
         $data1 = '';
 
         $this->views->getView('Administracion', "Reporte_Direccion", $data, $data1);
+    }
+
+    public function Kardex()
+    {
+
+        $data['title'] = 'Reporte Kardex';
+        $data1 = '';
+
+        $this->views->getView('Administracion', "Reporte_Kardex", $data, $data1);
     }
     public function listar()
     {

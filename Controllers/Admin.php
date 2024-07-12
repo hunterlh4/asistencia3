@@ -8,63 +8,34 @@ class Admin extends Controller
     }
     public function index()
     {
-        if (!empty($_SESSION['usuario_autenticado'])) {
-            header('Location: ' . BASE_URL . 'admin/home');
+        // if (!empty($_SESSION['usuario_autenticado'])) {
+        //     header('Location: ' . BASE_URL . 'admin/home');
+        //     exit;
+        // }
+        // $data['title'] = 'Acceso al sistema';
+        // $this->views->getView('home', "login", $data);
+        if (empty($_SESSION['usuario_autenticado'])) {
+            header('Location: ' . BASE_URL . 'Login');
             exit;
         }
-        $data['title'] = 'Acceso al sistema';
-        $this->views->getView('home', "login", $data);
+        
+        $data['title'] = 'Administracion';
+        // $data['title'] = $_SESSION['nivel'];
+        $data['id'] =  $_SESSION['id'];
+        $data['nivel'] =  $_SESSION['nivel'];
+        $data['nombre'] =  $_SESSION['nombre'];
+        $data['apellido'] =  $_SESSION['apellido'];
+        $data1 = "";
+
+        $this->views->getView('Administracion', "Index", $data, $data1);
     }
-    public function validar()
-    {
 
-
-        $validar = "vacio";
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            if (empty($_POST['username']) || empty($_POST['password'])) {
-                $respuesta = array('msg' => 'todo los campos son requeridos', 'icono' => 'warning');
-            } else {
-                $data = $this->model->getLogin(strtolower($_POST['username']));
-                if (empty($data)) {
-                    $respuesta = array('msg' => ' no existe', 'icono' => 'warning');
-                } else {
-                    if (password_verify(strtolower($_POST['password']), $data['password'])) {
-                        $_SESSION['id'] = $data['id'];
-                        $_SESSION['username'] = $data['username'];
-                        $_SESSION['nombre'] = $data['nombre'];
-                        $_SESSION['apellido']  = $data['apellido'];
-                        $_SESSION['nivel']  = $data['nivel'];
-                        $_SESSION['usuario_autenticado'] = "true";
-                        
-
-                        $validar = $this->model->usuario_conectado($data['id']);
-
-
-
-
-                        if (empty($validar)) {
-                            $this->model->registrar_conectado($data['id']);
-                        } else {
-                            // $validar no está vacío (es true)
-                            // Realiza otra acción
-                            $this->model->modificar_conectado($data['id']);
-                        }
-                        $respuesta = array('msg' => 'datos correcto', 'icono' => 'success');
-                    } else {
-                        $respuesta = array('msg' => 'contraseña incorrecta', 'icono' => 'warning');
-                    }
-                }
-            }
-        } else {
-            $respuesta = array('msg' => 'error desconocido', 'icono' => 'error');
-        }
-        echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
-        die();
-    }
+   
+   
     public function perfil()
     {
-        if (empty($_SESSION['nombre'])) {
-            header('Location: ' . BASE_URL . 'admin');
+        if (empty($_SESSION['usuario_autenticado'])) {
+            header('Location: ' . BASE_URL . 'Login');
             exit;
         }
 
@@ -83,30 +54,32 @@ class Admin extends Controller
         $this->views->getView('Administracion', "Profile", $data, $data1);
     }
 
-    public function mensajes()
-    {
-        if (empty($_SESSION['nombre'])) {
-            header('Location: ' . BASE_URL . 'admin');
-            exit;
-        }
-        $data['title'] = 'mensajes';
-        $data['id'] =  $_SESSION['id'];
+    // public function mensajes()
+    // {
+    //     if (empty($_SESSION['nombre'])) {
+    //         header('Location: ' . BASE_URL . 'admin');
+    //         exit;
+    //     }
+    //     $data['title'] = 'mensajes';
+    //     $data['id'] =  $_SESSION['id'];
 
-        $data1 = "";
-        // $data = $this->model->productosMinimos();
-        // $data['pendientes'] = $this->model->getTotales(1);
-        // $data['procesos'] = $this->model->getTotales(2);
-        // $data['finalizados'] = $this->model->getTotales(3);
-        // $data['productos'] = $this->model->getProductos();
-        $this->views->getView('Administracion', "Mensaje", $data, $data1);
-    }
+    //     $data1 = "";
+    //     // $data = $this->model->productosMinimos();
+    //     // $data['pendientes'] = $this->model->getTotales(1);
+    //     // $data['procesos'] = $this->model->getTotales(2);
+    //     // $data['finalizados'] = $this->model->getTotales(3);
+    //     // $data['productos'] = $this->model->getProductos();
+    //     $this->views->getView('Administracion', "Mensaje", $data, $data1);
+    // }
     public function home()
     {
-        if (empty($_SESSION['nombre'])) {
-            header('Location: ' . BASE_URL . 'admin');
+        if (empty($_SESSION['usuario_autenticado'])) {
+            header('Location: ' . BASE_URL . 'Login');
             exit;
         }
+        
         $data['title'] = 'Administracion';
+        // $data['title'] = $_SESSION['nivel'];
         $data['id'] =  $_SESSION['id'];
         $data['nivel'] =  $_SESSION['nivel'];
         $data['nombre'] =  $_SESSION['nombre'];
@@ -130,6 +103,16 @@ class Admin extends Controller
         }
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
+    }
+    public function mensaje(){
+        if (empty($_SESSION['usuario_autenticado'])) {
+            header('Location: ' . BASE_URL . 'Login');
+            exit;
+        }
+        $data['title'] = 'Mensajeria';
+       
+        $data1 = "";
+        $this->views->getView('Administracion', "Index", $data, $data1);
     }
     function conectado()
     {

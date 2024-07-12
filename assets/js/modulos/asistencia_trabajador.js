@@ -516,7 +516,7 @@ function modificarCalendario() {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
-    if ((fcTitle.textContent.includes("FERIADO")|| fcTitle.textContent.includes("HONOMASTICO")) &&  fcTime.textContent.includes("0:00") ) {
+    if ((fcTitle.textContent.includes("FERIADO")|| fcTitle.textContent.includes("ONOMASTICO")) &&  fcTime.textContent.includes("0:00") ) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }

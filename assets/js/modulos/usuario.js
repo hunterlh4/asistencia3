@@ -153,7 +153,16 @@ function llenarTabla(){
             { data: "usuario_username" },
             { data: "usuario_nombre" },
             { data: "usuario_apellido" },
-            { data: "dni" },
+            { 
+                data: "dni",
+                render: function(data, type, row) {
+                    if (!data || data === '') {
+                        return "<div class='badge badge-success'>Sin Vincular</div>";
+                    } else {
+                        return data;
+                    }
+                }
+            },
             { data: "usuario_nivel" },
             { data: "usuario_estado" },
             { data: "accion" },
