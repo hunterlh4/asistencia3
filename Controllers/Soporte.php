@@ -12,6 +12,10 @@ class Soporte extends Controller
             header('Location: '. BASE_URL . 'admin/home');
             exit;
         }
+        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
         $data['title'] = 'Soporte';
         $data1 = '';
         $this->views->getView('Administracion', "Soporte", $data,$data1);

@@ -57,7 +57,7 @@
 
   <!-- MODAL -->
   <div id="nuevoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <!-- <h5 class="modal-title" id="formModal">Usuario</h5> -->
@@ -73,107 +73,172 @@
         <form form id="formUsuarios" class="needs-validation" novalidate="" method="POST" autocomplete="off">
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
+            <div class="row">
 
-            <div class="form-group">
-              <label>Trabajador</label>
-              <div class="input-group">
+              <div class="form-group col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                <label>Trabajador</label>
+                <div class="input-group">
+                  <!-- <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-toolbox"></i></div>
+                  </div> -->
+                  <select class="form-control" id='selectTrabajadores' name="trabajadores" required>
+                  </select>
+                  <div class="invalid-feedback">
+                    Por favor, ingresa un Trabajador válido.
+                  </div>
+                  <div class="valid-feedback">
+                    Correcto.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-xl-8 col-lg-8 col-md-12 col-sm-12">
+                <label for="direccion" class="custom-label">Direccion</label>
+                <div class="input-group">
+                  <select class="form-control select " id="direccion" name="direccion" required>
+                    <option value="" selected>Selecciona una Direccion</option>
+                    <!-- Opciones para la dirección -->
+                  </select>
+                  <div class="invalid-feedback">
+                    Debes seleccionar una dirección.
+                  </div>
+                  <div class="valid-feedback">
+                    Correcto.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <label for="dni">DNI</label>
+                <div class="input-group">
                 <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-toolbox"></i></div>
-                </div>
-                <select class="form-control" id='selectTrabajadores' name="trabajadores">
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Usuario</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-user"></i></div>
-                </div>
-                <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" minlength="6" maxlength="20" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Password</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-lock"></i>
+                    <div class="input-group-text">
+                      <i class="fas fa-address-card"></i>
+                    </div>
+                  </div>
+                  <input id="dni" type="text" class="form-control" name="dni" pattern="\d{8}" maxlength="8" title="Debe tener exactamente 8 dígitos" autofocus required>
+                  <div class="input-group-append">
+                    <button class="btn btn-icon btn-primary" onclick="buscar()" type="button"><i class="fas fa-search"></i></button>
+                  </div>
+                  <div class="invalid-feedback">
+                    Por favor, ingresa un DNI válido.
+                  </div>
+                  <div class="valid-feedback">
+                    Correcto.
                   </div>
                 </div>
-                <input type="password" class="form-control" placeholder="Password" name="password" id="password" autocomplete="new-password" minlength="6" maxlength="20">
+
+
+
               </div>
-            </div>
-            <div class="form-group">
-              <label>Nombre</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-address-card"></i>
-                  </div>
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <label for="fecha_nacimiento">Nacimiento</label>
+                <input id="fecha_nacimiento" type="date" class="form-control" name="fecha_nacimiento" required>
+                <div class="invalid-feedback">
+                  Por favor, ingresa una fecha válida.
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="50">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Apellido</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-address-card"></i>
-                  </div>
-                </div>
-                <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido" minlength="6" maxlength="50">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Nivel</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-list-alt"></i>
-                  </div>
-                </div>
-                <!-- <input type="text" class="form-control" placeholder="Nivel" name="nivel" id="nivel"> -->
-
-                <select class="form-control" id="nivel" name="nivel" required>
-                  <option value="" selected>Selecciona un Nivel</option>
-                  <option value="1">Administrador</option>
-                  <option value="2">Jefe de Oficina</option>
-                  <option value="3">Vizualizador</option>
-                  <option value="4">Portero</option>
-                  <option value="5">Sin permisos</option>
-                </select>
-
-              </div>
-            </div>
-
-
-
-            <!--  -->
-            <div class="form-group" id="estado-grupo">
-              <label>Estado</label>
-              <div class="input-group">
-                <!-- <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <i class="fas fa-archive"></i>
-                  </div>
-                </div> -->
-                <!-- <input type="text" class="form-control" placeholder="Estado" name="estado" id="estado"> -->
-
-                <div class="col-sm-9 d-flex align-items-center">
-                  <div class="custom-control custom-radio mr-3">
-                    <input type="radio" id="radio-true" value='Activo' name="estado" class="custom-control-input" checked>
-                    <label class="custom-control-label" for="radio-true">Activo</label>
-                  </div>
-                  <div class="custom-control custom-radio">
-                    <input type="radio" id="radio-false" value='Inactivo' name="estado" class="custom-control-input">
-                    <label class="custom-control-label" for="radio-false">Inactivo</label>
-                  </div>
+                <div class="valid-feedback">
+                  Correcto.
                 </div>
               </div>
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                <label>Nombre</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-address-card"></i>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="30" required>
+                </div>
+              </div>
+
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                <label>Apellido</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-address-card"></i>
+                    </div>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Apellido" name="apellido" id="apellido" minlength="6" maxlength="30" required>
+                </div>
+              </div>
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <label>Usuario</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Usuario" name="username" id="username" minlength="5" maxlength="16" required>
+                </div>
+              </div>
+
+
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <label>Password</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                  </div>
+                  <input type="password" class="form-control" placeholder="Password" name="password" id="password" autocomplete="new-password" minlength="6" maxlength="20">
+                </div>
+              </div>
+
+
+             
+
+
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <label>Nivel</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <i class="fas fa-list-alt"></i>
+                    </div>
+                  </div>
+                  <!-- <input type="text" class="form-control" placeholder="Nivel" name="nivel" id="nivel"> -->
+
+                  <select class="form-control" id="nivel" name="nivel" required>
+                    <option value="" selected>Selecciona un Nivel</option>
+                    <option value="1">Administrador</option>
+                    <option value="2">Jefe de Oficina</option>
+                    <option value="3">Vizualizador</option>
+                    <option value="4">Portero</option>
+                    <option value="5">Sin permisos</option>
+                  </select>
+
+                </div>
+              </div>
+
+
+
+              <!--  -->
+              <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12" id="estado-grupo">
+                <label>Estado</label>
+                <div class="input-group">
+
+
+                  <div class="col-sm-9 d-flex align-items-center">
+                    <div class="custom-control custom-radio mr-3">
+                      <input type="radio" id="radio-true" value='Activo' name="estado" class="custom-control-input" checked>
+                      <label class="custom-control-label" for="radio-true">Activo</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                      <input type="radio" id="radio-false" value='Inactivo' name="estado" class="custom-control-input">
+                      <label class="custom-control-label" for="radio-false">Inactivo</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
             <!--  -->
 

@@ -44,7 +44,7 @@ class ImportarModel extends Query
     public function getTrabajadorPorNombre($nombre){
         $sql = "SELECT t.id AS tid,t.horarioDetalle_id ,hd.hora_entrada,hd.hora_salida,hd.total,t.fecha_nacimiento as fecha_nacimiento
         FROM trabajador AS t INNER JOIN horariodetalle AS hd
-        ON hd.id = t.horariodetalle_id WHERE apellido_nombre LIKE'%$nombre%' ";
+        ON hd.id = t.horariodetalle_id WHERE apellido_nombre LIKE'$nombre%' ";
         return $this->select($sql);
     }
     public function getTrabajadorPorDNI($dni){

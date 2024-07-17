@@ -18,6 +18,7 @@
     <div class="signin-signup">
       <form role="form" class="sign-in-form" id="formulario" autocomplete="off">
           <img class="d-block w-100" src="<?php echo BASE_URL; ?>/assets/img/logo.png" alt=""><br>
+          <br>  
           <!-- <h2 class="title">Sistema de Control de Asistencia </h2>  -->
           
           <div class="input-field">
@@ -90,6 +91,7 @@
   
 </script>
 <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>
+<script src="<?php echo BASE_URL; ?>assets/js/app.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/login.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/script.js"></script>
 </body>

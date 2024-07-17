@@ -5,13 +5,18 @@ class Direccion extends Controller
     {
         parent::__construct();
         session_start();
-        if (empty($_SESSION['usuario_autenticado'])|| ($_SESSION['usuario_autenticado'] != "true")) {
+        if (empty($_SESSION['usuario_autenticado']) || ($_SESSION['usuario_autenticado'] != "true")) {
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        
     }
     public function index()
     {
+        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
 
         $data['title'] = 'Direccion';
         $data1 = '';
@@ -19,14 +24,14 @@ class Direccion extends Controller
     }
     public function listar()
     {
-       
+
         $data = $this->model->getDirecciones();
         for ($i = 0; $i < count($data); $i++) {
 
             $datonuevo = $data[$i]['direccion_estado'];
-            
-            $data[$i]['direccion_equipo']= $data[$i]['direccion_nombre'].' '.$data[$i]['equipo_nombre'];
-            
+
+            $data[$i]['direccion_equipo'] = $data[$i]['direccion_nombre'] . ' ' . $data[$i]['equipo_nombre'];
+
             if ($datonuevo == 'Activo') {
                 $data[$i]['direccion_estado'] = "<div class='badge badge-info'>Activo</div>";
             } else {
@@ -48,31 +53,31 @@ class Direccion extends Controller
     public function listarEquipos()
     {
         $data1 = $this->model->getEquipos();
-      
-        echo json_encode($data1,JSON_UNESCAPED_UNICODE);
+
+        echo json_encode($data1, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     public function registrar()
     {
-        if ((isset($_POST['nombre']))){
+        if ((isset($_POST['nombre']))) {
 
             $nombre = $_POST['nombre'];
             $equipo_id = $_POST['equipo'];
             $estado = $_POST['estado'];
             $id = $_POST['id'];
 
-            if($equipo_id=='0'){
-                $equipo_id=null;
+            if ($equipo_id == '0') {
+                $equipo_id = null;
             }
 
             $datos_log = array(
                 "nombre" => $nombre,
                 "equipo_id" => $equipo_id,
                 "estado" => $estado,
-               
+
             );
-           
+
             $datos_log_json = json_encode($datos_log);
 
             if (empty($nombre)) {
@@ -84,24 +89,24 @@ class Direccion extends Controller
                 }
 
                 if (!empty($error_msg)) {
-                    
+
                     $respuesta = array('msg' => $error_msg, 'icono' => 'warning');
                 } else {
                     // VERIFICO LA EXISTENCIA
-                    if($equipo_id==null){
+                    if ($equipo_id == null) {
                         $result = $this->model->verificarNull($nombre);
-                    }else{
-                        $result = $this->model->verificar($nombre,$equipo_id);
+                    } else {
+                        $result = $this->model->verificar($nombre, $equipo_id);
                     }
-                    
+
                     // REGISTRAR
                     if (empty($id)) {
                         if (empty($result)) {
-                            $data = $this->model->registrar($nombre,$equipo_id);
+                            $data = $this->model->registrar($nombre, $equipo_id);
 
                             if ($data > 0) {
                                 $respuesta = array('msg' => 'Direccion registrado', 'icono' => 'success');
-                                $this->model->registrarlog($_SESSION['id'],'Crear','Direccion', $datos_log_json);
+                                $this->model->registrarlog($_SESSION['id'], 'Crear', 'Direccion', $datos_log_json);
                             } else {
                                 $respuesta = array('msg' => 'error al registrar', 'icono' => 'error');
                             }
@@ -118,25 +123,25 @@ class Direccion extends Controller
                         //     $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
                         // }
                         // if ($result) {
-                            if ($result['id'] != $id && $result['equipo_id']==$equipo_id || $result['equipo_id']='') {
-                                $respuesta = array('msg' => 'Direccion en uso', 'icono' => 'warning');
+                        if ($result['id'] != $id && $result['equipo_id'] == $equipo_id || $result['equipo_id'] = '') {
+                            $respuesta = array('msg' => 'Direccion en uso', 'icono' => 'warning');
+                        } else {
+                            // El nombre de usuario es el mismo que el original, se permite la modificación
+                            $data = $this->model->modificar($nombre, $equipo_id, $estado, $id);
+                            if ($data == 1) {
+                                $respuesta = array('msg' => 'Direccion modificado' . $result['equipo_id'], 'icono' => 'success');
+                                $this->model->registrarlog($_SESSION['id'], 'Modificar', 'Direccion', $datos_log_json);
                             } else {
-                                // El nombre de usuario es el mismo que el original, se permite la modificación
-                                $data = $this->model->modificar($nombre,$equipo_id, $estado, $id);
-                                if ($data == 1) {
-                                    $respuesta = array('msg' => 'Direccion modificado' .$result['equipo_id'], 'icono' => 'success');
-                                    $this->model->registrarlog($_SESSION['id'],'Modificar','Direccion', $datos_log_json);
-                                } else {
-                                    $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
-                                }
+                                $respuesta = array('msg' => 'Error al modificar', 'icono' => 'error');
                             }
+                        }
                     }
                 }
             }
-            
+
             echo json_encode($respuesta);
         }
-     
+
         die();
     }
     //eliminar user

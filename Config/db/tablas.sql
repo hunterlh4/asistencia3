@@ -131,10 +131,11 @@ CREATE TABLE usuario (
     nombre VARCHAR(50) NULL,
     apellido VARCHAR(50) NULL,
     nivel INT NOT NULL,
-    apellido_nombre varchar(100) null,
+    -- apellido_nombre varchar(100) null,
     dni varchar(20),
     nacimiento date null,
     trabajador_id INT  NULL,
+    direccion int null,
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -307,7 +308,16 @@ CREATE TABLE festividad (
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP NULL
 );
-por cada tabla esto
+
+CREATE TABLE notificacion (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL,
+    mensaje TEXT NOT NULL,
+    leido BOOLEAN DEFAULT FALSE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+);
+-- por cada tabla esto
 GRANT USAGE, SELECT ON SEQUENCE festividad_id_seq TO zqavzvpn_rrhh;
 
 

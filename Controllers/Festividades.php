@@ -9,13 +9,17 @@ class Festividades extends Controller
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        if($_SESSION['nivel'] ==5){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
     }
     public function index()
     {
         $data['title'] = 'Festividades';
         $data['nivel'] =  $_SESSION['nivel'];
         $data1 = '';
-        $this->views->getView('Administracion', "Festividades", $data, $data1);
+        $this->views->getView('Administracion', "Festividades_ver", $data, $data1);
     }
 
     public function ver()

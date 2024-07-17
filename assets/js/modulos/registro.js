@@ -237,7 +237,9 @@ function buscardni() {
         console.log(res);
 
         if (!res.apellidoPaterno || res.apellidoPaterno.length < 1) {
-          Swal.fire("Aviso", "No se encontró el apellido paterno", "error");
+          Swal.fire("Aviso", "No se encontró el DNI", "error");
+          input_apellido.value = "";
+          input_nombre.value="";
         } else {
           let apellidoCompleto = res.apellidoPaterno.trim(); // Inicializar con apellido paterno
 

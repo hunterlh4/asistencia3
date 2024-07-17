@@ -12,6 +12,10 @@ class Equipo extends Controller
     }
     public function index()
     {
+        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
 
         $data['title'] = 'Equipos';
         $data1 = '';

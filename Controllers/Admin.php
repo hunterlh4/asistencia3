@@ -129,4 +129,16 @@ class Admin extends Controller
         session_destroy();
         header('Location: ' . BASE_URL);
     }
+
+    public function notificacion(){
+        $total = $this->model->NotificacionTotal();
+        $notificaciones = $this->model->Notificaciones();
+    
+        $data = [
+            'total' => $total,
+            'notificaciones' => $notificaciones
+        ];
+    
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
 }

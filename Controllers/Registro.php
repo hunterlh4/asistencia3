@@ -119,7 +119,9 @@ class Registro extends Controller
             $password_hash = password_hash($password, PASSWORD_BCRYPT);
             
             $resultado = $this->model->registrar($dni, $fecha_nacimiento, $nombre,$apellido, $usuario, $password_hash, $direccion);
-
+            // $data = $this->model->obtenerUsuario($usuario);
+            // $mensaje = "pendiente de aprobación.";
+            // $this->model->mensajeria($data['id'],$mensaje);
             if ($resultado > 0) {
                 echo json_encode(["icono" => "success", "message" => "Registro exitoso"]);
             } else {

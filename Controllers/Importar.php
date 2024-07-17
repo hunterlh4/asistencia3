@@ -13,13 +13,14 @@ class Importar extends Controller
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
-    }
-    public function index()
-    {
-        if($_SESSION['nivel'] !==1){
+        if ($_SESSION['nivel'] !== 1 &&  $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
+    }
+    public function index()
+    {
+
         // ini_set('max_execution_time', '300'); // 300 segundos = 5 minutos
         // ini_set('memory_limit', '512M');
         // $max_execution_time = ini_get('max_execution_time');
@@ -32,10 +33,7 @@ class Importar extends Controller
     }
     public function importar_trabajador_csv()
     {
-        if($_SESSION['nivel'] !==1){
-            header('Location: ' . BASE_URL . 'errors');
-            exit;
-        }
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -49,25 +47,25 @@ class Importar extends Controller
             echo json_encode(['msg' => 'Datos inválidos', 'icono' => 'error']);
             exit;
         }
-        
+
         $aceptado = 0;
         $ignorado = 0;
         $modificado = 0;
         $total = count($data);
-        $detalles = []; 
+        $detalles = [];
         foreach ($data as $key => $registro) {
             $valido = true;
-    
+
             $idUsuario = isset($registro['ID Usuario']) ? $registro['ID Usuario'] : '';
             $nombre = isset($registro['Nombre']) ? $registro['Nombre'] : '';
             $departamento = isset($registro['Departamento']) ? $registro['Departamento'] : '';
             // $fechaInicio = isset($registro['Fecha Inicio']) ? $registro['Fecha Inicio'] : '';
             // $fechaVencimiento = isset($registro['Fecha Vencimiento']) ? $registro['Fecha Vencimiento'] : '';
-            
+
             if (strpos($departamento, 'DIRESA/') === 0) {
                 $departamento = substr($departamento, 7); // Elimina 'DIRESA/' del inicio
             }
-            
+
             $detalleRegistro = [
                 'id' => $idUsuario,
                 'nombre' => $nombre,
@@ -90,35 +88,18 @@ class Importar extends Controller
                     $departamento = '';
                 }
             }
-            
-            
 
-            // if (!empty($departamento)) {
-            //     if (
-            //         strpos($departamento, 'DIRESA/PASIVOS') !== false ||
-            //         strpos($departamento, 'DIRESA/PROYECTOS') !== false ||
-            //         strpos($departamento, 'RED SALUD') !== false
-            //     ) {
-            //         $valido = false;
-            //         $ignorado++;
-            //         $detalleRegistro['ignorado'] = true;
-            //         $departamento='';
-            //     }
-            // }
-
-           
-    
             if ($valido && $idUsuario) {
                 $result = $this->model->getTrabajador($idUsuario);
                 $modalidad_trabajo = 'Presencial';
                 $institucion = $departamento;
-    
+
                 if (!empty($nombre)) {
                     $nombre = mb_convert_encoding($nombre, 'ISO-8859-1', 'UTF-8');
                     $nombre = str_replace('?', 'Ñ', $nombre);
                     $nombre = preg_replace('/\s+/', ' ', $nombre); // Eliminar espacios adicionales
                 }
-    
+
                 if (empty($result)) {
                     $result = $this->model->registrarTrabajador($nombre, $idUsuario, $institucion, $modalidad_trabajo);
                     if ($result > 0) {
@@ -157,10 +138,7 @@ class Importar extends Controller
 
     public function importar_asistencia_csv()
     {
-        if($_SESSION['nivel'] !==1){
-            header('Location: ' . BASE_URL . 'errors');
-            exit;
-        }
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo json_encode(['msg' => 'Método no permitido', 'icono' => 'error']);
@@ -281,7 +259,7 @@ class Importar extends Controller
                     }
                 }
 
-               
+
                 if (empty($trabajador)) {
                     $ignorado++;
                 }
@@ -358,7 +336,7 @@ class Importar extends Controller
                         $tardanza = gmdate('H:i', $diferencia_tardanza);
                     }
 
-                    if ($es_festividad == true) {
+                    if ($es_festividad == true && $ES_1_csv == '00:00') {
                         $licencia = 'FERIADO';
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
@@ -416,10 +394,7 @@ class Importar extends Controller
     }
     public function importar_asistencia_frontera()
     {
-        if($_SESSION['nivel'] !==1){
-            header('Location: ' . BASE_URL . 'errors');
-            exit;
-        }
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -528,10 +503,9 @@ class Importar extends Controller
                         if ($entrada === '00:00:00') {
                             $entrada = $hora;
                         }
-                        if($hora !==$entrada){
-                        $salida = $hora;
+                        if ($hora !== $entrada) {
+                            $salida = $hora;
                         }
-
                     }
                 }
 
@@ -607,7 +581,7 @@ class Importar extends Controller
                         $tardanza = gmdate('H:i', $diferencia_tardanza);
                     }
 
-                    if ($es_festividad == true) {
+                    if ($es_festividad == true  && $reloj_1 == '00:00:00') {
                         $licencia = 'FERIADO';
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
@@ -661,10 +635,7 @@ class Importar extends Controller
 
     public function importar_asistencia_samu()
     {
-        if($_SESSION['nivel'] !==1){
-            header('Location: ' . BASE_URL . 'errors');
-            exit;
-        }
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -695,7 +666,7 @@ class Importar extends Controller
                 $fecha_cumpleaños_csv = date('m-d', $timestamp);
                 $nombre = $registro['nombre'];
                 $result_trabajador = $this->model->getTrabajadorPorNombre($nombre);
-                if(empty($result_trabajador)){
+                if (empty($result_trabajador)) {
                     $dni = $registro['Nro.'];
                     $result_trabajador = $this->model->getTrabajadorPorDNI($dni);
                 }
@@ -851,7 +822,7 @@ class Importar extends Controller
                         $tardanza = gmdate('H:i', $diferencia_tardanza);
                     }
 
-                    if ($es_festividad == true) {
+                    if ($es_festividad == true  && $reloj_1 == '00:00:00') {
                         $licencia = 'FERIADO';
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
@@ -903,7 +874,7 @@ class Importar extends Controller
         // echo json_encode($registros);
         echo json_encode($respuesta);
     }
-    
+
     function compararEncabezados($encabezadoRecibido, $encabezadoEsperado)
     {
         // Convertir ambos encabezados a minúsculas y quitar espacios en blanco
@@ -916,10 +887,7 @@ class Importar extends Controller
 
     public function validar_archivo()
     {
-        if($_SESSION['nivel'] !==1){
-            header('Location: ' . BASE_URL . 'errors');
-            exit;
-        }
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo json_encode(['msg' => 'Método no permitido', 'validado' => false]);

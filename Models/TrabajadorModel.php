@@ -34,7 +34,7 @@ class TrabajadorModel extends Query
        
 
         $sql = "SELECT 
-                id,dni,apellido_nombre,estado
+                id,dni,apellido_nombre,estado,nombre,apellido
               
                 FROM trabajador 
                 where estado = 'Activo'
@@ -81,7 +81,7 @@ class TrabajadorModel extends Query
     //     return $this->select($sql);
     // }
     public function getTrabajador($id){
-        $sql = "SELECT id,dni,apellido_nombre,direccion_id,regimen_id,horarioDetalle_id ,cargo_id,email,telefono,tarjeta,sexo, fecha_nacimiento,modalidad_trabajo,estado FROM trabajador WHERE id = $id";
+        $sql = "SELECT id,dni,apellido_nombre,direccion_id,regimen_id,horarioDetalle_id ,cargo_id,email,telefono,tarjeta,sexo, fecha_nacimiento,modalidad_trabajo,estado,nombre,apellido FROM trabajador WHERE id = $id";
        
         return $this->select($sql);
     }
@@ -133,16 +133,16 @@ class TrabajadorModel extends Query
         $sql = "SELECT id,dni FROM trabajador WHERE dni = '$dni' ";
         return $this->select($sql);
     }
-    public function registrar($dni,$apellido_nombre,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo)
+    public function registrar($dni,$nombre,$apellido,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo)
     {
-        $sql = "INSERT INTO trabajador (dni,apellido_nombre,direccion_id,regimen_id,horarioDetalle_id,cargo_id,email,telefono,tarjeta,sexo,fecha_nacimiento,modalidad_trabajo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-        $array = array($dni,$apellido_nombre,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo);
+        $sql = "INSERT INTO trabajador (dni,nombre,apellido,direccion_id,regimen_id,horarioDetalle_id,cargo_id,email,telefono,tarjeta,sexo,fecha_nacimiento,modalidad_trabajo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $array = array($dni,$nombre,$apellido,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo);
         return $this->insertar($sql, $array);
     }
-    public function modificar($dni,$apellido_nombre,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo,$estado,$id)
+    public function modificar($dni,$nombre,$apellido,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo,$estado,$id)
     {
-        $sql = "UPDATE trabajador SET dni=?,apellido_nombre=?,direccion_id=?,regimen_id=?,horarioDetalle_id=?,cargo_id=?,email=?,telefono=?,tarjeta=?,sexo=?,fecha_nacimiento=?,modalidad_trabajo=?,estado=? WHERE id = ?";
-        $array = array($dni,$apellido_nombre,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo,$estado, $id);
+        $sql = "UPDATE trabajador SET dni=?,nombre=?,apellido=?,direccion_id=?,regimen_id=?,horarioDetalle_id=?,cargo_id=?,email=?,telefono=?,tarjeta=?,sexo=?,fecha_nacimiento=?,modalidad_trabajo=?,estado=? WHERE id = ?";
+        $array = array($dni,$nombre,$apellido,$direccion_id,$regimen_id,$horarioDetalle_id,$cargo_id,$email,$telefono,$numero_tarjeta,$sexo,$fecha_nacimiento,$modalidad_trabajo,$estado, $id);
         return $this->save($sql, $array);
     }
     // public function eliminar($id)

@@ -9,6 +9,10 @@ class HorarioDetalle extends Controller
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
     }
     public function index()
     {

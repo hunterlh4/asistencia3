@@ -9,9 +9,18 @@ class Asistencia extends Controller
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        if($_SESSION['nivel'] ==5){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
+        
     }
     public function index()
     {
+        if($_SESSION['nivel'] !==1 && $_SESSION['nivel'] !==100){
+            header('Location: ' . BASE_URL . 'errors');
+            exit;
+        }
 
         $data['title'] = 'Hoja de Asistencia';
         $data1 = '';
@@ -20,6 +29,8 @@ class Asistencia extends Controller
     }
     public function listar()
     {
+       
+        
         $data = $this->model->getCargos();
         for ($i = 0; $i < count($data); $i++) {
 
@@ -75,17 +86,9 @@ class Asistencia extends Controller
         echo json_encode($respuesta);
         die();
     }
-    //editar user
-    // public function listaCalendarioAsistenciaTrabajador($id,$anio,$mes)
-    // {
-    //     if (is_numeric($id)) {
-    //         $data = $this->model->getAsistenciaPorFecha($id,$anio,$mes);
-    //         echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    //     }
-    //     die();
-    // }
-    public function listarTrabajadorAsistencia(){
 
+    public function listarTrabajadorAsistencia(){
+      
         $dayNames = [
             "Lunes",
             "Martes",
@@ -152,7 +155,7 @@ class Asistencia extends Controller
         
     }
     public function listarTrabajadorAsistenciaGeneral(){
-
+        
         $dayNames = [
             "Lunes",
             "Martes",
@@ -207,6 +210,7 @@ class Asistencia extends Controller
         // $id = 812;
         // $anio = '2024';
         // $mes = '5';
+      
         if (isset($_POST['id']) && isset($_POST['anio']) && isset($_POST['mes'])) {
             $mes = $_POST['mes'] ; 
             $anio = $_POST['anio'] ; 
@@ -233,6 +237,8 @@ class Asistencia extends Controller
 
     public function ver()
     {
+
+    
         $id= $_SESSION['id'];
         $data1 = $this->model->getusuario($id);
         $id = $data1['trabajador_id'];
@@ -242,4 +248,6 @@ class Asistencia extends Controller
         
         $this->views->getView('Administracion', "Asistencia_Trabajador", $data, $data1);
     }
+
+   
 }

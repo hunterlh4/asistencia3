@@ -26,53 +26,46 @@
                         <div class="card-content">
                           <h3 class="card-title text-danger text-center font-weight-bold">¡BIENVENIDO AL SISTEMA DE CONTROL DE ASISTENCIA DE LA DIRESA TACNA! </h3>
                           <?php
-                          // $usuario_nivel ='';
-                          // if ($data['nivel'] === 1) {
-                          //   $usuario_nivel = "Administrador";
-                          // } else if ($data['nivel'] === 2) {
-                          //     $usuario_nivel = "Jefe";
-                          // } else if ($data['nivel'] === 3) {
-                          //     $usuario_nivel = "Vizualizador";
-                          // } else if ($data['nivel'] === 4) {
-                          //     $usuario_nivel = "Portero";
-                          // } else if ($data['nivel'] === 5) {
-                          //     $usuario_nivel = "Sin permisos";
-                          // } else if ($data['nivel'] === 100) {
-                          //     $usuario_nivel = "Super Admin";
-                          // } else {
-                          //     $usuario_nivel = "Nivel no definido";
-                          // }
+                       
                           ?>
 
                           <h4 class="font-weight-bold text-center"> <?php echo  $data['nombre'] . ' ' .  $data['apellido'];  ?></h4>
 
                           <?php
-                          if ($data['nivel'] == 0) {
-                            echo ' <p style="text-align: center;">Usted no cuenta con los privilegios suficientes. </p>
-                             <p style="text-align: center;">Espere que un Administrador del Sistema le otorgue los permisos suficientes.</p>';
-                          }
-                          if ($data['nivel'] == 1) {
+                         
+                          if ($data['nivel'] == 1 || $data['nivel'] == 100) {
                             echo ' 
                             <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra visualizar el ingreso y salida que marcan los relojes, así como evaluar y generar los reportes.</p>
                              <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
                             <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Asistencia"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                           
                           }
-                          if ($data['nivel'] == 2)
+                          if ($data['nivel'] == 2){
                             echo ' 
-                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
-                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                            <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                             <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          }
+                          
 
-                          if ($data['nivel'] == 3)
+                          if ($data['nivel'] == 3){
                             echo ' 
-                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
-                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
-                          if ($data['nivel'] == 4)
+                            <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                             <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Ver"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          }
+                           
+                          if ($data['nivel'] == 4){
                             echo ' 
-                          <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
-                           <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
-                          <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Porteria"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                            <p style="text-align: justify;">Como usuario del área del Sistema de Control de Asistencia usted podra Evaluar las Boletas, revisar sus boletas y sus asistencias.</p>
+                             <p style="text-align: justify;">Para iniciar a REVISAR los horarios de los trabajadores de clic al siguiente botón.</p>
+                            <a type="button" class="btn btn-primary btn-lg text-center" href="' . BASE_URL . 'Porteria"><i class="far fa-hand-point-right"></i> INICIAR</a>';
+                          }
+                          
+                          if ($data['nivel'] == 5) {
+                            echo ' <p style="text-align: center;">Usted no cuenta con los privilegios suficientes. </p>
+                             <p style="text-align: center;">Espere que un Administrador del Sistema le otorgue los permisos suficientes.</p>';
+                          }
                           ?>
 
 

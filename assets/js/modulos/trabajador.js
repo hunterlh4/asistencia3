@@ -1,5 +1,5 @@
-const nuevo = document.querySelector("#nuevo_registro");
-const frm = document.querySelector("#formulario");
+
+
 const titleModal = document.querySelector("#titleModal");
 const btnAccion = document.querySelector("#btnAccion");
 const myModal = new bootstrap.Modal(document.getElementById("nuevoModal"));
@@ -14,28 +14,36 @@ var datos;
 // Ajustar el tamaño del modal
 // Establece el ancho máximo del modal
 
-document.addEventListener("DOMContentLoaded", function () {
+let frm,
+  selectDireccion,
+  nuevo,
+  input_id,
+  input_dni,
+  input_nacimiento,
+  input_nombre,
+  input_apellido;
+
+function inicializarVariables() {
+  frm = document.querySelector("#formulario");
+  nuevo = document.querySelector("#nuevo_registro");
+  selectDireccion =  document.getElementById("direccion");
+  input_id = document.querySelector("#id");
+  input_dni = document.querySelector("#dni");
+  input_nacimiento = document.getElementById("nacimiento");
+  input_nombre = document.querySelector("#nombre");
+  input_apellido = document.querySelector("#apellido");
+
   llenarTabla();
   llenarselectDireccion();
   llenarselectRegimen();
   llenarselectHorario();
   llenarselectCargo();
+  
+}
 
-  //levantar modal
-  nuevo.addEventListener("click", function () {
-    frm.reset();
-    resetRequiredFields();
-    btnAccion.textContent = "Registrar";
-    titleModal.textContent = "Nuevo Trabajador";
-
-    document.querySelector("#radio-true").checked = true;
-    document.querySelector("#id").value = "";
-    document.querySelectorAll("#estado-grupo").forEach((element) => {
-      element.style.display = "none";
-    });
-    myModal.show();
-  });
-
+document.addEventListener("DOMContentLoaded", function () {
+  inicializarVariables()
+ 
   //submit usuarios
   frm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -135,7 +143,8 @@ function edit(id) {
       document.querySelector("#dni").value = res.dni;
       document.querySelector("#telefono").value = res.telefono;
       document.querySelector("#tarjeta").value = res.tarjeta;
-      document.querySelector("#nombre").value = res.apellido_nombre;
+      document.querySelector("#nombre").value = res.nombre;
+      document.querySelector("#apellido").value = res.apellido;
       document.querySelector("#email").value = res.email;
       document.querySelector("#nacimiento").value = res.fecha_nacimiento;
       document.querySelector("#direccion").value = res.direccion_id;
@@ -222,14 +231,22 @@ function consultar() {
       http.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
               const res = JSON.parse(this.responseText);
-              console.log(this.responseText);
-
-              if(res.apellidoPaterno === undefined || res.apellidoPaterno.length < 1){
-                Swal.fire("Aviso", 'no existe el numero de Dni'.toUpperCase(), 'error');
-              }else{
-                document.querySelector("#nombre").value =res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
+              if (!res.apellidoPaterno || res.apellidoPaterno.length < 1) {
+                Swal.fire("Aviso", "No se encontró el apellido paterno", "error");
+              } else {
+                let apellidoCompleto = res.apellidoPaterno.trim(); // Inicializar con apellido paterno
+      
+                if (res.apellidoMaterno && res.apellidoMaterno.length > 0) {
+                  apellidoCompleto += " " + res.apellidoMaterno.trim(); // Agregar apellido materno si existe
+                }
+      
+                input_apellido.value = apellidoCompleto.trim();
+      
+                // Asignar el nombre completo al campo correspondiente
+                input_nombre.value = res.nombres.trim();
+      
+                // Asumiendo que esto es para mostrar un mensaje de éxito o esconder el mensaje de error
               }
-              res.apellidoPaterno +' '+res.apellidoMaterno+' '+ res.nombres;
 
           } else {
           console.log("Error al consultar y editar el DNI.");

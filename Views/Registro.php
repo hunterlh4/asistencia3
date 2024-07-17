@@ -38,6 +38,21 @@
 
                   <div class="row">
 
+                    <div class="form-group col-12 col-md-12">
+                      <label for="direccion" class="custom-label">Direccion</label>
+                      <div class="input-group">
+                        <select class="form-control select select2" id="direccion" name="direccion" required>
+                          <option value="" selected>Selecciona una Direccion</option>
+                          <!-- Opciones para la dirección -->
+                        </select>
+                        <div class="invalid-feedback">
+                          Debes seleccionar una dirección.
+                        </div>
+                        <div class="valid-feedback">
+                          Correcto.
+                        </div>
+                      </div>
+                    </div>
                     <div class="form-group col-xl-6 col-md-6">
                       <label for="dni">DNI</label>
                       <div class="input-group">
@@ -90,21 +105,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group col-12 col-md-12">
-                      <label for="direccion" class="custom-label">Direccion</label>
-                      <div class="input-group">
-                        <select class="form-control select select2" id="direccion" name="direccion" required>
-                          <option value="" selected>Selecciona una Direccion</option>
-                          <!-- Opciones para la dirección -->
-                        </select>
-                        <div class="invalid-feedback">
-                          Debes seleccionar una dirección.
-                        </div>
-                        <div class="valid-feedback">
-                          Correcto.
-                        </div>
-                      </div>
-                    </div>
+                    
 
                     <div class="form-group col-12 col-md-12">
                       <div class="">

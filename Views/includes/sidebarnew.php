@@ -8,7 +8,7 @@
      
 
       <?php
-       if ($_SESSION['nivel'] !== 0) {
+       if ($_SESSION['nivel'] !== 5) {
       echo ' <li class="menu-header">General</li>';
        }
       // 1 admin            alextm
@@ -17,7 +17,7 @@
       // 4 portero          alextm3
       // 100 mio
       //Solo el admin(1) y jefes de oficinas puede visualizar las tardanzas 
-      if ($_SESSION['nivel'] == 5 || $_SESSION['nivel'] == 100) {
+      if ($_SESSION['nivel'] == 15 || $_SESSION['nivel'] == 1001) {
         echo '<li class="dropdown"> 
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Mis Asistencias</span></a>
                   <ul class="dropdown-menu">
@@ -43,8 +43,8 @@
         echo '<li><a class="nav-link" href="' . BASE_URL . 'Cargo">Cargo</a></li>';
         echo '<li><a class="nav-link" href="' . BASE_URL . 'Regimen">Regimen</a></li>';
         echo '<li><a class="nav-link" href="' . BASE_URL . 'Usuario">Usuarios</a></li>';
-        echo '<li><a class="nav-link" href="' . BASE_URL . 'Festividades">Festividades</a></li>
-              </ul>
+        //echo '<li><a class="nav-link" href="' . BASE_URL . 'Festividades">Festividades</a></li>';
+        echo  '</ul>
             </li>';
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Usuario" class="nav-link"><i data-feather="users"></i><span>Administrar Usuarios</span></a> </li> ';
       }
@@ -53,11 +53,11 @@
       <!-- <li class="menu-header">Asistencia</li> -->
       <!-- ASISTENCIAS -->
       <?php
-      if ($_SESSION['nivel'] !== 0) {
+      if ($_SESSION['nivel'] !== 5) {
       echo '<li class="dropdown">
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
       <ul class="dropdown-menu">';
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         // echo '  <li class="menu-header">Excel</li>';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Importar" class="nav-link"><i data-feather="upload"></i><span>Importar</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="file-text"></i><span>Hoja de Asistencia</span></a> </li> ';
@@ -72,7 +72,7 @@
       <!-- <li class="menu-header">Boletas</li> -->
       <!-- PROGRAMACION -->
       <?php
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Programacion" class="nav-link"><i data-feather="monitor"></i><span>Programacion</span></a> </li> ';
       }
       ?>
@@ -82,22 +82,22 @@
       // echo '  <li class="menu-header">Excel</li>';
 
      
-      if ($_SESSION['nivel'] !== 0) {
+      if ($_SESSION['nivel'] !== 5) {
       echo '<li class="dropdown">
                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Boletas</span></a>
                   <ul class="dropdown-menu">';
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Boletas</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2 || $_SESSION['nivel'] == 100) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 100) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Porteria" class="nav-link"><i data-feather="file-text"></i><span>Porteria</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 100) {
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
       }
       echo '</ul>
@@ -106,7 +106,7 @@
       ?>
       <!-- <li class="menu-header">Reportes</li> -->
       <?php
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         // echo '  <li class="menu-header">Excel</li>';
         echo '<li class="dropdown">
                   <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Reportes</span></a>
@@ -122,7 +122,7 @@
       ?>
 
       <?php
-      if ($_SESSION['nivel'] == 1) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         // echo '  <li class="menu-header">Excel</li>';
       
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Configuracion/" class="nav-link"><i data-feather="settings"></i><span>Configuracion</span></a> </li> ';
@@ -132,19 +132,7 @@
       ?>
 
 
-      <?php
-      //Portero y jefe de area (4) no tiene acceso al buscador
-      if ($_SESSION['nivel'] == 100 and $_SESSION['nivel'] == 100) {
-        // echo '<li class="dropdown"> <a href="tab_search_new.php" class="nav-link"><i data-feather="search"></i><span>Búsqueda General</span></a></li>';
-        echo '<li class="dropdown">
-              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Búsqueda General</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link" href="tab_search_new.php">Búsqueda de asistencia</a></li>
-                <li><a class="nav-link" href="tab_search_detallado.php">Búsqueda detallada</a></li>
-              </ul>
-            </li>';
-      } ?>
-
+    
     </ul>
   </aside>
 </div>
