@@ -1,4 +1,4 @@
-<div class="main-sidebar sidebar-style-2">
+''''''<div class="main-sidebar sidebar-style-2">
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
       <a href="<?php echo BASE_URL; ?>"> <img alt="image" src="<?php echo BASE_URL; ?>assets/img/icono_diresa.png" class="header-logo" /> <span class="logo-name">DIRESA TACNA</span>
@@ -16,19 +16,8 @@
       // 3 vizualizador     alextm2
       // 4 portero          alextm3
       // 100 mio
-      //Solo el admin(1) y jefes de oficinas puede visualizar las tardanzas 
-      if ($_SESSION['nivel'] == 15 || $_SESSION['nivel'] == 1001) {
-        echo '<li class="dropdown"> 
-                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="book-open"></i><span>Mis Asistencias</span></a>
-                  <ul class="dropdown-menu">
-                    <a href="" class="nav-link"><i data-feather="chevron-right"></i><span>Resumido</span></a> 
-                    <a href="" class="nav-link"><i data-feather="chevron-right"></i><span>Detallado</span></a>
-                    <a href="" class="nav-link"><i data-feather="chevron-right"></i><span>Kardex</span></a>  
-                  </ul>
-                </li>';
-        echo '<li class="dropdown"> <a href="" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a></li>';
-        echo '<li class="dropdown"> <a href="" class="nav-link"><i data-feather="file-text"></i><span>Mis Datos</span></a></li>';
-      }
+    
+     
       //Solo un Administrador(1) puede administrar usuarios
       if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         //echo '<li class="menu-header">Administrables</li>' ;
@@ -53,7 +42,7 @@
       <!-- <li class="menu-header">Asistencia</li> -->
       <!-- ASISTENCIAS -->
       <?php
-      if ($_SESSION['nivel'] !== 5) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
       echo '<li class="dropdown">
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
       <ul class="dropdown-menu">';
@@ -67,37 +56,64 @@
       echo '</ul>
       </li> ';
       }
+    
+      // jefe de oficina
+      if ($_SESSION['nivel'] == 2) {
+        echo '
+       
+         <li class="dropdown"> 
+        <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="monitor"></i><span>Revisar Boletas</span></a> 
+        </li> 
+        ';
+        }
+      // VIZUALIZADOR 3
+      if ($_SESSION['nivel'] == 3) {
+        echo '
+        <li class="dropdown"> 
+        <a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="monitor"></i><span>Asistencia</span></a> 
+        </li> 
+         <li class="dropdown"> 
+        <a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="calendar"></i><span>Calendario</span></a> 
+        </li> 
+         <li class="dropdown"> 
+        <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file"></i><span>Boleta</span></a> 
+        </li> 
+        ';
+        }
+      
+      // PORTERIA 4
+      if ($_SESSION['nivel'] == 4) {
+        echo '
+       
+         <li class="dropdown"> 
+        <a href="' . BASE_URL . 'Boleta/Porteria" class="nav-link"><i data-feather="monitor"></i><span>Boletas</span></a> 
+        </li> 
+        ';
+        }
+      
       ?>
-      <!-- <li class="dropdown"> <a href="tab_auth_salida_new.php" class="nav-link"><i data-feather="book-open"></i><span>Porteria</span></a> </li> -->
-      <!-- <li class="menu-header">Boletas</li> -->
-      <!-- PROGRAMACION -->
-      <?php
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
-      echo '<li class="dropdown"> <a href="' . BASE_URL . 'Programacion" class="nav-link"><i data-feather="monitor"></i><span>Programacion</span></a> </li> ';
-      }
-      ?>
-      <!-- BOLETAS -->
+      <!-- PORTERIA -->
       <?php
 
       // echo '  <li class="menu-header">Excel</li>';
 
      
-      if ($_SESSION['nivel'] !== 5) {
+      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
       echo '<li class="dropdown">
                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Boletas</span></a>
                   <ul class="dropdown-menu">';
       if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 100) {
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta" class="nav-link"><i data-feather="file-text"></i><span>Boletas</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 2 || $_SESSION['nivel'] == 100) {
+      if ($_SESSION['nivel'] == 1 ||  $_SESSION['nivel'] == 100) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/RevisarBoletas" class="nav-link"><i data-feather="file-text"></i><span>Revisar Boletas</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 100) {
+      if ($_SESSION['nivel'] == 1 ||  $_SESSION['nivel'] == 100) {
         // echo '<li class="dropdown"> <a href="' .BASE_URL . 'Boletas/Buzon" class="nav-link"><i data-feather="file-text"></i><span>Boletas Autorizadas</span></a> </li> ';
         echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/Porteria" class="nav-link"><i data-feather="file-text"></i><span>Porteria</span></a> </li> ';
       }
-      if ($_SESSION['nivel'] == 1 || $_SESSION['nivel'] == 4 || $_SESSION['nivel'] == 100) {
+      if ($_SESSION['nivel'] == 1 ||  $_SESSION['nivel'] == 100) {
       echo '<li class="dropdown"> <a href="' . BASE_URL . 'Boleta/MisBoletas" class="nav-link"><i data-feather="file-text"></i><span>Mis Boletas</span></a> ';
       }
       echo '</ul>
@@ -135,4 +151,4 @@
     
     </ul>
   </aside>
-</div>
+</div>''''''

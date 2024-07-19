@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="form-group col-xl-6 col-md-6">
-                      <label for="password" class="d-block">Password</label>
+                      <label for="password" class="d-block">Nueva Contraseña</label>
                       <div class="input-group">
                         <input id="password" type="password" class="form-control pwstrength" pattern=".{6,20}" minlength="6" maxlength="20" data-indicator="pwindicator" name="password" required>
 
@@ -142,7 +142,7 @@
                       </div>
                     </div>
                     <div class="form-group col-xl-6 col-md-6">
-                      <label for="password2" class="d-block">Password Confirmation</label>
+                      <label for="password2" class="d-block">Confirma tu contraseña </label>
                       <div class="input-group">
                         <input id="password2" type="password" class="form-control pwstrength2" pattern=".{6,20}" minlength="6" maxlength="20" data-indicator="pwindicator2" name="password-confirm" required>
 

@@ -87,7 +87,7 @@ class Login extends Controller
                 } else {
                     $data = $this->model->getLogin(strtolower($_POST['username']));
                     if (empty($data)) {
-                        $respuesta = ['msg' => 'Usuario no existe', 'icono' => 'warning'];
+                        $respuesta = ['msg' => 'El Usuario ingresado no existe', 'icono' => 'warning'];
                     } else {
                         if (password_verify(strtolower($_POST['password']), $data['password'])) {
                             if ($data['estado'] == 'Activo') {

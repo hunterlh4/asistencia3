@@ -1,99 +1,80 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
     <?php echo $data['title']; ?>
   </title>
-  <script src="<?php echo BASE_URL; ?>/assets/js/modulos/iconos.js" crossorigin="anonymus"></script>
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/loginstyle.css" />
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="png" href="<?php echo BASE_URL; ?>/assets/img/icono_diresa.png">
-
-  
 </head>
-
-<div class="container">
-  <div class="forms-container">
-    <div class="signin-signup">
-      <form role="form" class="sign-in-form" id="formulario" autocomplete="off">
-          <img class="d-block w-100" src="<?php echo BASE_URL; ?>/assets/img/logo.png" alt=""><br>
-          <br>  
-          <!-- <h2 class="title">Sistema de Control de Asistencia </h2>  -->
-          
-          <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="text" id="username" name="username" placeholder="Usuario" />
+<body>
+  <main>
+    <div class="page-container">
+      <div class="grid-container">
+        <div class="left-side">
+          <div class="img-and-text">
+            <!-- <img class="cart-illustration" src="assets/img/login/cart-illustration.png" alt=""> -->
+            <img class="cart-illustration" src="assets/img/logo.png" alt="">
+            <!-- <h1>Inicio de Sesion.</h1> -->
           </div>
-          <div class="input-field">
-            <i class="fas fa-lock"></i>
-            
-            <input type="password" id="password" name="password" placeholder="Contraseña" />
-          </div>
-         <br>
-          <div class="text-center">
-            <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Ingresar</button>
-            <a href="<?php echo BASE_URL; ?>Registro" class=""><button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2">registrate</button></a>
-          </div>
-      </form>
-      <form action="login.php" method="POST" class="sign-up-form">
-        <!--  -->
-        <a href=<?php echo BASE_URL."Uploads/Manual/Manual_Usuario.pdf" ?> target="_blank" class=""><h2 class="title">Manual de Usuario</h2></a>
-
-        <!--  -->
-        <div class="manual-container" style="overflow-y: auto; max-height: 700px;">
-        <!-- Contenido del manual aquí -->
-          <p> Ver 1.0</p>
-
-        <!-- Agrega más contenido según sea necesario -->
         </div>
-        <!--  -->
-      </form>
-    </div>
-  </div>
+        <div class="right-side">
+          <div class="wrapper">
+            <h2>Inicio de Sesion.</h2>
+            <p>¿No tienes una cuenta? <a href="<?php echo BASE_URL; ?>Registro">Registrate</a></p>
+            <!-- <div class="sign-up-buttons">
+              <button id="sign-up"><img src="assets/img/login/google-icon.png"> Sign up with Google</button>
+              <button id="sign-up-facebook"><img src="assets/img/login/facebook-icon.svg" width="16px"> Sign up with facebook</button>
+            </div> -->
+            <p class="socials-divider"><span>o</span></p>
 
-  <div class="panels-container">
-    <div class="panel left-panel">
-      <div class="content">
-        <h3>Manual de Usuario</h3>
-        <p>
-          Necesitas informacion sobre como usar el sistema. Aprende todo aqui!
-        </p>
-        <button class="btn transparent" id="sign-up-btn">
-          Descarga Manual
-        </button>
+            <form role="form" id="formulario" autocomplete="off">
+              <!-- <label for="username">Usuario</label> -->
+              <div class="email-input-container">
+                <i class="fi fi-rr-envelope icon-email"></i>
+                <input type="text" name="username" placeholder="Ingrese su usuario" id="username">
+              </div>
+              <!-- <label for="password">Contraseña</label> -->
+
+              <div class="password-input-container">
+                <i class="fi fi-rr-lock icon-password"></i>
+                <input type="password" name="password" placeholder="Ingrese su contraseña" id="password">
+              </div>
+
+            </form>
+
+            <div class="agreement-check">
+              <input type="checkbox" name="terms_of_service_and_privacy_policy">
+              <span class="terms-of-use-text">I agree to Plataform's
+                <a href="#">Terms of Service</a> and
+                <a href="#">Privacy Policy</a>
+              </span>
+            </div>
+
+            <button id="register-button" type="button">Iniciar Sesion</button>
+            <!-- <p class="credits">Made with ❤️ by <a href="https://github.com/hunterlh4" target="_blank">aluizamendes</a></p> -->
+            <p class="credits">Descarga el <a href=<?php echo BASE_URL."Uploads/Manual/Manual_Usuario.pdf" ?> target="_blank">Manual de Usuario ❤️ </a></p>
+          </div>
+        </div>    
       </div>
-      <img src="<?php echo BASE_URL; ?>/assets/img/login_time.svg" class="image" alt="" />
     </div>
-    <div class="panel right-panel">
-      <div class="content">
-        <h3>Ingresa al sistema</h3>
-        <p>
-          <!-- Ingresa tu correo afiliado donde te llegará un mensaje de sislega, dale click al enlace y listo! -->
-        </p>
-        <button class="btn transparent" id="sign-in-btn">
-          Ingresar
-        </button>
-      </div>
-      <img src="<?php echo BASE_URL; ?>/assets/img/email.svg" class="image" alt="" />
-    </div>
-  </div>
-</div>
-
-
-
-
-</script>
-<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-
-<script>
+  </main>
+  <script>
   const base_url = '<?php echo BASE_URL; ?>';
   
 </script>
+
 <script src="<?php echo BASE_URL; ?>assets/js/sweetalert2.all.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/app.min.js"></script>
 <script src="<?php echo BASE_URL; ?>assets/js/modulos/login.js"></script>
-<script src="<?php echo BASE_URL; ?>assets/js/modulos/script.js"></script>
-</body>
 
+</body>
 </html>
