@@ -39,10 +39,10 @@
                   <div class="row">
 
                     <div class="form-group col-12 col-md-12">
-                      <label for="direccion" class="custom-label">Direccion</label>
+                      <label for="direccion" class="custom-label">Dirección</label>
                       <div class="input-group">
                         <select class="form-control select select2" id="direccion" name="direccion" required>
-                          <option value="" selected>Selecciona una Direccion</option>
+                          <option value="" selected>Selecciona una Dirección</option>
                           <!-- Opciones para la dirección -->
                         </select>
                         <div class="invalid-feedback">
@@ -53,6 +53,7 @@
                         </div>
                       </div>
                     </div>
+
                     <div class="form-group col-xl-6 col-md-6">
                       <label for="dni">DNI</label>
                       <div class="input-group">
@@ -67,13 +68,10 @@
                           Correcto.
                         </div>
                       </div>
-
-
-
                     </div>
 
                     <div class="form-group col-xl-6 col-md-6">
-                      <label for="fecha_nacimiento">Nacimiento</label>
+                      <label for="fecha_nacimiento">Fecha de Nacimiento</label>
                       <input id="fecha_nacimiento" type="date" class="form-control" name="fecha_nacimiento" required>
                       <div class="invalid-feedback">
                         Por favor, ingresa una fecha válida.
@@ -105,11 +103,9 @@
                       </div>
                     </div>
 
-                    
-
                     <div class="form-group col-12 col-md-12">
-                      <div class="">
-                        <label for="username" class="custom-label">Usuario</label>
+                      <div>
+                        <label for="usuario" class="custom-label">Usuario</label>
                         <small id="username-error" class="custom-small d-none"> (El nombre de usuario ya se encuentra en uso.) </small>
                       </div>
                       <input id="usuario" name="usuario" type="text" class="form-control" pattern="[a-zA-Z0-9]{5,16}" minlength="5" maxlength="16" required>
@@ -125,12 +121,11 @@
                       <label for="password" class="d-block">Nueva Contraseña</label>
                       <div class="input-group">
                         <input id="password" type="password" class="form-control pwstrength" pattern=".{6,20}" minlength="6" maxlength="20" data-indicator="pwindicator" name="password" required>
-
                         <div class="input-group-append">
                           <button class="btn btn-icon btn-primary" onclick="ver1()" type="button"><i class="fas fa-eye"></i></button>
                         </div>
                         <div class="invalid-feedback">
-                          La clave debe de tener entre 6 y 20 caracteres.
+                          La clave debe tener entre 6 y 20 caracteres.
                         </div>
                         <div class="valid-feedback">
                           Correcto.
@@ -141,17 +136,16 @@
                         <div class="label"></div>
                       </div>
                     </div>
+
                     <div class="form-group col-xl-6 col-md-6">
-                      <label for="password2" class="d-block">Confirma tu contraseña </label>
+                      <label for="password2" class="d-block">Confirma tu Contraseña</label>
                       <div class="input-group">
                         <input id="password2" type="password" class="form-control pwstrength2" pattern=".{6,20}" minlength="6" maxlength="20" data-indicator="pwindicator2" name="password-confirm" required>
-
                         <div class="input-group-append">
                           <button class="btn btn-icon btn-primary" onclick="ver2()" type="button"><i class="fas fa-eye"></i></button>
                         </div>
-
                         <div class="invalid-feedback">
-                          La clave debe de tener entre 6 y 20 caracteres.
+                          La clave debe tener entre 6 y 20 caracteres.
                         </div>
                         <div class="valid-feedback">
                           Correcto.
@@ -168,12 +162,7 @@
                         Registrar
                       </button>
                     </div>
-
-
                   </div>
-
-
-
                 </form>
               </div>
               <div class="mb-4 text-muted text-center">

@@ -25,7 +25,13 @@ body {
 }
 
 .left-side {
-  background-color: #ded8ef;
+  /* background-color: #ded8ef; */
+  /* background-color: #ded8efc5; */
+  /* background-color: #F99626; */
+   background-color: #faa646a8;
+  /* background-color: #e98265a2; */
+  /* background-color: #e0e0e0da; */
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,6 +141,7 @@ body {
 }
 .right-side form .email-input-container {
   position: relative;
+  
 }
 .right-side form .email-input-container .icon-email {
   position: absolute;
@@ -160,6 +167,7 @@ body {
   margin-bottom: 3.2rem;
   width: 100%;
   transition: all 0.4s ease;
+  color: #88898a;
 }
 .right-side form input:focus {
   border: 0.1rem solid #E98265;
@@ -174,6 +182,10 @@ body {
   padding-bottom: 4.8rem;
 }
 .right-side .agreement-check span {
+  font-size: 1.4rem;
+  color: #88898a;
+}
+.right-side .agreement-check label {
   font-size: 1.4rem;
   color: #88898a;
 }
@@ -280,4 +292,6 @@ body {
   .right-side .agreement-check span {
     line-height: 2.4rem;
   }
+
+
 }/*# sourceMappingURL=main.css.map */
