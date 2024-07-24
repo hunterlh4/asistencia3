@@ -132,8 +132,8 @@ function MostrarCalendario(){
                     estado:valores.estado,
                     
                     allDay: true,
-                    backgroundColor: valores.tipo === 'feriado' ? '#E74C3C' : (valores.tipo === 'institucional' ? '#27AE60' : undefined)
-                };                                              //#5499C7 F39C12 
+                    backgroundColor: valores.tipo === 'feriado' ? '#E74C3C' : (valores.tipo === 'compensable' ? '#2F89C5' : undefined)
+                };                                              //#5499C7 #F39C12 #27AE60
                 // 27AE60 verde
                 // 5499C7 azul
                 //  F39C12 naranja
@@ -181,7 +181,7 @@ function MostrarCalendario(){
             // console.log('editar');
             // const tipo = 1;
            
-            if(nivel_session==1){
+            if(nivel_session==1 || nivel_session==100){
                 abrirModal(2, calEvent);
             }
             // console.log(calEvent.start.format('YYYY-MM-DD'))
@@ -195,14 +195,14 @@ function MostrarCalendario(){
             // Si hay eventos en el día, seleccionar el primer evento
             if (eventsOnDay.length > 0) {
                 let calEvent = eventsOnDay[0];
-                if(nivel_session == 1){
+                if(nivel_session == 1 || nivel_session==100){
                     abrirModal(2, calEvent);
                 }
                 return;
             }
     
     
-            if(nivel_session==1){
+            if(nivel_session==1 || nivel_session==100){
                 abrirModal(1, null, date);
             }
            

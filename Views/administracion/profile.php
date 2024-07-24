@@ -69,7 +69,7 @@
                                             <div class="row form-group justify-content-center">
                                                 <div class="col-md-6 d-flex justify-content-center">
                                                     <button type="reset" id="btn_cancelar" class="btn btn-danger m-2" disabled>Cancelar</button>
-                                                    <button type="submit" id="btn_guardar" class="btn btn-success m-2" disabled>Guardar</button>
+                                                    <button type="submit" id="btn_guardar" class="btn btn-primary m-2" disabled>Guardar</button>
                                                 </div>
                                             </div>
                                         </form>

@@ -109,7 +109,31 @@
       resize: none; /* Evita el redimensionamiento manual */
       overflow: auto; /* Permite el scroll si el contenido es demasiado grande */
     }
-    </style>
+    .swal2-popup {
+  position: center;
+
+}
+ 
+/* Estilo general para todos los botones */
+.dt-buttons .btn {
+  /* font-size: 14px;  */
+  /* padding: 8px 16px;  */
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  margin: 5px; 
+  display: inline-flex; 
+  align-items: center; 
+  width: 60px;
+  height: 34px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+
+  </style>
 </body>
 
 </html>

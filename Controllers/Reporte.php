@@ -21,7 +21,7 @@ class Reporte extends Controller
     public function index()
     {
 
-        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 1 &&  $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -32,7 +32,7 @@ class Reporte extends Controller
     }
     public function Mensual()
     {
-        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 1 &&  $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -44,7 +44,7 @@ class Reporte extends Controller
 
     public function Fechas()
     {
-        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 1 &&  $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -56,7 +56,7 @@ class Reporte extends Controller
 
     public function Kardex()
     {
-        if($_SESSION['nivel'] !==1 &&  $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 1 &&  $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -156,14 +156,13 @@ class Reporte extends Controller
         die();
     }
 
-    public function exportarDetallado($trabajador, $mes, $anio)
+    public function exportarDetallado2($trabajador, $mes, $anio)
     {
         $mensaje = '';
         $cantidad = 0;
         $reporte = 0;
         $filePath = '';
         $fileName = '';
-        $nuevo_nombre = "";
         $nombreArchivo = '';
 
         $nombre_mes = [
@@ -202,6 +201,7 @@ class Reporte extends Controller
         $data = $this->model->Reporte_Trabajador($trabajador, $mes, $anio);
 
         if ($data > 0) {
+            // DATOS DEL TRABAJADOR
             $datos_trabajador = $this->model->getTrabajador($trabajador, $mes, $anio);
 
             date_default_timezone_set("America/Lima");
@@ -292,6 +292,18 @@ class Reporte extends Controller
                     if ($datos['licencia'] == 'NMS') {
                         $Observacion = "No marco Salida";
                     }
+                    if ($datos['licencia'] == 'FERIADO') {
+                        $Observacion = "Feriado";
+                    }
+                    if ($datos['licencia'] == 'COMPENSABLE') {
+                        $Observacion = "Feriado compensable";
+                    }
+                    if ($datos['licencia'] == 'NME') {
+                        $Observacion = "No marco entrada";
+                    }
+                    if ($datos['licencia'] == '+30') {
+                        $Observacion = "+30";
+                    }
                     $inasistencia += intval($datos['inasistencia']);
                     $tardanza += intval($datos['tardanza_cantidad']);
 
@@ -307,7 +319,7 @@ class Reporte extends Controller
                     $fecha = date('d-m-Y', strtotime($fecha));
                     $justificacion = '';
                     if (in_array($fecha, $fecha_boletas)) {
-                        $boleta = 'boleta'; // Asigna la fecha a $boleta si coincide
+                        $boleta = 'boleta';
                     }
                     if (strlen($datos['justificacion']) > 1) {
                         $justificacion .= $datos['justificacion'] . " ";
@@ -441,7 +453,144 @@ class Reporte extends Controller
         }
         return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje];
     }
-
+     public function exportarDetallado($trabajador, $mes, $anio){
+        $mensaje = '';
+        $cantidad = 0;
+        $filePath = '';
+        $nombreArchivo = '';
+        $nombreMeses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        $diasDeLaSemana = ['lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.', 'dom.'];
+    
+        // Obtener datos del trabajador
+        $datosTrabajador = $this->model->getTrabajador($trabajador, $mes, $anio);
+        if (!$datosTrabajador) {
+            return ['filepath' => '', 'nombreArchivo' => '', 'mensaje' => "No se encontraron datos para el Trabajador $trabajador en el mes $mes del año $anio"];
+        }
+    
+        // Obtener el reporte de horas del trabajador
+        $data = $this->model->Reporte_Trabajador($trabajador, $mes, $anio);
+        if (!$data) {
+            return ['filepath' => '', 'nombreArchivo' => '', 'mensaje' => "No se encontraron datos para el Trabajador $trabajador en el mes $mes del año $anio"];
+        }
+        $nombreTrabajador = $datosTrabajador[0]['trabajador_nombre'];
+        $nombreMes = $nombreMeses[$mes - 1];
+        $fechaActual = date('d-m-Y');
+        $horaActual = date('H:i:s');
+        $fechaBoletas = array_map(function($dato) {
+            return date('d-m-Y', strtotime($dato['fecha']));
+        }, $datosTrabajador);
+        $cantidadLicencia = array_sum(array_column($datosTrabajador, 'total_motivos_particulares'));
+        $horarioEntrada = $datosTrabajador[0]['horario_entrada'];
+        $horarioSalida = $datosTrabajador[0]['horario_salida'];
+        $inasistencia = array_sum(array_column($data, 'inasistencia'));
+        $tardanza = array_sum(array_column($data, 'tardanza_cantidad'));
+        $totalSegundos = array_reduce($data, function($carry, $item) {
+            list($horas, $minutos) = explode(':', $item['total']);
+            return $carry + ($horas * 3600) + ($minutos * 60);
+        }, 0);
+        $totalRealSegundos = array_reduce($data, function($carry, $item) {
+            list($horas, $minutos) = explode(':', $item['total_reloj']);
+            return $carry + ($horas * 3600) + ($minutos * 60);
+        }, 0);
+        $totalHoras = floor($totalSegundos / 3600);
+        $totalMinutos = floor(($totalSegundos % 3600) / 60);
+        $total = sprintf('%02d:%02d', $totalHoras, $totalMinutos);
+        $totalRealHoras = floor($totalRealSegundos / 3600);
+        $totalRealMinutos = floor(($totalRealSegundos % 3600) / 60);
+        $totalReal = sprintf('%02d:%02d', $totalRealHoras, $totalRealMinutos);
+    
+        // Crear el archivo Excel
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'CÁLCULO DE HORAS ' . strtoupper($nombreMes) . ' del ' . $anio)
+            ->mergeCells('A1:Q1')->getStyle('A1')->getFont()->setBold(true)->setSize(18);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+        $sheet->mergeCells('A2:Q2');
+        $sheet->setCellValue('A3', 'Nombre:')
+            ->mergeCells('A3:C3')->getStyle('A3')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('A3')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A3')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff424242');
+        $sheet->getStyle('A3')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+        $sheet->setCellValue('D3', $nombreTrabajador)
+            ->mergeCells('D3:I3')->getStyle('D3')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('D3')->getAlignment()->setHorizontal('center');
+        $sheet->setCellValue('A4', 'Hora de Reporte:')
+            ->mergeCells('A4:C4')->getStyle('A4')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('A4')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A4')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff424242');
+        $sheet->getStyle('A4')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+        $sheet->setCellValue('D4', "$horaActual - $fechaActual")
+            ->mergeCells('D4:I4')->getStyle('D4')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('D4')->getAlignment()->setHorizontal('center');
+        $sheet->setCellValue('A5', 'Horario:')
+            ->mergeCells('A5:C5')->getStyle('A5')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('A5')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A5')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff424242');
+        $sheet->getStyle('A5')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
+        $sheet->setCellValue('D5', "$horarioEntrada - $horarioSalida")
+            ->mergeCells('D5:I5')->getStyle('D5')->getFont()->setBold(true)->setSize(10);
+        $sheet->getStyle('D5')->getAlignment()->setHorizontal('center');
+        $sheet->mergeCells('A6:Q6');
+        $sheet->mergeCells('J3:Q5');
+    
+        $headers = ['Día', 'Fecha', 'Entrada', 'Salida', '', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'Total', 'Total Real', 'Observación', 'Justificacion'];
+        $sheet->fromArray($headers, NULL, 'A7');
+        $sheet->getStyle('A7:Q7')->getFont()->setBold(true)->getColor()->setARGB(Color::COLOR_WHITE);
+        $sheet->getStyle('A7:Q7')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ff5dade2');
+        $sheet->getStyle('E7')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('ffffffff');
+    
+        $row = 8;
+        foreach ($data as $datos) {
+            $observacion = '';
+            $justificacion = '';
+            switch ($datos['licencia']) {
+                case 'NMS': $observacion = "No marco Salida"; break;
+                case 'FERIADO': $observacion = "Feriado"; break;
+                case 'COMPENSABLE': $observacion = "Feriado compensable"; break;
+                case 'NME': $observacion = "No marco entrada"; break;
+                case '+30': $observacion = "+30"; break;
+            }
+            $fecha = date('d-m-Y', strtotime($datos['fecha']));
+            if (in_array($fecha, $fechaBoletas)) {
+                $justificacion .= 'boleta ';
+            }
+            if (!empty($datos['justificacion'])) {
+                $justificacion .= $datos['justificacion'] . ' ';
+            }
+            $nombreDia = $diasDeLaSemana[date('N', strtotime($fecha)) - 1];
+            $sheet->setCellValue('A' . $row, $nombreDia);
+            $sheet->setCellValue('B' . $row, $fecha);
+            $sheet->setCellValue('C' . $row, $datos['entrada']);
+            $sheet->setCellValue('D' . $row, $datos['salida']);
+            $sheet->setCellValue('M' . $row, $datos['total']);
+            $sheet->setCellValue('N' . $row, $datos['total_reloj']);
+            $sheet->setCellValue('O' . $row, $observacion);
+            $sheet->setCellValue('P' . $row, $justificacion);
+            $row++;
+        }
+    
+        // Añadir información final
+        $sheet->setCellValue('M' . $row, $total);
+        $sheet->setCellValue('N' . $row, $totalReal);
+        $sheet->getStyle('A1:Q' . ($row - 1))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->mergeCells('M' . $row . ':N' . $row);
+        $sheet->getStyle('M' . $row)->getAlignment()->setHorizontal('center');
+    
+        // Guardar el archivo Excel
+        $nombreArchivo = "reporte_{$trabajador}_{$nombreMes}_{$anio}.xlsx";
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/archivos/archivos_temporales/" . $nombreArchivo;
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
+        
+        return [
+            'filepath' => $filePath,
+            'nombreArchivo' => $nombreArchivo,
+            'mensaje' => 'Datos generados correctamente.'
+        ];
+     }
     public function exportarGeneralLicencia($mes, $anio)
     {
         $mensaje = '';
@@ -787,7 +936,7 @@ class Reporte extends Controller
         // $sheet->mergeCells('A6:AG6');
         $sheet->mergeCells('J3:AG5');
 
-        $headers = ['Nombre','Total', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
+        $headers = ['Nombre', 'Total', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
         $sheet->fromArray($headers, NULL, 'A6');
         $sheet->getStyle('A6:AG6')->getFont()->setBold(true);
         $sheet->getStyle('A6:AG6')->getFont()->getColor()->setARGB(Color::COLOR_WHITE);
@@ -874,7 +1023,7 @@ class Reporte extends Controller
         $sheet->getStyle('A1:AG' . $row)->getFont()->setName('Arial');
         // $sheet->getStyle('A' . ($row - 2) . ':F' . $row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-      
+
         foreach (range('A', 'AG') as $columnID) {
             $currentWidth = $sheet->getColumnDimension($columnID)->getWidth();
             $extraWidth = 14; // Define el margen adicional que quieres agregar
@@ -887,7 +1036,7 @@ class Reporte extends Controller
             $sheet->getRowDimension($row->getRowIndex())->setRowHeight(-1); // Ajusta automáticamente
         }
         $sheet->getColumnDimension('A')->setWidth(46);
-        
+
 
 
         $nombreArchivo = "Reporte_General_Tardanza_" . $anio . "_" . $nombreMes . ".xlsx";
@@ -908,6 +1057,6 @@ class Reporte extends Controller
             $mensaje = "valor Vacio  Mes $mes año $anio";
         }
 
-        return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje,'data' => ''  ];
+        return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje, 'data' => ''];
     }
 }

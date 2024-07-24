@@ -29,6 +29,7 @@ var datos;
 
 
 
+
 // Ajustar el tamaño del modal
 // Establece el ancho máximo del modal
 
@@ -39,6 +40,19 @@ document.addEventListener("DOMContentLoaded", function () {
   llenarSelectAprobador();
   llenarTablaDias();
 
+  function syncDates(event) {
+    // Verificar si el valor de #tipo es 1
+    if (tipo_boleta.value == 1) {
+        let sourceElement = event.target;
+        let targetElement = (sourceElement === fechaInicioElement) ? fechaFinElement : fechaInicioElement;
+        
+        targetElement.value = sourceElement.value;
+    }
+}
+
+// Agrega los event listeners para sincronizar los cambios
+fechaInicioElement.addEventListener("change", syncDates);
+fechaFinElement.addEventListener("change", syncDates);
   
 
 });
@@ -118,6 +132,7 @@ function llenartablaHoras() {
 
       { data: "numero" },
       { data: "nombre_trabajador" },
+      { data: "razon" },
       { data: "fecha_nueva" },
       // { data: "fecha_fin_formateada" },
       { data: "hora_salida" },
@@ -127,6 +142,58 @@ function llenartablaHoras() {
       { data: "accion" },
     ],
     dom: "Bfrtip",
+    
+    language: 
+    {
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad",
+        "collection": "Colección",
+        "colvisRestore": "Restaurar visibilidad",
+        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+        },
+        "copyTitle": "Copiar al portapapeles",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Cambiar nombre",
+        "updateState": "Actualizar",
+        "createState": "Crear Estado",
+        "removeAllStates": "Remover Estados",
+        "removeState": "Remover",
+        "savedStates": "Estados Guardados",
+        "stateRestore": "Estado %d"
+    },
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
     columnDefs: [
     //   { width: "15px", targets: 0 }, // Ancho de la primera columna
     //   { width: "30px", targets: 1 }, // Ancho de la segunda columna
@@ -140,6 +207,7 @@ function llenartablaHoras() {
         exportOptions: {
           columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas copiar
         },
+        
       },
       {
         extend: "csv",
@@ -164,6 +232,7 @@ function llenartablaHoras() {
         exportOptions: {
           columns: [0, 1, 2, 3, 4, 5, 6], // Especifica las columnas que deseas imprimir
         },
+        
       },
     ],
   });
@@ -193,6 +262,7 @@ function llenarTablaDias() {
 
       { data: "numero" },
       { data: "nombre_trabajador" },
+      { data: "razon" },
       { data: "fecha_inicio_formateada" },
       { data: "fecha_fin_formateada" },
       // { data: "hora_salida" },
@@ -208,7 +278,57 @@ function llenarTablaDias() {
     //   // Agrega más columnDefs según sea necesario
     // ],
     dom: "Bfrtip",
-
+    language: 
+    {
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad",
+        "collection": "Colección",
+        "colvisRestore": "Restaurar visibilidad",
+        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+        },
+        "copyTitle": "Copiar al portapapeles",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Cambiar nombre",
+        "updateState": "Actualizar",
+        "createState": "Crear Estado",
+        "removeAllStates": "Remover Estados",
+        "removeState": "Remover",
+        "savedStates": "Estados Guardados",
+        "stateRestore": "Estado %d"
+    },
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
     buttons: [
       {
         extend: "copy",
@@ -288,7 +408,7 @@ function edit(id) {
       horaEntradaElement.value = res.hora_entrada;
       razonElement.value = res.razon;
       otra_razonElement.value = res.razon_especifica;
-
+      tipo_boleta.value = res.tipo;
       if (!aprobadorElement.value) {
         if (aprobadorElement.value == "") {
           removeDefaultOption();
@@ -331,15 +451,18 @@ function view(id) {
       fechaFinElement.value = res.fecha_fin;
       horaSalidaElement.value = res.hora_salida;
       horaEntradaElement.value = res.hora_entrada;
-
+      tipo_boleta.value = res.tipo;
       cambiarEstadoInputs(0);
       razonElement.value = res.razon;
       otra_razonElement.value = res.razon_especifica;
 
-      console.log(res.razon, res.razon_especifica);
+      // console.log(res.razon, res.razon_especifica);
 
       btnAccion.textContent = "Actualizar";
       titleModal.textContent = "Vizualizar";
+      if(res.observaciones == null){
+        res.observaciones = '';
+      }
 
       var html =
         '<div class="form-group">' +
@@ -349,7 +472,7 @@ function view(id) {
         '" disabled>' +
         "</div>";
 
-      $("#resultado").html(html);
+      // $("#resultado").html(html);
 
       if (!aprobadorElement.value) {
         $.ajax({
@@ -388,7 +511,7 @@ function cambiarPage(nuevo) {
    
 
     fechas.forEach((element) => {
-      element.style.display = "none";
+      element.style.display = "block";
     });
     horas.forEach((element) => {
       element.style.display = "block";
@@ -550,28 +673,28 @@ function cerrarModal() {
 
 function cambiarEstadoInputs(accion) {
   $("#resultado").empty();
-  idElement.disabled = false;
-  solicitanteElement.disabled = false;
-  aprobadorElement.disabled = false;
-  fechaInicioElement.disabled = false;
-  fechaFinElement.disabled = false;
-  horaSalidaElement.disabled = true;
-  horaEntradaElement.disabled = true;
-  razonElement.disabled = false;
-  otra_razonElement.disabled = false;
-  btnAccion.hidden = false;
+  // idElement.disabled = false;
+  // solicitanteElement.disabled = false;
+  // aprobadorElement.disabled = false;
+  // fechaInicioElement.disabled = false;
+  // fechaFinElement.disabled = false;
+  // horaSalidaElement.disabled = true;
+  // horaEntradaElement.disabled = true;
+  // razonElement.disabled = false;
+  // otra_razonElement.disabled = false;
+  // btnAccion.hidden = false;
   if (accion == 0) {
-    idElement.disabled = true;
-    solicitanteElement.disabled = true;
-    aprobadorElement.disabled = true;
-    fechaInicioElement.disabled = true;
-    fechaFinElement.disabled = true;
+    // idElement.disabled = true;
+    // solicitanteElement.disabled = true;
+    // aprobadorElement.disabled = true;
+    // fechaInicioElement.disabled = true;
+    // fechaFinElement.disabled = true;
     // horaSalidaElement.disabled = true;
     // horaEntradaElement.disabled = true;
-    razonElement.disabled = true;
-    otra_razonElement.disabled = true;
+    // razonElement.disabled = true;
+    // otra_razonElement.disabled = true;
 
-    btnAccion.hidden = true;
+    // btnAccion.hidden = true;
   }
   //
 }

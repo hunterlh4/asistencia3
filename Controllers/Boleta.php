@@ -9,14 +9,14 @@ class Boleta extends Controller
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
-        if($_SESSION['nivel'] ==5){
+        if ($_SESSION['nivel'] == 5) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
     }
     public function index()
     {
-        if($_SESSION['nivel'] !==1 && $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 1 && $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -28,7 +28,7 @@ class Boleta extends Controller
 
     public function Porteria()
     {
-        if($_SESSION['nivel'] !==4 && $_SESSION['nivel'] !==100){
+        if ($_SESSION['nivel'] !== 4 && $_SESSION['nivel'] !== 100) {
             header('Location: ' . BASE_URL . 'errors');
             exit;
         }
@@ -59,6 +59,9 @@ class Boleta extends Controller
             $fecha_inicio = $data[$i]['fecha_inicio'];
             $fecha_fin = $data[$i]['fecha_fin'];
             $estado_tramite = $data[$i]['estado_tramite'];
+
+
+
 
             $fecha_inicio = date('d-m-Y', strtotime($fecha_inicio));
             $fecha_fin = date('d-m-Y', strtotime($fecha_fin));
@@ -101,13 +104,13 @@ class Boleta extends Controller
         echo json_encode($data);
         die();
     }
-
-    public function registrar()
+    // adminsitrador
+    public function registrar2()
     {
-        // if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin']) && isset($_POST['hora_salida']) && isset($_POST['hora_entrada']) && isset($_POST['razon'])&& isset($_POST['otra_razon'])) {
+
 
         if (isset($_POST['solicitante']) && isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin'])  && isset($_POST['razon']) && isset($_POST['otra_razon'])) {
-            
+
             $id = $_POST['id'];
             $solicitante = $_POST['solicitante'];
             $aprobador = $_POST['aprobador'];
@@ -142,7 +145,7 @@ class Boleta extends Controller
 
                     ];
                     $datos_log_json = json_encode($datos_log);
-                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin,$solicitante);
+                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin, $solicitante);
                     $valor = 0;
                     $dato = [];
                     $i = 0;
@@ -154,7 +157,6 @@ class Boleta extends Controller
                     if (count($existencia) == 1 && $tipo == '2') {
                         $valor = 1;
                         $id_temporal = $existencia[0]['id'];
-                      
                     }
                     if (count($existencia) > 1 && $tipo == '2') {
                         foreach ($existencia as $elemento) {
@@ -169,7 +171,7 @@ class Boleta extends Controller
                         $estado_tramite = 'Pendiente';
                         // $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $salida, $entrada, $razon,$razon_especifica, $estado_tramite);
 
-                         if ($tipo == '1') {
+                        if ($tipo == '1') {
                             $data = $this->model->registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
                             if ($data > 0) {
                                 // $respuesta = ['msg' => $existencia, 'icono' => 'success'];
@@ -199,7 +201,7 @@ class Boleta extends Controller
                     } else {
                         $result = $this->model->verificar($id);
                         if ($result['estado_tramite'] == 'Pendiente') {
-                       
+
 
                             if ($tipo == '1') {
                                 $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
@@ -209,7 +211,7 @@ class Boleta extends Controller
                                     $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
                                 }
                             }
-                            
+
                             if ($tipo == '2' && ($valor == 1 ||   $valor == 0)) {
                                 if ($valor == 0) {
                                     $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
@@ -221,6 +223,7 @@ class Boleta extends Controller
                                         $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
                                     }
                                 }
+
                                 if ($valor == 1) {
                                     if ($id == $id_temporal) {
                                         $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
@@ -250,10 +253,197 @@ class Boleta extends Controller
 
             $respuesta = ['msg' => 'error', 'icono' => 'error'];
         }
-       
+
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
+    public function registrar()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $respuesta = ['msg' => 'Método no permitido. Solo se aceptan solicitudes POST.', 'icono' => 'error'];
+            echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
+            die();
+        }
+
+        $id = $_POST['id'] ?? '';
+        $solicitante = $_POST['solicitante'] ?? '';
+        $aprobador = $_POST['aprobador'] ?? '';
+        $fecha_inicio = $_POST['fecha_inicio'] ?? '';
+        $fecha_fin = $_POST['fecha_fin'] ?? '';
+        $tipo = $_POST['tipo'] ?? '';
+        $razon = $_POST['razon'] ?? '';
+        $razon_especifica = $_POST['otra_razon'] ?? '';
+        $hora_salida = $_POST['hora_salida'] ?? '';
+        $hora_entrada = $_POST['hora_entrada'] ?? '';
+
+        $error_message = '';
+        // comision, compensacion, otros
+        // tipo = 1 horas ,2 dias
+
+        $accion = $id ? 'editar' : 'crear';
+
+        if (empty($solicitante) || $solicitante == '') {
+            $error_message .= "El <b>solicitante</b> es requerido.<br>";
+        }
+        if (empty($aprobador)) {
+            $error_message .= "El <b>aprobador</b> es requerido.<br>";
+        }
+        if (empty($fecha_inicio)) {
+            $error_message .= "La <b>fecha de inicio</b> es requerida.<br>";
+        }
+        if (empty($fecha_fin)) {
+            $error_message .= "La <b>fecha de fin</b> es requerida.<br>";
+        }
+        if (empty($hora_salida) && $tipo == 1) {
+            $error_message .= "La <b>Hora de Salida</b> es requerida.<br>";
+        }
+        if (empty($hora_entrada) && $tipo == 1) {
+            $error_message .= "La <b>Hora de Entrada</b> es requerida.<br>";
+        }
+        if (empty($razon)) {
+            $error_message .= "La <b>razón</b> es requerida.<br>";
+        }
+        $razones_requieren_motivo = ['CS', 'DHE', 'OTR'];
+        if (in_array($razon, $razones_requieren_motivo) && empty($razon_especifica)) {
+            $error_message .= "El <b>Motivo</b> es requerido.<br>";
+        }
+        // comision, compensacion, otros || cs, DHE , OTR
+
+        $inicio_timestamp = strtotime($fecha_inicio);
+        $fin_timestamp = strtotime($fecha_fin);
+        if ($inicio_timestamp > $fin_timestamp) {
+            $error_message .= "La <b>Fecha</b> no puede ser menor.<br>";
+        }
+
+        $salida_timestamp = strtotime($hora_salida);
+        $retorno_timestamp = strtotime($hora_entrada);
+        if ($salida_timestamp > $retorno_timestamp) {
+            $error_message .= "La <b>Hora</b> no puede ser menor.<br>";
+        }
+
+        $valor = 0;
+        $dato = [];
+        $i = 0;
+        $id_temporal = '';
+        $existencia='';
+        if ($tipo == '1' && $solicitante) {
+            $existencia = $this->model->verificarExistenciaHora($hora_salida, $hora_entrada, $solicitante);
+
+            if (count($existencia) == 1) {
+                $valor = 1;
+                $id_temporal = $existencia[0]['id'];
+            }
+            if (count($existencia) > 1) {
+                foreach ($existencia as $elemento) {
+                    $i++; // Mostrar cada elemento
+                    $dato[$i] = $elemento['id'];
+                }
+                $valor = 2;
+            }
+        }
+        if ($tipo == '2' && $solicitante) {
+            $hora_salida = '00:00:00';
+            $hora_entrada = '00:00:00';
+            $existencia = $this->model->verificarExistenciaFecha($fecha_inicio, $fecha_fin, $solicitante);
+            
+            if (count($existencia) == 1) {
+                $valor = 1;
+                $id_temporal = $existencia[0]['id'];
+            }
+            if (count($existencia) > 1) {
+                foreach ($existencia as $elemento) {
+                    $i++; // Mostrar cada elemento
+                    $dato[$i] = $elemento['id'];
+                }
+                $valor = 2;
+            }
+        }
+        if ($accion == 'crear'  && $tipo == '2' && $valor != 0) {
+            $error_message .= "La <b>Fecha</b> se encuentra en uso.<br>";
+        }
+        if ($accion == 'crear'  && $tipo == '1' && $valor != 0) {
+            $error_message .= "La <b>Hora</b> se encuentra en uso.<br>";
+        }
+      
+
+        if ($accion == 'editar' && $tipo == '2' && $valor > 0  && $id != $id_temporal) {
+            $error_message .= "La <b>Fecha</b> se encuentra en uso.<br>";
+        }
+        if ($accion == 'editar' && $tipo == '1' && $valor > 0  && $id != $id_temporal) {
+            $error_message .= "La <b>Hora</b> se encuentra en uso.<br>";
+        }
+        $inicio_completo = $fecha_inicio . ' ' . $hora_salida;
+        $fin_completo = $fecha_fin . ' ' . $hora_entrada;
+        $inicio_timestamp = strtotime($inicio_completo);
+        $fin_timestamp = strtotime($fin_completo);
+        $diferencia_segundos = $fin_timestamp - $inicio_timestamp;
+        $horas = floor($diferencia_segundos / 3600);
+        $minutos = floor(($diferencia_segundos % 3600) / 60);
+        $segundos = $diferencia_segundos % 60;
+
+        // Formatear la diferencia en formato HH:MM:SS
+        $duracion = str_pad($horas, 2, '0', STR_PAD_LEFT) . ':' . str_pad($minutos, 2, '0', STR_PAD_LEFT) . ':' . str_pad($segundos, 2, '0', STR_PAD_LEFT);
+
+
+        if (!empty($error_message)) {
+            echo json_encode(["icono" => "error", "msg" => $error_message]);
+            // echo json_encode($existencia);
+            exit;
+        }
+
+
+        // sin errores
+
+        if ($accion == 'crear') {
+            // $data = '';
+            $estado_tramite = 'Aprobado';
+            // if ($tipo == '1') {
+            $data = $this->model->registrarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+            if ($data > 0) {
+                $respuesta = ['msg' => 'Boleta registrada', 'icono' => 'success'];
+                // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
+            } else {
+                $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
+            }
+            $respuesta = ['msg' => 'Boleta registrada' . $id, 'icono' => 'success'];
+            // }
+            // if ($tipo == '2' && $valor == 0) {
+            //     $data = $this->model->registrarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion,$fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+            //     if ($data > 0) {
+            //         // $respuesta = ['msg' => $existencia, 'icono' => 'success'];
+            //         $respuesta = ['msg' => 'Boleta registrada', 'icono' => 'success'];
+
+            //         // $this->model->registrarlog($_SESSION['id'],'Crear','Boleta', $datos_log_json);
+            //     } else {
+            //         $respuesta = ['msg' => 'error al registrar', 'icono' => 'error'];
+            //     }
+            //     $respuesta = ['msg' => 'Boleta registrada'. $id, 'icono' => 'success'];
+            // }
+        }
+        if ($accion == 'editar') {
+
+            $data = $this->model->modificarAdmin(
+                $solicitante,
+                $aprobador,
+                $hora_salida,
+                $hora_entrada,
+                $duracion,
+                $fecha_inicio,
+                $fecha_fin,
+                $razon,
+                $razon_especifica,
+                $id
+            );
+            if ($data > 0) {
+                $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
+            } else {
+                $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
+            }
+        }
+        echo json_encode($respuesta);
+        exit;
+    }
+    // trabajador
     public function registrarme()
     {
         if (isset($_POST['aprobador']) && isset($_POST['fecha_inicio']) && isset($_POST['fecha_fin'])  && isset($_POST['razon']) && isset($_POST['otra_razon'])) {
@@ -282,8 +472,7 @@ class Boleta extends Controller
                 $fin_timestamp = strtotime($fecha_fin);
                 if ($inicio_timestamp > $fin_timestamp) {
                     $respuesta = ['msg' => 'la fecha inicio no puede ser menor', 'icono' => 'warning'];
-                } 
-                else {
+                } else {
                     $datos_log = [
                         "id" => $id,
                         "solicitante" => $solicitante,
@@ -297,19 +486,18 @@ class Boleta extends Controller
 
                     ];
                     $datos_log_json = json_encode($datos_log);
-                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin,$solicitante);
+                    $existencia = $this->model->verificarExistencia($fecha_inicio, $fecha_fin, $solicitante);
                     $valor = 0;
                     $dato = [];
                     $i = 0;
                     $id_temporal = '';
-                   
+
                     if (count($existencia) == 0 && $tipo == '2') {
                         // $valor = 0;                        
                     }
                     if (count($existencia) == 1 && $tipo == '2') {
                         $valor = 1;
                         $id_temporal = $existencia[0]['id'];
-                      
                     }
                     if (count($existencia) > 1 && $tipo == '2') {
                         foreach ($existencia as $elemento) {
@@ -318,7 +506,7 @@ class Boleta extends Controller
                         }
                         $valor = 2;
                     }
-                    
+
                     if (empty($id)) {
                         $estado_tramite = 'Pendiente';
 
@@ -353,7 +541,7 @@ class Boleta extends Controller
                     } else {
                         $result = $this->model->verificar($id);
                         if ($result['estado_tramite'] == 'Pendiente') {
-                       
+
 
                             if ($tipo == '1') {
                                 $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
@@ -363,7 +551,7 @@ class Boleta extends Controller
                                     $respuesta = ['msg' => 'error al Actualizar', 'icono' => 'error'];
                                 }
                             }
-                            
+
                             if ($tipo == '2' && ($valor == 1 ||   $valor == 0)) {
                                 if ($valor == 0) {
                                     $data = $this->model->modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
@@ -404,7 +592,7 @@ class Boleta extends Controller
 
             $respuesta = ['msg' => 'error', 'icono' => 'error'];
         }
-       
+
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
     }
@@ -766,9 +954,9 @@ class Boleta extends Controller
             $observacion = $_POST['observacion'];
             $data = $this->model->getBoleta($id);
 
-            if($accion !='Aprobado' && empty($observacion)){
+            if ($accion != 'Aprobado' && empty($observacion)) {
                 $respuesta = ['msg' => 'Observacion Vacia', 'icono' => 'warning'];
-            }else{
+            } else {
                 if ($data['estado_tramite'] != 'Anulado') {
                     $data = $this->model->Revisar($id, $accion, $observacion);
                     if ($data > 0) {

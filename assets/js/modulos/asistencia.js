@@ -572,6 +572,7 @@ function modificarCalendario() {
     }
     if (
       (fcTitle.textContent.includes("FERIADO") ||
+        fcTitle.textContent.includes("COMPENSABLE") ||
         fcTitle.textContent.includes("ONOMASTICO")) &&
       fcTime.textContent.includes("0:00")
     ) {
@@ -607,8 +608,10 @@ function modificarCalendario() {
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
     if (
-      fcTitle.textContent.includes("SR") ||
-      fcTitle.textContent.includes("Sin Marcación")
+     ( fcTitle.textContent.includes("SR") ||
+     fcTitle.textContent.includes("COMPENSABLE") ||
+     fcTitle.textContent.includes("Sin Marcación") ||
+     fcTitle.textContent.includes("ONOMASTICO"))  && fcTime.textContent.includes("0:00")
     ) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
@@ -671,18 +674,20 @@ function llenarBoleta(fecha, trabajador_id) {
   // fecha ='2024-05-01';
   // trabajador_id = 812;
 
-  let fechaformateada = new Date(fecha);
-  fechaformateada.setDate(fechaformateada.getDate() + 2); // Sumar 1 día
+  // let fechaformateada = new Date(fecha);
+  // fechaformateada.setDate(fechaformateada.getDate() + 2); // Sumar 1 día
 
-  let año = fechaformateada.getFullYear();
-  let mes = (fechaformateada.getMonth() + 1).toString().padStart(2, "0");
-  let dia = fechaformateada.getDate().toString().padStart(2, "0");
-  let fechaFormateada = año + "-" + mes + "-" + dia;
+  // let año = fechaformateada.getFullYear();
+  // let mes = (fechaformateada.getMonth() + 1).toString().padStart(2, "0");
+  // let dia = fechaformateada.getDate().toString().padStart(2, "0");
+  // let fechaFormateada = año + "-" + mes + "-" + dia;
   // console.log(fechaFormateada);
   var parametros = {
-    fecha: fechaFormateada,
+    fecha: fecha,
     trabajador_id: trabajador_id,
   };
+
+  console.log(parametros);
   $.ajax({
     data: parametros,
     url: base_url + "Boleta/buscarPorFecha",
@@ -699,6 +704,10 @@ function llenarBoleta(fecha, trabajador_id) {
       $("#resultado").empty();
       res.map((datos) => {
         console.log(datos);
+        if(datos.observaciones==null || datos.undefined){
+          datos.observaciones='';
+        }
+
         if (datos !== undefined && datos.numero !== undefined) {
           html +=
             '<div class="row text-center">' +
@@ -834,101 +843,103 @@ function abrirModal() {
 function cerrarModal() {
   myModal.hide();
 }
-function listarAsistencia(id,callback) {
-    var parametros = {
-        id: id,
-    };
+function listarAsistencia(id, callback) {
+  var parametros = {
+    id: id,
+  };
 
-    $.ajax({
-        url: base_url + "asistencia/listarTrabajadorAsistenciaGeneral",
-        type: "POST",
-        data: parametros,
-        success: function(response) {
-            var data = JSON.parse(response); // Parsea la respuesta JSON
-            llenarTablaAsistencia(data);
-        },
-        error: function(xhr, status, error) {
-            console.error("Error al obtener datos:", error);
-        }
-    });
+  $.ajax({
+    url: base_url + "asistencia/listarTrabajadorAsistenciaGeneral",
+    type: "POST",
+    data: parametros,
+    success: function (response) {
+      var data = JSON.parse(response); // Parsea la respuesta JSON
+      llenarTablaAsistencia(data);
+    },
+    error: function (xhr, status, error) {
+      console.error("Error al obtener datos:", error);
+    },
+  });
 }
 
 function llenarTablaAsistencia(data) {
-    if ($.fn.DataTable.isDataTable('#table-detalle-alex')) {
-        tabla_horas.clear().rows.add(data).draw(); // Actualiza los datos en la tabla existente
-    } else {
-        tabla_horas = $("#table-detalle-alex").DataTable({
-            data: data,
-            columns: [
-                { data: "dia" },
-                { data: "fecha" },
-                { data: "entrada" },
-                { data: "salida" },
-                { data: "tardanza_cantidad" },
-                { data: "licencia" }
-            ],
-            dom: "Bfrtip",
-            select: false,
-            order: [],
-            buttons: [
-                {
-                  extend: "copy",
-                  exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas copiar
-                  },
-                },
-                {
-                  extend: "csv",
-                  exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a CSV
-                  },
-                },
-                {
-                  extend: "excel",
-                  exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a Excel
-                  },
-                },
-                {
-                  extend: "pdf",
-                  exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a PDF
-                  },
-                },
-                {
-                  extend: "print",
-                  exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas imprimir
-                  },
-                },
-              ],
-            drawCallback: function(settings) {
-                let api = this.api();
-                let rows = api.rows().nodes();
+  if ($.fn.DataTable.isDataTable("#table-detalle-alex")) {
+    tabla_horas.clear().rows.add(data).draw(); // Actualiza los datos en la tabla existente
+  } else {
+    tabla_horas = $("#table-detalle-alex").DataTable({
+      data: data,
+      columns: [
+        { data: "dia" },
+        { data: "fecha" },
+        { data: "entrada" },
+        { data: "salida" },
+        { data: "tardanza_cantidad" },
+        { data: "licencia" },
+      ],
+      dom: "Bfrtip",
+      select: false,
+      order: [],
+      buttons: [
+        {
+          extend: "copy",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas copiar
+          },
+        },
+        {
+          extend: "csv",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a CSV
+          },
+        },
+        {
+          extend: "excel",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a Excel
+          },
+        },
+        {
+          extend: "pdf",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas exportar a PDF
+          },
+        },
+        {
+          extend: "print",
+          exportOptions: {
+            columns: [0, 1, 2, 3, 4, 5], // Especifica las columnas que deseas imprimir
+          },
+        },
+      ],
+      drawCallback: function (settings) {
+        let api = this.api();
+        let rows = api.rows().nodes();
 
-                rows.each(function(row, index) {
-                    let data = api.row(row).data();
-                    let dia = data["dia"];
-                    let licencia = data["licencia"];
+        rows.each(function (row, index) {
+          let data = api.row(row).data();
+          let dia = data["dia"];
+          let licencia = data["licencia"];
 
-                    // Personaliza las filas según tu lógica
-                    if (dia === "Sábado" || dia === "Domingo") {
-                        $(row).addClass("dia");
-                    } else {
-                        $(row).removeClass("fila-normal");
-                    }
-                    if (licencia == "No Marco Salida" || licencia == "+30" || (licencia == "Sin Marcacion" && dia != "Sábado" && dia != "Domingo")) {
-                        $(row).addClass("licencia");
-                    }
-                });
-
-                pintarFilasEspeciales();
-            }
+          // Personaliza las filas según tu lógica
+          if (dia === "Sábado" || dia === "Domingo") {
+            $(row).addClass("dia");
+          } else {
+            $(row).removeClass("fila-normal");
+          }
+          if (
+            licencia == "No Marco Salida" ||
+            licencia == "+30" ||
+            (licencia == "Sin Marcacion" && dia != "Sábado" && dia != "Domingo")
+          ) {
+            $(row).addClass("licencia");
+          }
         });
-    }
+
+        pintarFilasEspeciales();
+      },
+    });
+  }
 }
-
-
 
 function pintarFilasEspeciales() {
   // Seleccionar todas las filas con la clase fila-especial

@@ -26,17 +26,15 @@
                       <table class="table table-striped table-hover text-center" style="width:100%;" id="table-horas-alex">
                         <thead>
                           <tr>
-                            <th style="width: 15px;"># </th>
-                            <th style="width: 30px;">Numero</th>
+                            <th style="width: 15px;">#</th>
+                            <th style="width: 30px;">Número</th>
                             <th style="width: 250px;">Aprobador</th>
                             <th style="width: 50px;">Fecha</th>
-
-
                             <th style="width: 50px;">Salida</th>
                             <th style="width: 50px;">Entrada</th>
-                            <th style="width: 50px;">tramite</th>
-                            <!-- <th>estado</th> -->
-                            <th style="width: 50px;">accion</th>
+                            <th style="width: 50px;">Trámite</th>
+                            <!-- <th>Estado</th> -->
+                            <th style="width: 50px;">Acción</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -175,6 +173,22 @@
     .swal2-popup {
       position: center;
 
+    }
+
+    /* Estilo general para todos los botones */
+    .dt-buttons .btn {
+      /* font-size: 14px;  */
+      /* padding: 8px 16px;  */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      width: 60px;
+      height: 34px;
+      justify-content: center;
+      text-align: center;
     }
   </style>
 </body>

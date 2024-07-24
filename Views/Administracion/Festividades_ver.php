@@ -91,7 +91,7 @@ include './Views/includes/sidebarnew.php';
                                 <input type="Date" class="form-control" placeholder="MM/DD" name="fecha_fin" id="fecha_fin" required>
                             </div>
                         </div>
-                        <div class="form-group oculto">
+                        <div class="form-group">
                             <label>Tipo de Festividad</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -101,8 +101,8 @@ include './Views/includes/sidebarnew.php';
                                 </div>
                                 <select class="form-control" id="tipo" name="tipo" required>
                                     <option value="">Seleccione una opcion</option>
-                                    <option value="feriado">Feriado</option>
-                                    <option value="institucional">Institucional</option>
+                                    <option value="feriado">Feriado no Compensable</option>
+                                    <option value="compensable">Feriado Compensable</option>
                                 </select>
                             </div>
                         </div> 

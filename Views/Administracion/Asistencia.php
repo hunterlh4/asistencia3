@@ -20,7 +20,7 @@
                     <!-- <h3 class="font-weight-bolder col-md-3"><i class="fa fa-briefcase"></i> Busqueda</h3> -->
                     <!-- <button class="btn btn-lg btn-outline-primary rounded-0 " type="button" id="nuevo_registro">Nuevo</button> -->
                     <div class="d-flex align-items-center" style="flex: 1;">
-                      <h3 class="font-weight-bolder mb-0 mr-3"><i class="fa fa-briefcase"></i> Busqueda</h3>
+                      <h3 class="font-weight-bolder mb-0 mr-3"><i class="fa fa-briefcase"></i> Búsqueda</h3>
 
                       <div class="dropdown" id="miDropdown">
                       <h4 class="font-weight-bolder mb-0 mr-3" id="dropdownMenuButton" >

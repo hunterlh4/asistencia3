@@ -26,7 +26,7 @@
                         <a class="nav-link active" id="hora-tab" data-toggle="tab" href="#hora" role="tab" aria-controls="hora" aria-selected="true">Boleta por Horas</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="false">Boleta por Dias</a>
+                        <a class="nav-link" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="false">Boleta por Días</a>
                       </li>
 
                     </ul>
@@ -35,18 +35,17 @@
                         <div class="table-responsive">
                           <table class="table table-striped table-hover text-center" style="width:100%;" id="table-horas-alex">
                             <thead>
-                              <tr>
+                            <tr>
                                 <th style="width: 15px;"># </th>
-                                <th style="width: 30px;">Numero</th>
-                                <th style="width: 250px;">Solicitante</th>
+                                <th style="width: 30px;">Número</th>
+                                <th style="width: 160px;">Solicitante</th>
+                                <th style="width: 50px;">Razón</th>
                                 <th style="width: 50px;">Fecha</th>
-
-
                                 <th style="width: 50px;">Salida</th>
                                 <th style="width: 50px;">Entrada</th>
-                                <th style="width: 50px;">tramite</th>
+                                <th style="width: 50px;">Trámite</th>
                                 <!-- <th>estado</th> -->
-                                <th style="width: 50px;">accion</th>
+                                <th style="width: 50px;">Acción</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -58,18 +57,19 @@
                         <div class="table-responsive">
                           <table class="table table-striped table-hover text-center " style="width:100%;" id="table-dias-alex">
                             <thead>
-                              <tr>
+                            <tr>
                                 <th style="width: 15px;"># </th>
-                                <th style="width: 30px;">Numero</th>
-                                <th style="width: 250px;">Solicitante</th>
+                                <th style="width: 30px;">Número</th>
+                                <th style="width: 200px;">Solicitante</th>
+                                <th style="width: 50px;">Razón</th>
                                 <th style="width: 50px;">Desde</th>
                                 <th style="width: 50px;">Hasta</th>
                                 <!-- <th>Fin</th> -->
 
 
-                                <th style="width: 50px;">tramite</th>
+                                <th style="width: 50px;">Trámite</th>
                                 <!-- <th>estado</th> -->
-                                <th style="width: 50px;">accion</th>
+                                <th style="width: 50px;">Acción</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -211,11 +211,31 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
-  <style>
-    .swal2-popup {
+ <style>
+.swal2-popup {
   position: center;
 
 }
+ 
+/* Estilo general para todos los botones */
+.dt-buttons .btn {
+  /* font-size: 14px;  */
+  /* padding: 8px 16px;  */
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  margin: 5px; 
+  display: inline-flex; 
+  align-items: center; 
+  width: 60px;
+  height: 34px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+
   </style>
 </body>
 

@@ -26,7 +26,7 @@
                         <a class="nav-link active" id="hora-tab" data-toggle="tab" href="#hora" role="tab" aria-controls="hora" aria-selected="true">Boleta por Horas</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="false">Boleta por Dias</a>
+                        <a class="nav-link" id="dia-tab" data-toggle="tab" href="#dia" role="tab" aria-controls="dia" aria-selected="false">Boleta por Días</a>
                       </li>
 
                     </ul>
@@ -37,16 +37,17 @@
                             <thead>
                               <tr>
                                 <th style="width: 15px;"># </th>
-                                <th style="width: 30px;">Numero</th>
-                                <th style="width: 250px;">Solicitante</th>
+                                <th style="width: 30px;">Número</th>
+                                <th style="width: 160px;">Solicitante</th>
+                                <th style="width: 50px;">Razón</th>
                                 <th style="width: 50px;">Fecha</th>
                            
 
                                 <th style="width: 50px;">Salida</th>
                                 <th style="width: 50px;">Entrada</th>
-                                <th style="width: 50px;">tramite</th>
+                                <th style="width: 50px;">Trámite</th>
                                 <!-- <th>estado</th> -->
-                                <th style="width: 50px;">accion</th>
+                                <th style="width: 50px;">Acción</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -60,16 +61,17 @@
                             <thead>
                               <tr>
                                 <th style="width: 15px;"># </th>
-                                <th style="width: 30px;">Numero</th>
-                                <th style="width: 250px;">Solicitante</th>
+                                <th style="width: 30px;">Número</th>
+                                <th style="width: 200px;">Solicitante</th>
+                                <th style="width: 50px;">Razón</th>
                                 <th style="width: 50px;">Desde</th>
                                 <th style="width: 50px;">Hasta</th>
                                 <!-- <th>Fin</th> -->
 
 
-                                <th style="width: 50px;">tramite</th>
+                                <th style="width: 50px;">Trámite</th>
                                 <!-- <th>estado</th> -->
-                                <th style="width: 50px;">accion</th>
+                                <th style="width: 50px;">Acción</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -123,7 +125,7 @@
                 <div class="form-group">
                   <label for="aprobador">Aprobador</label>
                   <select class="form-control" id="aprobador" name="aprobador" required>
-                    <option value="">Seleccione un aprobador</option>
+                    <option value="">Seleccionar un aprobador</option>
                     <!-- Opciones del select -->
                   </select>
                 </div>
@@ -153,7 +155,7 @@
               </div>
                 <div class="col-md-6 col-sm-6 horas">
                 <div class="form-group">
-                  <label for="hora_entrada">Hora de Retorno</label>
+                  <label for="hora_entrada">Hora de Entrada</label>
                   <input type="time" class="form-control" id="hora_entrada" name="hora_entrada" required>
                 </div>
               </div>
@@ -172,8 +174,8 @@
             <div class="col-md-6 col-sm-6">
 
               <div class="form-group">
-                <label for="otra_razon">Otra Razón</label>
-                <input type="text" class="form-control" id="otra_razon" name="otra_razon" required>
+                <label for="otra_razon">Motivo</label>
+                <input type="text" class="form-control" id="otra_razon" name="otra_razon" placeholder="Gore, Procuraduria, Fiscalia, ..." required>
               </div>
             </div>
             <div id="resultado" class="col-md-12 col-sm-12">
@@ -199,7 +201,7 @@
   <!-- MODAL FIN -->
   <?php include './Views/includes/script_new.php' ?>
 
-  </html>
+
   <script src="<?php echo BASE_URL; ?>assets/js/modulos/boleta.js"></script>
 
   <script>
@@ -215,6 +217,24 @@
 
 }
  
+/* Estilo general para todos los botones */
+.dt-buttons .btn {
+  /* font-size: 14px;  */
+  /* padding: 8px 16px;  */
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  margin: 5px; 
+  display: inline-flex; 
+  align-items: center; 
+  width: 60px;
+  height: 34px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
 
   </style>
 </body>

@@ -157,6 +157,20 @@ class Importar extends Controller
         $total = count($data);
         $registros = [];
         $posicion = 0;
+
+        $festividades = $this->model->getAllfestividad();
+        $festividadesArray = [];
+        foreach ($festividades as $festividad) {
+            $dia_festividad = str_pad($festividad['dia_inicio'], 2, '0', STR_PAD_LEFT);
+            $mes_festividad = str_pad($festividad['mes_inicio'], 2, '0', STR_PAD_LEFT);
+            $tipo = $festividad['tipo'];
+            $clave = $dia_festividad . '-' . $mes_festividad;
+            if (!isset($festividadesArray[$clave])) {
+                $festividadesArray[$clave] = [];
+            }
+            $festividadesArray[$clave][] = $tipo;
+        }
+
         foreach ($data as $key => $registro) {
             $posicion++;
             $valido = true;
@@ -228,25 +242,38 @@ class Importar extends Controller
                 $tardanza = '00:00';
                 $tardanza_cantidad = 0;
                 $es_festividad = false;
+                $compensable = false;
                 $es_honomastico = false;
                 $entrada = '00:00';
                 $salida = '00:00';
                 $total_horario = '00:00';
                 $total_entrada_salida_reloj = '00:00';
 
-                $result = $this->model->getAllfestividad();
-                $dia_csv = date('d', strtotime($fecha_csv));
-                $mes_csv = date('m', strtotime($fecha_csv));
-                for ($i = 0; $i < count($result); $i++) {
-
-                    // $dia = $result[$i]['dia_inicio'];
-                    $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
-                    $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
-                    if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                // $result = $this->model->getAllfestividad();
+                // $dia_csv = date('d', strtotime($fecha_csv));
+                // $mes_csv = date('m', strtotime($fecha_csv));
+                $dia_csv = str_pad(date('d', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $mes_csv = str_pad(date('m', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $clave_csv = $dia_csv . '-' . $mes_csv;
+                if (isset($festividadesArray[$clave_csv])) {
+                    if (in_array('feriado', $festividadesArray[$clave_csv])) {
                         $es_festividad = true;
-                        break;
+                        $tipo_festividad = 'feriado';
+                    } elseif (in_array('compensable', $festividadesArray[$clave_csv])) {
+                        $es_festividad = true;
+                        $tipo_festividad = 'compensable';
                     }
                 }
+                // for ($i = 0; $i < count($result); $i++) {
+
+                //     // $dia = $result[$i]['dia_inicio'];
+                //     $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
+                //     $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
+                //     if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                //         $es_festividad = true;
+                //         break;
+                //     }
+                // }
 
                 foreach ($horasOrdenadas as $hora) {
                     if ($hora !== '00:00') {
@@ -337,7 +364,13 @@ class Importar extends Controller
                     }
 
                     if ($es_festividad == true && $ES_1_csv == '00:00') {
-                        $licencia = 'FERIADO';
+                        
+                        if( $tipo_festividad == 'feriado'){
+                            $licencia = 'FERIADO';
+                        }
+                        if( $tipo_festividad == 'compensable'){
+                            $licencia ='COMPENSABLE';
+                        }
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
                         $licencia = 'ONOMASTICO';
@@ -415,6 +448,20 @@ class Importar extends Controller
         $total = count($data);
         $registros = [];
         $posicion = 0;
+
+        $festividades = $this->model->getAllfestividad();
+        $festividadesArray = [];
+        foreach ($festividades as $festividad) {
+            $dia_festividad = str_pad($festividad['dia_inicio'], 2, '0', STR_PAD_LEFT);
+            $mes_festividad = str_pad($festividad['mes_inicio'], 2, '0', STR_PAD_LEFT);
+            $tipo = $festividad['tipo'];
+            $clave = $dia_festividad . '-' . $mes_festividad;
+            if (!isset($festividadesArray[$clave])) {
+                $festividadesArray[$clave] = [];
+            }
+            $festividadesArray[$clave][] = $tipo;
+        }
+
         foreach ($data as $key => $registro) {
             $posicion++;
             $valido = true;
@@ -484,17 +531,29 @@ class Importar extends Controller
                 $timestamp = strtotime($fecha);
                 $fecha_csv = date('Y-m-d', $timestamp);
 
-                $result = $this->model->getAllfestividad();
-                $dia_csv = date('d', strtotime($fecha_csv));
-                $mes_csv = date('m', strtotime($fecha_csv));
-                for ($i = 0; $i < count($result); $i++) {
+                // $result = $this->model->getAllfestividad();
+                // $dia_csv = date('d', strtotime($fecha_csv));
+                // $mes_csv = date('m', strtotime($fecha_csv));
+                // for ($i = 0; $i < count($result); $i++) {
 
-                    // $dia = $result[$i]['dia_inicio'];
-                    $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
-                    $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
-                    if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                //     // $dia = $result[$i]['dia_inicio'];
+                //     $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
+                //     $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
+                //     if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                //         $es_festividad = true;
+                //         break;
+                //     }
+                // }
+                $dia_csv = str_pad(date('d', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $mes_csv = str_pad(date('m', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $clave_csv = $dia_csv . '-' . $mes_csv;
+                if (isset($festividadesArray[$clave_csv])) {
+                    if (in_array('feriado', $festividadesArray[$clave_csv])) {
                         $es_festividad = true;
-                        break;
+                        $tipo_festividad = 'feriado';
+                    } elseif (in_array('compensable', $festividadesArray[$clave_csv])) {
+                        $es_festividad = true;
+                        $tipo_festividad = 'compensable';
                     }
                 }
 
@@ -581,8 +640,17 @@ class Importar extends Controller
                         $tardanza = gmdate('H:i', $diferencia_tardanza);
                     }
 
-                    if ($es_festividad == true  && $reloj_1 == '00:00:00') {
-                        $licencia = 'FERIADO';
+                    // if ($es_festividad == true  && $reloj_1 == '00:00:00') {
+                    //     $licencia = 'FERIADO';
+                    // }
+                    if ($es_festividad == true && $reloj_1 == '00:00') {
+                        
+                        if( $tipo_festividad == 'feriado'){
+                            $licencia = 'FERIADO';
+                        }
+                        if( $tipo_festividad == 'compensable'){
+                            $licencia ='COMPENSABLE';
+                        }
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
                         $licencia = 'ONOMASTICO';
@@ -656,6 +724,21 @@ class Importar extends Controller
         $total = count($data);
         $registros = [];
         $posicion = 0;
+
+        $festividades = $this->model->getAllfestividad();
+        $festividadesArray = [];
+        foreach ($festividades as $festividad) {
+            $dia_festividad = str_pad($festividad['dia_inicio'], 2, '0', STR_PAD_LEFT);
+            $mes_festividad = str_pad($festividad['mes_inicio'], 2, '0', STR_PAD_LEFT);
+            $tipo = $festividad['tipo'];
+            $clave = $dia_festividad . '-' . $mes_festividad;
+            if (!isset($festividadesArray[$clave])) {
+                $festividadesArray[$clave] = [];
+            }
+            $festividadesArray[$clave][] = $tipo;
+        }
+
+
         foreach ($data as $key => $registro) {
             $posicion++;
             $valido = true;
@@ -726,17 +809,29 @@ class Importar extends Controller
                 $timestamp = strtotime($fecha);
                 $fecha_csv = date('Y-m-d', $timestamp);
 
-                $result = $this->model->getAllfestividad();
-                $dia_csv = date('d', strtotime($fecha_csv));
-                $mes_csv = date('m', strtotime($fecha_csv));
-                for ($i = 0; $i < count($result); $i++) {
+                // $result = $this->model->getAllfestividad();
+                // $dia_csv = date('d', strtotime($fecha_csv));
+                // $mes_csv = date('m', strtotime($fecha_csv));
+                // for ($i = 0; $i < count($result); $i++) {
 
-                    // $dia = $result[$i]['dia_inicio'];
-                    $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
-                    $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
-                    if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                //     // $dia = $result[$i]['dia_inicio'];
+                //     $dia_festividad = str_pad($result[$i]['dia_inicio'], 2, '0', STR_PAD_LEFT);
+                //     $mes_festividad = str_pad($result[$i]['mes_inicio'], 2, '0', STR_PAD_LEFT);
+                //     if ($dia_csv == $dia_festividad && $mes_csv == $mes_festividad) {
+                //         $es_festividad = true;
+                //         break;
+                //     }
+                // }
+                $dia_csv = str_pad(date('d', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $mes_csv = str_pad(date('m', strtotime($fecha_csv)), 2, '0', STR_PAD_LEFT);
+                $clave_csv = $dia_csv . '-' . $mes_csv;
+                if (isset($festividadesArray[$clave_csv])) {
+                    if (in_array('feriado', $festividadesArray[$clave_csv])) {
                         $es_festividad = true;
-                        break;
+                        $tipo_festividad = 'feriado';
+                    } elseif (in_array('compensable', $festividadesArray[$clave_csv])) {
+                        $es_festividad = true;
+                        $tipo_festividad = 'compensable';
                     }
                 }
 
@@ -815,15 +910,24 @@ class Importar extends Controller
                             }
                         }
                     }
-                    if ($reloj_1 !== '00:00' && $licencia == 'OK' && ($entrada_timestamp >= $entrada_trabajador_mas_6 &&
+                    if ($reloj_1 !== '00:00:00' && $licencia == 'OK' && ($entrada_timestamp >= $entrada_trabajador_mas_6 &&
                         $entrada_timestamp < $entrada_trabajador_mas_30)) {
 
                         $diferencia_tardanza = $entrada_timestamp - $entrada_trabajador_limite;
                         $tardanza = gmdate('H:i', $diferencia_tardanza);
                     }
 
-                    if ($es_festividad == true  && $reloj_1 == '00:00:00') {
-                        $licencia = 'FERIADO';
+                    // if ($es_festividad == true  && $reloj_1 == '00:00:00') {
+                    //     $licencia = 'FERIADO';
+                    // }
+                    if ($es_festividad == true && $reloj_1 == '00:00:00') {
+                        
+                        if( $tipo_festividad == 'feriado'){
+                            $licencia = 'FERIADO';
+                        }
+                        if( $tipo_festividad == 'compensable'){
+                            $licencia ='COMPENSABLE';
+                        }
                     }
                     if (($fecha_nacimiento == $fecha_cumpleaños_csv) && ($fecha_nacimiento_csv !== '3000-01-01')) {
                         $licencia = 'ONOMASTICO';

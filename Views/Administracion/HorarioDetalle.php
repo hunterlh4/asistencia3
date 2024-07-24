@@ -1,4 +1,5 @@
 <?php include_once './Views/includes/header.php'; ?>
+
 <body>
   <div class="loader"></div>
   <div id="app">
@@ -14,13 +15,13 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
-  <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario Detalle</h3>
-  <div class="ml-auto">
-    <button class="btn btn-lg btn-outline-primary rounded-0" type="button" onclick=goBack()>Volver</button>
-    <button class="btn btn-lg btn-outline-primary rounded-0" type="button" id="nuevo_registro">Nuevo</button>
-  </div>
-</div>
+                  <div class="card-header d-flex justify-content-between align-items-center mb-0 mt-3">
+                    <h3 class="font-weight-bolder"><i class="fa fa-briefcase"></i> Horario Detalle</h3>
+                    <div class="ml-auto">
+                      <button class="btn btn-lg btn-outline-primary rounded-0" type="button" onclick=goBack()>Volver</button>
+                      <button class="btn btn-lg btn-outline-primary rounded-0" type="button" id="nuevo_registro">Nuevo</button>
+                    </div>
+                  </div>
 
                   <div class="card-body">
                     <div class="table-responsive">
@@ -28,14 +29,12 @@
                         <thead>
                           <tr>
                             <th class="text-center"># </th>
-                            <th>nombre</th>
-                          
+                            <th>Nombre</th>
                             <th>Entrada</th>
                             <th>Salida</th>
-                            <th>Horas Trabajo </th>
-                          
+                            <th>Horas de Trabajo</th>
                             <th>Estado</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -55,11 +54,11 @@
   </div>
 
   <!-- MODAL -->
-<div id="nuevoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-         
+  <div id="nuevoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+
           <h5 class="modal-title" id="titleModal"></h5>
           <button type="button" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -67,10 +66,10 @@
         </div>
 
         <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
-        <div class="modal-body">
-          <input type="hidden" id="id" name="id">
+          <div class="modal-body">
+            <input type="hidden" id="id" name="id">
 
-       
+
             <div class="form-group">
               <label>Nombre</label>
               <div class="input-group">
@@ -79,8 +78,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3"
-  maxlength="50" required>
+                <input type="text" class="form-control" placeholder="Nombre" name="nombre" id="nombre" minlength="3" maxlength="50" required>
               </div>
             </div>
             <div class="form-group">
@@ -91,12 +89,12 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="time"  class="form-control"  name="entrada" id="entrada" required>
+                <input type="time" class="form-control" name="entrada" id="entrada" required>
               </div>
             </div>
-         
-          
-            
+
+
+
             <div class="form-group">
               <label>Salida</label>
               <div class="input-group">
@@ -105,7 +103,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="time"  class="form-control"  name="salida" id="salida" required>
+                <input type="time" class="form-control" name="salida" id="salida" required>
               </div>
             </div>
 
@@ -117,7 +115,7 @@
                     <i class="fas fa-address-card"></i>
                   </div>
                 </div>
-                <input type="time"  class="form-control"   name="total" id="total" readonly>
+                <input type="time" class="form-control" name="total" id="total" readonly>
               </div>
             </div>
 
@@ -144,10 +142,10 @@
               <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
               <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
             </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
   </div>
 
 
@@ -162,6 +160,28 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
+  <style>
+    .swal2-popup {
+      position: center;
+
+    }
+
+    /* Estilo general para todos los botones */
+    .dt-buttons .btn {
+      /* font-size: 14px;  */
+      /* padding: 8px 16px;  */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      width: 60px;
+      height: 34px;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
 </body>
 
 </html>

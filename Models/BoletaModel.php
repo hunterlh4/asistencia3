@@ -26,12 +26,12 @@ class BoletaModel extends Query
                 ELSE 2
                 END,
                 b.create_At desc";
-                
+
 
         return $this->selectAll($sql);
     }
 
-    public function getMisBoletas($id,$parametro)
+    public function getMisBoletas($id, $parametro)
     {
         $sql = "SELECT 
 
@@ -66,7 +66,8 @@ class BoletaModel extends Query
 
         return $this->selectAll($sql);
     }
-    public function getusuario($id){
+    public function getusuario($id)
+    {
         $sql = "SELECT trabajador_id,t.apellido_nombre
                 FROM usuario as u
                 inner join trabajador as t on t.id=u.trabajador_id 
@@ -74,7 +75,7 @@ class BoletaModel extends Query
         return $this->select($sql);
     }
 
-    public function getMisRevisiones($id,$parametro)
+    public function getMisRevisiones($id, $parametro)
     {
         $sql = "SELECT 
         b.id ,
@@ -113,7 +114,8 @@ class BoletaModel extends Query
         return $this->selectAll($sql);
     }
 
-    public function getBoletasPorteria(){
+    public function getBoletasPorteria()
+    {
         $sql = "SELECT 
         b.id as bid,
         t1.id AS trabajador_id,
@@ -151,7 +153,8 @@ class BoletaModel extends Query
         return $this->selectAll($sql);
     }
 
-    public function getBoletaPorFecha($fecha,$trabajador_id){
+    public function getBoletaPorFecha($fecha, $trabajador_id)
+    {
         $sql = "SELECT 
         b.id AS bid, 
         b.numero AS numero, 
@@ -181,11 +184,12 @@ class BoletaModel extends Query
             AND '$fecha'  BETWEEN fecha_inicio AND fecha_fin 
         ORDER BY 
             b.id ASC";
-            return $this->selectAll($sql);
+        return $this->selectAll($sql);
     }
 
 
-    public function getBoletaPorFechaSola($trabajador_id){
+    public function getBoletaPorFechaSola($trabajador_id)
+    {
         $sql = "SELECT 
         b.id AS bid, 
         b.numero AS numero, 
@@ -214,10 +218,11 @@ class BoletaModel extends Query
             AND b.trabajador_id = '$trabajador_id' 
         ORDER BY 
              b.fecha_inicio,b.fecha_fin ASC;";
-            return $this->selectAll($sql);
+        return $this->selectAll($sql);
     }
 
-    public function getAllTrabajadorCargo(){
+    public function getAllTrabajadorCargo()
+    {
         $sql = "SELECT 
         t.id AS trabajador_id,
         t.apellido_nombre AS trabajador_nombre, 
@@ -234,7 +239,8 @@ class BoletaModel extends Query
         return $this->selectAll($sql);
     }
 
-    public function getTrabajadorCargo($cargo,$nivel){
+    public function getTrabajadorCargo($cargo, $nivel)
+    {
         $sql = "SELECT 
         t.id AS trabajador_id,
         t.apellido_nombre AS trabajador_nombre, 
@@ -250,11 +256,12 @@ class BoletaModel extends Query
             c.nombre != '$cargo' 
             AND c.nivel > $nivel
         ORDER BY
-        t.id ASC ;" ;
+        t.id ASC ;";
         return $this->selectAll($sql);
     }
 
-    public function getTrabajadorCargo2($nivel){
+    public function getTrabajadorCargo2($nivel)
+    {
         $sql = "SELECT 
         t.id AS trabajador_id,
         t.apellido_nombre AS trabajador_nombre, 
@@ -269,11 +276,12 @@ class BoletaModel extends Query
         WHERE 
             c.nivel > $nivel
         ORDER BY
-        t.id ASC ;" ;
+        t.id ASC ;";
         return $this->selectAll($sql);
     }
 
-    public function getTrabajador($id){
+    public function getTrabajador($id)
+    {
         $sql = "SELECT 
         t.id AS trabajador_id,
         t.apellido_nombre AS trabajador_nombre, 
@@ -291,9 +299,6 @@ class BoletaModel extends Query
         t.id ASC ;";
         return $this->select($sql);
     }
-
-
-    
     public function getBoleta($id)
     {
         $sql = "SELECT * FROM boleta WHERE id = $id";
@@ -305,63 +310,125 @@ class BoletaModel extends Query
         return $this->select($sql);
     }
 
-    public function verificarExistencia($fecha_inicio,$fecha_fin,$trabajador_id)
+    public function verificarExistencia($fecha_inicio, $fecha_fin, $trabajador_id)
     {
 
         $sql = "SELECT * FROM boleta 
-        WHERE 
-        (fecha_inicio <= '$fecha_fin' AND 
-        fecha_fin >= '$fecha_inicio') AND
-       trabajador_id = $trabajador_id AND
-        tipo='2' AND
-        (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado')" 
-        ;
+                WHERE 
+                (fecha_inicio <= '$fecha_fin' AND 
+                fecha_fin >= '$fecha_inicio') AND
+            trabajador_id = $trabajador_id AND
+                tipo='2' AND
+                (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado')";
         return $this->selectAll($sql);
     }
-    
-                   
-    public function registrar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite,$tipo)
+
+    public function verificarExistenciaFecha($fecha_inicio, $fecha_fin, $trabajador_id)
+    {
+       
+        $sql = "SELECT * FROM boleta 
+                WHERE trabajador_id = '$trabajador_id' AND
+                    tipo = '2' AND
+                    (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado') AND
+                    (
+                        (fecha_inicio BETWEEN '$fecha_inicio' AND '$fecha_fin') OR
+                        (fecha_fin BETWEEN '$fecha_inicio' AND '$fecha_fin') OR
+                        (fecha_inicio <= '$fecha_inicio' AND fecha_fin >= '$fecha_fin')
+                    )";
+        
+         // $sql = "SELECT * FROM boleta 
+                // WHERE 
+                //     trabajador_id = '$trabajador_id' AND
+                //     tipo = '2' AND
+                //     (estado_tramite = 'Pendiente' OR estado_tramite = '$fecha_fin') AND
+                //     (
+                //         (fecha_inicio BETWEEN '$fecha_inicio' AND '$fecha_fin') OR
+                //         (fecha_fin BETWEEN '$fecha_inicio' AND '$fecha_fin') OR
+                //         (fecha_inicio <= '$fecha_inicio' AND fecha_fin >= '$fecha_fin')
+                //     )";
+        return $this->selectAll($sql);
+    }
+
+    public function verificarExistenciaHora($hora_salida, $hora_retorno, $trabajador_id)
+    {
+        $sql = "SELECT * FROM boleta 
+                WHERE 
+                    trabajador_id = '$trabajador_id' AND
+                    tipo = '1' AND
+                    (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado') AND
+                    (
+                        (hora_salida BETWEEN '$hora_salida' AND '$hora_retorno') OR
+                        (hora_entrada BETWEEN '$hora_salida' AND '$hora_retorno') OR
+                        (hora_salida <= '$hora_salida' AND hora_entrada >= '$hora_retorno'))";
+        //     $sql = "SELECT * FROM boleta 
+        //     WHERE 
+        //     (hora_salida <= '$hora_salida' AND 
+        //     hora_entrada >= '$hora_retorno') AND
+        //    trabajador_id = $trabajador_id AND
+        //     tipo='1' AND
+        //     (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado')" 
+        //     ;
+
+        return $this->selectAll($sql);
+    }
+
+
+    public function registrar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo)
     {
         $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite,tipo) VALUES (?,?,?,?,?,?,?,?)";
-        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$estado_tramite,$tipo);
+        $array = array($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
         return $this->insertar($sql, $array);
     }
-    public function modificar($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica,$id)
+
+    public function registrarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo)
     {
-        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
-        $array = array($solicitante, $aprobador,$fecha_inicio,$fecha_fin,$razon,$razon_especifica, $id);
+        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,hora_salida,hora_entrada,duracion,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite,tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+        return $this->insertar($sql, $array);
+    }
+    public function modificarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id)
+    {
+        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,hora_salida=?,hora_entrada=?,duracion=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
+        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
         return $this->save($sql, $array);
     }
-    public function modificarSalida($salida,$id)
+    public function modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id)
+    {
+        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
+        $array = array($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+        return $this->save($sql, $array);
+    }
+    public function modificarSalida($salida, $id)
     {
         $sql = "UPDATE boleta SET hora_salida = ? ,  update_at=NOW()  WHERE id = ?";
         $array = array($salida, $id);
         return $this->save($sql, $array);
     }
 
-    public function modificarEntrada($entrada,$duracion,$id)
+    public function modificarEntrada($entrada, $duracion, $id)
     {
         $sql = "UPDATE boleta SET hora_entrada = ?,duracion = ?, update_at=NOW()  WHERE id = ?";
-        $array = array($entrada,$duracion, $id);
+        $array = array($entrada, $duracion, $id);
         return $this->save($sql, $array);
     }
-    public function modificarHora($salida,$entrada,$id)
+    public function modificarHora($salida, $entrada, $id)
     {
         $sql = "UPDATE boleta SET hora_salida = ?,hora_entrada = ?, update_at=NOW()  WHERE id = ?";
-        $array = array($salida,$entrada, $id);
+        $array = array($salida, $entrada, $id);
         return $this->save($sql, $array);
     }
-    public function Revisar($id,$accion,$observacion)
+    public function Revisar($id, $accion, $observacion)
     {
         $sql = "UPDATE boleta SET estado_tramite = ? , observaciones=? WHERE id = ?";
-        $array = array($accion,$observacion,$id);
+        $array = array($accion, $observacion, $id);
         return $this->save($sql, $array);
     }
 
-    
-    public function registrarlog($usuario,$accion,$tabla,$detalles){
+
+    public function registrarlog($usuario, $accion, $tabla, $detalles)
+    {
         $sql = "INSERT INTO log (usuario_id,tipo_accion,tabla_afectada,detalles) VALUES (?,?,?,?)";
-        $array = array($usuario,$accion,$tabla,$detalles);
+        $array = array($usuario, $accion, $tabla, $detalles);
         return $this->save($sql, $array);
     }
 }

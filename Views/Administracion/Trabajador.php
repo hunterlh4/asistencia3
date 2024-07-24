@@ -30,13 +30,13 @@
                           <tr>
                             <th class="text-center"># </th>
                             <th>DNI</th>
-                            <th>nombre</th>
-                            <th>Direccion</th>
-                            <th>Cargo </th>
-                            <th>Regimen </th>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th>Cargo</th>
+                            <th>Régimen</th>
                             <!-- <th>Particular</th> -->
                             <th>Estado</th>
-                            <th>Accion</th>
+                            <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -98,7 +98,7 @@
               </div>
               <!-- telefono -->
               <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <label>Telefono</label>
+                <label>Teléfono</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
@@ -126,7 +126,7 @@
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text">
-                      <i class="fas fa-address-card"></i>
+                      <i class="fas fa-envelope"></i>
                     </div>
                   </div>
                   <input type="email" class="form-control" placeholder="Correo" name="email" id="email" minlength="5" maxlength="40">
@@ -158,7 +158,7 @@
                 </div>
 
               </div>
-              
+
               <!-- nacimiento -->
               <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <label>Fecha de Nacimiento</label>
@@ -195,13 +195,13 @@
             <div class="row">
               <!-- direccion -->
               <div class="form-group col-xl-8 col-lg-12 col-md-12 col-sm-12">
-                <label for="direccion">Direccion</label>
+                <label for="direccion">Dirección</label>
                 <div class="input-group">
-                  <div class="input-group-prepend">
+                  <!-- <div class="input-group-prepend">
                     <div class="input-group-text">
                       <i class="fas fa-address-card"></i>
                     </div>
-                  </div>
+                  </div> -->
                   <select class="form-control" id="direccion" name="direccion" required>
                     <option value="" selected>Selecciona una Direccion</option>
                     <!-- Opciones para la dirección -->
@@ -211,7 +211,7 @@
               </div>
               <!-- regimen -->
               <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                <label>Regimen</label>
+                <label>Régimen</label>
                 <div class="input-group">
 
                   <select class="form-control" id="regimen" name="regimen" required>
@@ -302,6 +302,28 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
+  <style>
+    .swal2-popup {
+      position: center;
+
+    }
+
+    /* Estilo general para todos los botones */
+    .dt-buttons .btn {
+      /* font-size: 14px;  */
+      /* padding: 8px 16px;  */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      width: 60px;
+      height: 34px;
+      justify-content: center;
+      text-align: center;
+    }
+  </style>
 </body>
 
 </html>

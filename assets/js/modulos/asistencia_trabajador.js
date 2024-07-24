@@ -516,7 +516,10 @@ function modificarCalendario() {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
-    if ((fcTitle.textContent.includes("FERIADO")|| fcTitle.textContent.includes("ONOMASTICO")) &&  fcTime.textContent.includes("0:00") ) {
+    if ((fcTitle.textContent.includes("SR") || 
+      fcTitle.textContent.includes("FERIADO")|| 
+      fcTitle.textContent.includes("COMPENSABLE")|| 
+      fcTitle.textContent.includes("ONOMASTICO")) &&  fcTime.textContent.includes("0:00") ) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }
@@ -550,7 +553,10 @@ function modificarCalendario() {
     var fcTitle = element.querySelector(".fc-list-item-title");
 
     // Verificar si fc-title contiene 'SR' o 'OK-Boleta'
-    if (fcTitle.textContent.includes("SR") || fcTitle.textContent.includes("Sin Marcación")) {
+    if ((fcTitle.textContent.includes("SR") || 
+    fcTitle.textContent.includes("FERIADO") ||
+    fcTitle.textContent.includes("COMPENSABLE") ||
+    fcTitle.textContent.includes("Sin Marcación"))&& fcTime.textContent.includes("0:00")) {
       // Si fc-title contiene 'SR', vaciar el contenido de fc-time
       fcTime.textContent = "";
     }else{
@@ -596,6 +602,7 @@ function llenarBoleta(fecha, trabajador_id) {
     fecha: fecha,
     trabajador_id: trabajador_id,
   };
+  console.log(parametros);
 
   $.ajax({
     data: parametros,
@@ -615,6 +622,9 @@ function llenarBoleta(fecha, trabajador_id) {
       $("#resultado").empty();
       res.map((datos) => {
         // console.log(datos);
+        if(datos.observaciones==null || datos.undefined){
+          datos.observaciones='';
+        }
         if (datos !== undefined && datos.numero !== undefined) {
           html +=
             '<div class="row text-center">' +

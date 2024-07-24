@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // llenarselectHorario();
   llenarselectCargo();
 
+
+
   //levantar modal
   nuevo.addEventListener("click", function () {
     frm.reset();
@@ -44,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("#estado-grupo").forEach((element) => {
       element.style.display = "none";
     });
+    
     myModal.show();
   });
 
@@ -70,6 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
   });
+
+ 
 });
 
 function llenarTabla() {
@@ -91,6 +96,57 @@ function llenarTabla() {
         { data: "accion" },
     ],
     dom: "Bfrtip",
+    language: 
+    {
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad",
+        "collection": "Colección",
+        "colvisRestore": "Restaurar visibilidad",
+        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+        },
+        "copyTitle": "Copiar al portapapeles",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Cambiar nombre",
+        "updateState": "Actualizar",
+        "createState": "Crear Estado",
+        "removeAllStates": "Remover Estados",
+        "removeState": "Remover",
+        "savedStates": "Estados Guardados",
+        "stateRestore": "Estado %d"
+    },
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
 
     buttons: [
       {

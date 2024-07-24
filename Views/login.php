@@ -91,9 +91,9 @@
 </body>
 
 <style>
-  .swal2-popup {
-    font-size: 1.8rem !important;
-  }
+  /* .swal2-popup {
+    font-size: 1.6rem !important;
+  } */
 
   
         /* Estilos del texto */

@@ -29,7 +29,7 @@
                             <th>Nombre</th>
                             <th>Nivel</th>
                             <th>Estado</th>
-                            <th>accion</th>
+                            <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -129,6 +129,32 @@
   <script>
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
+<style>
+   .swal2-popup {
+  position: center;
+
+}
+ 
+/* Estilo general para todos los botones */
+.dt-buttons .btn {
+  /* font-size: 14px;  */
+  /* padding: 8px 16px;  */
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  margin: 5px; 
+  display: inline-flex; 
+  align-items: center; 
+  width: 60px;
+  height: 34px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+
+  </style>
 </body>
 
 </html>

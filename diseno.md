@@ -17,3 +17,8 @@
 
 ## Usuarios Conectados
 ## Configuracion
+
+
+<!-- para el input file, css/app.min.css -->
+
+<!-- CORREGIR LAS BOLETAS NORMALES CMOMO EL DE ADMIN -->

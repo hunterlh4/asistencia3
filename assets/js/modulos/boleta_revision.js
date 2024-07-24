@@ -101,6 +101,7 @@ function llenartablaHoras() {
 
       { data: "numero" },
       { data: "nombre_trabajador" },
+      { data: "razon"},
       { data: "fecha_nueva" },
       // { data: "fecha_fin_formateada" },
       { data: "hora_salida" },
@@ -116,6 +117,57 @@ function llenartablaHoras() {
       //   { width: "250px", targets: 2 }, // Ancho de la segunda columna
       // Agrega más columnDefs según sea necesario
     ],
+    language: 
+    {
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad",
+        "collection": "Colección",
+        "colvisRestore": "Restaurar visibilidad",
+        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+        },
+        "copyTitle": "Copiar al portapapeles",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Cambiar nombre",
+        "updateState": "Actualizar",
+        "createState": "Crear Estado",
+        "removeAllStates": "Remover Estados",
+        "removeState": "Remover",
+        "savedStates": "Estados Guardados",
+        "stateRestore": "Estado %d"
+    },
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
 
     buttons: [
       {
@@ -176,6 +228,7 @@ function llenarTablaDias() {
 
       { data: "numero" },
       { data: "nombre_trabajador" },
+      { data: "razon"},
       { data: "fecha_inicio_formateada" },
       { data: "fecha_fin_formateada" },
       // { data: "hora_salida" },
@@ -191,6 +244,57 @@ function llenarTablaDias() {
     //   // Agrega más columnDefs según sea necesario
     // ],
     dom: "Bfrtip",
+    language: 
+    {
+      "sProcessing": "Procesando...",
+      "sLengthMenu": "Mostrar _MENU_ registros",
+      "sZeroRecords": "No se encontraron resultados",
+      "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+      "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+      "sInfoPostFix": "",
+      "sSearch": "Buscar:",
+      "sUrl": "",
+      "sInfoThousands": ",",
+      "sLoadingRecords": "Cargando...",
+      "oPaginate": {
+        "sFirst": "Primero",
+        "sLast": "Último",
+        "sNext": "Siguiente",
+        "sPrevious": "Anterior"
+      },
+      "buttons": {
+        "copy": "Copiar",
+        "colvis": "Visibilidad",
+        "collection": "Colección",
+        "colvisRestore": "Restaurar visibilidad",
+        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+        },
+        "copyTitle": "Copiar al portapapeles",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+        },
+        "pdf": "PDF",
+        "print": "Imprimir",
+        "renameState": "Cambiar nombre",
+        "updateState": "Actualizar",
+        "createState": "Crear Estado",
+        "removeAllStates": "Remover Estados",
+        "removeState": "Remover",
+        "savedStates": "Estados Guardados",
+        "stateRestore": "Estado %d"
+    },
+      "oAria": {
+        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+      }
+    },
 
     buttons: [
       {
@@ -402,10 +506,11 @@ function cambiarPage(boton) {
 
 function llenarSelectSolicitante() {
   $.ajax({
-    url: base_url + "usuario/listartrabajadores",
+    url: base_url + "Api/listartrabajadores",
     type: "GET",
 
     success: function (response) {
+      console.log(response);
       datos = JSON.parse(response);
       datos.forEach((opcion) => {
         // Crear un elemento de opción

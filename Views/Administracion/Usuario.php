@@ -27,14 +27,14 @@
                       <table class="table table-striped table-hover" style="width:100%;" id="table-alex">
                         <thead>
                           <tr>
-                            <th class="text-center"># </th>
-                            <th>usuario</th>
-                            <th>nombre</th>
-                            <th>apellido</th>
-                            <th>dni</th>
-                            <th>nivel</th>
-                            <th>estado</th>
-                            <th>accion</th>
+                            <th class="text-center">#</th>
+                            <th>Usuario</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>DNI</th>
+                            <th>Nivel</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -111,7 +111,7 @@
               <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <label for="dni">DNI</label>
                 <div class="input-group">
-                <div class="input-group-prepend">
+                  <div class="input-group-prepend">
                     <div class="input-group-text">
                       <i class="fas fa-address-card"></i>
                     </div>
@@ -193,7 +193,7 @@
               </div>
 
 
-             
+
 
 
               <div class="form-group col-xl-3 col-lg-4 col-md-6 col-sm-12">
@@ -210,7 +210,7 @@
                     <option value="" selected>Selecciona un Nivel</option>
                     <option value="1">Administrador</option>
                     <option value="2">Jefe de Oficina</option>
-                    <option value="3">Vizualizador</option>
+                    <option value="3">Visualizador</option>
                     <option value="4">Portero</option>
                     <option value="5">Sin permisos</option>
                   </select>
@@ -271,7 +271,32 @@
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
 
+<style>
+.swal2-popup {
+  position: center;
 
+}
+ 
+/* Estilo general para todos los botones */
+.dt-buttons .btn {
+  /* font-size: 14px;  */
+  /* padding: 8px 16px;  */
+  color: #fff; 
+  border: none; 
+  border-radius: 4px; 
+  margin: 5px; 
+  display: inline-flex; 
+  align-items: center; 
+  width: 60px;
+  height: 34px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+
+  </style>
 </body>
 
 </html>
