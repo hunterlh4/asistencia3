@@ -100,6 +100,9 @@ class Login extends Controller
                                 $_SESSION['apellido'] = $data['apellido'];
                                 $_SESSION['nivel'] = $data['nivel'];
                                 $_SESSION['usuario_autenticado'] = true;
+
+                                $direccionIp = $this->obtenerIpCliente();
+                                $_SESSION['ip'] = $direccionIp;
     
                                 if ($rememberMe) {
                                     setcookie('id', $data['id'], time() + (86400 * 30), "/"); // 30 días
@@ -107,6 +110,7 @@ class Login extends Controller
                                     setcookie('nombre', $_SESSION['nombre'], time() + (86400 * 30), "/");
                                     setcookie('apellido', $_SESSION['apellido'], time() + (86400 * 30), "/");
                                     setcookie('nivel', $_SESSION['nivel'], time() + (86400 * 30), "/");
+                                    setcookie('ip', $_SESSION['ip'], time() + (86400 * 30), "/");
                                     setcookie('usuario_autenticado', true, time() + (86400 * 30), "/");
                                 } else {
                                     setcookie('user_id', '', time() - 3600, "/"); // Elimina la cookie
@@ -114,6 +118,7 @@ class Login extends Controller
                                     setcookie('nombre', '', time() - 3600, "/");
                                     setcookie('apellido', '', time() - 3600, "/");
                                     setcookie('nivel', '', time() - 3600, "/");
+                                    setcookie('ip', '', time() - 3600, "/");
                                     setcookie('usuario_autenticado', '', time() - 3600, "/");
                                 }
     
@@ -145,5 +150,21 @@ class Login extends Controller
         }
         echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
         die();
+    }
+
+    function obtenerIpCliente() {
+        $ip = '';
+    
+        if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // Manejar el caso de múltiples direcciones IP en X_FORWARDED_FOR
+            $ipLista = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ip = trim(end($ipLista));
+        } elseif (isset($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+    
+        return $ip;
     }
 }    

@@ -104,6 +104,8 @@ var calendar = $("#myEvent").fullCalendar({
   displayEventTitle: false,
   displayEventTime: true, // Oculta la hora del evento
   displayEventEnd: true, // Oculta el fin del evento
+  dayMaxEventRows: true, // Limita el número de filas de eventos por día
+  dayMaxEvents: 3,
   header: {
     left: "prev,next today",
     center: "title",
@@ -883,23 +885,3 @@ dropdown.addEventListener('mouseenter', function(event) {
 });
 
 // Obtener el botón y el dropdown
-
-
-
-
-// function listarAsistencia2() {
-//   $.ajax({
-//     url: base_url + "asistencia/listarTrabajadorAsistencia",
-//     type: "POST",
-
-//     success: function (response) {
-//     //  console.log(response);
-//      const res = JSON.parse(response);
-//      console.log(res);
-
-//     },
-//     error: function (xhr, status, error) {
-//       console.error(error);
-//     },
-//   });
-// }

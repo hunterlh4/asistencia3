@@ -37,9 +37,10 @@
         <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Asistencia</span></a>
         <ul class="dropdown-menu">';
         echo '<li class="dropdown"><a href="' . BASE_URL . 'Importar" class="nav-link"><i data-feather="upload"></i><span>Importar</span></a></li>';
-        echo '<li class="dropdown"><a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="file-text"></i><span>Hoja de Asistencia</span></a></li>';
-        echo '<li class="dropdown"><a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="file-text"></i><span>Mis Asistencias</span></a></li>';
-        echo '<li class="dropdown"><a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="file-text"></i><span>Calendario</span></a></li>';
+        echo '<li class="dropdown"><a href="' . BASE_URL . 'Asistencia" class="nav-link"><i data-feather="clipboard"></i><span>Hoja de Asistencia</span></a></li>';
+        echo '<li class="dropdown"><a href="' . BASE_URL . 'Asistencia/ver" class="nav-link"><i data-feather="clipboard"></i><span>Mis Asistencias</span></a></li>';
+        echo '<li class="dropdown"><a href="' . BASE_URL . 'Festividades/ver" class="nav-link"><i data-feather="calendar"></i><span>Calendario</span></a></li>';
+        echo '<li class="dropdown"><a href="' . BASE_URL . 'HoraExtra" class="nav-link"><i data-feather="clock"></i><span>Horas Extra</span></a></li>';
         echo '</ul>
       </li>';
       }

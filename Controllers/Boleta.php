@@ -622,7 +622,7 @@ class Boleta extends Controller
 
                         $data = $this->model->modificarSalida($salida, $id);
                         if ($data > 0) {
-                            $respuesta = ['msg' => 'Boleta Actualizada1', 'icono' => 'success'];
+                            $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
                             $datos_log = [
                                 "id" => $id,
                                 "salida" => $salida,
@@ -659,7 +659,7 @@ class Boleta extends Controller
                                 $data = $this->model->modificarEntrada($retorno, $diferencia, $id);
                             }
                             if ($data > 0) {
-                                $respuesta = ['msg' => 'Boleta Actualizada2', 'icono' => 'success'];
+                                $respuesta = ['msg' => 'Boleta Actualizada', 'icono' => 'success'];
                                 $datos_log = [
                                     "id" => $id,
                                     "salida" => $salida,

@@ -317,6 +317,23 @@ CREATE TABLE notificacion (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
 );
+
+create table horas_extra(
+    id SERIAL PRIMARY KEY,
+    tipo VARCHAR(10) not null,
+    trabajador_id int  not null,
+    fecha_desde date not null,
+    fecha_hasta date not null,
+    hora_desde INTERVAL HOUR TO SECOND NOT NULL DEFAULT '00:00:00',
+    hora_hasta INTERVAL HOUR TO SECOND NOT NULL DEFAULT '00:00:00',
+    diferencia INTERVAL HOUR TO SECOND NOT NULL DEFAULT '00:00:00',
+    dia_completo BOOLEAN null,
+    estado varchar(10) NOT NULL DEFAULT 'Activo',
+    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP null,
+    FOREIGN KEY(trabajador_id) REFERENCES trabajador(id)
+);
+
 -- por cada tabla esto
 GRANT USAGE, SELECT ON SEQUENCE festividad_id_seq TO zqavzvpn_rrhh;
 

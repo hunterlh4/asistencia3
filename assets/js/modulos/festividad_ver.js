@@ -287,7 +287,7 @@ function MostrarCalendario(){
 
             element.bind('contextmenu', function(e) {
                 e.preventDefault();
-                showContextMenu(e, event);
+                // showContextMenu(e, event);
             });
 
             element.on('touchstart', function(e) {
@@ -311,7 +311,7 @@ function MostrarCalendario(){
         if (event.tipo === 'feriado') {
             editMenuItem.show();
             deleteMenuItem.hide();
-        } else if (event.tipo === 'institucional') {
+        } else if (event.tipo === 'compensable') {
             editMenuItem.show();
             deleteMenuItem.show();
         }
