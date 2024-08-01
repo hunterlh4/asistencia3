@@ -141,6 +141,8 @@ const radioFalse = document.getElementById("radio-false");
 const select1 = document.getElementById("trabajador");
 const myModalDelete = new bootstrap.Modal(document.getElementById("borrar"));
 let tiempo = "";
+let max_tiempo ="";
+let min_tiempo ="";
 
 let year = new Date().getFullYear();
 input_fecha_inicio.setAttribute("min", year + "-01-01");
@@ -201,6 +203,8 @@ function llenarCalendario(selectedValue) {
       
      
       tiempo = res.horasExtraDisponibles.horas_extra_disponibles || "00:00";
+      min_tiempo = res.horasExtraDisponibles.min_fecha_desde || "2024-08-01";
+      max_tiempo = res.horasExtraDisponibles.max_fecha_hasta || "2024-08-01";
     
 
       // Asegúrate de que 'tiempo' sea una cadena
@@ -590,7 +594,10 @@ frm.addEventListener("submit", function (e) {
 
   let data = new FormData(this);
   data.append("trabajador_id", select1.value);
-  data.append("tiempo_usable", tiempo.horas_extra_disponibles);
+  data.append("tiempo_usable", tiempo);
+  data.append("min_tiempo", min_tiempo);
+  data.append("max_tiempo", max_tiempo);
+  console.log(tiempo);
   const url = base_url + "HoraExtra/actualizar";
 
   // let fechaInicio = data.get('fecha_inicio'); // Formato YYYY-MM-DD

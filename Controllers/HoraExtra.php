@@ -65,6 +65,9 @@ class HoraExtra extends Controller
         $estado = $_POST['estado'] ?? '';
         $tiempo = $_POST['tiempo_usable'] ?? '00:00';
 
+        $min_tiempo = $_POST['min_tiempo'] ?? '';
+        $max_tiempo = $_POST['max_tiempo'] ?? '';
+
         $error_message = '';
         $accion = $id ? 'editar' : 'crear';
 
@@ -102,6 +105,8 @@ class HoraExtra extends Controller
         // aumentar el tiempo 30 dias
         if (!empty($fecha_inicio)) {
             $fechaInicio = new DateTime($fecha_inicio);
+            $minTiempoDateTime = new DateTime($min_tiempo);
+            $maxTiempoDateTime = new DateTime($max_tiempo);
 
             if ($tipo == 'aumentar') {
                 $fechaInicio->modify('+30 days');
@@ -109,7 +114,17 @@ class HoraExtra extends Controller
             }
             if ($tipo == 'restar') {
                 $fecha_hasta = $fecha_inicio;
+                // $fechaTiempoStr = $fechaInicio->format('Y-m-d');
+                // $minTiempoStr = $minTiempoDateTime->format('Y-m-d');
+                // $maxTiempoStr = $maxTiempoDateTime->format('Y-m-d');
+
+                if ($fechaInicio < $minTiempoDateTime || $fechaInicio > $maxTiempoDateTime) {
+                    // $error_message .= $minTiempoStr.'<br>'.$maxTiempoStr.'<br>'.$fechaTiempoStr.'<b>Fecha</b> debe estar entre el rango de hora Extra.<br>';
+                    $error_message .='la <b>Fecha</b> debe estar entre el rango de hora Extra.<br>';
+                }
             }
+
+           
         }
         if (!empty($hora_desde) && !empty($hora_hasta)) {
             $diferencia = $this->calcularDiferenciaHoras($hora_desde, $hora_hasta);
@@ -120,10 +135,10 @@ class HoraExtra extends Controller
         
             if (($tiempoMinutos < $diferenciaMinutos) && $accion =='crear' && $tipo=='restar'  ) {
                 $error_message .= 
-               
-                $tiempoMinutos.'<br>'.
-                $diferenciaMinutos.'<br>'.
-                '<b>Tiempo usable</b> no puede ser menor que la diferencia entre <b>Hora desde</b> y <b>Hora hasta</b>.';
+                // $tiempo.'H1 solo <br>'.
+                // $tiempoMinutos.' H1 <br>'.
+                // $diferenciaMinutos.' Diferencia <br>'.
+                '<b>Tiempo usable</b> Insuficiente.';
             }
             // if(($tiempoMinutos < $diferenciaMinutos) && $accion =='editar' ){
             //     $data = $this->model->buscar($id);

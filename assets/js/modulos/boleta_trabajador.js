@@ -453,6 +453,9 @@ function view(id) {
 
       btnAccion.textContent = "Actualizar";
       titleModal.textContent = "Vizualizar";
+      if(res.observaciones == null){
+        res.observaciones = '';
+      }
 
       var html =
         '<div class="form-group">' +

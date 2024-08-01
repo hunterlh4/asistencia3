@@ -707,6 +707,7 @@ function llenarBoleta(fecha, trabajador_id) {
         if(datos.observaciones==null || datos.undefined){
           datos.observaciones='';
         }
+       
 
         if (datos !== undefined && datos.numero !== undefined) {
           html +=
@@ -787,9 +788,7 @@ function llenarBoleta(fecha, trabajador_id) {
             '<div class="col-4">' +
             '<div class="form-group" id="otra_razon" >' +
             '<label for="otra_razon_texto">Otra razón:</label>' +
-            '<input type="text" class="form-control" value =' +
-            datos.razon_especifica +
-            ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+            '<input type="text" class="form-control" value="' + (datos.razon_especifica || '') + '" name="otra_razon_texto" id="otra_razon_texto" disabled>' +
             "</div>" +
             "</div>" +
             '<div class="col-4">' +
@@ -801,30 +800,7 @@ function llenarBoleta(fecha, trabajador_id) {
             "</div>" +
             "</div>" +
             "</div>";
-          // } else {
-          //   html += '<option value="">' + "Otra" + "</option>";
-          //   html +=
-          //     "</select>" +
-          //     "</div>" +
-          //     "</div>" +
-          //     '<div class="col-4">' +
-          //     '<div class="form-group" id="otra_razon" >' +
-          //     '<label for="otra_razon_texto">Otra razón:</label>' +
-          //     '<input type="text" class="form-control" value =' +
-          //     datos.razon +
-          //     ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
-          //     "</div>" +
-          //     "</div>" +
-          //     '<div class="col-4">' +
-          //     '<div class="form-group">' +
-          //     '<label for="observaciones">Observaciones:</label>' +
-          //     '<textarea class="form-control" name="observaciones" id="observaciones" rows="3" disabled>' +
-          //     datos.observaciones +
-          //     "</textarea>" +
-          //     "</div>" +
-          //     "</div>" +
-          //     "</div>";
-          // }
+         
         }
       });
       $("#resultado").html(html);

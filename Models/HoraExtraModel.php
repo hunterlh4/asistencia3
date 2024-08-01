@@ -117,7 +117,9 @@ class HoraExtraModel extends Query
                         AND fecha_desde BETWEEN (SELECT min_fecha_desde FROM min_max_dates) AND (SELECT max_fecha_hasta FROM min_max_dates)
                 )
                         SELECT
-                    TO_CHAR((total_aumentar - COALESCE(total_restar, '00:00:00'::interval)), 'HH24:MI') AS horas_extra_disponibles
+                    TO_CHAR((total_aumentar - COALESCE(total_restar, '00:00:00'::interval)), 'HH24:MI') AS horas_extra_disponibles,
+                    (SELECT min_fecha_desde FROM min_max_dates) AS min_fecha_desde,
+                    (SELECT max_fecha_hasta FROM min_max_dates) AS max_fecha_hasta
                 FROM
                     horas_aumentar, horas_restar";
         return $this->select($sql);

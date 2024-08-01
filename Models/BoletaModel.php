@@ -349,12 +349,13 @@ class BoletaModel extends Query
         return $this->selectAll($sql);
     }
 
-    public function verificarExistenciaHora($hora_salida, $hora_retorno, $trabajador_id)
+    public function verificarExistenciaHora($fecha_inicio,$hora_salida, $hora_retorno, $trabajador_id)
     {
         $sql = "SELECT * FROM boleta 
                 WHERE 
                     trabajador_id = '$trabajador_id' AND
                     tipo = '1' AND
+                     fecha_inicio = '$fecha_inicio' AND
                     (estado_tramite = 'Pendiente' OR estado_tramite = 'Aprobado') AND
                     (
                         (hora_salida BETWEEN '$hora_salida' AND '$hora_retorno') OR
@@ -382,16 +383,17 @@ class BoletaModel extends Query
 
     public function registrarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo)
     {
-        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,hora_salida,hora_entrada,duracion,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite,tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite, $tipo);
+        $sql = "INSERT INTO boleta (trabajador_id,aprobado_por,hora_salida,hora_entrada,duracion,fecha_inicio,fecha_fin,razon,razon_especifica,estado_tramite,tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $estado_tramite,$estado_tramite, $tipo);
         return $this->insertar($sql, $array);
     }
-    public function modificarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id)
+    public function modificarAdmin($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica,$estado_tramite, $id)
     {
-        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,hora_salida=?,hora_entrada=?,duracion=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
-        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id);
+        $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,hora_salida=?,hora_entrada=?,duracion=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?,estado_tramite=?, update_at=NOW()  WHERE id = ?";
+        $array = array($solicitante, $aprobador, $hora_salida, $hora_entrada, $duracion, $fecha_inicio, $fecha_fin, $razon, $razon_especifica,$estado_tramite, $id);
         return $this->save($sql, $array);
     }
+
     public function modificar($solicitante, $aprobador, $fecha_inicio, $fecha_fin, $razon, $razon_especifica, $id)
     {
         $sql = "UPDATE boleta SET trabajador_id=?,aprobado_por=?,fecha_inicio=?,fecha_fin=?,razon =?,razon_especifica=?, update_at=NOW()  WHERE id = ?";
@@ -422,6 +424,17 @@ class BoletaModel extends Query
         $sql = "UPDATE boleta SET estado_tramite = ? , observaciones=? WHERE id = ?";
         $array = array($accion, $observacion, $id);
         return $this->save($sql, $array);
+    }
+
+    public function registrarJustificacionHoras($justificacion,$fecha_inicio,$solicitante){
+        $sql = "UPDATE asistencia SET justificacion=?  WHERE fecha=? AND trabajador_id = ?";
+        $array = array($justificacion,$fecha_inicio,$solicitante);
+        return $this->save($sql, $array);
+
+    }
+    public function obtenerBoletas($solicitante,$fecha_inicio){
+        $sql ="SELECT count(*) as cantidad FROM boleta WHERE trabajador_id='$solicitante' AND fecha_inicio='$fecha_inicio' AND tipo='1'";
+        return $this->select($sql);
     }
 
 

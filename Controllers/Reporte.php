@@ -156,6 +156,50 @@ class Reporte extends Controller
         die();
     }
 
+    public function generar_kardex()
+    {
+        $data[] = [];
+        $error_message = '';
+
+        // Verifica si la solicitud es de tipo POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(["icono" => "error", "msg" => "Método de solicitud no permitido"]);
+            exit;
+        }
+        $trabajador = $_POST['trabajador'] ?? '';
+        $anio = $_POST['anio'] ?? '';
+        $mes_inicio = $_POST['mes_inicio'] ?? '';
+        $mes_fin = $_POST['mes_fin'] ?? '';
+
+        if (empty($trabajador)) {
+            $error_message .= "El campo 'trabajador' es obligatorio.<br>";
+        }
+        if (empty($anio)) {
+            $error_message .= "El campo 'año' es obligatorio.<br>";
+        }
+        if (empty($mes_inicio)) {
+            $error_message .= "El campo 'mes inicio' es obligatorio.<br>";
+        }
+        if (empty($mes_fin)) {
+            $error_message .= "El campo 'mes fin' es obligatorio.<br>";
+        }
+
+        if (!empty($error_message)) {
+            echo json_encode(["icono" => "error", "msg" => $error_message]);
+            exit;
+        }
+        $peticion = $this->exportarKardex($trabajador, $anio, $mes_inicio, $mes_fin);
+        // $filePath = $peticion['filepath'] ?? 'filepath';
+        // $nombreArchivo = $peticion['nombreArchivo'] ?? 'nombrearchivo';
+        // // $mensaje = $peticion['mensaje'] ?? 'mensaje';
+        // $mensaje = $trabajador.'|'.$anio.'|'.$mes_inicio.'|'.$mes_fin;
+
+
+        // $respuesta = ['msg' => $mensaje, 'icono' => 'error', 'archivo' => $filePath, 'nombre' => $nombreArchivo];
+
+        echo json_encode($peticion);
+    }
+
     public function exportarDetallado($trabajador, $mes, $anio)
     {
         $mensaje = '';
@@ -314,7 +358,7 @@ class Reporte extends Controller
                     $sheet->setCellValue('A' . $row, $nombreDia);
 
                     if ($nombreDia == 'sáb.' || $nombreDia == 'dom.') {
-                        $sheet->getStyle('A' . $row .':Q' . $row)->getFill()
+                        $sheet->getStyle('A' . $row . ':Q' . $row)->getFill()
                             ->setFillType(Fill::FILL_SOLID)
                             ->getStartColor()->setARGB('FFD3D3D3'); // Color gris claro
                         $sheet->getStyle('E' . $row)->getFill()
@@ -335,7 +379,7 @@ class Reporte extends Controller
                     $sheet->setCellValue('M' . $row, $datos['reloj_8']);
                     $sheet->setCellValue('N' . $row, $datos['total']);
                     $sheet->setCellValue('O' . $row, $datos['total_reloj']);
-                   $sheet->setCellValueExplicit('P' . $row, $Observacion, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit('P' . $row, $Observacion, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
                     $sheet->setCellValue('Q' . $row, $justificacion);
                     $row++;
                 }
@@ -396,7 +440,7 @@ class Reporte extends Controller
                 $sheet->getStyle('A7:Q' . $row)->getAlignment()->setHorizontal('center');
                 $sheet->getStyle('A7:Q' . $row)->getFont()->setSize(11);
                 $sheet->getStyle('A1:Q' . $row)->getFont()->setName('Arial');
-         
+
                 $sheet->getColumnDimension('A')->setWidth(5);
                 $sheet->getColumnDimension('B')->setWidth(12);
                 $sheet->getColumnDimension('C')->setWidth(8);
@@ -914,5 +958,52 @@ class Reporte extends Controller
         }
 
         return ['filepath' => $filePath, 'nombreArchivo' => $nombreArchivo, 'mensaje' => $mensaje, 'data' => ''];
+    }
+
+    public function exportarKardex($trabajador, $anio, $mes_inicio, $mes_fin)
+    {
+        $listaAsistencia = $this->model->obtenerLeyendaAsistencia($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaBoleta = $this->model->obtenerBoletaLicenciaDuracion($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaHoraExtra = $this->model->obtenerTotalHoraExtra($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaTotalTardanza = $this->model->obtenerTotalTardanza($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaTotalInasistenciaInjustificada = $this->model->obtenerTotalInasistenciaInjustificada($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaPermisoLaboral = $this->model->obtenerTotalPermisoLaboral($trabajador, $anio, $mes_inicio, $mes_fin);
+        $listaInasistenciaJustificada = $this->model->obtenerTotalInasistenciaJustificada($trabajador, $anio, $mes_inicio, $mes_fin);
+
+        
+        $resultado = [];
+        foreach (range(0, 5) as $mes) {
+            // horas extra
+            $HE_total_cantidad = $listaHoraExtra[$mes]['total_registros'] ?? '0';
+            $HE_total_tiempo =$listaHoraExtra[$mes]['total_diferencia'] ?? '00:00';
+            // tardanza
+            // inasistencia injustificada
+            // permisos laborales
+            // inasistencia justificada
+
+            $resultado[$mes] = [
+
+                // Datos de cada lista para el mes actual
+                'prueba'=> $HE_total_cantidad,
+                'prueba2'=> $HE_total_tiempo,
+                
+                '03 listaHoraExtra' => $listaHoraExtra[$mes] ?? [],
+                '04 listaTotalTardanza' => $listaTotalTardanza[$mes] ?? [],
+                '05 listaTotalInasistenciaInjustificada' => $listaTotalInasistenciaInjustificada[$mes] ?? [],
+                '06 listaPermisoLaboral' => $listaPermisoLaboral[$mes] ?? [],
+                '07 listaInasistenciaJustificada' => $listaInasistenciaJustificada[$mes] ?? []
+            ];
+        }
+        // $resultado = [
+        //     '01 listaAsistencia' => $listaAsistencia,
+        //     '02 listaBoleta' => $listaBoleta,
+        //     '03 listaHoraExtra' => $listaHoraExtra,
+        //     '04 listaTotalTardanza' => $listaTotalTardanza,
+        //     '05 listaTotalInasistenciaInjustificada' => $listaTotalInasistenciaInjustificada,
+        //     '06 listaPermisoLaboral' => $listaPermisoLaboral,
+        //     '07 listaInasistenciaJustificada' => $listaInasistenciaJustificada,
+        // ];
+
+        return $resultado;
     }
 }

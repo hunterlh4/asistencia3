@@ -706,9 +706,7 @@ function llenarBoleta(fecha, trabajador_id) {
             '<div class="col-4">' +
             '<div class="form-group" id="otra_razon" >' +
             '<label for="otra_razon_texto">Otra razón:</label>' +
-            '<input type="text" class="form-control" value =' +
-            datos.razon_especifica +
-            ' name="otra_razon_texto" id="otra_razon_texto" disabled>' +
+            '<input type="text" class="form-control" value="' + (datos.razon_especifica || '') + '" name="otra_razon_texto" id="otra_razon_texto" disabled>' +
             "</div>" +
             "</div>" +
             '<div class="col-4">' +

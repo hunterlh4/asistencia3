@@ -23,7 +23,7 @@ function llenarSelectTrabajador() {
 
     success: function (response) {
       datos = JSON.parse(response);
-      console.table(datos);
+      // console.table(datos);
       // console.log(response);
       // Limpiar el select aprobadorElement
       trabajador.innerHTML = "";
@@ -59,34 +59,56 @@ function generar() {
   }
   if (error) {
     Swal.fire("Aviso", "Datos Insuficientes".toUpperCase(), "warning");
+    return;
   }
 
-  if (!error) {
- 
-      trabajadores.forEach((trabajador) => {
-          $.ajax({
-            url: base_url + "Reporte/generar_kardex",
-            type: "POST",
-            data: {
-              trabajador: trabajador,
-              anio: anioSeleccionado,
-            //   tipo: tipo.value,
-            }, // Puedes enviar datos adicionales si es necesario
-            success: function (response) {
-              console.log(response);
-              const datos = JSON.parse(response);
+  const totalEnvios = trabajadores.length * 2; // Cada trabajador se envía dos veces
+  let enviosCompletados = 0;
 
-            //   borrarArchivo(datos);
-            },
-            error: function (xhr, status, error) {
-              console.error(error);
-            },
-          });
-        
-      });
-    
-  }
+  const verificarCompletado = () => {
+    enviosCompletados++;
+    if (enviosCompletados === totalEnvios) {
+      Swal.fire("Éxito", "Todos los envíos se realizaron correctamente.", "success");
+    }
+  };
+
+  const realizarEnvio = (trabajador, mesInicio, mesFin, callback) => {
+    $.ajax({
+      url: base_url + "Reporte/generar_kardex",
+      type: "POST",
+      data: {
+        trabajador: trabajador,
+        anio: anioSeleccionado,
+        mes_inicio: mesInicio,
+        mes_fin: mesFin
+      },
+      success: function (response) {
+        // console.log(response);
+        const datos = JSON.parse(response);
+        console.log(datos);
+        // Aquí puedes procesar los datos si es necesario
+        verificarCompletado();
+        if (callback) callback(datos);
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        verificarCompletado();
+        // if (callback) callback();
+      },
+    });
+  };
+
+  trabajadores.forEach((trabajador) => {
+    // Primer envío: Enero a Junio
+    realizarEnvio(trabajador, 1, 6, (datos) => {
+      // Llamada a borrarArchivo(datos) después del primer envío
+      // borrarArchivo(datos);
+      // Segundo envío: Julio a Diciembre
+      realizarEnvio(trabajador, 7, 12);
+    });
+  });
 }
+
 
 function borrarArchivo(datos) {
   var link = document.createElement("a");
@@ -101,7 +123,7 @@ function borrarArchivo(datos) {
     type: "POST",
     data: { filePath: datos.nombre },
     success: function (result) {
-      console.log(result);
+      // console.log(result);
       if (result.status === "success") {
         console.log("Archivo eliminado:", result.message);
       }

@@ -41,7 +41,7 @@
                                 <th style="width: 160px;">Solicitante</th>
                                 <th style="width: 50px;">Razón</th>
                                 <th style="width: 50px;">Fecha</th>
-                           
+
 
                                 <th style="width: 50px;">Salida</th>
                                 <th style="width: 50px;">Entrada</th>
@@ -109,7 +109,7 @@
         <form form id="formulario" class="needs-validation" novalidate="" method="POST" autocomplete="off">
           <div class="modal-body">
             <input type="hidden" id="id" name="id">
-            <input type="hidden" id="tipo" name="tipo" value=0 >
+            <input type="hidden" id="tipo" name="tipo" value=0>
             <div class="row">
               <div class="col-md-6 col-sm-6">
                 <div class="form-group">
@@ -130,14 +130,14 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 fechas" >
+              <div class="col-md-6 col-sm-6 fechas">
 
                 <div class="form-group">
                   <label for="fecha_inicio">Fecha de Inicio</label>
                   <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
                 </div>
               </div>
-              <div class="col-md-6 col-sm-6 fechas" >
+              <div class="col-md-6 col-sm-6 fechas">
 
                 <div class="form-group">
                   <label for="fecha_fin">Fecha de Fin</label>
@@ -153,39 +153,42 @@
 
                 </div>
               </div>
-                <div class="col-md-6 col-sm-6 horas">
+              <div class="col-md-6 col-sm-6 horas">
                 <div class="form-group">
                   <label for="hora_entrada">Hora de Entrada</label>
                   <input type="time" class="form-control" id="hora_entrada" name="hora_entrada" required>
                 </div>
               </div>
-            <!-- </div> -->
+              <!-- </div> -->
 
 
-            <div class="col-md-6 col-sm-6">
-              <div class="form-group">
-                <label for="razon">Razón</label>
-                <select class="form-control" id="razon" name="razon" required>
-                  
-                  <!-- Opciones del select -->
-                </select>
+              <div class="col-md-6 col-sm-6">
+                <div class="form-group">
+                  <label for="razon">Razón</label>
+                  <select class="form-control" id="razon" name="razon" required>
+
+                    <!-- Opciones del select -->
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6">
+
+                <div class="form-group">
+                  <label for="otra_razon">Motivo</label>
+                  <input type="text" class="form-control" id="otra_razon" name="otra_razon" placeholder="Gore, Procuraduria, Fiscalia, ..." required>
+                </div>
+              </div>
+              <div id="resultado" class="col-md-12 col-sm-12">
+
               </div>
             </div>
-            <div class="col-md-6 col-sm-6">
-
-              <div class="form-group">
-                <label for="otra_razon">Motivo</label>
-                <input type="text" class="form-control" id="otra_razon" name="otra_razon" placeholder="Gore, Procuraduria, Fiscalia, ..." required>
-              </div>
-            </div>
-            <div id="resultado" class="col-md-12 col-sm-12">
-
-            </div>
-          </div>
 
 
             <!--  -->
-            <div class="modal-footer bg-white col-md-12 col-sm-12">
+            <div class="modal-footer bg-white col-md-12 col-sm-12" id="botones">
+              <!-- <button class="btn btn-success" id="Aprobado" type="button" onclick="revisar('Aprobado')">Aprobar</button>
+              <button class="btn btn-info" id="Rechazado" type="button" onclick="revisar('Rechazado')">Rechazar</button>
+              <button class="btn btn-light" id="Anulado" type="button" onclick="revisar('Anulado')">Anular</button> -->
               <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
               <button class="btn btn-danger" onclick=cerrarModal() class="close" data-dismiss="modal" aria-label="Close">Cancelar</button>
             </div>
@@ -208,34 +211,30 @@
     const base_url = '<?php echo BASE_URL; ?>';
   </script>
   <style>
-    td .d-flex  {
+    td .d-flex {
       display: initial !important;
-}
+    }
 
     .swal2-popup {
-  position: center;
+      position: center;
 
-}
- 
-/* Estilo general para todos los botones */
-.dt-buttons .btn {
-  /* font-size: 14px;  */
-  /* padding: 8px 16px;  */
-  color: #fff; 
-  border: none; 
-  border-radius: 4px; 
-  margin: 5px; 
-  display: inline-flex; 
-  align-items: center; 
-  width: 60px;
-  height: 34px;
-  justify-content: center;
-  text-align: center;
-}
+    }
 
-
-
-
+    /* Estilo general para todos los botones */
+    .dt-buttons .btn {
+      /* font-size: 14px;  */
+      /* padding: 8px 16px;  */
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      width: 60px;
+      height: 34px;
+      justify-content: center;
+      text-align: center;
+    }
   </style>
 </body>
 
