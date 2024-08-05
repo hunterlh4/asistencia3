@@ -3,7 +3,8 @@ const BASE_URL = "http://localhost/asistencia3/";
 const HOST = "localhost";
 const USER = "postgres";
 const PASS = "123456";
-const DB = "postgres3";
+// const DB = "postgres3";
+const DB = "postgres";
 const CHARSET = "utf8";
 const TITLE = "asistencia";
 

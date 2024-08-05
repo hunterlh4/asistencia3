@@ -12,10 +12,11 @@ const mesInput = document.getElementById("mes");
 const anio = document.getElementById("anio");
 const fechaDesdeInput = document.getElementById("fecha_desde");
 const fechaHastaInput = document.getElementById("fecha_hasta");
-const contenedorTrabajadores = document.querySelector("#contenedor_trabajadores");
+const contenedorTrabajadores = document.querySelector(
+  "#contenedor_trabajadores"
+);
 const tipo = document.querySelector("#tipo");
 const trabajador = document.querySelector("#trabajador");
-
 
 function updateVisibility() {
   // Limpiar campos antes de mostrar u ocultar elementos
@@ -80,7 +81,7 @@ function llenarSelectMes() {
     "Septiembre",
     "Octubre",
     "Noviembre",
-    "Diciembre",
+    "Diciembre"
   ];
   // Generate the options for current year, previous year, and year before that
   for (let i = 0; i < 12; i++) {
@@ -116,7 +117,7 @@ function llenarSelectTrabajador() {
     },
     error: function (xhr, status, error) {
       console.error(error);
-    },
+    }
   });
 }
 
@@ -142,15 +143,31 @@ function generar() {
   const anioSeleccionado = anio.value;
   let error = false;
 
-  if ((trabajadores.length == 0 ||meses.length == 0 ||anioSeleccionado === 0) &&tipo.value === "detallado") {error = true;}
-  if ((meses.length === 0 || anioSeleccionado === 0) && tipo.value === "general") {error = true;}
-  if ((meses.length === 0 || anioSeleccionado === 0) && tipo.value === "tardanza") {error = true;}
+  if (
+    (trabajadores.length == 0 || meses.length == 0 || anioSeleccionado === 0) &&
+    tipo.value === "detallado"
+  ) {
+    error = true;
+  }
+  if (
+    (meses.length === 0 || anioSeleccionado === 0) &&
+    tipo.value === "general"
+  ) {
+    error = true;
+  }
+  if (
+    (meses.length === 0 || anioSeleccionado === 0) &&
+    tipo.value === "tardanza"
+  ) {
+    error = true;
+  }
 
- 
-  if (error) { Swal.fire("Aviso", "Datos Insuficientes".toUpperCase(), "warning");}
+  if (error) {
+    Swal.fire("Aviso", "Datos Insuficientes".toUpperCase(), "warning");
+  }
 
   if (!error) {
-    if (tipo.value === "detallado")
+    if (tipo.value === "detallado"){
       trabajadores.forEach((trabajador) => {
         // Dentro de cada trabajador, recorrer el array de meses
         meses.forEach((mes) => {
@@ -162,8 +179,7 @@ function generar() {
               trabajador: trabajador,
               mes: mes,
               anio: anioSeleccionado,
-              tipo: tipo.value,
-    
+              tipo: tipo.value
             }, // Puedes enviar datos adicionales si es necesario
             success: function (response) {
               console.log(response);
@@ -173,10 +189,12 @@ function generar() {
             },
             error: function (xhr, status, error) {
               console.error(error);
-            },
+            }
           });
         });
       });
+    }
+      
     if (tipo.value === "general" || tipo.value === "tardanza") {
       meses.forEach((mes) => {
         // Imprimir trabajador, mes y año seleccionado
@@ -192,7 +210,7 @@ function generar() {
           },
           error: function (xhr, status, error) {
             console.error(error);
-          },
+          }
         });
       });
     }
@@ -219,7 +237,7 @@ function borrarArchivo(datos) {
     },
     error: function (xhr, status, error) {
       // console.error('Error:', error);
-    },
+    }
   });
 }
 

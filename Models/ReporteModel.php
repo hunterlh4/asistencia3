@@ -145,6 +145,28 @@ class ReporteModel extends Query
         return $this->selectAll($sql);
     }
 
+    public function obtenerHorarioDetalle($trabajador_id){
+        $sql ="SELECT  t.apellido_nombre AS trabajador_nombre,  hd.hora_entrada AS horario_entrada,
+        hd.hora_salida AS horario_salida FROM trabajador AS t INNER JOIN horariodetalle AS hd ON hd.id = t.horariodetalle_id WHERE t.id = 812 LIMIT 1";
+        return $this->select($sql);
+    }
+
+    public function obtenerBoletas($trabajador_id,$mes,$anio){
+        $sql ="SELECT 
+        -- t.apellido_nombre AS trabajador_nombre, 
+        b.fecha_inicio AS fecha,
+        CASE WHEN b.razon = 'Motivos Particulares' THEN 1 ELSE 0 END AS total_motivos_particulares
+        FROM 
+            trabajador AS t
+        
+        inner JOIN 
+            boleta AS b ON b.trabajador_id = t.id AND EXTRACT(MONTH FROM b.fecha_inicio) = $mes AND EXTRACT(YEAR FROM b.fecha_inicio) = $anio
+        WHERE 
+        t.id = '$trabajador_id'";
+        return $this->selectAll($sql);
+    
+    }
+
     public function getSeguimiento($id)
     {
         $sql = "SELECT * FROM seguimientoTrabajador WHERE id = $id";

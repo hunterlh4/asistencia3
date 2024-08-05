@@ -80,9 +80,9 @@ CREATE TABLE horarioDetalle (
     hora_entrada interval(6) null default '00:00:00',
     hora_salida interval(6) null default '00:00:00',
     total interval(6) null default '00:00:00',
-    hora_entrada2 interval(6) null default '00:00:00',
-    hora_salida2 interval(6) null default '00:00:00',
-    total2 interval(6) null default '00:00:00',
+    -- hora_entrada2 interval(6) null default '00:00:00',
+    -- hora_salida2 interval(6) null default '00:00:00',
+    -- total2 interval(6) null default '00:00:00',
     estado varchar(10) NOT NULL DEFAULT 'Activo',
     create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP null,
@@ -309,14 +309,14 @@ CREATE TABLE festividad (
     update_at TIMESTAMP NULL
 );
 
-CREATE TABLE notificacion (
-    id SERIAL PRIMARY KEY,
-    usuario_id INTEGER NOT NULL,
-    mensaje TEXT NOT NULL,
-    leido BOOLEAN DEFAULT FALSE,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
-);
+-- CREATE TABLE notificacion (
+--     id SERIAL PRIMARY KEY,
+--     usuario_id INTEGER NOT NULL,
+--     mensaje TEXT NOT NULL,
+--     leido BOOLEAN DEFAULT FALSE,
+--     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+-- );
 
 create table horas_extra(
     id SERIAL PRIMARY KEY,

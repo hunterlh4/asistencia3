@@ -119,7 +119,7 @@ formulario.addEventListener("submit", function (e) {
           botonImportar.disabled = true;
         },
         success: function (response) {
-          // console.log(response);
+          console.log(response);
           const res = JSON.parse(response);
           if (res.validado) {
             // cargarDatos_xlsx(file, res.tipo);
