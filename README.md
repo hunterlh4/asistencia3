@@ -1,4 +1,4 @@
-# programacion
+<!-- # programacion
  crear un modulo donde se registre una programacion en el que reemplazara al horario de entrada y salida fija
 
  primero validar si existe uno, en caso no exista no pasa nada , en caso exista, el horario y salida fija cambiaran a lo sque hay en la programacion y  se registrara como siempre
@@ -278,4 +278,4 @@ LEFT JOIN
 WHERE 
     a.fecha = '2024-05-02'
 GROUP BY 
-    d.nombre, e.nombre, t.apellido_nombre, a.entrada, a.salida,a.tardanza_cantidad,a.fecha,a.licencia ;
+    d.nombre, e.nombre, t.apellido_nombre, a.entrada, a.salida,a.tardanza_cantidad,a.fecha,a.licencia ; -->
